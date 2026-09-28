@@ -1,0 +1,611 @@
+---
+import Partitura from './Partitura.astro';
+// A looping thread: as seis fases que nenhum agente pula.
+// Trilha interativa: cada fase abre o contrato dela e o que o ork exige antes de
+// deixar passar. A trilha anda sozinha ate a primeira interacao do humano; a partir
+// dali, quem conduz e voce.
+
+const fases = [
+  {
+    id: 'goal',
+    nome: 'GOAL',
+    digito: 'F1',
+    resumo: 'o que vale a pena, e como se prova',
+    entrega: 'Objetivo verificável, impact map, critérios de sucesso e claims com comando de verificação. Não implementa.',
+    exige: 'Claim sem comando é recusada como claims.unverifiable.'
+  },
+  {
+    id: 'plan',
+    nome: 'PLAN',
+    digito: 'F2',
+    resumo: 'o caminho, com domicílio único por decisão',
+    entrega: 'Tarefas, touch_paths, decisões D1..Dn com domicílio único e verify executável por tarefa. Não implementa.',
+    exige: 'Plano sem verify executável não vira GO.'
+  },
+  {
+    id: 'go',
+    nome: 'GO',
+    digito: 'F3',
+    resumo: 'a escrita, fatia por fatia',
+    entrega: 'Implementação fatia por fatia, um commit atômico por tarefa, dentro da worktree da thread.',
+    exige: 'Escrita fora da worktree da thread é barrada por lease.'
+  },
+  {
+    id: 'check',
+    nome: 'CHECK',
+    digito: 'F4',
+    resumo: 'a desconfiança, com comando na mão',
+    entrega: 'Verificação contra a baseline, review de código, testes, segurança e performance.',
+    exige: 'Claim reprovada vira verify.regression ou claims.failed, com a saída real anexada.'
+  },
+  {
+    id: 'ship',
+    nome: 'SHIP',
+    digito: 'F5',
+    resumo: 'o merge, um de cada vez',
+    entrega: 'Merge serializado, push provado por comando, roadmap atualizado e plano de rollback.',
+    exige: 'Push só conta quando git ls-remote bate com o sha local.'
+  },
+  {
+    id: 'master',
+    nome: 'MASTER',
+    digito: 'F6',
+    resumo: 'a nota, dada por gente',
+    entrega: 'MASTER log com postmortem tipado, lições e o score humano de 0 a 5.',
+    exige: 'Score sem justificativa é recusado, em qualquer modo.'
+  }
+];
+---
+
+<div class="ciclo" data-ciclo data-anima>
+  <div class="trilha-envelope">
+    <Partitura />
+    <svg class="lacos" viewBox="0 0 1200 130" preserveAspectRatio="none" aria-hidden="true">
+      <path class="laco laco-fix" d="M 700 6 C 700 62, 500 62, 500 6" />
+      <path class="laco laco-score" d="M 1108 6 C 1108 124, 92 124, 92 6" />
+    </svg>
+
+    <div class="trilha" role="tablist" aria-label="As seis fases do ciclo">
+      <span class="trilha-leito" aria-hidden="true"></span>
+      <span class="trilha-preenchida" aria-hidden="true"></span>
+
+      {fases.map((fase, indice) => (
+        <button
+          class="fase"
+          role="tab"
+          id={`aba-${fase.id}`}
+          aria-selected={indice === 0 ? 'true' : 'false'}
+          aria-controls="fase-painel"
+          tabindex={indice === 0 ? 0 : -1}
+          data-fase={indice}
+          type="button"
+        >
+          <span class="fase-digito mono">{fase.digito}</span>
+          <span class="fase-no" aria-hidden="true">
+            <svg class="fase-anel" viewBox="0 0 36 36">
+              <circle class="anel-leito" cx="18" cy="18" r="15" />
+              <circle class="anel-tempo" cx="18" cy="18" r="15" pathLength="100" />
+            </svg>
+            <span class="fase-nucleo"></span>
+          </span>
+          <span class="fase-nome mono">{fase.nome}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <p class="lacos-legenda mono" aria-hidden="true">
+    <span class="legenda-fix">CHECK reprovou: GO-FIX com spec tipada</span>
+    <span class="legenda-score">o score de 0 a 5 calibra a próxima thread</span>
+  </p>
+
+  <div
+    class="painel fase-detalhe"
+    id="fase-painel"
+    role="tabpanel"
+    aria-labelledby="aba-goal"
+    tabindex="0"
+  >
+    {fases.map((fase, indice) => (
+      <div class="detalhe" data-detalhe={indice} hidden={indice !== 0}>
+        <div class="detalhe-cabeca">
+          <p class="micro-rotulo sem-ponto">{fase.digito} · {fase.nome}</p>
+          <p class="detalhe-resumo mono">{fase.resumo}</p>
+        </div>
+        <p class="detalhe-entrega">{fase.entrega}</p>
+        <p class="detalhe-exige">
+          <span class="exige-selo mono">o ork exige</span>
+          <span class="exige-texto mono">{fase.exige}</span>
+        </p>
+      </div>
+    ))}
+  </div>
+
+  <p class="ciclo-nota paragrafo">
+    Demanda pequena recebe fases compactas, nunca menos fases. Um fix de uma linha ainda
+    tem GOAL, ainda tem MASTER log. <strong>Uma entrega sem MASTER log não aconteceu.</strong>
+  </p>
+</div>
+
+<style>
+  .ciclo {
+    max-width: 100%;
+    --fases: 6;
+    --selecionada: 0;
+  }
+
+  .trilha-envelope {
+    position: relative;
+    padding-bottom: 6.4rem;
+  }
+
+  /* ---------- lacos de retorno ----------
+     Comecam logo abaixo dos nos e descem ate a legenda: o GO-FIX faz um arco
+     curto de CHECK para GO, e o laco do score varre toda a largura, de MASTER
+     de volta para GOAL. */
+
+  .lacos {
+    position: absolute;
+    inset-inline: 0;
+    top: 5.1rem;
+    height: 5.6rem;
+    width: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .laco {
+    fill: none;
+    stroke-dasharray: 4 8;
+    stroke-width: 1.3;
+    transition: stroke-width var(--dur-3) var(--curva), opacity var(--dur-3) var(--curva);
+  }
+
+  .laco-fix {
+    stroke: var(--brasa);
+    opacity: 0.5;
+    animation: andar-laco 2s linear infinite reverse;
+  }
+
+  .laco-score {
+    stroke: var(--patina);
+    opacity: 0.4;
+    animation: andar-laco 3s linear infinite reverse;
+  }
+
+  /* O laco relevante acende quando a fase dele esta aberta */
+  .ciclo[data-fase-ativa='3'] .laco-fix,
+  .ciclo[data-fase-ativa='2'] .laco-fix {
+    opacity: 1;
+    stroke-width: 1.8;
+  }
+
+  .ciclo[data-fase-ativa='5'] .laco-score {
+    opacity: 1;
+    stroke-width: 1.8;
+  }
+
+  @keyframes andar-laco {
+    to {
+      stroke-dashoffset: -24;
+    }
+  }
+
+  /* ---------- trilha ---------- */
+
+  .trilha {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    gap: 0.5rem;
+  }
+
+  .trilha-leito,
+  .trilha-preenchida {
+    position: absolute;
+    left: 4%;
+    right: 4%;
+    top: calc(1.2rem + 18px);
+    height: 1px;
+    pointer-events: none;
+  }
+
+  .trilha-leito {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--linha-forte) 10%,
+      var(--linha-forte) 90%,
+      transparent
+    );
+  }
+
+  /* O trecho ja percorrido: cresce ate a fase aberta */
+  .trilha-preenchida {
+    background: linear-gradient(90deg, var(--latao-fundo), var(--latao));
+    transform-origin: left;
+    transform: scaleX(calc(var(--selecionada) / (var(--fases) - 1)));
+    transition: transform 0.65s var(--curva);
+    box-shadow: 0 0 12px rgba(224, 178, 100, 0.35);
+  }
+
+  /* ---------- no de fase ---------- */
+
+  .fase {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+    background: none;
+    border: none;
+    padding: 0.35rem 0.25rem;
+    position: relative;
+    min-width: 44px;
+    min-height: 44px;
+    color: var(--tinta-3);
+    transition: color var(--dur-2) var(--curva);
+  }
+
+  .fase-digito {
+    font-size: var(--t-nano);
+    color: var(--tinta-3);
+    letter-spacing: 0.12em;
+    transition: color var(--dur-2) var(--curva);
+  }
+
+  .fase-no {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+  }
+
+  .fase-anel {
+    position: absolute;
+    inset: -8px;
+    width: 36px;
+    height: 36px;
+    transform: rotate(-90deg);
+    overflow: visible;
+  }
+
+  .anel-leito {
+    fill: none;
+    stroke: transparent;
+    stroke-width: 1.5;
+  }
+
+  /* Anel de tempo: mostra quanto falta para a trilha andar sozinha */
+  .anel-tempo {
+    fill: none;
+    stroke: var(--latao-linha);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    opacity: 0;
+  }
+
+  .fase[aria-selected='true'] .anel-tempo {
+    opacity: 1;
+  }
+
+  .ciclo[data-automatico='sim'] .fase[aria-selected='true'] .anel-tempo {
+    animation: contar-anel 5s linear forwards;
+  }
+
+  @keyframes contar-anel {
+    from {
+      stroke-dashoffset: 100;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .fase-nucleo {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid var(--tinta-4);
+    background: var(--poco);
+    transition: border-color var(--dur-2) var(--curva), background var(--dur-2) var(--curva),
+      box-shadow var(--dur-2) var(--curva), transform var(--dur-2) var(--curva-mola);
+  }
+
+  .fase-nome {
+    font-size: clamp(0.66rem, 1.5vw, 0.78rem);
+    letter-spacing: 0.13em;
+    font-variation-settings: 'wght' 500;
+    transition: color var(--dur-2) var(--curva);
+  }
+
+  .fase:hover .fase-nucleo {
+    border-color: var(--latao);
+    transform: scale(1.18);
+  }
+
+  .fase:hover .fase-nome,
+  .fase:hover .fase-digito {
+    color: var(--tinta);
+  }
+
+  /* Fases ja percorridas ficam acesas, e nao apagadas */
+  .fase[data-percorrida='sim'] .fase-nucleo {
+    border-color: var(--latao-forte);
+    background: var(--latao-fraco);
+  }
+
+  .fase[data-percorrida='sim'] .fase-digito {
+    color: var(--latao-fundo);
+  }
+
+  .fase[aria-selected='true'] {
+    color: var(--tinta);
+  }
+
+  .fase[aria-selected='true'] .fase-nucleo {
+    border-color: var(--latao);
+    background: var(--latao);
+    box-shadow: 0 0 0 4px var(--latao-fraco), 0 0 24px rgba(224, 178, 100, 0.55);
+    transform: scale(1.1);
+  }
+
+  .fase[aria-selected='true'] .fase-digito {
+    color: var(--latao);
+  }
+
+  .fase[aria-selected='true'] .fase-nome {
+    color: var(--tinta);
+  }
+
+  /* ---------- legenda ---------- */
+
+  .lacos-legenda {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: var(--t-nano);
+    margin-top: -2.4rem;
+    margin-bottom: 1.9rem;
+    letter-spacing: 0.02em;
+  }
+
+  .legenda-fix {
+    color: var(--brasa);
+    opacity: 0.75;
+  }
+
+  .legenda-score {
+    color: var(--patina);
+    opacity: 0.7;
+  }
+
+  /* ---------- detalhe ---------- */
+
+  .fase-detalhe {
+    min-height: 12rem;
+    display: grid;
+  }
+
+  .detalhe {
+    grid-area: 1 / 1;
+  }
+
+  .detalhe[hidden] {
+    display: none;
+  }
+
+  /* Entrada suave a cada troca de fase */
+  .detalhe:not([hidden]) {
+    animation: entrar-detalhe 0.45s var(--curva) both;
+  }
+
+  @keyframes entrar-detalhe {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  .detalhe-cabeca {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+  }
+
+  .detalhe-resumo {
+    font-size: var(--t-micro);
+    color: var(--tinta-3);
+  }
+
+  .detalhe-entrega {
+    margin-top: 0.9rem;
+    font-size: 1.08rem;
+    line-height: 1.55;
+    max-width: 58ch;
+    color: var(--tinta);
+    text-wrap: pretty;
+  }
+
+  .detalhe-exige {
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .exige-selo {
+    flex-shrink: 0;
+    border: 1px solid var(--brasa-linha);
+    background: var(--brasa-fraca);
+    color: var(--brasa-clara);
+    border-radius: var(--raio-pilula);
+    padding: 0.12rem 0.7rem;
+    font-size: var(--t-nano);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  .exige-texto {
+    font-size: var(--t-small);
+    color: var(--tinta-2);
+    max-width: 54ch;
+  }
+
+  .ciclo-nota {
+    margin-top: 1.8rem;
+    font-size: var(--t-small);
+  }
+
+  /* ---------- responsivo e economia ---------- */
+
+  @media (max-width: 680px) {
+    /* Sem os lacos desenhados, o espaco reservado para eles nao existe mais. */
+    .lacos {
+      display: none;
+    }
+
+    .trilha-envelope {
+      padding-bottom: 0;
+    }
+
+    .lacos-legenda {
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-top: 1.4rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .trilha {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 0.6rem 1.2rem;
+    }
+
+    .trilha-leito,
+    .trilha-preenchida {
+      display: none;
+    }
+
+    .fase {
+      flex-direction: row;
+      gap: 0.55rem;
+      padding: 0.4rem 0.7rem;
+      border: 1px solid var(--linha);
+      border-radius: var(--raio-pilula);
+      background: var(--palco);
+    }
+
+    .fase[aria-selected='true'] {
+      border-color: var(--latao-linha);
+      background: var(--latao-fraco);
+    }
+
+    .fase-anel {
+      display: none;
+    }
+
+    .fase-nucleo {
+      width: 9px;
+      height: 9px;
+    }
+  }
+
+  .ciclo[data-em-cena='nao'] .laco,
+  .ciclo[data-em-cena='nao'] .anel-tempo {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .laco,
+    .anel-tempo,
+    .detalhe:not([hidden]) {
+      animation: none;
+    }
+
+    .trilha-preenchida {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const INTERVALO = 5000;
+  const reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  for (const raiz of document.querySelectorAll<HTMLElement>('[data-ciclo]')) {
+    const abas = Array.from(raiz.querySelectorAll<HTMLButtonElement>('[data-fase]'));
+    const detalhes = Array.from(raiz.querySelectorAll<HTMLElement>('[data-detalhe]'));
+    const painel = raiz.querySelector<HTMLElement>('[role="tabpanel"]');
+    if (abas.length === 0) continue;
+
+    let atual = 0;
+    let conduzidoPorGente = reduzMovimento;
+    let temporizador = 0;
+
+    function selecionar(indice: number) {
+      atual = indice;
+      abas.forEach((aba, i) => {
+        const selecionada = i === indice;
+        aba.setAttribute('aria-selected', String(selecionada));
+        aba.tabIndex = selecionada ? 0 : -1;
+        aba.dataset.percorrida = i < indice ? 'sim' : 'nao';
+      });
+      detalhes.forEach((detalhe, i) => {
+        detalhe.hidden = i !== indice;
+      });
+      painel?.setAttribute('aria-labelledby', abas[indice].id);
+      raiz.style.setProperty('--selecionada', String(indice));
+      raiz.dataset.faseAtiva = String(indice);
+    }
+
+    function pararSozinho() {
+      conduzidoPorGente = true;
+      raiz.dataset.automatico = 'nao';
+      window.clearInterval(temporizador);
+    }
+
+    function comecarSozinho() {
+      if (conduzidoPorGente) return;
+      raiz.dataset.automatico = 'sim';
+      window.clearInterval(temporizador);
+      temporizador = window.setInterval(() => {
+        if (raiz.dataset.emCena === 'nao' || document.hidden) return;
+        selecionar((atual + 1) % abas.length);
+      }, INTERVALO);
+    }
+
+    abas.forEach((aba, indice) => {
+      aba.addEventListener('click', () => {
+        pararSozinho();
+        selecionar(indice);
+      });
+      aba.addEventListener('keydown', (evento) => {
+        const destinos: Record<string, number> = {
+          ArrowRight: (indice + 1) % abas.length,
+          ArrowLeft: (indice - 1 + abas.length) % abas.length,
+          Home: 0,
+          End: abas.length - 1
+        };
+        const destino = destinos[evento.key];
+        if (destino === undefined) return;
+        evento.preventDefault();
+        pararSozinho();
+        abas[destino].focus();
+        selecionar(destino);
+      });
+    });
+
+    // O ponteiro pousado na trilha ja e um pedido de tempo: a trilha espera.
+    raiz.addEventListener('pointerenter', () => window.clearInterval(temporizador));
+    raiz.addEventListener('pointerleave', comecarSozinho);
+
+    selecionar(0);
+    if (!reduzMovimento) comecarSozinho();
+    else raiz.dataset.automatico = 'nao';
+  }
+</script>

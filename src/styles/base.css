@@ -1,0 +1,862 @@
+/* Base do portal Orkastery: reset, sistema tipografico, superficies usinadas,
+   movimento e acessibilidade. Tudo aqui vale para as tres paginas. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--poco);
+  color: var(--tinta);
+  font-family: var(--f-texto);
+  font-size: var(--t-body);
+  line-height: 1.62;
+  letter-spacing: -0.006em;
+  font-variation-settings: 'wght' 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+img,
+svg,
+canvas,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--f-mono);
+  font-feature-settings: 'ss01', 'cv01';
+}
+
+::selection {
+  background: var(--latao);
+  color: var(--sobre-latao);
+}
+
+:focus-visible {
+  outline: 2px solid var(--latao);
+  outline-offset: 3px;
+  border-radius: 5px;
+}
+
+/* Barra de rolagem discreta, na familia quente da paleta */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--aresta) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--aresta);
+  border-radius: var(--raio-pilula);
+  border: 3px solid var(--poco);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--latao-fundo);
+}
+
+/* ============================================================
+   TIPOGRAFIA
+   Um so display em toda a superficie: Fraunces, com tamanho optico
+   variavel. Titulo grande ganha alto contraste; rotulo pequeno ganha
+   forma robusta. Esse e o mesmo tipo, calibrado, nao dois tipos.
+   ============================================================ */
+
+.display {
+  font-family: var(--f-display);
+  font-variation-settings: 'opsz' 144, 'wght' 620, 'SOFT' 0, 'WONK' 0;
+  font-weight: 620;
+  line-height: 1.02;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+  color: var(--tinta);
+}
+
+.display em,
+.display i {
+  font-style: italic;
+  font-variation-settings: 'opsz' 144, 'wght' 560, 'SOFT' 0, 'WONK' 1;
+  letter-spacing: -0.012em;
+}
+
+h1.display {
+  font-size: var(--t-hero);
+}
+
+h2.display {
+  font-size: var(--t-h2);
+  max-width: 20ch;
+}
+
+h3,
+.titulo-3 {
+  font-family: var(--f-display);
+  font-variation-settings: 'opsz' 28, 'wght' 600, 'SOFT' 0, 'WONK' 0;
+  font-weight: 600;
+  font-size: var(--t-h3);
+  line-height: 1.22;
+  letter-spacing: -0.014em;
+  color: var(--tinta);
+}
+
+/* Numerais de display: alinhados, com o tamanho optico do titulo */
+.numeral {
+  font-family: var(--f-display);
+  font-variation-settings: 'opsz' 144, 'wght' 560, 'SOFT' 0, 'WONK' 0;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+}
+
+.paragrafo {
+  color: var(--tinta-2);
+  max-width: var(--largura-texto);
+  text-wrap: pretty;
+}
+
+.paragrafo strong {
+  color: var(--tinta);
+  font-variation-settings: 'wght' 560;
+}
+
+.mono {
+  font-family: var(--f-mono);
+  font-size: var(--t-small);
+  font-variation-settings: 'wght' 400;
+  letter-spacing: -0.01em;
+}
+
+.micro-rotulo {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  font-variation-settings: 'wght' 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--latao);
+}
+
+/* O ponto de brasa que abre um micro-rotulo: um sinal, nao um emoji.
+   A margem do topo prende o ponto na primeira linha, mesmo quando o rotulo quebra. */
+.micro-rotulo::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  margin-top: 0.52em;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 18%, transparent);
+  flex-shrink: 0;
+}
+
+.micro-rotulo.sem-ponto::before {
+  display: none;
+}
+
+.micro-rotulo-patina {
+  color: var(--patina);
+}
+
+.destaque {
+  color: var(--latao);
+}
+
+.destaque-patina {
+  color: var(--patina);
+}
+
+.destaque-brasa {
+  color: var(--brasa-clara);
+}
+
+/* Codigo inline, em qualquer lugar do site */
+.paragrafo code,
+p code,
+li code,
+dd code {
+  font-family: var(--f-mono);
+  font-size: 0.86em;
+  color: var(--latao-claro);
+  background: var(--latao-fraco);
+  border: 1px solid var(--latao-linha);
+  border-radius: 5px;
+  padding: 0.08em 0.38em;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   ESTRUTURA
+   ============================================================ */
+
+.container {
+  width: min(100% - 2 * var(--calha), var(--largura));
+  margin-inline: auto;
+}
+
+.secao {
+  padding-block: var(--secao);
+  position: relative;
+}
+
+.secao-apertada {
+  padding-block: calc(var(--secao) * 0.62);
+}
+
+/* Cabeca de secao: rotulo, titulo e linha viva que cresce ao entrar em cena */
+.cabeca-secao {
+  display: grid;
+  gap: var(--e-3);
+  margin-bottom: var(--e-6);
+}
+
+.cabeca-secao .paragrafo {
+  font-size: 1.075rem;
+}
+
+.regua {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--latao-forte), var(--linha) 38%, transparent);
+  transform-origin: left;
+  transform: scaleX(var(--regua-escala, 1));
+  transition: transform 1.1s var(--curva);
+}
+
+html.js .revela .regua,
+html.js .regua.revela {
+  --regua-escala: 0;
+}
+
+html.js .revela.visivel .regua,
+html.js .regua.revela.visivel {
+  --regua-escala: 1;
+}
+
+/* ============================================================
+   SUPERFICIES
+   Toda superficie elevada tem tres camadas: fundo, lustro interno
+   (a luz que bate na aresta de cima) e sombra quente. E isso que
+   separa uma superficie usinada de um retangulo pintado.
+   ============================================================ */
+
+.painel {
+  --spot: rgba(224, 178, 100, 0.1);
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(245, 241, 234, 0.024), transparent 42%),
+    var(--painel);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio-superficie);
+  padding: clamp(1.5rem, 3vw, 2.3rem);
+  overflow: hidden;
+  box-shadow: var(--lustro), var(--sombra-1);
+  transition: border-color var(--dur-2) var(--curva), transform var(--dur-2) var(--curva),
+    box-shadow var(--dur-2) var(--curva);
+}
+
+/* Holofote que segue o ponteiro. Sem ponteiro, nada acontece e nada quebra. */
+.painel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    26rem 26rem at var(--mx, 50%) var(--my, 0%),
+    var(--spot),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--curva);
+  pointer-events: none;
+}
+
+.painel:hover::before,
+.painel:focus-within::before {
+  opacity: 1;
+}
+
+.painel:hover {
+  border-color: var(--linha-forte);
+}
+
+/* Superficie de destaque: fio de latao no topo, aura quente */
+.painel-latao {
+  background:
+    linear-gradient(165deg, rgba(224, 178, 100, 0.085), rgba(226, 96, 60, 0.03) 52%, transparent 78%),
+    var(--painel);
+  border-color: var(--latao-linha);
+  box-shadow: var(--lustro-forte), var(--sombra-2), 0 0 60px -30px rgba(224, 178, 100, 0.5);
+}
+
+.painel-latao::after {
+  content: '';
+  position: absolute;
+  inset-inline: 12%;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--latao-forte), transparent);
+  pointer-events: none;
+}
+
+.painel-patina {
+  --spot: rgba(111, 185, 168, 0.09);
+  background:
+    linear-gradient(165deg, rgba(111, 185, 168, 0.07), transparent 62%),
+    var(--painel);
+  border-color: var(--patina-linha);
+}
+
+/* Cartao que e link: sobe, e a aresta acende */
+.cartao-link {
+  text-decoration: none;
+  display: block;
+}
+
+.cartao-link:hover {
+  transform: translateY(-4px);
+  border-color: var(--latao-linha);
+  box-shadow: var(--lustro-forte), var(--sombra-2);
+}
+
+/* ============================================================
+   BOTOES
+   ============================================================ */
+
+.botao {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.75rem;
+  min-height: 46px;
+  border-radius: var(--raio-pilula);
+  font-family: var(--f-texto);
+  font-variation-settings: 'wght' 560;
+  font-weight: 560;
+  font-size: 0.98rem;
+  letter-spacing: -0.011em;
+  text-decoration: none;
+  border: 1px solid transparent;
+  overflow: hidden;
+  isolation: isolate;
+  white-space: nowrap;
+  transition: transform var(--dur-2) var(--curva), background var(--dur-2) var(--curva),
+    border-color var(--dur-2) var(--curva), color var(--dur-2) var(--curva),
+    box-shadow var(--dur-2) var(--curva);
+}
+
+/* Lampejo que varre o botao no hover: uma passada de luz, nao um piscar */
+.botao::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.28) 48%,
+    transparent 74%
+  );
+  transform: translateX(-110%);
+  transition: transform 0.7s var(--curva);
+  pointer-events: none;
+}
+
+.botao:hover::after {
+  transform: translateX(110%);
+}
+
+.botao:active {
+  transform: translateY(1px) scale(0.982);
+  transition-duration: var(--dur-1);
+}
+
+.botao-latao {
+  background: linear-gradient(135deg, var(--latao-claro), var(--latao) 46%, #c9954a);
+  color: var(--sobre-latao);
+  box-shadow: var(--lustro-forte), 0 8px 28px -10px rgba(224, 178, 100, 0.55);
+}
+
+.botao-latao:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--lustro-forte), 0 14px 40px -12px rgba(224, 178, 100, 0.7);
+}
+
+.botao-fantasma {
+  border-color: var(--linha-forte);
+  color: var(--tinta);
+  background: linear-gradient(180deg, rgba(245, 241, 234, 0.045), transparent);
+  box-shadow: var(--lustro);
+}
+
+.botao-fantasma:hover {
+  border-color: var(--latao-linha);
+  color: var(--latao-claro);
+  background: linear-gradient(180deg, rgba(224, 178, 100, 0.09), transparent);
+  transform: translateY(-2px);
+}
+
+.botao-fantasma::after {
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(224, 178, 100, 0.16) 48%,
+    transparent 74%
+  );
+}
+
+/* Seta que anda no hover, para links de avanco */
+.botao .seta {
+  transition: transform var(--dur-2) var(--curva);
+}
+
+.botao:hover .seta {
+  transform: translateX(3px);
+}
+
+/* Ligacao de texto com sublinhado que se preenche */
+.ligacao {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  position: relative;
+  color: var(--latao);
+  text-decoration: none;
+  font-variation-settings: 'wght' 560;
+  font-weight: 560;
+  padding-bottom: 4px;
+}
+
+.ligacao::before,
+.ligacao::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+}
+
+.ligacao::before {
+  background: var(--latao-linha);
+}
+
+.ligacao::after {
+  background: var(--latao);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur-3) var(--curva);
+}
+
+.ligacao:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.ligacao .seta {
+  transition: transform var(--dur-2) var(--curva);
+}
+
+.ligacao:hover .seta {
+  transform: translateX(3px);
+}
+
+/* ============================================================
+   TERMINAL
+   ============================================================ */
+
+/* O terminal nunca empurra a largura da pagina: ele rola por dentro.
+   min-width: 0 e o que permite que ele encolha dentro de uma grade. */
+.terminal {
+  position: relative;
+  background: linear-gradient(180deg, #0d0c0a, #070605);
+  border: 1px solid var(--linha-forte);
+  border-radius: var(--raio-superficie);
+  overflow: hidden;
+  min-width: 0;
+  max-width: 100%;
+  box-shadow: var(--lustro), var(--sombra-3);
+}
+
+.terminal::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--latao-linha) 30%, var(--latao-linha) 70%, transparent);
+  pointer-events: none;
+}
+
+.terminal-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 1.15rem;
+  border-bottom: 1px solid var(--linha);
+  background: rgba(245, 241, 234, 0.018);
+  color: var(--tinta-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: 0.02em;
+}
+
+.terminal pre {
+  margin: 0;
+  padding: 1.3rem 1.4rem;
+  overflow-x: auto;
+  min-width: 0;
+  max-width: 100%;
+  font-family: var(--f-mono);
+  font-size: var(--t-small);
+  line-height: 1.8;
+  color: var(--tinta-2);
+  tab-size: 2;
+}
+
+.terminal .cmd {
+  color: var(--tinta);
+  font-variation-settings: 'wght' 500;
+}
+
+.terminal .cmd::before {
+  content: '$ ';
+  color: var(--latao);
+  font-variation-settings: 'wght' 400;
+}
+
+.terminal .saida-ok {
+  color: var(--patina);
+}
+
+.terminal .saida-quente {
+  color: var(--brasa-clara);
+}
+
+/* Botao de copiar, com estado de sucesso */
+.copiar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: 1px solid var(--linha-forte);
+  border-radius: var(--raio-pilula);
+  color: var(--tinta-3);
+  padding: 0.2rem 0.75rem;
+  font-family: var(--f-mono);
+  font-size: var(--t-nano);
+  transition: color var(--dur-2) var(--curva), border-color var(--dur-2) var(--curva),
+    background var(--dur-2) var(--curva);
+}
+
+.copiar:hover {
+  color: var(--latao-claro);
+  border-color: var(--latao-linha);
+  background: var(--latao-fraco);
+}
+
+.copiar[data-copiado='sim'] {
+  color: var(--patina);
+  border-color: var(--patina-linha);
+  background: var(--patina-fraca);
+}
+
+/* ============================================================
+   GRAO E ATMOSFERA
+   ============================================================ */
+
+.grao {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.055;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23r)' opacity='0.62'/%3E%3C/svg%3E");
+}
+
+/* Fio de latao que marca o topo da pagina inteira */
+.fio-mestre {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  height: 2px;
+  z-index: 120;
+  pointer-events: none;
+  background: linear-gradient(90deg, var(--latao), var(--brasa) 55%, var(--patina));
+  transform-origin: left;
+  transform: scaleX(var(--progresso, 0));
+  opacity: 0.85;
+}
+
+.pular-link {
+  position: absolute;
+  left: 1rem;
+  top: -5rem;
+  z-index: 200;
+  padding: 0.75rem 1.3rem;
+  background: var(--latao);
+  color: var(--sobre-latao);
+  border-radius: var(--raio-pilula);
+  font-variation-settings: 'wght' 600;
+  text-decoration: none;
+  transition: top var(--dur-2) var(--curva);
+}
+
+.pular-link:focus-visible {
+  top: 1rem;
+}
+
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   MOVIMENTO
+   Sem JS a pagina inteira aparece. Com JS, a classe .js arma
+   a revelacao. Com prefers-reduced-motion, tudo chega pronto.
+   ============================================================ */
+
+html.js .revela {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  filter: blur(6px);
+  transition: opacity var(--dur-4) var(--curva), transform var(--dur-4) var(--curva),
+    filter var(--dur-4) var(--curva);
+  transition-delay: var(--atraso, 0s);
+  will-change: opacity, transform;
+}
+
+html.js .revela.visivel {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  will-change: auto;
+}
+
+/* Revelacao por corte: a linha e descoberta de baixo para cima.
+   Reservada a titulos, onde vale o custo do wrapper. */
+html.js .revela-corte > * {
+  display: block;
+  transform: translate3d(0, 108%, 0);
+  transition: transform 1.05s var(--curva);
+  transition-delay: var(--atraso, 0s);
+}
+
+html.js .revela-corte {
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+html.js .revela-corte.visivel > * {
+  transform: none;
+}
+
+/* Escalonamento automatico de filhos diretos */
+html.js .escalona > * {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  transition: opacity var(--dur-4) var(--curva), transform var(--dur-4) var(--curva);
+}
+
+html.js .escalona.visivel > * {
+  opacity: 1;
+  transform: none;
+}
+
+html.js .escalona.visivel > *:nth-child(1) { transition-delay: 0.04s; }
+html.js .escalona.visivel > *:nth-child(2) { transition-delay: 0.1s; }
+html.js .escalona.visivel > *:nth-child(3) { transition-delay: 0.16s; }
+html.js .escalona.visivel > *:nth-child(4) { transition-delay: 0.22s; }
+html.js .escalona.visivel > *:nth-child(5) { transition-delay: 0.28s; }
+html.js .escalona.visivel > *:nth-child(6) { transition-delay: 0.34s; }
+html.js .escalona.visivel > *:nth-child(7) { transition-delay: 0.4s; }
+html.js .escalona.visivel > *:nth-child(8) { transition-delay: 0.46s; }
+html.js .escalona.visivel > *:nth-child(9) { transition-delay: 0.52s; }
+html.js .escalona.visivel > *:nth-child(n + 10) { transition-delay: 0.58s; }
+
+/* Paralaxe de camada decorativa. O valor vem do script, nunca de texto. */
+.paralaxe {
+  transform: translate3d(0, calc(var(--paralaxe, 0) * 1px), 0);
+  will-change: transform;
+}
+
+/* Esqueleto de carregamento, para superficies que esperam pintura */
+.esqueleto {
+  position: relative;
+  overflow: hidden;
+  background: var(--relevo);
+}
+
+.esqueleto::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(245, 241, 234, 0.055) 48%,
+    transparent 76%
+  );
+  transform: translateX(-100%);
+  animation: varrer-esqueleto 1.6s var(--curva-suave) infinite;
+}
+
+@keyframes varrer-esqueleto {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Guarda geral de grade: sem isto, um filho de conteudo largo (um bloco de
+   terminal, uma tabela) estica a coluna e a pagina inteira rola de lado. */
+.grade-flexivel > * {
+  min-width: 0;
+}
+
+/* Rolagem horizontal controlada para conteudo largo */
+.rolagem-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  html.js .revela,
+  html.js .escalona > * {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+
+  html.js .revela-corte > * {
+    transform: none;
+    transition: none;
+  }
+
+  .paralaxe {
+    transform: none;
+  }
+
+  .regua {
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* Luz de palco: acento acima dos titulos, sem mudar a superficie do texto. */
+.luz-palco {
+  position: relative;
+  isolation: isolate;
+}
+
+.luz-palco::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -2rem 0 0;
+  pointer-events: none;
+  opacity: 0.65;
+  background:
+    radial-gradient(ellipse 35% 90% at 50% 0%, var(--latao-fraco), transparent 80%),
+    radial-gradient(ellipse 60% 1px at 50% 0%, var(--linha), transparent);
+  mask-image: linear-gradient(to bottom, var(--poco), transparent 85%);
+}
+
+/* ============================================================
+   EM BREVE
+   Destino externo ainda fechado (src/data/externos.ts): mantem o
+   desenho do link, sem acao, sem hover e com um selo discreto.
+   ============================================================ */
+
+.em-breve {
+  cursor: default;
+  pointer-events: none;
+}
+
+.em-breve .seta,
+.em-breve .fuga,
+.em-breve .repo-fuga {
+  display: none;
+}
+
+.selo-em-breve {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: 0.5rem;
+  padding: 0.12em 0.6em;
+  border: 1px solid var(--linha-forte);
+  border-radius: var(--raio-pilula);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  font-variation-settings: 'wght' 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tinta-2);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.botao .selo-em-breve {
+  margin-inline-start: 0;
+}

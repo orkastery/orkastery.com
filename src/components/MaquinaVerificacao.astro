@@ -1,0 +1,381 @@
+---
+// A maquinaria que nao acredita em self-report: claim -> verify -> baseline -> gate tipado.
+// Os 12 motivos vem da tabela oficial de gates do nucleo. A cor codifica quem resolve:
+// latao quando a maquina reexecuta sozinha, brasa quando sobe para gente, e apagado
+// quando nao existe retry nenhum.
+
+const motivos = [
+  { nome: 'artifact.missing', retry: 'corrigir-dirigido', automatica: 'sim' },
+  { nome: 'claims.failed', retry: 'corrigir-dirigido', automatica: 'sim' },
+  { nome: 'claims.unverifiable', retry: 'corrigir-dirigido', automatica: 'sim' },
+  { nome: 'verify.regression', retry: 'corrigir-dirigido', automatica: 'sim' },
+  { nome: 'verify.failed', retry: 'corrigir-dirigido', automatica: 'sim' },
+  { nome: 'tree.blocked', retry: 'sincronizar-worktree', automatica: 'sim' },
+  { nome: 'lease.busy', retry: 'reexecutar', automatica: 'sim' },
+  { nome: 'runtime.unavailable', retry: 'reexecutar', automatica: 'sim' },
+  { nome: 'runtime.rate-limited', retry: 'esperar-janela', automatica: 'sim' },
+  { nome: 'policy.violation', retry: 'escalar-humano', automatica: 'não' },
+  { nome: 'human.pending', retry: 'escalar-humano', automatica: 'não' },
+  { nome: 'cost.violation', retry: 'sem-retry', automatica: 'nunca' }
+];
+
+const passos = [
+  {
+    quem: 'o agente afirma',
+    texto: '"Implementei X, e os testes passam."',
+    tom: 'neutro'
+  },
+  {
+    quem: 'claims.jsonl',
+    texto: 'A claim é um contrato, não um adjetivo: alegação, arquivo e o <strong>comando</strong> que a comprova.',
+    tom: 'neutro'
+  },
+  {
+    quem: 'ork verify',
+    texto: 'Reexecuta o comando no HEAD real, na worktree real, agora. Não no texto do modelo.',
+    tom: 'latao'
+  },
+  {
+    quem: 'baseline de antes do GO',
+    tom: 'ramos',
+    ramos: [
+      { tag: 'passava antes', texto: 'vira <code>verify.regression</code>: o defeito é desta thread.', cor: 'brasa' },
+      { tag: 'já falhava', texto: 'vira dívida pré-existente: anotada, não imputada à thread.', cor: 'neutro' },
+      { tag: 'sem baseline', texto: 'vira <code>verify.failed</code>, sem chutar de quem é a culpa.', cor: 'neutro' }
+    ]
+  },
+  {
+    quem: 'gate bloqueado',
+    texto: 'Motivo tipado, evidência real e correção sugerida. O <code>ork fix open</code> abre a spec da correção a partir do resultado do verify, não de prosa.',
+    tom: 'neutro'
+  }
+];
+---
+
+<div class="maquina grade-flexivel">
+  <ol class="fluxo-verify" data-anima>
+    <span class="fluxo-fio" aria-hidden="true"><span class="fio-vivo"></span></span>
+    {passos.map((passo, indice) => (
+      <li
+        class={`passo revela ${passo.tom === 'latao' ? 'passo-latao' : ''} ${passo.tom === 'ramos' ? 'passo-ramo' : ''}`}
+        style={`--atraso: ${indice * 0.08}s`}
+      >
+        <span class="passo-no" aria-hidden="true"></span>
+        <p class="passo-quem mono">{passo.quem}</p>
+        {passo.texto && <p class="passo-texto" set:html={passo.texto} />}
+        {passo.ramos && (
+          <div class="ramos">
+            {passo.ramos.map((ramo) => (
+              <p class={`ramo ramo-${ramo.cor}`}>
+                <span class="mono ramo-tag">{ramo.tag}</span>
+                <span set:html={ramo.texto} />
+              </p>
+            ))}
+          </div>
+        )}
+      </li>
+    ))}
+  </ol>
+
+  <div class="motivos">
+    <p class="titulo-3">Os 12 motivos tipados de gate</p>
+    <p class="motivos-sub paragrafo">Nenhum bloqueio é uma string de prosa. Todo bloqueio
+    é um destes, com ação de retry determinada.</p>
+
+    <ul class="chaves mono" aria-hidden="true">
+      <li><span class="chave chave-auto"></span> a máquina reexecuta</li>
+      <li><span class="chave chave-humano"></span> sobe para gente</li>
+      <li><span class="chave chave-nunca"></span> sem retry, nunca</li>
+    </ul>
+
+    <ul class="grade-motivos escalona">
+      {motivos.map((motivo) => (
+        <li
+          class={`motivo motivo-${motivo.automatica === 'sim' ? 'auto' : motivo.automatica === 'não' ? 'humano' : 'nunca'}`}
+        >
+          <span class="motivo-marca" aria-hidden="true"></span>
+          <code class="mono motivo-nome">{motivo.nome}</code>
+          <span class="motivo-retry mono">{motivo.retry}</span>
+        </li>
+      ))}
+    </ul>
+
+    <p class="motivos-nota paragrafo"><code>cost.violation</code> é o único motivo que
+    jamais recebe retry automático: reexecutar uma violação de custo é gastar de novo.</p>
+  </div>
+</div>
+
+<style>
+  .maquina {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  /* ---------- fluxo ---------- */
+
+  .fluxo-verify {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+  .fluxo-fio {
+    position: absolute;
+    left: 5px;
+    top: 10px;
+    bottom: 14px;
+    width: 1px;
+    background: var(--linha-forte);
+    overflow: hidden;
+  }
+
+  /* O fio se desenha uma vez, de cima para baixo, quando a coluna entra em cena */
+  .fio-vivo {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, var(--latao), var(--brasa) 62%, var(--tinta-4));
+    transform-origin: top;
+    transform: scaleY(0);
+    transition: transform 1.6s var(--curva) 0.15s;
+  }
+
+  .fluxo-verify[data-em-cena='sim'] .fio-vivo {
+    transform: scaleY(1);
+  }
+
+  .passo {
+    position: relative;
+    padding: 0 0 1.9rem 2.3rem;
+  }
+
+  .passo:last-child {
+    padding-bottom: 0;
+  }
+
+  .passo-no {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--poco);
+    border: 1.5px solid var(--tinta-4);
+    transition: border-color var(--dur-3) var(--curva), box-shadow var(--dur-3) var(--curva);
+  }
+
+  .passo-latao .passo-no {
+    border-color: var(--latao);
+    background: var(--latao);
+    box-shadow: 0 0 0 4px var(--latao-fraco), 0 0 18px rgba(224, 178, 100, 0.55);
+  }
+
+  .passo-quem {
+    font-size: var(--t-nano);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--tinta-3);
+  }
+
+  .passo-latao .passo-quem {
+    color: var(--latao);
+  }
+
+  .passo-texto {
+    margin-top: 0.45rem;
+    color: var(--tinta-2);
+    font-size: var(--t-small);
+    max-width: 44ch;
+  }
+
+  .passo-texto :global(strong) {
+    color: var(--tinta);
+    font-variation-settings: 'wght' 560;
+  }
+
+  .ramos {
+    margin-top: 0.7rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .ramo {
+    font-size: var(--t-small);
+    color: var(--tinta-2);
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--linha-forte);
+    transition: border-color var(--dur-2) var(--curva);
+  }
+
+  .ramo-brasa {
+    border-left-color: var(--brasa-linha);
+  }
+
+  .ramo:hover {
+    border-left-color: var(--latao-linha);
+  }
+
+  .ramo-tag {
+    display: inline-block;
+    border: 1px solid var(--linha-forte);
+    border-radius: var(--raio-pilula);
+    padding: 0.05rem 0.6rem;
+    font-size: var(--t-nano);
+    color: var(--tinta);
+    margin-right: 0.45rem;
+  }
+
+  /* ---------- motivos ---------- */
+
+  .motivos-sub {
+    margin-top: 0.7rem;
+    font-size: var(--t-small);
+  }
+
+  .chaves {
+    list-style: none;
+    padding: 0;
+    margin: 1.4rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.3rem;
+    font-size: var(--t-nano);
+    color: var(--tinta-3);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .chaves li {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .chave {
+    width: 7px;
+    height: 7px;
+    border-radius: 2px;
+  }
+
+  .chave-auto {
+    background: var(--latao);
+  }
+
+  .chave-humano {
+    background: var(--brasa);
+  }
+
+  .chave-nunca {
+    border: 1px solid var(--tinta-4);
+  }
+
+  .grade-motivos {
+    list-style: none;
+    padding: 0;
+    margin: 1.2rem 0 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .motivo {
+    position: relative;
+    display: grid;
+    gap: 0.3rem;
+    border: 1px solid var(--linha);
+    border-radius: var(--raio-campo);
+    padding: 0.75rem 0.95rem 0.75rem 1.15rem;
+    background: linear-gradient(180deg, rgba(245, 241, 234, 0.022), transparent), var(--palco);
+    box-shadow: var(--lustro);
+    overflow: hidden;
+    transition: border-color var(--dur-2) var(--curva), transform var(--dur-2) var(--curva),
+      box-shadow var(--dur-2) var(--curva);
+  }
+
+  /* Faixa lateral que classifica quem resolve o bloqueio */
+  .motivo-marca {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--latao);
+    transform: scaleY(0.35);
+    transform-origin: center;
+    transition: transform var(--dur-3) var(--curva);
+  }
+
+  .motivo:hover .motivo-marca {
+    transform: scaleY(1);
+  }
+
+  .motivo-humano .motivo-marca {
+    background: var(--brasa);
+  }
+
+  .motivo-nunca .motivo-marca {
+    background: var(--tinta-4);
+  }
+
+  .motivo:hover {
+    border-color: var(--linha-forte);
+    transform: translateY(-2px);
+    box-shadow: var(--lustro), var(--sombra-1);
+  }
+
+  .motivo-nome {
+    color: var(--tinta);
+    font-size: var(--t-micro);
+    background: none;
+    border: none;
+    padding: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .motivo-humano .motivo-nome {
+    color: var(--brasa-clara);
+  }
+
+  .motivo-nunca .motivo-nome {
+    color: var(--tinta-2);
+  }
+
+  .motivo-retry {
+    color: var(--tinta-3);
+    font-size: var(--t-nano);
+    letter-spacing: 0.02em;
+  }
+
+  .motivo-retry::before {
+    content: 'retry: ';
+    opacity: 0.6;
+  }
+
+  .motivos-nota {
+    margin-top: 1.5rem;
+    font-size: var(--t-small);
+  }
+
+  @media (max-width: 900px) {
+    .maquina {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .grade-motivos {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fio-vivo {
+      transform: scaleY(1);
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,292 @@
+---
+// Diagrama das tres camadas: Maestro, Orquestra e Sinfonia.
+// A cor carrega o sentido: latao desce como pedido, patina sobe como evidencia.
+---
+
+<div class="camadas" data-anima role="img" aria-label="Três camadas: Maestro, Arquitetura, você desenha a partitura e decide os limites da obra; Orquestra, Engenharia, o ork organiza, verifica e registra a execução; Sinfonia, Runtimes, os agentes produzem o código com Claude Code, runtime claude-bg, e Codex, runtime codex. O pedido desce como prompt com sha256; a evidência sobe como diffs e saídas de comando; o ork devolve gates tipados, ledger e MASTER log. Nada sobe sem verificação.">
+  <article class="camada camada-podio">
+    <p class="camada-indice mono" aria-hidden="true">camada 1</p>
+    <h3>Maestro · Arquitetura</h3>
+    <p class="camada-desc">Você é o maestro: desenha a partitura, define a visão e decide o que a obra deve entregar. Sua intenção orienta cada etapa; os agentes trabalham dentro dos limites que você escolhe.</p>
+  </article>
+
+  <div class="fluxo" aria-hidden="true">
+    <svg viewBox="0 0 560 100" preserveAspectRatio="none">
+      <path class="fio fio-desce" id="fio-desce-1" d="M 118 2 C 118 42, 118 58, 118 98" />
+      <path class="fio fio-sobe" id="fio-sobe-1" d="M 442 98 C 442 58, 442 42, 442 2" />
+      <circle class="gota gota-desce" r="2.6" />
+      <circle class="gota gota-sobe" r="2.6" />
+    </svg>
+    <p class="fluxo-rotulo desce mono">
+      <span class="rotulo-seta" aria-hidden="true">↓</span>
+      ork thread new · phase run · gate · ship
+    </p>
+    <p class="fluxo-rotulo sobe mono">
+      gates tipados · ledger · MASTER log
+      <span class="rotulo-seta" aria-hidden="true">↑</span>
+    </p>
+  </div>
+
+  <article class="camada camada-nucleo">
+    <p class="camada-indice mono" aria-hidden="true">camada 2</p>
+    <h3>Orquestra · <span class="destaque">Engenharia</span></h3>
+    <p class="camada-desc">O <code>ork</code> organiza a execução da sua partitura: agenda, isola, mede, verifica, serializa e registra. A orquestra dá precisão à obra com engenharia determinística, sem LLM no núcleo. Nada sobe sem verificação.</p>
+    <p class="camada-selo mono">
+      <span class="selo-luz" aria-hidden="true"></span>
+      determinístico
+    </p>
+  </article>
+
+  <div class="fluxo" aria-hidden="true">
+    <svg viewBox="0 0 560 100" preserveAspectRatio="none">
+      <path class="fio fio-desce" d="M 118 2 C 118 42, 118 58, 118 98" />
+      <path class="fio fio-sobe" d="M 442 98 C 442 58, 442 42, 442 2" />
+      <circle class="gota gota-desce gota-atraso" r="2.6" />
+      <circle class="gota gota-sobe gota-atraso" r="2.6" />
+    </svg>
+    <p class="fluxo-rotulo desce mono">
+      <span class="rotulo-seta" aria-hidden="true">↓</span>
+      prompt montado, com sha256 gravado
+    </p>
+    <p class="fluxo-rotulo sobe mono">
+      diffs · commits · saída de comando
+      <span class="rotulo-seta" aria-hidden="true">↑</span>
+    </p>
+  </div>
+
+  <article class="camada camada-orquestra">
+    <p class="camada-indice mono" aria-hidden="true">camada 3</p>
+    <h3>Sinfonia · Runtimes</h3>
+    <p class="camada-desc">A obra ganha som e código: os agentes executam a partitura com Claude Code (<code>claude-bg</code>) e Codex (<code>codex</code>), os dois runtimes homologados. São os instrumentos que produzem a sinfonia, com a engenharia verificando cada entrega e você conduzindo.</p>
+  </article>
+</div>
+
+<style>
+  .camadas {
+    display: flex;
+    flex-direction: column;
+    max-width: 640px;
+  }
+
+  /* ---------- camada ---------- */
+
+  .camada {
+    position: relative;
+    isolation: isolate;
+    background:
+      linear-gradient(180deg, rgba(245, 241, 234, 0.03), transparent 45%),
+      var(--painel);
+    border: 1px solid var(--linha);
+    border-radius: var(--raio-superficie);
+    padding: 1.5rem 1.8rem;
+    box-shadow: var(--lustro), var(--sombra-1);
+    transition: border-color var(--dur-3) var(--curva), transform var(--dur-3) var(--curva),
+      box-shadow var(--dur-3) var(--curva);
+  }
+
+  .camada:hover {
+    border-color: var(--linha-forte);
+    transform: translateX(8px);
+    box-shadow: var(--lustro-forte), var(--sombra-2);
+  }
+
+  /* O nucleo e a unica camada que emite luz propria */
+  .camada-nucleo {
+    background:
+      linear-gradient(155deg, rgba(224, 178, 100, 0.1), rgba(226, 96, 60, 0.028) 58%, transparent 80%),
+      var(--painel);
+    border-color: var(--latao-linha);
+    box-shadow: var(--lustro-forte), var(--sombra-2), 0 0 70px -34px rgba(224, 178, 100, 0.75);
+  }
+
+  .camada-nucleo::after {
+    content: '';
+    position: absolute;
+    inset-inline: 10%;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--latao-forte), transparent);
+    pointer-events: none;
+  }
+
+  .camada-nucleo:hover {
+    border-color: var(--latao-forte);
+  }
+
+  .camada-indice {
+    color: var(--tinta-3);
+    font-size: var(--t-nano);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  .camada h3 {
+    margin-top: 0.35rem;
+  }
+
+  .camada-desc {
+    margin-top: 0.6rem;
+    color: var(--tinta-2);
+    font-size: var(--t-small);
+    max-width: 52ch;
+  }
+
+  .camada-selo {
+    margin-top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: var(--t-nano);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--patina);
+  }
+
+  .selo-luz {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--patina);
+    box-shadow: 0 0 10px rgba(111, 185, 168, 0.8);
+  }
+
+  /* ---------- fluxo ---------- */
+
+  /* Os dois rotulos vivem em linhas proprias de uma grade, nunca em posicao
+     absoluta: assim texto mais longo empurra a altura, em vez de colidir. */
+  .fluxo {
+    position: relative;
+    display: grid;
+    align-content: center;
+    gap: 0.35rem;
+    min-height: 104px;
+    padding-block: 1.1rem;
+    padding-inline: 24%;
+  }
+
+  .fluxo svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .fio {
+    fill: none;
+    stroke-width: 1.4;
+    stroke-dasharray: 5 9;
+  }
+
+  .fio-desce {
+    stroke: var(--latao-fundo);
+    animation: escorrer 1.9s linear infinite;
+  }
+
+  .fio-sobe {
+    stroke: var(--patina);
+    opacity: 0.55;
+    animation: escorrer 1.9s linear infinite reverse;
+  }
+
+  @keyframes escorrer {
+    to {
+      stroke-dashoffset: -28;
+    }
+  }
+
+  /* Gotas que percorrem o fio: o pedido descendo, a evidencia subindo */
+  .gota {
+    animation: cair 2.6s var(--curva-suave) infinite;
+  }
+
+  .gota-desce {
+    fill: var(--latao-claro);
+    offset-path: path('M 118 2 C 118 42, 118 58, 118 98');
+  }
+
+  .gota-sobe {
+    fill: var(--patina-clara);
+    offset-path: path('M 442 98 C 442 58, 442 42, 442 2');
+    animation-delay: 1.3s;
+  }
+
+  .gota-atraso {
+    animation-delay: 0.65s;
+  }
+
+  .gota-sobe.gota-atraso {
+    animation-delay: 1.95s;
+  }
+
+  @keyframes cair {
+    0% {
+      offset-distance: 0%;
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+    }
+    72% {
+      offset-distance: 100%;
+      opacity: 1;
+    }
+    82%,
+    100% {
+      offset-distance: 100%;
+      opacity: 0;
+    }
+  }
+
+  .fluxo-rotulo {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-size: var(--t-nano);
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+  }
+
+  .fluxo-rotulo.desce {
+    color: var(--latao);
+    justify-content: flex-start;
+  }
+
+  .fluxo-rotulo.sobe {
+    color: var(--patina);
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .rotulo-seta {
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .fluxo {
+      padding-inline: 26%;
+    }
+
+    .camada:hover {
+      transform: none;
+    }
+  }
+
+  .camadas[data-em-cena='nao'] .fio,
+  .camadas[data-em-cena='nao'] .gota {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fio,
+    .gota {
+      animation: none;
+    }
+
+    .gota {
+      offset-distance: 55%;
+    }
+  }
+</style>

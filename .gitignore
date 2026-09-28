@@ -1,0 +1,26 @@
+# build e tipos gerados
+dist/
+.astro/
+
+# dependencias
+node_modules/
+
+# logs
+npm-debug.log*
+
+# ambiente
+.env
+.env.*
+
+# sistema e ferramentas locais
+.DS_Store
+.idea/
+
+# Dependencias compartilhadas por symlink nas worktrees
+/node_modules
+
+# Estado das threads do ork, worktrees e unidade de servico da maquina: nunca no repositorio
+.orkastery/
+.claude/
+.worktrees/
+deploy/

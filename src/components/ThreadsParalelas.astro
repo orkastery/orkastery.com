@@ -1,0 +1,525 @@
+---
+// N looping threads em paralelo: worktree propria por thread, leases em fila FIFO
+// e main-tree como unico gate de merge, serializado.
+//
+// O diagrama nao e decorativo. Os pulsos de trabalho correm nas tres faixas ao mesmo
+// tempo, mas as particulas de merge entram no funil uma de cada vez, em janelas de
+// 2s dentro de um ciclo de 6s. Ver o desenho e ver a serializacao acontecer.
+
+const faixas = [
+  { nome: 'ork-pagamentos', fase: 'GO', estado: 'trabalhando' },
+  { nome: 'ork-relatorio', fase: 'CHECK', estado: 'trabalhando' },
+  { nome: 'ork-publicacao', fase: 'SHIP', estado: 'na fila' }
+];
+
+const leases = [
+  { nome: 'main-tree', mestre: true, nota: 'o único gate de merge' },
+  { nome: 'worktree-write:<thread>', nota: 'escrita dentro da própria worktree' },
+  { nome: 'path:<glob>', nota: 'região de arquivos reservada' },
+  { nome: 'board:<card>', nota: 'um card, um dono por vez' },
+  { nome: 'service:<porta>', nota: 'porta local sem disputa' }
+];
+---
+
+<div class="paralelas grade-flexivel" data-anima role="img" aria-label="Diagrama de três threads paralelas, cada uma com a sua worktree. Os pulsos de trabalho correm em paralelo, mas as partículas de merge convergem para o main-tree uma por vez: o merge é serializado pelo lease main-tree.">
+  <div class="faixas">
+    {faixas.map((faixa, indice) => (
+      <div class="faixa" style={`--indice: ${indice}`}>
+        <div class="faixa-cabeca">
+          <span class={`faixa-luz ${faixa.estado === 'na fila' ? 'faixa-luz-fila' : ''}`} aria-hidden="true"></span>
+          <p class="faixa-nome mono">{faixa.nome}</p>
+          <p class="faixa-fase mono">{faixa.fase}</p>
+        </div>
+        <div class="trilho">
+          <span class="trilho-leito" aria-hidden="true"></span>
+          <span class="pulso" aria-hidden="true"></span>
+        </div>
+        <p class="faixa-pe mono">worktree própria · ledger próprio · score próprio</p>
+      </div>
+    ))}
+  </div>
+
+  <div class="funil" aria-hidden="true">
+    <svg viewBox="0 0 130 200" preserveAspectRatio="none" role="presentation">
+      <defs>
+        <linearGradient id="fio-funil" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="var(--tinta-4)" />
+          <stop offset="70%" stop-color="var(--latao-fundo)" />
+          <stop offset="100%" stop-color="var(--latao)" />
+        </linearGradient>
+        <filter id="brilho-particula" x="-120%" y="-120%" width="340%" height="340%">
+          <feGaussianBlur stdDeviation="2.4" result="borrao" />
+          <feMerge>
+            <feMergeNode in="borrao" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      <path class="funil-fio" d="M 2 26 C 74 26, 74 100, 128 100" />
+      <path class="funil-fio" d="M 2 100 L 128 100" />
+      <path class="funil-fio" d="M 2 174 C 74 174, 74 100, 128 100" />
+
+      <circle class="particula particula-1" r="3.1" filter="url(#brilho-particula)" />
+      <circle class="particula particula-2" r="3.1" filter="url(#brilho-particula)" />
+      <circle class="particula particula-3" r="3.1" filter="url(#brilho-particula)" />
+    </svg>
+  </div>
+
+  <div class="portao">
+    <p class="portao-titulo mono">lease main-tree</p>
+    <div class="portao-caixa">
+      <span class="portao-luz" aria-hidden="true"></span>
+      <div>
+        <p class="portao-frase">uma thread mergeia por vez</p>
+        <p class="portao-nota mono">as outras esperam em fila FIFO, não sobrescrevem</p>
+      </div>
+    </div>
+    <p class="portao-saida mono">
+      <span class="saida-marca" aria-hidden="true"></span>
+      ship com push provado por <code>git ls-remote</code>
+    </p>
+  </div>
+</div>
+
+<p class="paragrafo">Exemplo ilustrativo de três entregas em paralelo. Para consultar seu projeto, use <code>ork board --all</code>.</p>
+
+<ul class="leases">
+  {leases.map((lease) => (
+    <li class={`lease ${lease.mestre ? 'lease-mestre' : ''}`}>
+      <code class="mono lease-nome">{lease.nome}</code>
+      <span class="lease-nota">{lease.nota}</span>
+    </li>
+  ))}
+</ul>
+
+<p class="leases-nota paragrafo">Cinco famílias de leases tipados com TTL. Duas threads
+pedindo a mesma região entram numa fila FIFO, em vez de escrever uma por cima da outra.
+E <code>ork board --all</code> responde a única pergunta que importa numa máquina com
+três roadmaps abertos: o que está rolando aqui, agora.</p>
+
+<style>
+  .paralelas {
+    display: grid;
+    grid-template-columns: 1.3fr auto 1fr;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* ---------- faixas ---------- */
+
+  .faixas {
+    display: grid;
+    gap: 1.9rem;
+  }
+
+  .faixa-cabeca {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .faixa-luz {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--patina);
+    box-shadow: 0 0 10px rgba(111, 185, 168, 0.7);
+    flex-shrink: 0;
+    animation: bater 2.4s ease-in-out infinite;
+    animation-delay: calc(var(--indice) * 0.4s);
+  }
+
+  .faixa-luz-fila {
+    background: var(--latao);
+    box-shadow: 0 0 10px rgba(224, 178, 100, 0.65);
+  }
+
+  @keyframes bater {
+    50% {
+      opacity: 0.3;
+    }
+  }
+
+  .faixa-nome {
+    font-size: var(--t-micro);
+    color: var(--tinta);
+    letter-spacing: -0.005em;
+  }
+
+  .faixa-fase {
+    margin-left: auto;
+    font-size: var(--t-nano);
+    color: var(--tinta-3);
+    border: 1px solid var(--linha-forte);
+    border-radius: var(--raio-pilula);
+    padding: 0.05rem 0.55rem;
+    letter-spacing: 0.1em;
+  }
+
+  .trilho {
+    margin-top: 0.55rem;
+    height: 10px;
+    border-radius: var(--raio-pilula);
+    background: var(--palco);
+    border: 1px solid var(--linha);
+    box-shadow: inset 0 1px 3px rgba(6, 4, 2, 0.6);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Leito de baixa luz: mostra que a faixa existe mesmo entre pulsos */
+  .trilho-leito {
+    position: absolute;
+    inset: 3px 0;
+    background: linear-gradient(90deg, transparent, rgba(245, 241, 234, 0.035), transparent);
+  }
+
+  /* O pulso e um cometa: cabeca quente e rastro que esfria atras */
+  .pulso {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 38%;
+    height: 4px;
+    transform: translateY(-50%) translateX(-120%);
+    border-radius: var(--raio-pilula);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(224, 178, 100, 0.25) 55%,
+      var(--latao-claro)
+    );
+    box-shadow: 0 0 14px rgba(224, 178, 100, 0.5);
+    animation: correr 3.4s linear infinite;
+    animation-delay: calc(var(--indice) * 1.1s);
+  }
+
+  @keyframes correr {
+    to {
+      transform: translateY(-50%) translateX(330%);
+    }
+  }
+
+  .faixa-pe {
+    margin-top: 0.45rem;
+    font-size: var(--t-nano);
+    color: var(--tinta-3);
+    letter-spacing: 0.01em;
+  }
+
+  /* ---------- funil ---------- */
+
+  .funil {
+    width: clamp(80px, 14vw, 180px);
+    height: 200px;
+  }
+
+  .funil svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .funil-fio {
+    fill: none;
+    stroke: url(#fio-funil);
+    stroke-width: 1.6;
+    stroke-dasharray: 5 7;
+    opacity: 0.9;
+    animation: andar-fio 2.2s linear infinite;
+  }
+
+  @keyframes andar-fio {
+    to {
+      stroke-dashoffset: -24;
+    }
+  }
+
+  /* Uma particula por faixa, em janelas que nao se cruzam:
+     6s de ciclo, 2s de janela, uma chegada por vez no portao. */
+  .particula {
+    fill: var(--latao-claro);
+    offset-rotate: 0deg;
+    animation: convergir 6s linear infinite;
+    opacity: 0;
+  }
+
+  .particula-1 {
+    offset-path: path('M 2 26 C 74 26, 74 100, 128 100');
+    animation-delay: 0s;
+  }
+
+  .particula-2 {
+    offset-path: path('M 2 100 L 128 100');
+    animation-delay: 2s;
+  }
+
+  .particula-3 {
+    offset-path: path('M 2 174 C 74 174, 74 100, 128 100');
+    animation-delay: 4s;
+  }
+
+  @keyframes convergir {
+    0% {
+      offset-distance: 0%;
+      opacity: 0;
+    }
+    6% {
+      opacity: 1;
+    }
+    28% {
+      offset-distance: 100%;
+      opacity: 1;
+    }
+    34% {
+      offset-distance: 100%;
+      opacity: 0;
+    }
+    100% {
+      offset-distance: 100%;
+      opacity: 0;
+    }
+  }
+
+  /* ---------- portao ---------- */
+
+  .portao-titulo {
+    font-size: var(--t-micro);
+    color: var(--latao);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+
+  .portao-caixa {
+    margin-top: 0.6rem;
+    border: 1px solid var(--latao-linha);
+    border-radius: var(--raio-superficie);
+    background:
+      linear-gradient(155deg, rgba(224, 178, 100, 0.1), transparent 62%),
+      var(--painel);
+    box-shadow: var(--lustro-forte), var(--sombra-1);
+    padding: 1.15rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Clarao que atravessa a caixa quando uma particula chega: 3 chegadas por ciclo */
+  .portao-caixa::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 30%, rgba(244, 217, 164, 0.14) 50%, transparent 70%);
+    transform: translateX(-100%);
+    animation: clarao-portao 2s var(--curva-suave) infinite;
+    pointer-events: none;
+  }
+
+  @keyframes clarao-portao {
+    0%, 55% {
+      transform: translateX(-100%);
+    }
+    85%, 100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .portao-luz {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--latao);
+    box-shadow: 0 0 16px rgba(224, 178, 100, 0.75);
+    animation: respirar 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes respirar {
+    0%, 55% {
+      opacity: 0.35;
+      transform: scale(0.86);
+    }
+    72% {
+      opacity: 1;
+      transform: scale(1.12);
+    }
+    100% {
+      opacity: 0.35;
+      transform: scale(0.86);
+    }
+  }
+
+  .portao-frase {
+    font-size: var(--t-small);
+    color: var(--tinta);
+    font-variation-settings: 'wght' 520;
+  }
+
+  .portao-nota {
+    margin-top: 0.2rem;
+    font-size: var(--t-nano);
+    color: var(--tinta-3);
+  }
+
+  .portao-saida {
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: var(--t-nano);
+    color: var(--tinta-3);
+  }
+
+  .portao-saida code {
+    font-size: 0.95em;
+    color: var(--patina);
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .saida-marca {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--patina);
+    flex-shrink: 0;
+  }
+
+  /* ---------- leases ---------- */
+
+  .leases {
+    list-style: none;
+    padding: 0;
+    margin: 2.6rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .lease {
+    position: relative;
+    border: 1px solid var(--linha-forte);
+    border-radius: var(--raio-pilula);
+    padding: 0.45rem 1rem;
+    background: linear-gradient(180deg, rgba(245, 241, 234, 0.035), transparent), var(--palco);
+    box-shadow: var(--lustro);
+    transition: border-color var(--dur-2) var(--curva), transform var(--dur-2) var(--curva),
+      box-shadow var(--dur-2) var(--curva);
+    cursor: default;
+  }
+
+  .lease:hover {
+    border-color: var(--latao-linha);
+    transform: translateY(-2px);
+    box-shadow: var(--lustro), var(--sombra-1);
+  }
+
+  .lease-nome {
+    font-size: var(--t-micro);
+    color: var(--tinta-2);
+    background: none;
+    border: none;
+    padding: 0;
+    white-space: nowrap;
+    transition: color var(--dur-2) var(--curva);
+  }
+
+  .lease:hover .lease-nome {
+    color: var(--tinta);
+  }
+
+  .lease-mestre {
+    border-color: var(--latao-linha);
+    background: linear-gradient(180deg, rgba(224, 178, 100, 0.1), transparent), var(--palco);
+  }
+
+  .lease-mestre .lease-nome {
+    color: var(--latao-claro);
+  }
+
+  /* A nota so aparece no hover ou no foco: a pilula fica limpa por padrao */
+  .lease-nota {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 0.5rem);
+    transform: translateX(-50%) translateY(4px);
+    white-space: nowrap;
+    background: var(--relevo);
+    border: 1px solid var(--linha-forte);
+    border-radius: var(--raio-campo);
+    box-shadow: var(--sombra-2);
+    padding: 0.35rem 0.7rem;
+    font-size: var(--t-nano);
+    color: var(--tinta-2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-2) var(--curva), transform var(--dur-2) var(--curva);
+    z-index: 3;
+  }
+
+  .lease:hover .lease-nota,
+  .lease:focus-within .lease-nota {
+    opacity: 1;
+    transform: translateX(-50%);
+  }
+
+  .leases-nota {
+    margin-top: 1.3rem;
+    font-size: var(--t-small);
+  }
+
+  /* ---------- responsivo e economia ---------- */
+
+  @media (max-width: 780px) {
+    .paralelas {
+      grid-template-columns: 1fr;
+      gap: 1.6rem;
+    }
+
+    .funil {
+      display: none;
+    }
+
+    .lease-nota {
+      display: none;
+    }
+  }
+
+  /* Fora de cena, nada anima */
+  .paralelas[data-em-cena='nao'] .pulso,
+  .paralelas[data-em-cena='nao'] .particula,
+  .paralelas[data-em-cena='nao'] .funil-fio,
+  .paralelas[data-em-cena='nao'] .portao-luz,
+  .paralelas[data-em-cena='nao'] .portao-caixa::after,
+  .paralelas[data-em-cena='nao'] .faixa-luz {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulso {
+      animation: none;
+      transform: translateY(-50%) translateX(70%);
+    }
+
+    .particula {
+      animation: none;
+      opacity: 1;
+      offset-distance: 70%;
+    }
+
+    .funil-fio,
+    .portao-luz,
+    .faixa-luz,
+    .portao-caixa::after {
+      animation: none;
+    }
+
+    .portao-luz {
+      opacity: 1;
+    }
+  }
+</style>

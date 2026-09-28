@@ -1,0 +1,331 @@
+---
+// O radar HITL: varredura que parte das sessoes, nao das threads.
+// "Viva" nao e "trabalhando": sessao travada esperando humano e pausa valendo.
+//
+// O eco de cada ponto e sincronizado com o angulo dele: a varredura leva 5s para
+// dar a volta, e cada sessao so acende quando o feixe passa por cima dela.
+
+const sessoes = [
+  { classe: 'trabalha', px: 62, py: 28, eco: 0.4 },
+  { classe: 'trabalha', px: 30, py: 55, eco: 3.55 },
+  { classe: 'trabalha', px: 72, py: 66, eco: 1.75 },
+  { classe: 'hitl', px: 44, py: 36, eco: 4.68 },
+  { classe: 'hitl', px: 58, py: 74, eco: 2.24 },
+  { classe: 'morta', px: 26, py: 30, eco: 4.3 },
+  { classe: 'morta', px: 76, py: 44, eco: 1.07 }
+];
+---
+
+<div class="radar-bloco grade-flexivel">
+  <div class="radar" data-anima role="img" aria-label="Radar de sessões: a varredura classifica cada sessão da máquina como trabalhando, parada com job vivo esperando humano, ou morta com estado carimbado. Só as paradas pagam o preço de uma inspeção profunda.">
+    <div class="radar-disco">
+      <span class="radar-anel"></span>
+      <span class="radar-anel radar-anel-2"></span>
+      <span class="radar-anel radar-anel-3"></span>
+      <span class="radar-cruz" aria-hidden="true"></span>
+      <span class="radar-varredura" aria-hidden="true"></span>
+      <span class="radar-nucleo" aria-hidden="true"></span>
+
+      {sessoes.map((sessao) => (
+        <span
+          class={`ponto ponto-${sessao.classe}`}
+          style={`--px: ${sessao.px}%; --py: ${sessao.py}%; --eco: ${sessao.eco}s`}
+        ></span>
+      ))}
+    </div>
+
+    <ul class="legenda mono">
+      <li><span class="chave chave-trabalha" aria-hidden="true"></span> trabalhando</li>
+      <li><span class="chave chave-hitl" aria-hidden="true"></span> esperando humano</li>
+      <li><span class="chave chave-morta" aria-hidden="true"></span> morta, estado carimbado</li>
+    </ul>
+  </div>
+
+  <div class="radar-texto">
+    <p class="paragrafo">O incidente que criou este radar: uma sessão ficou parada
+    pedindo um código de duas etapas, e o humano descobriu sozinho, horas depois. O
+    monitor via a sessão "viva" e concluía que o agente trabalhava. <strong>O sinal mais
+    forte de que alguém precisava do humano era lido como o oposto.</strong></p>
+
+    <p class="paragrafo radar-p2"><code>ork sessions hitl</code> parte das sessões, não
+    das threads: uma chamada classifica todas, e só as paradas pagam o preço de uma
+    inspeção profunda, que separa quem espera resposta de quem morreu esperando.</p>
+
+    <ul class="medidas">
+      <li><span class="medida-valor numeral">43</span><span class="medida-rotulo mono">sessões varridas</span></li>
+      <li><span class="medida-valor numeral">8</span><span class="medida-rotulo mono">paradas</span></li>
+      <li><span class="medida-valor numeral">9<span class="medida-unidade">s</span></span><span class="medida-rotulo mono">de varredura</span></li>
+    </ul>
+
+    <div class="terminal radar-terminal">
+      <div class="terminal-topo">
+        <span>varredura periódica</span>
+        <span>a cada 10 min</span>
+      </div>
+      <pre><span class="cmd">ork sessions hitl</span>
+<span class="saida-ok">2 sessões pedem você agora</span>: pergunta, opções e a
+recomendação por tipo. Alarme repetido não avisa de
+novo: alarme falso crônico ensina a ignorar o radar.</pre>
+    </div>
+  </div>
+</div>
+
+<style>
+  .radar-bloco {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+
+  /* ---------- disco ---------- */
+
+  .radar-disco {
+    position: relative;
+    aspect-ratio: 1;
+    max-width: 340px;
+    margin-inline: auto;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(111, 185, 168, 0.05), transparent 68%),
+      var(--palco);
+    border: 1px solid var(--linha-forte);
+    box-shadow: var(--lustro), inset 0 0 60px rgba(6, 4, 2, 0.7), var(--sombra-2);
+    overflow: hidden;
+  }
+
+  .radar-anel {
+    position: absolute;
+    inset: 15%;
+    border: 1px solid var(--linha);
+    border-radius: 50%;
+  }
+
+  .radar-anel-2 {
+    inset: 31%;
+  }
+
+  .radar-anel-3 {
+    inset: 44%;
+  }
+
+  .radar-cruz {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, transparent calc(50% - 0.5px), var(--linha) calc(50% - 0.5px), var(--linha) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+      linear-gradient(to bottom, transparent calc(50% - 0.5px), var(--linha) calc(50% - 0.5px), var(--linha) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+  }
+
+  .radar-nucleo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--patina);
+    box-shadow: 0 0 12px rgba(111, 185, 168, 0.8);
+  }
+
+  .radar-varredura {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      rgba(111, 185, 168, 0.3),
+      rgba(111, 185, 168, 0.08) 26deg,
+      transparent 74deg
+    );
+    animation: varrer 5s linear infinite;
+  }
+
+  @keyframes varrer {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* ---------- pontos ---------- */
+
+  .ponto {
+    position: absolute;
+    left: var(--px);
+    top: var(--py);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* O eco: cada ponto acende quando o feixe passa por ele, e esfria depois */
+  .ponto::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    opacity: 0;
+    animation: ecoar 5s linear infinite;
+    animation-delay: var(--eco, 0s);
+  }
+
+  @keyframes ecoar {
+    0% {
+      opacity: 0.9;
+      transform: scale(0.6);
+    }
+    14% {
+      opacity: 0;
+      transform: scale(2.6);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(2.6);
+    }
+  }
+
+  .ponto-trabalha {
+    color: var(--tinta-2);
+    background: var(--tinta-2);
+    opacity: 0.75;
+  }
+
+  /* A sessao que espera gente e a unica que pede a cor quente */
+  .ponto-hitl {
+    color: var(--brasa-clara);
+    background: var(--brasa-clara);
+    box-shadow: 0 0 0 0 rgba(255, 138, 99, 0.5);
+    animation: chamar 1.9s ease-out infinite;
+  }
+
+  @keyframes chamar {
+    to {
+      box-shadow: 0 0 0 15px rgba(255, 138, 99, 0);
+    }
+  }
+
+  .ponto-morta {
+    color: var(--tinta-3);
+    background: transparent;
+    border: 1.5px solid var(--tinta-4);
+  }
+
+  /* ---------- legenda ---------- */
+
+  .legenda {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.3rem;
+    font-size: var(--t-nano);
+    color: var(--tinta-3);
+    letter-spacing: 0.04em;
+  }
+
+  .legenda li {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .chave {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .chave-trabalha {
+    background: var(--tinta-2);
+  }
+
+  .chave-hitl {
+    background: var(--brasa-clara);
+    box-shadow: 0 0 8px rgba(255, 138, 99, 0.6);
+  }
+
+  .chave-morta {
+    border: 1.5px solid var(--tinta-4);
+  }
+
+  /* ---------- texto e medidas ---------- */
+
+  .radar-texto strong {
+    color: var(--tinta);
+    font-variation-settings: 'wght' 560;
+  }
+
+  .radar-p2 {
+    margin-top: 1.1rem;
+  }
+
+  .medidas {
+    list-style: none;
+    padding: 0;
+    margin: 1.8rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1.4rem, 4vw, 2.8rem);
+    padding-block: 1.3rem;
+    border-block: 1px solid var(--linha);
+  }
+
+  .medidas li {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .medida-valor {
+    font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+    color: var(--patina);
+  }
+
+  .medida-unidade {
+    font-size: 0.5em;
+    color: var(--tinta-3);
+    margin-left: 0.05em;
+  }
+
+  .medida-rotulo {
+    font-size: var(--t-nano);
+    color: var(--tinta-3);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  .radar-terminal {
+    margin-top: 1.8rem;
+    max-width: min(36rem, 100%);
+  }
+
+  @media (max-width: 900px) {
+    .radar-bloco {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .radar[data-em-cena='nao'] .radar-varredura,
+  .radar[data-em-cena='nao'] .ponto-hitl,
+  .radar[data-em-cena='nao'] .ponto::after {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .radar-varredura,
+    .ponto-hitl,
+    .ponto::after {
+      animation: none;
+    }
+
+    .radar-varredura {
+      transform: rotate(40deg);
+    }
+  }
+</style>

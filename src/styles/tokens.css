@@ -1,0 +1,119 @@
+/* Tokens do portal Orkastery. Tema unico, escuro, deliberado: "a fundicao regida".
+   Um chao de carvao morno, latao como acento de conducao, brasa como calor e falha,
+   patina como o contrapeso frio do que e deterministico. Identidade propria. */
+
+:root {
+  /* ---------- Superficies: do poco ao palco ----------
+     Carvao morno, croma baixissimo. O latao nasce dentro dessa familia,
+     em vez de brigar com um preto azulado. */
+  --poco: #0a0908;
+  --palco: #100f0d;
+  --painel: #171512;
+  --relevo: #211d19;
+  --aresta: #2e2823;
+
+  /* compatibilidade de nome com a escala antiga */
+  --fundo-0: var(--poco);
+  --fundo-1: var(--palco);
+  --fundo-2: var(--painel);
+  --fundo-3: var(--relevo);
+
+  /* ---------- Tinta: branco morno, nunca #fff ----------
+     Tres degraus legiveis, todos acima de 4.5:1 sobre qualquer superficie da
+     paleta. O quarto degrau existe so para traco, borda e parada de gradiente:
+     abaixo de --tinta-3 nao ha contraste suficiente para texto neste fundo. */
+  --tinta: #f5f1ea;
+  --tinta-2: #b3aaa0;
+  --tinta-3: #968e84;
+  --tinta-4: #5d564f;
+
+  /* ---------- Latao: o acento da conducao ----------
+     Ouro de instrumento, dessaturado. E o "sim, verificado, conduzido". */
+  --latao: #e0b264;
+  --latao-claro: #f4d9a4;
+  --latao-fundo: #8a6a2f;
+  --latao-fraco: rgba(224, 178, 100, 0.12);
+  --latao-linha: rgba(224, 178, 100, 0.3);
+  --latao-forte: rgba(224, 178, 100, 0.55);
+  --sobre-latao: #17110a;
+
+  /* ---------- Brasa: calor, alerta, falha ----------
+     Usada com parcimonia. Onde o metal ainda queima. */
+  --brasa: #e2603c;
+  --brasa-clara: #ff8a63;
+  --brasa-fraca: rgba(226, 96, 60, 0.12);
+  --brasa-linha: rgba(226, 96, 60, 0.32);
+  --sobre-brasa: #1b0d07;
+
+  /* ---------- Patina: o contrapeso frio ----------
+     Cobre oxidado. Marca o que e deterministico, medido, subindo como evidencia. */
+  --patina: #6fb9a8;
+  --patina-clara: #a5dbcf;
+  --patina-fraca: rgba(111, 185, 168, 0.11);
+  --patina-linha: rgba(111, 185, 168, 0.28);
+  --sobre-patina: #061814;
+
+  /* ---------- Linhas e vidro ---------- */
+  --linha: rgba(245, 241, 234, 0.07);
+  --linha-forte: rgba(245, 241, 234, 0.14);
+  --linha-viva: rgba(245, 241, 234, 0.24);
+  --vidro: rgba(16, 15, 13, 0.62);
+  --vidro-denso: rgba(16, 15, 13, 0.86);
+
+  /* Brilho interno que faz a superficie parecer usinada, nao pintada */
+  --lustro: inset 0 1px 0 rgba(245, 241, 234, 0.06);
+  --lustro-forte: inset 0 1px 0 rgba(245, 241, 234, 0.1);
+
+  /* ---------- Sombras: quentes, nunca cinzas ---------- */
+  --sombra-1: 0 1px 2px rgba(6, 4, 2, 0.5), 0 4px 14px rgba(6, 4, 2, 0.28);
+  --sombra-2: 0 2px 6px rgba(6, 4, 2, 0.5), 0 14px 40px rgba(6, 4, 2, 0.38);
+  --sombra-3: 0 4px 12px rgba(6, 4, 2, 0.5), 0 32px 80px rgba(6, 4, 2, 0.5);
+  --aura-latao: 0 0 0 1px var(--latao-linha), 0 12px 44px rgba(224, 178, 100, 0.16);
+  --aura-brasa: 0 12px 44px rgba(226, 96, 60, 0.18);
+
+  /* ---------- Tipografia ----------
+     Um so display, Fraunces, em toda a superficie. Tamanho optico variavel:
+     texto pequeno recebe formas robustas, titulo grande recebe alto contraste. */
+  --f-display: 'Fraunces Variable', 'Fraunces', Georgia, serif;
+  --f-texto: 'Instrument Sans Variable', 'Instrument Sans', system-ui, sans-serif;
+  --f-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
+
+  --t-hero: clamp(2.7rem, 7.2vw, 5.6rem);
+  --t-h2: clamp(1.9rem, 4vw, 3.1rem);
+  --t-h3: clamp(1.2rem, 2vw, 1.45rem);
+  --t-body: 1.0625rem;
+  --t-small: 0.9rem;
+  --t-micro: 0.75rem;
+  --t-nano: 0.6875rem;
+
+  /* ---------- Forma ---------- */
+  --raio-superficie: 18px;
+  --raio-campo: 11px;
+  --raio-pilula: 999px;
+
+  /* ---------- Ritmo ---------- */
+  --secao: clamp(6rem, 13vh, 10rem);
+  --calha: clamp(1.25rem, 4vw, 2.75rem);
+  --largura: 78rem;
+  --largura-texto: 62ch;
+
+  --e-1: 0.4rem;
+  --e-2: 0.7rem;
+  --e-3: 1.1rem;
+  --e-4: 1.8rem;
+  --e-5: 2.8rem;
+  --e-6: 4.4rem;
+
+  /* ---------- Movimento ---------- */
+  --curva: cubic-bezier(0.16, 1, 0.3, 1);
+  --curva-suave: cubic-bezier(0.33, 1, 0.68, 1);
+  --curva-mola: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-1: 0.16s;
+  --dur-2: 0.28s;
+  --dur-3: 0.5s;
+  --dur-4: 0.85s;
+  --dur: var(--dur-3);
+
+  color-scheme: dark;
+  accent-color: var(--latao);
+}

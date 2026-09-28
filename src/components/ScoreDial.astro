@@ -1,0 +1,358 @@
+---
+// A pergunta que fecha toda thread: de 0 a 5, quao inteligentemente isso foi entregue?
+// Mostrador interativo + as nove classes fixas de POSTMORTEM.
+
+const classes = [
+  'sem-falha',
+  'erro-de-spec',
+  'base-avancou',
+  'conflito',
+  'rate-limit',
+  'modelo',
+  'processo',
+  'scope-creep',
+  'outra'
+];
+
+// Marcas do mostrador: 6 posicoes, de 0 a 5, num arco de 180 graus.
+const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
+  nota,
+  angulo: -90 + (nota / 5) * 180
+}));
+---
+
+<div class="score grade-flexivel" data-score>
+  <div class="dial">
+    <p class="dial-pergunta display">De 0 a 5, quão <em>inteligentemente</em> isso foi entregue?</p>
+
+    <div class="dial-palco">
+      <svg viewBox="0 0 240 142" aria-hidden="true">
+        <defs>
+          <linearGradient id="arco-score" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="var(--brasa)" />
+            <stop offset="52%" stop-color="var(--latao)" />
+            <stop offset="100%" stop-color="var(--patina)" />
+          </linearGradient>
+        </defs>
+
+        <path class="dial-arco" d="M 24 124 A 96 96 0 0 1 216 124" />
+        <path class="dial-arco-vivo" d="M 24 124 A 96 96 0 0 1 216 124" pathLength="100" />
+
+        {marcas.map((marca) => (
+          <line
+            class="dial-marca"
+            data-marca={marca.nota}
+            x1="120"
+            y1="34"
+            x2="120"
+            y2="42"
+            style={`--angulo-marca: ${marca.angulo}deg`}
+          />
+        ))}
+
+        <g class="dial-batuta">
+          <line x1="120" y1="124" x2="120" y2="46" />
+          <circle class="batuta-pivo" cx="120" cy="124" r="7" />
+          <circle class="batuta-joia" cx="120" cy="124" r="3" />
+        </g>
+      </svg>
+
+      <p class="dial-valor numeral" aria-hidden="true">3</p>
+    </div>
+
+    <div class="dial-controle">
+      <label class="dial-rotulo" for="score-faixa">Arraste a batuta</label>
+      <input id="score-faixa" type="range" min="0" max="5" step="1" value="3" />
+      <p class="dial-leitura mono" data-leitura aria-live="polite">entregou limpo, no caminho previsto</p>
+    </div>
+
+    <p class="dial-nota paragrafo">Métrica diz quanto a entrega custou. <strong>O score
+    diz se o caminho foi esperto.</strong> O ork recusa score sem justificativa, em
+    qualquer modo; nos modos sem pausa de MASTER, a thread cai na fila de
+    <code>ork master --batch</code> para você pontuar em bloco. Ela não some.</p>
+  </div>
+
+  <div class="postmortem">
+    <p class="titulo-3">O POSTMORTEM só aceita nove classes</p>
+    <p class="paragrafo postmortem-sub">Classe livre vira texto solto, e texto solto não
+    agrega. Toda falha entra em uma destas:</p>
+    <ul class="classes escalona">
+      {classes.map((classe) => (
+        <li class="classe mono">{classe}</li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+<style>
+  .score {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+
+  .dial-pergunta {
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    max-width: 22ch;
+  }
+
+  .dial-pergunta em {
+    color: var(--latao-claro);
+  }
+
+  /* ---------- mostrador ---------- */
+
+  .dial-palco {
+    position: relative;
+    max-width: 340px;
+    margin-top: 2.2rem;
+    padding-bottom: 2.6rem;
+  }
+
+  .dial-arco {
+    fill: none;
+    stroke: var(--relevo);
+    stroke-width: 11;
+    stroke-linecap: round;
+  }
+
+  .dial-arco-vivo {
+    fill: none;
+    stroke: url(#arco-score);
+    stroke-width: 11;
+    stroke-linecap: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: calc(100 - var(--fracao, 60));
+    transition: stroke-dashoffset 0.55s var(--curva);
+    filter: drop-shadow(0 0 10px rgba(224, 178, 100, 0.3));
+  }
+
+  .dial-marca {
+    stroke: var(--tinta-4);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    transform-origin: 120px 124px;
+    transform: rotate(var(--angulo-marca));
+    transition: stroke var(--dur-2) var(--curva);
+  }
+
+  .dial-marca[data-ativa='sim'] {
+    stroke: var(--latao);
+  }
+
+  .dial-batuta {
+    transform-origin: 120px 124px;
+    transform: rotate(var(--angulo, 18deg));
+    transition: transform 0.6s var(--curva-mola);
+  }
+
+  .dial-batuta line {
+    stroke: var(--tinta);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+
+  .batuta-pivo {
+    fill: var(--relevo);
+    stroke: var(--linha-forte);
+    stroke-width: 1;
+  }
+
+  .batuta-joia {
+    fill: var(--latao);
+    filter: drop-shadow(0 0 8px rgba(224, 178, 100, 0.8));
+  }
+
+  /* O valor mora abaixo do pivo, e nao debaixo da batuta */
+  .dial-valor {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    font-size: 2.5rem;
+    color: var(--latao);
+  }
+
+  /* ---------- controle ---------- */
+
+  .dial-controle {
+    margin-top: 1.5rem;
+    max-width: 340px;
+  }
+
+  .dial-rotulo {
+    display: block;
+    font-size: var(--t-small);
+    font-variation-settings: 'wght' 560;
+    color: var(--tinta);
+  }
+
+  input[type='range'] {
+    width: 100%;
+    margin-top: 0.75rem;
+    height: 30px;
+    background: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: grab;
+  }
+
+  input[type='range']:active {
+    cursor: grabbing;
+  }
+
+  input[type='range']::-webkit-slider-runnable-track {
+    height: 5px;
+    border-radius: var(--raio-pilula);
+    background: linear-gradient(90deg, var(--brasa), var(--latao) 52%, var(--patina));
+    opacity: 0.55;
+  }
+
+  input[type='range']::-moz-range-track {
+    height: 5px;
+    border-radius: var(--raio-pilula);
+    background: linear-gradient(90deg, var(--brasa), var(--latao) 52%, var(--patina));
+    opacity: 0.55;
+  }
+
+  input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    margin-top: -7.5px;
+    border-radius: 50%;
+    background: linear-gradient(160deg, var(--latao-claro), var(--latao));
+    border: 1px solid rgba(6, 4, 2, 0.5);
+    box-shadow: 0 2px 10px rgba(6, 4, 2, 0.7), 0 0 16px rgba(224, 178, 100, 0.45);
+    transition: transform var(--dur-1) var(--curva);
+  }
+
+  input[type='range']::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(160deg, var(--latao-claro), var(--latao));
+    border: 1px solid rgba(6, 4, 2, 0.5);
+    box-shadow: 0 2px 10px rgba(6, 4, 2, 0.7), 0 0 16px rgba(224, 178, 100, 0.45);
+  }
+
+  input[type='range']:hover::-webkit-slider-thumb {
+    transform: scale(1.12);
+  }
+
+  .dial-leitura {
+    margin-top: 0.8rem;
+    font-size: var(--t-micro);
+    color: var(--tinta-3);
+    min-height: 1.4em;
+  }
+
+  .dial-nota {
+    margin-top: 1.7rem;
+    font-size: var(--t-small);
+  }
+
+  .dial-nota strong {
+    color: var(--tinta);
+    font-variation-settings: 'wght' 560;
+  }
+
+  /* ---------- postmortem ---------- */
+
+  .postmortem-sub {
+    margin-top: 0.7rem;
+    font-size: var(--t-small);
+  }
+
+  .classes {
+    list-style: none;
+    padding: 0;
+    margin: 1.6rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .classe {
+    border: 1px solid var(--linha-forte);
+    border-radius: var(--raio-pilula);
+    padding: 0.42rem 1rem;
+    font-size: var(--t-micro);
+    color: var(--tinta-2);
+    background: linear-gradient(180deg, rgba(245, 241, 234, 0.03), transparent), var(--palco);
+    box-shadow: var(--lustro);
+    transition: border-color var(--dur-2) var(--curva), color var(--dur-2) var(--curva),
+      transform var(--dur-2) var(--curva);
+  }
+
+  .classe:hover {
+    border-color: var(--latao-linha);
+    color: var(--latao-claro);
+    transform: translateY(-2px);
+  }
+
+  /* A primeira classe e a unica que nao e falha */
+  .classe:first-child {
+    border-color: var(--patina-linha);
+    color: var(--patina);
+  }
+
+  .classe:first-child:hover {
+    border-color: var(--patina);
+    color: var(--patina-clara);
+  }
+
+  @media (max-width: 900px) {
+    .score {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dial-batuta,
+    .dial-arco-vivo {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const LEITURAS = [
+    'não entregou o que valia, e o caminho foi caro',
+    'entregou torto, e deu retrabalho',
+    'entregou, com atrito conhecido',
+    'entregou limpo, no caminho previsto',
+    'entregou limpo e mais barato que o previsto',
+    'entregou e ensinou algo para a próxima thread'
+  ];
+
+  for (const raiz of document.querySelectorAll<HTMLElement>('[data-score]')) {
+    const faixa = raiz.querySelector<HTMLInputElement>('input[type="range"]');
+    const valor = raiz.querySelector<HTMLElement>('.dial-valor');
+    const batuta = raiz.querySelector<SVGGElement>('.dial-batuta');
+    const arco = raiz.querySelector<SVGPathElement>('.dial-arco-vivo');
+    const leitura = raiz.querySelector<HTMLElement>('[data-leitura]');
+    const marcas = Array.from(raiz.querySelectorAll<SVGLineElement>('[data-marca]'));
+
+    function atualizar() {
+      const nota = Number(faixa?.value ?? 3);
+      const fracao = nota / 5;
+
+      if (valor) valor.textContent = String(nota);
+      if (leitura) leitura.textContent = LEITURAS[nota] ?? '';
+
+      batuta?.style.setProperty('--angulo', `${-90 + fracao * 180}deg`);
+      arco?.style.setProperty('--fracao', String(fracao * 100));
+      faixa?.setAttribute('aria-valuetext', `score ${nota} de 5: ${LEITURAS[nota] ?? ''}`);
+
+      for (const marca of marcas) {
+        marca.dataset.ativa = Number(marca.dataset.marca) <= nota ? 'sim' : 'nao';
+      }
+    }
+
+    faixa?.addEventListener('input', atualizar);
+    atualizar();
+  }
+</script>

@@ -1,0 +1,308 @@
+---
+// O gate de tokens e o handoff triado em tres niveis.
+// A janela de contexto acaba no meio da thread; o ork mede, decide e tria o que passa.
+
+const fontes = [
+  { nome: 'runtime_reported', existe: true },
+  { nome: 'estimated, por transcript', existe: true },
+  { nome: 'informada, pelo host', existe: true },
+  { nome: 'unavailable', existe: false }
+];
+
+const niveis = [
+  {
+    nome: 'CRÍTICO',
+    cor: 'latao',
+    desc: 'Vai inline, sempre: estado, decisões locked, critérios, claims.'
+  },
+  {
+    nome: 'IMPORTANTE',
+    cor: 'brasa',
+    desc: 'Vira ponteiro <code>path#âncora</code> com o momento certo de resolver (<code>retrieve_when</code>). Pedido fora do momento volta sem o conteúdo.'
+  },
+  {
+    nome: 'RESUMÍVEL',
+    cor: 'patina',
+    desc: 'Resumo curto, com proveniência obrigatória: <code>source</code>, <code>location</code> e o sha256 do arquivo de origem.'
+  }
+];
+---
+
+<div class="gate grade-flexivel">
+  <div class="gate-fluxo" data-anima>
+    <div class="painel etapa">
+      <p class="micro-rotulo sem-ponto">ork gate next</p>
+      <p class="etapa-texto">A fase termina e o gate mede a ocupação da janela de contexto.</p>
+
+      <ul class="fontes mono">
+        {fontes.map((fonte) => (
+          <li class={fonte.existe ? '' : 'fonte-ausente'}>
+            <span class="fonte-marca" aria-hidden="true"></span>
+            {fonte.nome}
+          </li>
+        ))}
+      </ul>
+
+      <p class="etapa-nota">Quando nenhuma fonte sabe medir, o veredito sai
+      <code>same-session</code> com <code>decididoPor: ausencia-de-medida</code>.
+      Decidir por dado que não existe é pior do que não decidir.
+      <strong>Uma lacuna nunca vira zero.</strong></p>
+    </div>
+
+    <div class="decisao" aria-hidden="true">
+      <span class="decisao-fio"></span>
+      <span class="decisao-losango">
+        <span class="decisao-pergunta mono">passou de rotate_above?</span>
+      </span>
+      <span class="decisao-fio"></span>
+    </div>
+
+    <div class="saidas">
+      <div class="painel saida">
+        <p class="mono saida-tag">não</p>
+        <p class="etapa-texto">Mesma sessão. O trabalho continua onde está.</p>
+      </div>
+      <div class="painel painel-latao saida">
+        <p class="mono saida-tag saida-tag-latao">sim</p>
+        <p class="etapa-texto">Nova sessão, com <strong>handoff triado</strong>. Nada de
+        copiar a sessão anterior inteira e entregar uma sessão nova já cheia.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="triagem">
+    <p class="titulo-3">A triagem em três níveis</p>
+
+    <ol class="niveis escalona">
+      {niveis.map((nivel, indice) => (
+        <li class={`nivel nivel-${nivel.cor}`}>
+          <span class="nivel-ordem mono" aria-hidden="true">{String(indice + 1).padStart(2, '0')}</span>
+          <div>
+            <p class="nivel-nome mono">{nivel.nome}</p>
+            <p class="nivel-desc" set:html={nivel.desc} />
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <p class="triagem-nota paragrafo">Com o OrkMind ligado, o mesmo ponteiro resolve por
+    busca semântica por tag. Com o OrkMind fora do ar, ele resolve por
+    <code>path#âncora</code>, e o fluxo de quem lê o handoff não muda em nada. A
+    degradação tem motivo tipado.</p>
+  </div>
+</div>
+
+<style>
+  .gate {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  .etapa-texto {
+    margin-top: 0.7rem;
+    color: var(--tinta-2);
+    font-size: var(--t-small);
+  }
+
+  .etapa-texto :global(strong) {
+    color: var(--tinta);
+    font-variation-settings: 'wght' 560;
+  }
+
+  /* ---------- fontes de medida ---------- */
+
+  .fontes {
+    list-style: none;
+    padding: 0;
+    margin: 1.2rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .fontes li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid var(--linha-forte);
+    border-radius: var(--raio-pilula);
+    padding: 0.3rem 0.85rem;
+    font-size: var(--t-nano);
+    color: var(--tinta-2);
+    background: var(--poco);
+    transition: border-color var(--dur-2) var(--curva);
+  }
+
+  .fonte-marca {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--patina);
+  }
+
+  /* A fonte que nao existe e desenhada como ausencia, nao como zero */
+  .fonte-ausente {
+    border-style: dashed;
+    color: var(--brasa-clara);
+    border-color: var(--brasa-linha);
+  }
+
+  .fonte-ausente .fonte-marca {
+    background: none;
+    border: 1px solid var(--brasa);
+  }
+
+  .etapa-nota {
+    margin-top: 1.1rem;
+    font-size: var(--t-micro);
+    color: var(--tinta-3);
+    line-height: 1.75;
+  }
+
+  .etapa-nota strong {
+    color: var(--tinta);
+    font-variation-settings: 'wght' 560;
+  }
+
+  /* ---------- decisao ---------- */
+
+  .decisao {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.15rem 0;
+  }
+
+  .decisao-fio {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--latao-linha), transparent);
+  }
+
+  .decisao-losango {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--latao-linha);
+    border-radius: var(--raio-pilula);
+    background: var(--latao-fraco);
+    box-shadow: var(--lustro);
+  }
+
+  .decisao-pergunta {
+    font-size: var(--t-nano);
+    color: var(--latao-claro);
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+  }
+
+  .saidas {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .saida {
+    padding: 1.2rem 1.3rem;
+  }
+
+  .saida-tag {
+    display: inline-block;
+    border: 1px solid var(--linha-forte);
+    border-radius: var(--raio-pilula);
+    padding: 0.12rem 0.85rem;
+    font-size: var(--t-nano);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--tinta-3);
+  }
+
+  .saida-tag-latao {
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--latao-claro), var(--latao));
+    color: var(--sobre-latao);
+    font-variation-settings: 'wght' 550;
+  }
+
+  /* ---------- triagem ---------- */
+
+  .niveis {
+    list-style: none;
+    padding: 0;
+    margin: 1.6rem 0 0;
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .nivel {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem;
+    align-items: start;
+    border-left: 2px solid var(--linha-forte);
+    border-radius: 0 var(--raio-campo) var(--raio-campo) 0;
+    padding: 0.85rem 1rem 0.85rem 1.1rem;
+    transition: border-color var(--dur-2) var(--curva), background var(--dur-2) var(--curva),
+      transform var(--dur-2) var(--curva);
+  }
+
+  .nivel:hover {
+    background: var(--palco);
+    transform: translateX(3px);
+  }
+
+  .nivel-ordem {
+    font-size: var(--t-nano);
+    color: var(--tinta-3);
+    padding-top: 0.15rem;
+  }
+
+  .nivel-latao {
+    border-left-color: var(--latao);
+  }
+
+  .nivel-brasa {
+    border-left-color: var(--brasa);
+  }
+
+  .nivel-patina {
+    border-left-color: var(--patina);
+  }
+
+  .nivel-latao:hover { border-left-color: var(--latao-claro); }
+  .nivel-brasa:hover { border-left-color: var(--brasa-clara); }
+  .nivel-patina:hover { border-left-color: var(--patina-clara); }
+
+  .nivel-nome {
+    font-size: var(--t-micro);
+    letter-spacing: 0.18em;
+    color: var(--tinta);
+    font-variation-settings: 'wght' 500;
+  }
+
+  .nivel-desc {
+    margin-top: 0.4rem;
+    font-size: var(--t-small);
+    color: var(--tinta-2);
+  }
+
+  .triagem-nota {
+    margin-top: 1.8rem;
+    font-size: var(--t-small);
+  }
+
+  @media (max-width: 900px) {
+    .gate {
+      grid-template-columns: 1fr;
+    }
+
+    .saidas {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

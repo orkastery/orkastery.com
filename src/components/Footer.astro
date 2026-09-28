@@ -1,0 +1,263 @@
+---
+import { externos, type Destino } from '../data/externos';
+
+const ano = new Date().getFullYear();
+
+const colunas = [
+  {
+    titulo: 'Portal',
+    itens: [
+      { rotulo: 'A organização', href: '/' },
+      { rotulo: 'O produto Ork', href: '/ork/' },
+      { rotulo: 'OrkMind', href: '/orkmind/' },
+      { rotulo: 'Docs para usuários', href: '/docs/' },
+      { rotulo: 'Contato', href: '/#contato' }
+    ]
+  },
+  {
+    titulo: 'Código aberto',
+    itens: [
+      { rotulo: 'orkastery', destino: 'orkastery' },
+      { rotulo: 'OrkMind', destino: 'orkmind' },
+      { rotulo: 'orkmind-web', destino: 'orkmindWeb' },
+      { rotulo: '@orkastery/cli no npm', destino: 'npm' }
+    ]
+  }
+].map((coluna) => ({
+  ...coluna,
+  itens: coluna.itens.map((item: { rotulo: string; href?: string; destino?: Destino }) => {
+    if (!item.destino) return { ...item, externo: false, fechado: false };
+    const alvo = externos[item.destino];
+    return { rotulo: item.rotulo, href: alvo.aberto ? alvo.url : undefined, externo: true, fechado: !alvo.aberto };
+  })
+}));
+---
+
+<footer class="rodape">
+  <div class="rodape-aura" aria-hidden="true"></div>
+
+  <div class="container grade-rodape">
+    <div class="rodape-marca revela">
+      <p class="display nome">Orkastery</p>
+      <p class="pronuncia mono">or-KAS-te-ri</p>
+      <p class="paragrafo lema">
+        Maestria não é andamento. É saber, depois de cada apresentação, o que você
+        fez, quanto custou e quão bem foi feito, e ser melhor na próxima.
+      </p>
+    </div>
+
+    {colunas.map((coluna, indice) => (
+      <nav class="rodape-coluna revela" style={`--atraso: ${0.06 + indice * 0.06}s`} aria-label={coluna.titulo}>
+        <p class="rodape-titulo">{coluna.titulo}</p>
+        {coluna.itens.map((item) => (
+          <a
+            href={item.href}
+            rel={item.externo && !item.fechado ? 'noopener' : undefined}
+            class={item.fechado ? 'em-breve' : undefined}
+            aria-disabled={item.fechado ? 'true' : undefined}
+          >
+            <span>{item.rotulo}</span>
+            {item.fechado && <span class="selo-em-breve">em breve</span>}
+            {item.externo && !item.fechado && (
+              <svg class="fuga" width="11" height="11" viewBox="0 0 11 11" aria-hidden="true">
+                <path d="M3 8 8 3M4.2 3H8v3.8" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            )}
+          </a>
+        ))}
+      </nav>
+    ))}
+
+    <div class="rodape-coluna revela" style="--atraso: 0.18s">
+      <p class="rodape-titulo">Contato</p>
+      <a href="mailto:maestro@orkastery.com"><span>maestro@orkastery.com</span></a>
+      <p class="mono licenca">Licença MIT · {ano}</p>
+    </div>
+  </div>
+
+  <div class="container rodape-base">
+    <p class="mono rodape-selo">
+      <span class="selo-luz" aria-hidden="true"></span>
+      construído com Orkastery, e provado no CI
+    </p>
+    <p class="mono rodape-fecho">evidência antes de crença</p>
+  </div>
+</footer>
+
+<style>
+  .rodape {
+    position: relative;
+    border-top: 1px solid var(--linha);
+    background: linear-gradient(180deg, var(--palco), var(--poco));
+    padding-block: clamp(3.5rem, 9vh, 6rem) 2rem;
+    overflow: hidden;
+  }
+
+  .rodape-aura {
+    position: absolute;
+    inset-inline: 0;
+    top: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--latao-forte) 20%, var(--patina-linha) 60%, transparent);
+  }
+
+  .grade-rodape {
+    display: grid;
+    grid-template-columns: 2.1fr 1fr 1fr 1.1fr;
+    gap: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .nome {
+    font-size: clamp(1.7rem, 3vw, 2.1rem);
+  }
+
+  .pronuncia {
+    color: var(--tinta-3);
+    margin-top: 0.15rem;
+    font-size: var(--t-micro);
+    letter-spacing: 0.06em;
+  }
+
+  .lema {
+    margin-top: 1.1rem;
+    font-size: var(--t-small);
+    max-width: 36ch;
+  }
+
+  .rodape-titulo {
+    font-family: var(--f-mono);
+    font-size: var(--t-nano);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--tinta-3);
+    margin-bottom: 1.15rem;
+  }
+
+  .rodape-coluna {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    align-items: flex-start;
+  }
+
+  .rodape-coluna a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.32rem 0;
+    color: var(--tinta-2);
+    text-decoration: none;
+    font-size: 0.94rem;
+    transition: color var(--dur-2) var(--curva);
+  }
+
+  .rodape-coluna a span {
+    position: relative;
+  }
+
+  /* Sublinhado que cresce da esquerda, na cor do latao */
+  .rodape-coluna a span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 1px;
+    width: 100%;
+    background: var(--latao);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--dur-3) var(--curva);
+  }
+
+  .rodape-coluna a:hover {
+    color: var(--latao-claro);
+  }
+
+  .rodape-coluna a:hover span::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .fuga {
+    opacity: 0;
+    transform: translate(-2px, 2px);
+    transition: opacity var(--dur-2) var(--curva), transform var(--dur-2) var(--curva);
+  }
+
+  .rodape-coluna a:hover .fuga {
+    opacity: 0.8;
+    transform: none;
+  }
+
+  .licenca {
+    color: var(--tinta-3);
+    margin-top: 1.3rem;
+    font-size: var(--t-micro);
+  }
+
+  /* ---------- base ---------- */
+
+  .rodape-base {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: clamp(3rem, 7vh, 4.5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--linha);
+  }
+
+  .rodape-selo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--tinta-3);
+    font-size: var(--t-nano);
+    letter-spacing: 0.04em;
+  }
+
+  .selo-luz {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--patina);
+    box-shadow: 0 0 12px rgba(111, 185, 168, 0.7);
+    animation: pulso-selo 3.4s ease-in-out infinite;
+  }
+
+  @keyframes pulso-selo {
+    50% {
+      opacity: 0.35;
+      box-shadow: 0 0 4px rgba(111, 185, 168, 0.3);
+    }
+  }
+
+  .rodape-fecho {
+    color: var(--tinta-3);
+    font-size: var(--t-nano);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+  }
+
+  @media (max-width: 900px) {
+    .grade-rodape {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .rodape-marca {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .grade-rodape {
+      grid-template-columns: 1fr;
+    }
+
+    .rodape-base {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

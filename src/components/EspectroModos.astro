@@ -1,0 +1,472 @@
+---
+// O espectro de conducao: 4 modos por #TAG; um modo planejado aparece marcado como em breve.
+// Fonte do conteudo: src/data/modos.ts, espelho da saida real de `ork modos`.
+// Selecionar uma tag redesenha os blocos, os medidores e a barra de pausa.
+import { MODOS_DE_CONDUCAO as modos } from '../data/modos';
+---
+
+<div class="espectro" data-espectro>
+  <div class="tags-envelope">
+    <div class="tags" role="tablist" aria-label="Modos de condução">
+      <span class="tag-indicador" aria-hidden="true" data-tag-indicador></span>
+      {modos.map((modo, indice) => (
+        <button
+          class="tag mono"
+          role="tab"
+          id={`tag-${modo.tag.slice(1).toLowerCase()}`}
+          aria-selected={modo.padrao ? 'true' : 'false'}
+          aria-controls="espectro-painel"
+          tabindex={modo.padrao ? 0 : -1}
+          data-modo={indice}
+          type="button"
+        >
+          {modo.tag}
+          {modo.padrao && <span class="tag-padrao">padrão</span>}
+          {modo.emBreve && <span class="tag-breve">em breve</span>}
+        </button>
+      ))}
+    </div>
+
+    <p class="tags-guia mono" aria-hidden="true">
+      <span>mais pausa</span>
+      <span class="guia-fio"></span>
+      <span>mais autonomia</span>
+    </p>
+  </div>
+
+  <div class="painel espectro-palco" id="espectro-painel" role="tabpanel" tabindex="0" aria-labelledby="tag-classic">
+    {modos.map((modo, indice) => (
+      <div class="modo" data-modo-detalhe={indice} hidden={!modo.padrao}>
+        <div class="medidores">
+          <p class="medidor">
+            <span class="medidor-valor numeral">{modo.blocos}</span>
+            <span class="medidor-rotulo mono">{modo.blocos === 1 ? 'bloco de sessão' : 'blocos de sessão'}</span>
+          </p>
+          <span class="medidor-divisa" aria-hidden="true"></span>
+          <p class="medidor">
+            <span class="medidor-valor numeral medidor-pausa">{modo.pausas}</span>
+            <span class="medidor-rotulo mono">{modo.pausas === 1 ? 'pausa humana' : 'pausas humanas'}</span>
+          </p>
+          <span class="medidor-barra" aria-hidden="true">
+            <span class="barra-preenchida" style={`--fracao: ${modo.pausas / 6}`}></span>
+          </span>
+        </div>
+
+        <div class="blocos" aria-label={`Ciclo do modo ${modo.tag}`}>
+          {modo.ciclo.map((bloco, ordem) => (
+            <span
+              class={`bloco mono ${bloco.pausa ? 'bloco-pausa' : ''}`}
+              style={`--ordem: ${ordem}`}
+            >
+              {bloco.fases}
+              {bloco.pausa && <span class="pausa-selo">pausa</span>}
+            </span>
+          ))}
+        </div>
+
+        {modo.emBreve && (
+          <p class="modo-breve-aviso mono">Em breve: o <code>ork</code> ainda não aceita esta #TAG.</p>
+        )}
+
+        <dl class="modo-dados">
+          <div>
+            <dt class="mono">slugs de sessão</dt>
+            <dd class="mono">{modo.slugs}</dd>
+          </div>
+          <div>
+            <dt class="mono">pausa sobre</dt>
+            <dd>{modo.pausaSobre}</dd>
+          </div>
+          <div>
+            <dt class="mono">use quando</dt>
+            <dd>{modo.uso}</dd>
+          </div>
+        </dl>
+      </div>
+    ))}
+  </div>
+
+  <aside class="painel painel-latao regra-central">
+    <p class="micro-rotulo">regra central, que não é afrouxável</p>
+    <p class="regra-frase display">O modo afrouxa a pausa. O modo <em>nunca</em> afrouxa a verificação.</p>
+    <ul class="invariantes">
+      <li>Claims, verify e policies rodam idênticos em todos os modos.</li>
+      <li>Policy <code>block</code> pausa qualquer modo, inclusive o #Auto.</li>
+      <li>Escalação tipada para humano pausa qualquer modo, inclusive o #Auto.</li>
+      <li>Toda entrega fecha com um índice derivado do ledger; a sua nota, quando você der, sobrescreve.</li>
+      <li>Toda decisão autônoma vai ao ledger: quem decidiu, com que evidência, por quê.</li>
+    </ul>
+  </aside>
+</div>
+
+<style>
+  /* ---------- tags ---------- */
+
+  .tags-envelope {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .tags {
+    position: relative;
+    display: flex;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(180deg, rgba(245, 241, 234, 0.035), transparent), var(--palco);
+    border: 1px solid var(--linha-forte);
+    border-radius: var(--raio-pilula);
+    color: var(--tinta-2);
+    padding: 0.6rem 1.15rem;
+    min-height: 44px;
+    font-size: var(--t-small);
+    box-shadow: var(--lustro);
+    transition: border-color var(--dur-2) var(--curva), color var(--dur-2) var(--curva),
+      transform var(--dur-2) var(--curva), background var(--dur-2) var(--curva);
+  }
+
+  .tag:hover {
+    border-color: var(--latao-linha);
+    color: var(--tinta);
+    transform: translateY(-2px);
+  }
+
+  .tag[aria-selected='true'] {
+    background: linear-gradient(135deg, var(--latao-claro), var(--latao) 55%, #c9954a);
+    border-color: transparent;
+    color: var(--sobre-latao);
+    font-variation-settings: 'wght' 550;
+    box-shadow: var(--lustro-forte), 0 8px 26px -12px rgba(224, 178, 100, 0.8);
+  }
+
+  .tag-breve {
+    margin-left: 0.4rem;
+    font-size: var(--t-nano);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tinta-3);
+    border: 1px dashed var(--linha-viva);
+    border-radius: var(--raio-pilula);
+    padding: 0.05rem 0.45rem;
+  }
+
+  .tag[aria-selected='true'] .tag-breve {
+    color: var(--sobre-latao);
+    border-color: rgba(23, 17, 10, 0.45);
+  }
+
+  .modo-breve-aviso {
+    margin-top: 1.2rem;
+    font-size: var(--t-micro);
+    color: var(--tinta-3);
+  }
+
+  .tag-padrao {
+    border-radius: var(--raio-pilula);
+    border: 1px solid currentColor;
+    padding: 0.02rem 0.5rem;
+    font-size: var(--t-nano);
+    opacity: 0.6;
+  }
+
+  .tag-indicador {
+    display: none;
+  }
+
+  /* Guia visual: as tags estao ordenadas de mais pausa para mais autonomia */
+  .tags-guia {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: var(--t-nano);
+    color: var(--tinta-3);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+
+  .guia-fio {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--latao-linha), var(--linha), var(--patina-linha));
+  }
+
+  /* ---------- palco ---------- */
+
+  .espectro-palco {
+    margin-top: 1.5rem;
+    display: grid;
+  }
+
+  .modo {
+    grid-area: 1 / 1;
+  }
+
+  .modo[hidden] {
+    display: none;
+  }
+
+  .modo:not([hidden]) {
+    animation: entrar-modo 0.45s var(--curva) both;
+  }
+
+  @keyframes entrar-modo {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  /* ---------- medidores ---------- */
+
+  .medidores {
+    display: flex;
+    align-items: flex-end;
+    gap: clamp(1.2rem, 3vw, 2.4rem);
+    flex-wrap: wrap;
+  }
+
+  .medidor {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .medidor-valor {
+    font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+    display: block;
+    color: var(--tinta);
+  }
+
+  .medidor-pausa {
+    color: var(--latao);
+  }
+
+  .medidor-rotulo {
+    color: var(--tinta-3);
+    font-size: var(--t-nano);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  .medidor-divisa {
+    width: 1px;
+    align-self: stretch;
+    margin-block: 0.4rem;
+    background: var(--linha-forte);
+  }
+
+  /* Barra que traduz o numero de pausas em quanto humano o modo pede */
+  .medidor-barra {
+    flex: 1;
+    min-width: 8rem;
+    height: 6px;
+    align-self: center;
+    border-radius: var(--raio-pilula);
+    background: var(--relevo);
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(6, 4, 2, 0.6);
+  }
+
+  .barra-preenchida {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--latao-fundo), var(--latao));
+    transform-origin: left;
+    transform: scaleX(var(--fracao, 0));
+    animation: crescer-barra 0.8s var(--curva) both;
+    box-shadow: 0 0 14px rgba(224, 178, 100, 0.45);
+  }
+
+  @keyframes crescer-barra {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  /* ---------- blocos ---------- */
+
+  .blocos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 1.9rem;
+  }
+
+  .bloco {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    border: 1px solid var(--linha-forte);
+    border-radius: var(--raio-pilula);
+    padding: 0.5rem 0.6rem 0.5rem 1rem;
+    font-size: var(--t-micro);
+    color: var(--tinta-2);
+    background: var(--poco);
+    animation: surgir-bloco 0.5s var(--curva) both;
+    animation-delay: calc(var(--ordem) * 0.055s);
+    transition: border-color var(--dur-2) var(--curva), color var(--dur-2) var(--curva);
+  }
+
+  .bloco:not(:has(.pausa-selo)) {
+    padding-right: 1rem;
+  }
+
+  .bloco:hover {
+    border-color: var(--linha-viva);
+    color: var(--tinta);
+  }
+
+  @keyframes surgir-bloco {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.96);
+    }
+  }
+
+  .bloco-pausa {
+    border-color: var(--latao-linha);
+    color: var(--tinta);
+    background: linear-gradient(180deg, rgba(224, 178, 100, 0.07), transparent), var(--poco);
+  }
+
+  .pausa-selo {
+    background: var(--latao);
+    color: var(--sobre-latao);
+    border-radius: var(--raio-pilula);
+    padding: 0.1rem 0.6rem;
+    font-variation-settings: 'wght' 550;
+    font-size: var(--t-nano);
+    letter-spacing: 0.06em;
+  }
+
+  /* ---------- dados ---------- */
+
+  .modo-dados {
+    margin: 2rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--linha);
+  }
+
+  .modo-dados dt {
+    color: var(--tinta-3);
+    font-size: var(--t-nano);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+
+  .modo-dados dd {
+    margin: 0.45rem 0 0;
+    font-size: var(--t-small);
+    color: var(--tinta-2);
+  }
+
+  /* ---------- regra central ---------- */
+
+  .regra-central {
+    margin-top: 1.5rem;
+  }
+
+  .regra-frase {
+    margin-top: 0.85rem;
+    font-size: clamp(1.4rem, 2.8vw, 2.15rem);
+    max-width: 26ch;
+  }
+
+  .regra-frase em {
+    color: var(--latao-claro);
+  }
+
+  .invariantes {
+    margin: 1.6rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--tinta-2);
+    font-size: var(--t-small);
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .invariantes li {
+    position: relative;
+    padding-left: 1.4rem;
+  }
+
+  /* Marcador de compasso, no lugar de um ponto de lista comum */
+  .invariantes li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1px solid var(--latao-forte);
+  }
+
+  @media (max-width: 760px) {
+    .modo-dados {
+      grid-template-columns: 1fr;
+      gap: 1.1rem;
+    }
+
+    .medidor-divisa {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .modo:not([hidden]),
+    .bloco,
+    .barra-preenchida {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  for (const raiz of document.querySelectorAll<HTMLElement>('[data-espectro]')) {
+    const abas = Array.from(raiz.querySelectorAll<HTMLButtonElement>('[data-modo]'));
+    const detalhes = Array.from(raiz.querySelectorAll<HTMLElement>('[data-modo-detalhe]'));
+    const painel = raiz.querySelector<HTMLElement>('[role="tabpanel"]');
+    if (abas.length === 0) continue;
+
+    function selecionar(indice: number) {
+      abas.forEach((aba, i) => {
+        const selecionada = i === indice;
+        aba.setAttribute('aria-selected', String(selecionada));
+        aba.tabIndex = selecionada ? 0 : -1;
+      });
+      detalhes.forEach((detalhe, i) => {
+        detalhe.hidden = i !== indice;
+      });
+      painel?.setAttribute('aria-labelledby', abas[indice].id);
+    }
+
+    abas.forEach((aba, indice) => {
+      aba.addEventListener('click', () => selecionar(indice));
+      aba.addEventListener('keydown', (evento) => {
+        const destinos: Record<string, number> = {
+          ArrowRight: (indice + 1) % abas.length,
+          ArrowLeft: (indice - 1 + abas.length) % abas.length,
+          Home: 0,
+          End: abas.length - 1
+        };
+        const destino = destinos[evento.key];
+        if (destino === undefined) return;
+        evento.preventDefault();
+        abas[destino].focus();
+        selecionar(destino);
+      });
+    });
+  }
+</script>
