@@ -720,6 +720,7 @@ const fases = [
     });
 
     // O ponteiro pousado na trilha ja e um pedido de tempo: a trilha espera.
+    raiz.addEventListener('focusin', pararSozinho);
     raiz.addEventListener('pointerenter', () => window.clearInterval(temporizador));
     raiz.addEventListener('pointerleave', comecarSozinho);
 
