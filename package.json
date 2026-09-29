@@ -7,7 +7,17 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "docs:sync": "node scripts/sync-docs.mjs",
+    "docs:check": "node scripts/check-docs.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "check:i18n": "node scripts/check-i18n.mjs",
+    "check:public": "node scripts/check-public.mjs",
+    "check:content": "node scripts/check-content.mjs",
+    "check:visual": "node scripts/check-visual.mjs",
+    "test:docs": "node scripts/docs-schema.test.mjs && node scripts/docs-check.test.mjs",
+    "prebuild": "npm run docs:check",
+    "postbuild": "npm run check:links && npm run check:i18n && npm run check:public && npm run check:content && npm run test:docs"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",
@@ -15,5 +25,8 @@
     "@fontsource-variable/instrument-sans": "^5.3.0",
     "astro": "^5.13.0",
     "serve": "^14.2.4"
+  },
+  "devDependencies": {
+    "parse5": "7.3.0"
   }
 }
