@@ -6,7 +6,8 @@ export default {
     "docs-guides.ts",
     "docs-reference.ts",
     "docs-standards.ts",
-    "docs-product.ts"
+    "docs-product.ts",
+    "docs-contribute.ts"
   ],
   "repository": "https://github.com/orkastery/orkastery"
 };

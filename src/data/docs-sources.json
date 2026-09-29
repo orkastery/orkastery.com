@@ -3,8 +3,17 @@
   "product": "orkastery",
   "sources": [
     {
+      "path": "CONTRIBUTING.md",
+      "sha256": "7559ac8038b60d4f789720601294103644243051f6e8f21caf656e4f404e2b53",
+      "category": "root",
+      "treatment": "article",
+      "targets": [
+        "contribuir"
+      ]
+    },
+    {
       "path": "README.md",
-      "sha256": "a93d0e73d8b3c73803ea9e960a85affd01a9149be58c9622f2a665a4812ee390",
+      "sha256": "2e84a770b26ffb13d90a7c3a329504eaed1a076c29ffc6a4304beb8671f9746a",
       "category": "root",
       "treatment": "article",
       "targets": [
@@ -13,7 +22,7 @@
     },
     {
       "path": "core/package.json",
-      "sha256": "7349b6f7eb06bb67af6be47084a38893ca790f9ef100ce2521c48077a0281d70",
+      "sha256": "fba1e12da20c3d75746dd96ce50efb6e07b6b60bd0db68884d487eda2574441d",
       "category": "package.json",
       "treatment": "article",
       "targets": [
@@ -22,7 +31,7 @@
     },
     {
       "path": "docs/README.md",
-      "sha256": "ab402b61b3d3052a1f49d1492305d189742b5d291ad7e318b615ff6779fad86d",
+      "sha256": "79d3c4e3e162c37db0e35096eb0b3f7af61a43c32807e729a654179854f94209",
       "category": "README.md",
       "treatment": "index",
       "targets": [
@@ -49,7 +58,7 @@
     },
     {
       "path": "docs/conceitos/arquitetura.md",
-      "sha256": "555204d44378694f193be5041d040092948937e25cf9b868815889f2d5faf67f",
+      "sha256": "3cf410033df1f310e2a4f804943a97596a0dcd0c0662c4b8b319ea35f432e989",
       "category": "conceitos",
       "treatment": "article",
       "targets": [
@@ -85,6 +94,87 @@
       ]
     },
     {
+      "path": "docs/guias/contribuir/com-o-ork.md",
+      "sha256": "5ac737f17125962edc43d443541e5f1daf9c93ec083336bfa693cb7a6dffaafa",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "contribuir"
+      ]
+    },
+    {
+      "path": "docs/guias/contribuir/desenvolvimento-local.md",
+      "sha256": "3edf2e7abf83f6603db4c704d09bcadb43fcfdcff36773d1d5f6b3060f48e434",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "contribuir"
+      ]
+    },
+    {
+      "path": "docs/guias/contribuir/documentacao.md",
+      "sha256": "06de23211b24618140d85876390afed8e2e95aed4e422603b2af6d91da1600b8",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "contribuir"
+      ]
+    },
+    {
+      "path": "docs/guias/contribuir/lint-e-estilo.md",
+      "sha256": "c2fbf0494edbf79dbe407a002795d3af2b9a3cbfb8446935e767492d9eb85310",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "contribuir"
+      ]
+    },
+    {
+      "path": "docs/guias/contribuir/o-que-contribuir.md",
+      "sha256": "326c353f4b6e932a5644c8c647a34b8850b59c7987d5f0f8e29a8f095b4f4337",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "contribuir"
+      ]
+    },
+    {
+      "path": "docs/guias/contribuir/pull-request.md",
+      "sha256": "7e1297f3391c8a26c893437f9e4039c2fbaa5c91b9e1dc187e1e404c8e2a8431",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "contribuir"
+      ]
+    },
+    {
+      "path": "docs/guias/contribuir/testes-e-verificacao.md",
+      "sha256": "2265b264fdfb0e7c3eb3601a8b42085ccd21c4c90ea103b938ee0fbc8fa9c823",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "contribuir"
+      ]
+    },
+    {
+      "path": "docs/guias/contribuir/triagem.md",
+      "sha256": "1f8542a9fdc71f790fd6589c90ecd4ad3b0873290dbb2f30dacebb2862492a77",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "contribuir"
+      ]
+    },
+    {
+      "path": "docs/guias/contribuir/versoes-e-publicacao.md",
+      "sha256": "1b4f8e622f275d67298bf6ea93022f19e087282538a0549c89f480fd877fe50b",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "contribuir"
+      ]
+    },
+    {
       "path": "docs/guias/memoria-e-handoff.md",
       "sha256": "f585d1793692522fb49cf271cdf2e0886156be092b7d83a2dbc496fe63e48aa9",
       "category": "guias",
@@ -113,7 +203,7 @@
     },
     {
       "path": "docs/guias/sincronismo-hitl.md",
-      "sha256": "d6c91fbac05709078a547a3fd0a5843b586c78177acc76019f4cfb68976e40f7",
+      "sha256": "718e684da20d9768bdf31940c55bfd92fb39f62330dafdf54ba82264384f5ce3",
       "category": "guias",
       "treatment": "article",
       "targets": [
@@ -131,7 +221,7 @@
     },
     {
       "path": "docs/guias/verificacao.md",
-      "sha256": "ae288c29032abd09f1cae4b5200b132cbdba7fbe9384c3151ddbb15d26f59e89",
+      "sha256": "6f34d2b0fc34550f59724419d177aacdfe12c8242718acd2d9cdaebd6faab0d1",
       "category": "guias",
       "treatment": "article",
       "targets": [
@@ -249,7 +339,7 @@
     },
     {
       "path": "docs/produto/FEAT-011-hitl-em-camadas.md",
-      "sha256": "ce908dbd69cda71e879ccb1922d74d271dec8cfc9110d48bb386da5e3347f4f1",
+      "sha256": "eba98b42fffcadfa0f6a2c819655e48e63f242e2c7aa98209a58588d4ee979a7",
       "category": "produto",
       "treatment": "article",
       "targets": [
@@ -276,7 +366,7 @@
     },
     {
       "path": "docs/produto/FEAT-014-monitor-board-e-pulse.md",
-      "sha256": "4b475d0ff9dcea3b41da44ffd9ce923cd25ce5f4c7d549122ed3972ca97c8772",
+      "sha256": "5ead6d3035b0b9b0ff8c064e58122a75db4e7e35b3f6ba9bc12cb852fcef3262",
       "category": "produto",
       "treatment": "article",
       "targets": [
@@ -285,7 +375,7 @@
     },
     {
       "path": "docs/produto/FEAT-015-entrega-e-indice-master.md",
-      "sha256": "079cb653571d28c96b2429691685d6879a6be5853fd4c760970f91106217a655",
+      "sha256": "c12208eb8c02fe012e6e09fbb1f7564581a7cebe0673e543b389815b1b165b2c",
       "category": "produto",
       "treatment": "article",
       "targets": [
@@ -339,7 +429,7 @@
     },
     {
       "path": "docs/produto/FEAT-021-ingresso-hitl-telegram.md",
-      "sha256": "91346791ddde05b8dd85a0aab84979f7c764801c7f313906d3bd03582d689867",
+      "sha256": "76b134c09fc4f0db5f823dfac62bc0039d9cb5ade05f29c1604408d3d3d42ea2",
       "category": "produto",
       "treatment": "article",
       "targets": [
@@ -366,7 +456,7 @@
     },
     {
       "path": "docs/produto/FEAT-024-company-brain-no-cli.md",
-      "sha256": "61129bd64e1859776fbea980092362f50facfebd969c531618abd4c55d7dd25f",
+      "sha256": "dd301a4cfd4427e5b94d370e9673d7ca68d41f29afc8e14ce871d4481bbe7b92",
       "category": "produto",
       "treatment": "article",
       "targets": [
@@ -483,7 +573,7 @@
     },
     {
       "path": "docs/produto/README.md",
-      "sha256": "96dc980787180ddb3d7364471352d13123a4b850229a69c6f0692f97cd55e3d4",
+      "sha256": "3a65d053938cdb708e5b31ff77086081c16d91f8c03013b58a1cf3d0879ee63d",
       "category": "produto",
       "treatment": "index",
       "targets": [
@@ -519,7 +609,7 @@
     },
     {
       "path": "docs/referencia/cli.md",
-      "sha256": "ce0d4828f120e39590b292516bcb0fb7aae87f6ce8d199d1a6f0e533051cf2e6",
+      "sha256": "39343f3bfde1b6499698e17ef980c26b5d4d858ae0d5a35df2ce063e715edefb",
       "category": "referencia",
       "treatment": "article",
       "targets": [
@@ -527,31 +617,39 @@
       ]
     },
     {
+      "path": "docs/referencia/contratos/benchmark-grafo-kg1.md",
+      "sha256": "74d687c1ae440d2d01071bb8a83b32c1fd858fcfcd02afeae34279c47dfcfcb6",
+      "category": "referencia",
+      "treatment": "article",
+      "targets": []
+    },
+    {
+      "path": "docs/referencia/contratos/grafo-deterministico-kg1.md",
+      "sha256": "896da1d72e302bee3a83c7dc3d526279148c2427b61bddea12430964a1b66982",
+      "category": "referencia",
+      "treatment": "article",
+      "targets": []
+    },
+    {
       "path": "docs/referencia/contratos/maestro-i32.md",
       "sha256": "7f46b322f166e8bc8613464a265393716618feffa78ffb761834483d1faa7d74",
       "category": "referencia",
       "treatment": "article",
-      "targets": [
-        "contratos"
-      ]
+      "targets": []
     },
     {
       "path": "docs/referencia/contratos/playbook-runtimes-i09.md",
       "sha256": "789e067c0ff3eb533a48849d3543d232efbd7d88cb26da5d9e789130ba1a22da",
       "category": "referencia",
       "treatment": "article",
-      "targets": [
-        "contratos"
-      ]
+      "targets": []
     },
     {
       "path": "docs/referencia/contratos/telemetria-i07.md",
       "sha256": "e85053c7400ed08e0db499053ab8efbb0f477f6badd6ca4dcd86b132023f98f5",
       "category": "referencia",
       "treatment": "article",
-      "targets": [
-        "contratos"
-      ]
+      "targets": []
     },
     {
       "path": "docs/referencia/maestro-capacidades.json",
@@ -564,7 +662,7 @@
     },
     {
       "path": "docs/roadmap/README.md",
-      "sha256": "15a1a354d64b216272f1171709e68f2d69082ca81e8ecc42edc4ec6efa24a07b",
+      "sha256": "85f4b4abfd3a4e32b87c2630c21792052b9022ada9c03938aaba84922cad7705",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -708,7 +806,7 @@
     },
     {
       "path": "docs/roadmap/RM-025-company-brain-fundacao.md",
-      "sha256": "d03f0dbe9f38936c49f827dd9126ab843ada588a1402df2a3f1896951e1366ed",
+      "sha256": "9a2823fd4419f7f4dc67997aeb34eb7a217bd5a6466601eb6a8e77d1469f6bae",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -717,7 +815,7 @@
     },
     {
       "path": "docs/roadmap/RM-026-workspace-empresarial.md",
-      "sha256": "800ba71e0ae7a9461e501bade2153cadcd1e7ac71e0571edc4a80a409aa1d943",
+      "sha256": "b721e8605556e945aa831a412e085713e45edfae3da5568687f8eb918bd6b9f2",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -726,7 +824,7 @@
     },
     {
       "path": "docs/roadmap/RM-031-grafo-de-codigo.md",
-      "sha256": "a62e591d954cac15441068eb700a80458a977ac95068eefacbb31b8c9624d190",
+      "sha256": "c174b61985a73c3168be8d56e5829cf980b48106a5c6349a4dfdacaa388ebc84",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -780,7 +878,7 @@
     },
     {
       "path": "docs/roadmap/RM-037-verify-rapido-e-confiavel.md",
-      "sha256": "d8f9c112eb2f3c1700978cf5a89d45781cf7dfdbc25df57593e22c04a5affcb0",
+      "sha256": "08e0d31acd1cd247ecc4ddb91ef1ea8008e3368b829380bb65d931b8e94c1455",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -879,7 +977,7 @@
     },
     {
       "path": "docs/roadmap/RM-048-hitl-humano-no-centro.md",
-      "sha256": "7026f266c08354d2a81f282ed77f14142a0c5b5ceb34f31ce6c3185aaa34529b",
+      "sha256": "92ed35048abd84d825668cddc4e7d3b57db08edb6445c2442c0978e798321a05",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -889,6 +987,15 @@
     {
       "path": "docs/roadmap/RM-049-lancamento.md",
       "sha256": "a8d6d3abf5d3892775d3d8399965a543e7a555730e24bb74797f4c9d3e168704",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-050-guia-de-contribuicao.md",
+      "sha256": "8cafd263dfe9e0fc13b2291ac6e205bda80c96f9fd42e53d7b59e01df2569d72",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -914,7 +1021,7 @@
       ]
     }
   ],
-  "inventoryHash": "c6b39a890ae08ee9db8ddc5f6da3a9953edfe465172119478ab357f44e69d920",
+  "inventoryHash": "46cc5e25ebdbd0d3f15f675a428f3acbcada848dcd14ad7c48a5061c9ff5078c",
   "reviews": {
     "comecar": {
       "pt": {
@@ -1332,6 +1439,26 @@
       "es": {
         "sourceHash": "081a426f762401583d2b3bbb42e00885c8ebdd3b755329c2fb0fbe2f0feab53c",
         "contentHash": "27589f0ad67afcb3cf31453ffb290826a71059806fbe98cc7c52776cbc3ec96f",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "contribuir": {
+      "pt": {
+        "sourceHash": "e8d67c072a4fe4dad5db2a9d54892e60d037413bcf369292c691bfc6e08a61bb",
+        "contentHash": "c9969fe6c47deb25f901ca6cea187adc0027136fb1ee30b970f649b577a98c1c",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "e8d67c072a4fe4dad5db2a9d54892e60d037413bcf369292c691bfc6e08a61bb",
+        "contentHash": "42cf10ef915911b7190265f1d7ef84c6aa36e443e253201571e833704dd7d1b3",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "e8d67c072a4fe4dad5db2a9d54892e60d037413bcf369292c691bfc6e08a61bb",
+        "contentHash": "c36de8023f7c7d2a8935d8f385f83fa4c1fc4c536a18501681367a96ff6f5ee5",
         "reviewer": "executor-editorial",
         "date": "2026-09-29"
       }
