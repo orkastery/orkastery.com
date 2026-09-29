@@ -100,6 +100,7 @@ const sessoes = [
 
   .radar-disco {
     position: relative;
+    overflow: hidden;
     aspect-ratio: 1;
     max-width: 340px;
     margin-inline: auto;
@@ -343,7 +344,12 @@ const sessoes = [
     }
 
     .radar-varredura {
-      transform: rotate(40deg);
+      background: conic-gradient(
+        from 40deg,
+        rgba(111, 185, 168, 0.3),
+        rgba(111, 185, 168, 0.08) 26deg,
+        transparent 74deg
+      );
     }
   }
 </style>
