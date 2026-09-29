@@ -1,5 +1,6 @@
 ---
-import Docs from '../../layouts/Docs.astro';
+import Docs from '../../../layouts/Docs.astro';
+export function getStaticPaths(){return ['en','es'].map(lang=>({params:{lang}}));}
 const aliases={"comecar": "comecar", "entrega": "ciclo", "pronto": "verificacao", "portfolio": "produto", "hosts": "contratos", "modos": "modos", "acompanhar": "hitl", "verificar": "verificacao", "medir": "contratos", "agentes": "arquitetura", "memoria": "memoria", "company-brain": "mod-05", "documentacao": "padroes", "ajuda": "cli"};
 ---
 <Docs {aliases}/>
