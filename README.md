@@ -1,4 +1,4 @@
-# orkastery-web
+# orkastery.com
 
 O portal da Orkastery: a organização de código aberto e o produto Ork, a AI Software
 Factory. Quatro rotas estáticas, um único tema escuro deliberado, conteúdo extraído dos

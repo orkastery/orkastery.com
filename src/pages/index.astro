@@ -243,13 +243,6 @@ const principios = [
           <p class="bento-desc">O Company Brain governado e sua Biblioteca: memória,
           documentos e portfólio com tipo, coleção, origem e acesso explícitos.</p>
         </a>
-
-        <Externo destino="orkmindWeb" class="painel cartao-link bento-medio revela" style="--atraso: 0.16s" selo={false}>
-          <p class="micro-rotulo micro-rotulo-patina">a interface{!externos.orkmindWeb.aberto && <span class="selo-em-breve">em breve</span>}</p>
-          <h3 class="bento-titulo">orkmind-web</h3>
-          <p class="bento-desc">O workspace para escrever, localizar e investigar pela
-          Biblioteca em /knowledge, além de conduzir a factory sobre dados reais do Brain.</p>
-        </Externo>
       </div>
     </div>
   </section>
@@ -611,12 +604,10 @@ const principios = [
   .bento {
     display: grid;
     grid-template-columns: 1.55fr 1fr;
-    grid-template-rows: auto auto;
     gap: 1.1rem;
   }
 
   .bento-grande {
-    grid-row: 1 / 3;
     display: flex;
     flex-direction: column;
   }

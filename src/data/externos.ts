@@ -5,7 +5,6 @@
 export const externos = {
   orkastery: { url: 'https://github.com/orkastery/orkastery', aberto: true },
   orkmind: { url: 'https://github.com/orkastery/orkmind', aberto: true },
-  orkmindWeb: { url: 'https://github.com/orkastery/orkmind-web', aberto: false },
   npm: { url: 'https://www.npmjs.com/package/@orkastery/cli', aberto: true }
 } as const;
 
