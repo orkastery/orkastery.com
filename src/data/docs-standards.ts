@@ -9,7 +9,9 @@ export default [
       "docs/conceitos/diagramas/README.md",
       "docs/assets/marca/README.md",
       "docs/produto/README.md",
-      "docs/produto/_modelo-feature.md"
+      "docs/produto/_modelo-feature.md",
+      "docs/referencia/contratos/grafo-deterministico-kg1.md",
+      "docs/referencia/contratos/benchmark-grafo-kg1.md"
     ],
     "translations": {
       "pt": {
@@ -37,6 +39,13 @@ export default [
             "paragraphs": [
               "Use caixa de frase nos títulos e rótulos; preserve siglas, comandos e nomes próprios. Diagramas têm título, descrição e sequência legível sem depender da cor. Os índices e modelos orientam a edição; os ativos de marca permanecem na origem e não representam funcionalidades adicionais.",
               "O snapshot público registra caminhos relativos e hashes. Sincronizar uma fonte alterada invalida as revisões afetadas. A revisão das três línguas é explícita e o build funciona com o snapshot versionado, sem buscar conteúdo remoto."
+            ]
+          },
+          {
+            "id": "contratos-kg1",
+            "title": "Contrato não é resultado medido",
+            "paragraphs": [
+              "Os contratos KG1 fixam grafo e benchmark separadamente. O grafo conserva proveniência e restrições de acesso e recalcula identidades pelo conteúdo. O benchmark fixa pares A/B, tarefas, controles, tentativas e fontes de medida. Corpus sintético valida o contrato; não demonstra economia de tokens, latência ou significância. Uma medida ausente fica null com motivo. Extração, índice e consumo pelas fases continuam fora do KG1."
             ]
           }
         ]
@@ -67,6 +76,13 @@ export default [
               "Use sentence case for headings and labels; preserve acronyms, commands and proper names. Diagrams have titles, descriptions and a sequence readable without relying on color. Indexes and templates guide editing; brand assets remain at the source and do not represent additional features.",
               "The public snapshot records relative paths and hashes. Synchronizing a changed source invalidates affected reviews. All three languages require explicit review, and builds use the versioned snapshot without fetching remote content."
             ]
+          },
+          {
+            "id": "contratos-kg1",
+            "title": "A contract is not a measured result",
+            "paragraphs": [
+              "KG1 defines separate graph and benchmark contracts. The graph preserves provenance and access restrictions and recomputes content-derived identities. The benchmark fixes A/B pairs, tasks, controls, attempts and measurement sources. A synthetic corpus validates the contract; it demonstrates neither token savings, latency nor significance. Missing measurements remain null with a reason. Extraction, indexing and phase consumption remain outside KG1."
+            ]
           }
         ]
       },
@@ -96,6 +112,13 @@ export default [
               "Use mayúscula inicial en títulos y etiquetas; conserve siglas, comandos y nombres propios. Los diagramas tienen título, descripción y una secuencia legible sin depender del color. Los índices y modelos orientan la edición; los recursos de marca permanecen en la fuente y no representan funcionalidades adicionales.",
               "La instantánea pública registra rutas relativas y hashes. Sincronizar una fuente modificada invalida las revisiones afectadas. Los tres idiomas requieren revisión explícita y el build usa la instantánea versionada sin obtener contenido remoto."
             ]
+          },
+          {
+            "id": "contratos-kg1",
+            "title": "Un contrato no es un resultado medido",
+            "paragraphs": [
+              "KG1 define contratos separados de grafo y benchmark. El grafo conserva procedencia y restricciones de acceso y recalcula las identidades por contenido. El benchmark fija pares A/B, tareas, controles, intentos y fuentes de medida. El corpus sintético valida el contrato; no demuestra ahorro de tokens, latencia ni significancia. Una medida ausente queda null con motivo. Extracción, índice y consumo por las fases siguen fuera de KG1."
+            ]
           }
         ]
       }
@@ -118,6 +141,14 @@ export default [
             "paragraphs": [
               "O planejamento reúne evolução da condução, integração com hosts, memória governada e qualidade da documentação. Consulte o roadmap no repositório para ver o estado de cada iniciativa. Esta página não replica tickets nem transforma uma intenção em promessa de disponibilidade."
             ]
+          },
+          {
+            "id": "acompanhar",
+            "title": "Consulte o status atual",
+            "paragraphs": [
+              "O relatório do CLI agrupa iniciativas, sinaliza o que espera o dono com #HITL e mostra o próximo passo, sem alterar o roadmap. As fontes atuais incluem o HITL curto, o pacote de contexto do Company Brain, os contratos KG1, as correções de condução e os guias de contribuição. Contratos e código em uma branch não equivalem a publicação; confira as dimensões de estado na origem."
+            ],
+            "code": "ork roadmap status"
           }
         ]
       },
@@ -131,6 +162,14 @@ export default [
             "paragraphs": [
               "Planning covers conduction, host integration, governed memory and documentation quality. Consult the repository roadmap for each initiative’s state. This page neither replicates tickets nor turns intent into a promise of availability."
             ]
+          },
+          {
+            "id": "acompanhar",
+            "title": "Read the current status",
+            "paragraphs": [
+              "The CLI report groups initiatives, marks owner decisions with #HITL and shows the next step without changing the roadmap. Current sources cover short HITL requests, the Company Brain context package, KG1 contracts, conduction fixes and contribution guides. Contracts and branch code do not establish publication; check the state dimensions at the source."
+            ],
+            "code": "ork roadmap status"
           }
         ]
       },
@@ -144,6 +183,14 @@ export default [
             "paragraphs": [
               "La planificación reúne conducción, integración con hosts, memoria gobernada y calidad de la documentación. Consulte el roadmap del repositorio para conocer el estado de cada iniciativa. Esta página no replica tickets ni convierte una intención en promesa de disponibilidad."
             ]
+          },
+          {
+            "id": "acompanhar",
+            "title": "Consulte el estado actual",
+            "paragraphs": [
+              "El informe del CLI agrupa iniciativas, marca con #HITL lo que espera al dueño y muestra el siguiente paso sin modificar el roadmap. Las fuentes actuales incluyen HITL breve, el paquete de contexto del Company Brain, los contratos KG1, las correcciones de conducción y las guías de contribución. Los contratos y el código en una branch no equivalen a publicación; consulte las dimensiones de estado en la fuente."
+            ],
+            "code": "ork roadmap status"
           }
         ]
       }
