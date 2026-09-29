@@ -1,6 +1,46 @@
 ---
+import {localeFor, localize} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname);
+const translations={
+  "t0": {
+    "pt": "Radar de sessões: a varredura classifica cada sessão da máquina como trabalhando, parada com job vivo esperando humano, ou morta com estado carimbado. Só as paradas pagam o preço de uma inspeção profunda.",
+    "en": "Session radar illustrating active work, human waiting and observed termination.",
+    "es": "Radar de sesiones que ilustra trabajo activo, espera humana y finalización observada."
+  },
+  "t1": {
+    "pt": "trabalhando",
+    "en": "working",
+    "es": "trabajando"
+  },
+  "t2": {
+    "pt": "esperando humano",
+    "en": "waiting for a person",
+    "es": "esperando a una persona"
+  },
+  "t3": {
+    "pt": "morta, estado carimbado",
+    "en": "ended, with recorded state",
+    "es": "terminada, con estado registrado"
+  },
+  "t4": {
+    "pt": "Uma sessão viva pode estar esperando uma pessoa. O radar distingue atividade, espera humana e encerramento com evidência.",
+    "en": "A live session may be waiting for a person. The radar distinguishes activity, human waiting and evidence of termination.",
+    "es": "Una sesión viva puede estar esperando a una persona. El radar distingue actividad, espera humana y finalización con pruebas."
+  },
+  "t5": {
+    "pt": "Consulte as sessões antes de concluir que uma thread está trabalhando. O resultado depende do estado observado agora.",
+    "en": "Inspect sessions before concluding that a thread is working. The result depends on current observations.",
+    "es": "Consulte las sesiones antes de concluir que una thread está trabajando. El resultado depende del estado observado ahora."
+  },
+  "t6": {
+    "pt": "Consulte sua instalação",
+    "en": "Inspect your installation",
+    "es": "Consulte su instalación"
+  }
+};
+const t=(key:keyof typeof translations)=>translations[key][locale];
 // O radar HITL: varredura que parte das sessoes, nao das threads.
-// "Viva" nao e "trabalhando": sessao travada esperando humano e pausa valendo.
+// "Viva" nao e t("t1"): sessao travada esperando humano e pausa valendo.
 //
 // O eco de cada ponto e sincronizado com o angulo dele: a varredura leva 5s para
 // dar a volta, e cada sessao so acende quando o feixe passa por cima dela.
@@ -17,7 +57,7 @@ const sessoes = [
 ---
 
 <div class="radar-bloco grade-flexivel">
-  <div class="radar" data-anima role="img" aria-label="Radar de sessões: a varredura classifica cada sessão da máquina como trabalhando, parada com job vivo esperando humano, ou morta com estado carimbado. Só as paradas pagam o preço de uma inspeção profunda.">
+  <div class="radar" data-anima role="img" aria-label={t("t0")}>
     <div class="radar-disco">
       <span class="radar-anel"></span>
       <span class="radar-anel radar-anel-2"></span>
@@ -35,38 +75,16 @@ const sessoes = [
     </div>
 
     <ul class="legenda mono">
-      <li><span class="chave chave-trabalha" aria-hidden="true"></span> trabalhando</li>
-      <li><span class="chave chave-hitl" aria-hidden="true"></span> esperando humano</li>
-      <li><span class="chave chave-morta" aria-hidden="true"></span> morta, estado carimbado</li>
+      <li><span class="chave chave-trabalha" aria-hidden="true"></span> {t("t1")}</li>
+      <li><span class="chave chave-hitl" aria-hidden="true"></span> {t("t2")}</li>
+      <li><span class="chave chave-morta" aria-hidden="true"></span> {t("t3")}</li>
     </ul>
   </div>
 
   <div class="radar-texto">
-    <p class="paragrafo">O incidente que criou este radar: uma sessão ficou parada
-    pedindo um código de duas etapas, e o humano descobriu sozinho, horas depois. O
-    monitor via a sessão "viva" e concluía que o agente trabalhava. <strong>O sinal mais
-    forte de que alguém precisava do humano era lido como o oposto.</strong></p>
-
-    <p class="paragrafo radar-p2"><code>ork sessions hitl</code> parte das sessões, não
-    das threads: uma chamada classifica todas, e só as paradas pagam o preço de uma
-    inspeção profunda, que separa quem espera resposta de quem morreu esperando.</p>
-
-    <ul class="medidas">
-      <li><span class="medida-valor numeral">43</span><span class="medida-rotulo mono">sessões varridas</span></li>
-      <li><span class="medida-valor numeral">8</span><span class="medida-rotulo mono">paradas</span></li>
-      <li><span class="medida-valor numeral">9<span class="medida-unidade">s</span></span><span class="medida-rotulo mono">de varredura</span></li>
-    </ul>
-
-    <div class="terminal radar-terminal">
-      <div class="terminal-topo">
-        <span>varredura periódica</span>
-        <span>a cada 10 min</span>
-      </div>
-      <pre><span class="cmd">ork sessions hitl</span>
-<span class="saida-ok">2 sessões pedem você agora</span>: pergunta, opções e a
-recomendação por tipo. Alarme repetido não avisa de
-novo: alarme falso crônico ensina a ignorar o radar.</pre>
-    </div>
+    <p class="paragrafo">{t("t4")}</p>
+    <p class="paragrafo radar-p2">{t("t5")}</p>
+    <div class="terminal radar-terminal"><div class="terminal-topo"><span>{t("t6")}</span></div><pre><code>ork sessions hitl</code></pre></div>
   </div>
 </div>
 

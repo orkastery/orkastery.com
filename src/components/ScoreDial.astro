@@ -1,4 +1,39 @@
 ---
+import {localeFor, localize} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname);
+const translations={
+  "t0": {
+    "pt": "De 0 a 5, quão <em>inteligentemente</em> isso foi entregue?",
+    "en": "From 0 to 5, how <em>thoughtfully</em> was this delivered?",
+    "es": "De 0 a 5, ¿con cuánto <em>criterio</em> se entregó?"
+  },
+  "t1": {
+    "pt": "Arraste a batuta",
+    "en": "Move the baton",
+    "es": "Mueva la batuta"
+  },
+  "t2": {
+    "pt": "entregou limpo, no caminho previsto",
+    "en": "clean delivery along the planned route",
+    "es": "entrega limpia por el camino previsto"
+  },
+  "t3": {
+    "pt": "Demonstração do score, sem enviar uma nota. A nota real exige autoria humana e justificativa. Use <code>ork master pedir</code> para pedir a nota pelo canal autenticado; <code>ork master --batch</code> consulta a fila.",
+    "en": "Score demonstration; no rating is submitted. Actual scores require human authorship and a reason. Use <code>ork master pedir</code> to request a score through an authenticated channel; <code>ork master --batch</code> shows the queue.",
+    "es": "Demostración de la valoración, sin enviar una nota. La nota real exige autoría humana y justificación. Use <code>ork master pedir</code> para pedirla por un canal autenticado; <code>ork master --batch</code> muestra la cola."
+  },
+  "t4": {
+    "pt": "Classes tipadas de postmortem",
+    "en": "Typed postmortem classes",
+    "es": "Clases tipadas de postmortem"
+  },
+  "t5": {
+    "pt": "Classe livre vira texto solto, e texto solto não\n    agrega. Toda falha entra em uma destas:",
+    "en": "Fixed identifiers let failures be grouped consistently:",
+    "es": "Los identificadores fijos permiten agrupar los fallos de forma consistente:"
+  }
+};
+const t=(key:keyof typeof translations)=>translations[key][locale];
 // A pergunta que fecha toda thread: de 0 a 5, quao inteligentemente isso foi entregue?
 // Mostrador interativo + as nove classes fixas de POSTMORTEM.
 
@@ -21,9 +56,9 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
 }));
 ---
 
-<div class="score grade-flexivel" data-score>
+<div class="score grade-flexivel" data-score data-leituras={JSON.stringify({"pt": ["não entregou o que valia, e o caminho foi caro", "entregou torto, e deu retrabalho", "entregou, com atrito conhecido", "entregou limpo, no caminho previsto", "entregou limpo e mais barato que o previsto", "entregou e ensinou algo para a próxima thread"], "en": ["missed the goal at high cost", "delivered with problems and rework", "delivered with known friction", "clean delivery along the planned route", "clean delivery below the expected cost", "delivered and taught something for the next thread"], "es": ["no cumplió el objetivo y el camino fue costoso", "entregó con problemas y retrabajo", "entregó con dificultades conocidas", "entrega limpia por el camino previsto", "entrega limpia con menor coste del previsto", "entregó y dejó una lección para la siguiente thread"]}[locale])}>
   <div class="dial">
-    <p class="dial-pergunta display">De 0 a 5, quão <em>inteligentemente</em> isso foi entregue?</p>
+    <p class="dial-pergunta display"><Fragment set:html={t("t0")} /></p>
 
     <div class="dial-palco">
       <svg viewBox="0 0 240 142" aria-hidden="true">
@@ -61,21 +96,17 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
     </div>
 
     <div class="dial-controle">
-      <label class="dial-rotulo" for="score-faixa">Arraste a batuta</label>
+      <label class="dial-rotulo" for="score-faixa">{t("t1")}</label>
       <input id="score-faixa" type="range" min="0" max="5" step="1" value="3" />
-      <p class="dial-leitura mono" data-leitura aria-live="polite">entregou limpo, no caminho previsto</p>
+      <p class="dial-leitura mono" data-leitura aria-live="polite">{t("t2")}</p>
     </div>
 
-    <p class="dial-nota paragrafo">Métrica diz quanto a entrega custou. <strong>O score
-    diz se o caminho foi esperto.</strong> O ork recusa score sem justificativa, em
-    qualquer modo; nos modos sem pausa de MASTER, a thread cai na fila de
-    <code>ork master --batch</code> para você pontuar em bloco. Ela não some.</p>
+    <p class="dial-nota paragrafo"><Fragment set:html={t("t3")} /></p>
   </div>
 
   <div class="postmortem">
-    <p class="titulo-3">O POSTMORTEM só aceita nove classes</p>
-    <p class="paragrafo postmortem-sub">Classe livre vira texto solto, e texto solto não
-    agrega. Toda falha entra em uma destas:</p>
+    <p class="titulo-3">{t("t4")}</p>
+    <p class="paragrafo postmortem-sub">{t("t5")}</p>
     <ul class="classes escalona">
       {classes.map((classe) => (
         <li class="classe mono">{classe}</li>
@@ -319,16 +350,10 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
 </style>
 
 <script>
-  const LEITURAS = [
-    'não entregou o que valia, e o caminho foi caro',
-    'entregou torto, e deu retrabalho',
-    'entregou, com atrito conhecido',
-    'entregou limpo, no caminho previsto',
-    'entregou limpo e mais barato que o previsto',
-    'entregou e ensinou algo para a próxima thread'
-  ];
+
 
   for (const raiz of document.querySelectorAll<HTMLElement>('[data-score]')) {
+    const LEITURAS: string[]=JSON.parse(raiz.dataset.leituras || '[]');
     const faixa = raiz.querySelector<HTMLInputElement>('input[type="range"]');
     const valor = raiz.querySelector<HTMLElement>('.dial-valor');
     const batuta = raiz.querySelector<SVGGElement>('.dial-batuta');
@@ -345,7 +370,7 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
 
       batuta?.style.setProperty('--angulo', `${-90 + fracao * 180}deg`);
       arco?.style.setProperty('--fracao', String(fracao * 100));
-      faixa?.setAttribute('aria-valuetext', `score ${nota} de 5: ${LEITURAS[nota] ?? ''}`);
+      faixa?.setAttribute('aria-valuetext', `${nota}/5: ${LEITURAS[nota] ?? ''}`);
 
       for (const marca of marcas) {
         marca.dataset.ativa = Number(marca.dataset.marca) <= nota ? 'sim' : 'nao';

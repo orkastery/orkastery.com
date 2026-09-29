@@ -1,29 +1,119 @@
 ---
+import {localeFor, localize} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname);
+const translations={
+  "t0": {
+    "pt": "estimated, por transcript",
+    "en": "estimated, from transcript",
+    "es": "estimated, por transcript"
+  },
+  "t1": {
+    "pt": "informada, pelo host",
+    "en": "reported by the host",
+    "es": "informada por el host"
+  },
+  "t2": {
+    "pt": "CRÍTICO",
+    "en": "Critical",
+    "es": "Crítico"
+  },
+  "t3": {
+    "pt": "IMPORTANTE",
+    "en": "Important",
+    "es": "Importante"
+  },
+  "t4": {
+    "pt": "RESUMÍVEL",
+    "en": "Summarizable",
+    "es": "Resumible"
+  },
+  "t5": {
+    "pt": "Vai inline, sempre: estado, decisões locked, critérios, claims.",
+    "en": "Always inline: state, locked decisions, criteria and claims.",
+    "es": "Siempre incluido: estado, decisiones locked, criterios y claims."
+  },
+  "t6": {
+    "pt": "Vira ponteiro <code>path#âncora</code> com o momento certo de resolver (<code>retrieve_when</code>). Pedido fora do momento volta sem o conteúdo.",
+    "en": "A <code>path#anchor</code> pointer with a retrieval condition (<code>retrieve_when</code>). Requests outside that condition return no content.",
+    "es": "Un puntero <code>path#ancla</code> con condición de recuperación (<code>retrieve_when</code>). Fuera de esa condición no devuelve contenido."
+  },
+  "t7": {
+    "pt": "Resumo curto, com proveniência obrigatória: <code>source</code>, <code>location</code> e o sha256 do arquivo de origem.",
+    "en": "A short summary with required provenance: <code>source</code>, <code>location</code> and the source file’s SHA-256.",
+    "es": "Un resumen breve con procedencia obligatoria: <code>source</code>, <code>location</code> y SHA-256 del archivo fuente."
+  },
+  "t8": {
+    "pt": "A fase termina e o gate mede a ocupação da janela de contexto.",
+    "en": "When the phase ends, the gate evaluates context-window usage.",
+    "es": "Al terminar la fase, el gate evalúa la ocupación de la ventana de contexto."
+  },
+  "t9": {
+    "pt": "Quando nenhuma fonte sabe medir, o veredito sai\n      <code>same-session</code> com <code>decididoPor: ausencia-de-medida</code>.\n      Decidir por dado que não existe é pior do que não decidir.\n      <strong>Uma lacuna nunca vira zero.</strong>",
+    "en": "When no source can measure usage, the result is <code>same-session</code> with <code>decididoPor: ausencia-de-medida</code>. <strong>Missing data never becomes zero.</strong>",
+    "es": "Sin una fuente capaz de medir, el resultado es <code>same-session</code> con <code>decididoPor: ausencia-de-medida</code>. <strong>Un dato ausente nunca se convierte en cero.</strong>"
+  },
+  "t10": {
+    "pt": "passou de rotate_above?",
+    "en": "above rotate_above?",
+    "es": "¿superó rotate_above?"
+  },
+  "t11": {
+    "pt": "não",
+    "en": "no",
+    "es": "no"
+  },
+  "t12": {
+    "pt": "sim",
+    "en": "yes",
+    "es": "sí"
+  },
+  "t13": {
+    "pt": "Mesma sessão. O trabalho continua onde está.",
+    "en": "Same session. Work continues in place.",
+    "es": "Misma sesión. El trabajo continúa donde está."
+  },
+  "t14": {
+    "pt": "Nova sessão, com <strong>handoff triado</strong>. Nada de\n        copiar a sessão anterior inteira e entregar uma sessão nova já cheia.",
+    "en": "New session with a <strong>triaged handoff</strong>, carrying the context needed for the next step.",
+    "es": "Nueva sesión con <strong>handoff clasificado</strong> y el contexto necesario para el siguiente paso."
+  },
+  "t15": {
+    "pt": "A triagem em três níveis",
+    "en": "Three levels of context",
+    "es": "Tres niveles de contexto"
+  },
+  "t16": {
+    "pt": "Com o OrkMind ligado, o mesmo ponteiro resolve por\n    busca semântica por tag. Com o OrkMind fora do ar, ele resolve por\n    <code>path#âncora</code>, e o fluxo de quem lê o handoff não muda em nada. A\n    degradação tem motivo tipado.",
+    "en": "With OrkMind available, pointers can resolve through memory. File fallback uses <code>path#anchor</code>, with a typed reason for degraded operation.",
+    "es": "Con OrkMind disponible, los punteros pueden resolverse mediante la memoria. El respaldo por archivos usa <code>path#ancla</code>, con motivo tipado de degradación."
+  }
+};
+const t=(key:keyof typeof translations)=>translations[key][locale];
 // O gate de tokens e o handoff triado em tres niveis.
 // A janela de contexto acaba no meio da thread; o ork mede, decide e tria o que passa.
 
 const fontes = [
   { nome: 'runtime_reported', existe: true },
-  { nome: 'estimated, por transcript', existe: true },
-  { nome: 'informada, pelo host', existe: true },
+  { nome: t("t0"), existe: true },
+  { nome: t("t1"), existe: true },
   { nome: 'unavailable', existe: false }
 ];
 
 const niveis = [
   {
-    nome: 'CRÍTICO',
+    nome: t("t2"),
     cor: 'latao',
-    desc: 'Vai inline, sempre: estado, decisões locked, critérios, claims.'
+    desc: t("t5")
   },
   {
-    nome: 'IMPORTANTE',
+    nome: t("t3"),
     cor: 'brasa',
-    desc: 'Vira ponteiro <code>path#âncora</code> com o momento certo de resolver (<code>retrieve_when</code>). Pedido fora do momento volta sem o conteúdo.'
+    desc: t("t6")
   },
   {
-    nome: 'RESUMÍVEL',
+    nome: t("t4"),
     cor: 'patina',
-    desc: 'Resumo curto, com proveniência obrigatória: <code>source</code>, <code>location</code> e o sha256 do arquivo de origem.'
+    desc: t("t7")
   }
 ];
 ---
@@ -32,7 +122,7 @@ const niveis = [
   <div class="gate-fluxo" data-anima>
     <div class="painel etapa">
       <p class="micro-rotulo sem-ponto">ork gate next</p>
-      <p class="etapa-texto">A fase termina e o gate mede a ocupação da janela de contexto.</p>
+      <p class="etapa-texto">{t("t8")}</p>
 
       <ul class="fontes mono">
         {fontes.map((fonte) => (
@@ -43,35 +133,31 @@ const niveis = [
         ))}
       </ul>
 
-      <p class="etapa-nota">Quando nenhuma fonte sabe medir, o veredito sai
-      <code>same-session</code> com <code>decididoPor: ausencia-de-medida</code>.
-      Decidir por dado que não existe é pior do que não decidir.
-      <strong>Uma lacuna nunca vira zero.</strong></p>
+      <p class="etapa-nota"><Fragment set:html={t("t9")} /></p>
     </div>
 
     <div class="decisao" aria-hidden="true">
       <span class="decisao-fio"></span>
       <span class="decisao-losango">
-        <span class="decisao-pergunta mono">passou de rotate_above?</span>
+        <span class="decisao-pergunta mono">{t("t10")}</span>
       </span>
       <span class="decisao-fio"></span>
     </div>
 
     <div class="saidas">
       <div class="painel saida">
-        <p class="mono saida-tag">não</p>
-        <p class="etapa-texto">Mesma sessão. O trabalho continua onde está.</p>
+        <p class="mono saida-tag">{t("t11")}</p>
+        <p class="etapa-texto">{t("t13")}</p>
       </div>
       <div class="painel painel-latao saida">
-        <p class="mono saida-tag saida-tag-latao">sim</p>
-        <p class="etapa-texto">Nova sessão, com <strong>handoff triado</strong>. Nada de
-        copiar a sessão anterior inteira e entregar uma sessão nova já cheia.</p>
+        <p class="mono saida-tag saida-tag-latao">{t("t12")}</p>
+        <p class="etapa-texto"><Fragment set:html={t("t14")} /></p>
       </div>
     </div>
   </div>
 
   <div class="triagem">
-    <p class="titulo-3">A triagem em três níveis</p>
+    <p class="titulo-3">{t("t15")}</p>
 
     <ol class="niveis escalona">
       {niveis.map((nivel, indice) => (
@@ -85,10 +171,7 @@ const niveis = [
       ))}
     </ol>
 
-    <p class="triagem-nota paragrafo">Com o OrkMind ligado, o mesmo ponteiro resolve por
-    busca semântica por tag. Com o OrkMind fora do ar, ele resolve por
-    <code>path#âncora</code>, e o fluxo de quem lê o handoff não muda em nada. A
-    degradação tem motivo tipado.</p>
+    <p class="triagem-nota paragrafo"><Fragment set:html={t("t16")} /></p>
   </div>
 </div>
 

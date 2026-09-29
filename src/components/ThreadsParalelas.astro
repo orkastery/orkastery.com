@@ -1,4 +1,69 @@
 ---
+import {localeFor, localize} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname);
+const translations={
+  "t0": {
+    "pt": "o único gate de merge",
+    "en": "the serialized merge gate",
+    "es": "el gate de merge serializado"
+  },
+  "t1": {
+    "pt": "escrita dentro da própria worktree",
+    "en": "writes inside its own worktree",
+    "es": "escritura en su propia worktree"
+  },
+  "t2": {
+    "pt": "região de arquivos reservada",
+    "en": "reserved file scope",
+    "es": "ámbito de archivos reservado"
+  },
+  "t3": {
+    "pt": "um card, um dono por vez",
+    "en": "one owner per card at a time",
+    "es": "un responsable por tarjeta a la vez"
+  },
+  "t4": {
+    "pt": "porta local sem disputa",
+    "en": "an exclusive local port",
+    "es": "un puerto local exclusivo"
+  },
+  "t5": {
+    "pt": "Diagrama de três threads paralelas, cada uma com a sua worktree. Os pulsos de trabalho correm em paralelo, mas as partículas de merge convergem para o main-tree uma por vez: o merge é serializado pelo lease main-tree.",
+    "en": "Illustration of parallel threads with separate worktrees. Work runs in parallel, while the main-tree lease serializes merges.",
+    "es": "Ilustración de threads paralelas con worktrees separadas. El trabajo ocurre en paralelo; el lease main-tree serializa los merges."
+  },
+  "t6": {
+    "pt": "worktree própria · ledger próprio · score próprio",
+    "en": "own worktree · own ledger · own score",
+    "es": "worktree propia · ledger propio · valoración propia"
+  },
+  "t7": {
+    "pt": "uma thread mergeia por vez",
+    "en": "one thread merges at a time",
+    "es": "una thread hace merge a la vez"
+  },
+  "t8": {
+    "pt": "as outras esperam em fila FIFO, não sobrescrevem",
+    "en": "the others wait in a FIFO queue",
+    "es": "las demás esperan en una cola FIFO"
+  },
+  "t9": {
+    "pt": "ship com push provado por <code>git ls-remote</code>",
+    "en": "SHIP with push verified by <code>git ls-remote</code>",
+    "es": "SHIP con push verificado por <code>git ls-remote</code>"
+  },
+  "t10": {
+    "pt": "Exemplo ilustrativo de três entregas em paralelo. Para consultar seu projeto, use <code>ork board --all</code>.",
+    "en": "Illustration of parallel deliveries. Inspect your project with <code>ork board --all</code>.",
+    "es": "Ilustración de entregas paralelas. Consulte su proyecto con <code>ork board --all</code>."
+  },
+  "t11": {
+    "pt": "Cinco famílias de leases tipados com TTL. Duas threads\npedindo a mesma região entram numa fila FIFO, em vez de escrever uma por cima da outra.\nE <code>ork board --all</code> responde a única pergunta que importa numa máquina com\ntrês roadmaps abertos: o que está rolando aqui, agora.",
+    "en": "Typed leases have a TTL. Threads requesting the same scope wait in FIFO order. <code>ork board --all</code> shows the current work.",
+    "es": "Los leases tipados tienen TTL. Las threads que solicitan el mismo ámbito esperan en orden FIFO. <code>ork board --all</code> muestra el trabajo actual."
+  }
+};
+const t=(key:keyof typeof translations)=>translations[key][locale];
 // N looping threads em paralelo: worktree propria por thread, leases em fila FIFO
 // e main-tree como unico gate de merge, serializado.
 //
@@ -13,15 +78,15 @@ const faixas = [
 ];
 
 const leases = [
-  { nome: 'main-tree', mestre: true, nota: 'o único gate de merge' },
-  { nome: 'worktree-write:<thread>', nota: 'escrita dentro da própria worktree' },
-  { nome: 'path:<glob>', nota: 'região de arquivos reservada' },
-  { nome: 'board:<card>', nota: 'um card, um dono por vez' },
-  { nome: 'service:<porta>', nota: 'porta local sem disputa' }
+  { nome: 'main-tree', mestre: true, nota: t("t0") },
+  { nome: 'worktree-write:<thread>', nota: t("t1") },
+  { nome: 'path:<glob>', nota: t("t2") },
+  { nome: 'board:<card>', nota: t("t3") },
+  { nome: 'service:<porta>', nota: t("t4") }
 ];
 ---
 
-<div class="paralelas grade-flexivel" data-anima role="img" aria-label="Diagrama de três threads paralelas, cada uma com a sua worktree. Os pulsos de trabalho correm em paralelo, mas as partículas de merge convergem para o main-tree uma por vez: o merge é serializado pelo lease main-tree.">
+<div class="paralelas grade-flexivel" data-anima role="img" aria-label={t("t5")}>
   <div class="faixas">
     {faixas.map((faixa, indice) => (
       <div class="faixa" style={`--indice: ${indice}`}>
@@ -34,7 +99,7 @@ const leases = [
           <span class="trilho-leito" aria-hidden="true"></span>
           <span class="pulso" aria-hidden="true"></span>
         </div>
-        <p class="faixa-pe mono">worktree própria · ledger próprio · score próprio</p>
+        <p class="faixa-pe mono">{t("t6")}</p>
       </div>
     ))}
   </div>
@@ -71,18 +136,18 @@ const leases = [
     <div class="portao-caixa">
       <span class="portao-luz" aria-hidden="true"></span>
       <div>
-        <p class="portao-frase">uma thread mergeia por vez</p>
-        <p class="portao-nota mono">as outras esperam em fila FIFO, não sobrescrevem</p>
+        <p class="portao-frase">{t("t7")}</p>
+        <p class="portao-nota mono">{t("t8")}</p>
       </div>
     </div>
     <p class="portao-saida mono">
       <span class="saida-marca" aria-hidden="true"></span>
-      ship com push provado por <code>git ls-remote</code>
+      <Fragment set:html={t("t9")} />
     </p>
   </div>
 </div>
 
-<p class="paragrafo">Exemplo ilustrativo de três entregas em paralelo. Para consultar seu projeto, use <code>ork board --all</code>.</p>
+<p class="paragrafo"><Fragment set:html={t("t10")} /></p>
 
 <ul class="leases">
   {leases.map((lease) => (
@@ -93,10 +158,7 @@ const leases = [
   ))}
 </ul>
 
-<p class="leases-nota paragrafo">Cinco famílias de leases tipados com TTL. Duas threads
-pedindo a mesma região entram numa fila FIFO, em vez de escrever uma por cima da outra.
-E <code>ork board --all</code> responde a única pergunta que importa numa máquina com
-três roadmaps abertos: o que está rolando aqui, agora.</p>
+<p class="leases-nota paragrafo"><Fragment set:html={t("t11")} /></p>
 
 <style>
   .paralelas {

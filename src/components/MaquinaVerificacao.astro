@@ -1,4 +1,104 @@
 ---
+import {localeFor, localize} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname);
+const translations={
+  "t0": {
+    "pt": "o agente afirma",
+    "en": "the agent makes a claim",
+    "es": "el agente afirma"
+  },
+  "t1": {
+    "pt": "Uma alegação precisa de prova executável.",
+    "en": "A claim needs executable evidence.",
+    "es": "Una afirmación necesita pruebas ejecutables."
+  },
+  "t2": {
+    "pt": "A claim é um contrato, não um adjetivo: alegação, arquivo e o <strong>comando</strong> que a comprova.",
+    "en": "A claim records the statement, file and <strong>command</strong> that proves it.",
+    "es": "Una claim registra la afirmación, el archivo y el <strong>comando</strong> que la demuestra."
+  },
+  "t3": {
+    "pt": "Reexecuta o comando no HEAD real, na worktree real, agora. Não no texto do modelo.",
+    "en": "Reruns the command at the actual HEAD, in the actual worktree.",
+    "es": "Vuelve a ejecutar el comando en el HEAD real, dentro de la worktree real."
+  },
+  "t4": {
+    "pt": "baseline de antes do GO",
+    "en": "baseline recorded before GO",
+    "es": "baseline registrada antes de GO"
+  },
+  "t5": {
+    "pt": "passava antes",
+    "en": "passed before",
+    "es": "pasaba antes"
+  },
+  "t6": {
+    "pt": "já falhava",
+    "en": "already failed",
+    "es": "ya fallaba"
+  },
+  "t7": {
+    "pt": "sem baseline",
+    "en": "no baseline",
+    "es": "sin baseline"
+  },
+  "t8": {
+    "pt": "vira <code>verify.regression</code>: o defeito é desta thread.",
+    "en": "Becomes <code>verify.regression</code>: the thread introduced a failure.",
+    "es": "Produce <code>verify.regression</code>: la thread introdujo un fallo."
+  },
+  "t9": {
+    "pt": "vira dívida pré-existente: anotada, não imputada à thread.",
+    "en": "Recorded as existing debt, separate from regressions.",
+    "es": "Se registra como deuda previa, separada de las regresiones."
+  },
+  "t10": {
+    "pt": "vira <code>verify.failed</code>, sem chutar de quem é a culpa.",
+    "en": "Produces <code>verify.failed</code>, without guessing responsibility.",
+    "es": "Produce <code>verify.failed</code>, sin adivinar responsabilidades."
+  },
+  "t11": {
+    "pt": "gate bloqueado",
+    "en": "blocked gate",
+    "es": "gate bloqueado"
+  },
+  "t12": {
+    "pt": "Motivo tipado, evidência real e correção sugerida. O <code>ork fix open</code> abre a spec da correção a partir do resultado do verify, não de prosa.",
+    "en": "A typed reason, actual evidence and a suggested fix. <code>ork fix open</code> derives the fix specification from the verify result.",
+    "es": "Motivo tipado, pruebas reales y corrección sugerida. <code>ork fix open</code> deriva la especificación de la corrección del resultado de verify."
+  },
+  "t13": {
+    "pt": "Motivos tipados de gate",
+    "en": "Typed gate reasons",
+    "es": "Motivos tipados de gate"
+  },
+  "t14": {
+    "pt": "Exemplos de motivos do núcleo. Consulte a política atual com <code>ork retry policy</code>.",
+    "en": "Examples of core reasons. Read the current policy with <code>ork retry policy</code>.",
+    "es": "Ejemplos de motivos del núcleo. Consulte la política actual con <code>ork retry policy</code>."
+  },
+  "t15": {
+    "pt": "a máquina reexecuta",
+    "en": "automatic retry",
+    "es": "reintento automático"
+  },
+  "t16": {
+    "pt": "sobe para gente",
+    "en": "human escalation",
+    "es": "escalación humana"
+  },
+  "t17": {
+    "pt": "sem retry, nunca",
+    "en": "no retry",
+    "es": "sin reintento"
+  },
+  "t18": {
+    "pt": "<code>cost.violation</code> é o único motivo que\n    jamais recebe retry automático: reexecutar uma violação de custo é gastar de novo.",
+    "en": "<code>cost.violation</code> forbids automatic retries: retrying would spend again.",
+    "es": "<code>cost.violation</code> prohíbe el reintento automático: reintentar volvería a gastar."
+  }
+};
+const t=(key:keyof typeof translations)=>translations[key][locale];
 // A maquinaria que nao acredita em self-report: claim -> verify -> baseline -> gate tipado.
 // Os 12 motivos vem da tabela oficial de gates do nucleo. A cor codifica quem resolve:
 // latao quando a maquina reexecuta sozinha, brasa quando sobe para gente, e apagado
@@ -12,6 +112,7 @@ const motivos = [
   { nome: 'verify.failed', retry: 'corrigir-dirigido', automatica: 'sim' },
   { nome: 'tree.blocked', retry: 'sincronizar-worktree', automatica: 'sim' },
   { nome: 'lease.busy', retry: 'reexecutar', automatica: 'sim' },
+  { nome: 'runtime.model-unavailable', retry: 'trocar-destino', automatica: 'sim' },
   { nome: 'runtime.unavailable', retry: 'reexecutar', automatica: 'sim' },
   { nome: 'runtime.rate-limited', retry: 'esperar-janela', automatica: 'sim' },
   { nome: 'policy.violation', retry: 'escalar-humano', automatica: 'não' },
@@ -21,32 +122,32 @@ const motivos = [
 
 const passos = [
   {
-    quem: 'o agente afirma',
-    texto: '"Implementei X, e os testes passam."',
+    quem: t("t0"),
+    texto: t("t1"),
     tom: 'neutro'
   },
   {
     quem: 'claims.jsonl',
-    texto: 'A claim é um contrato, não um adjetivo: alegação, arquivo e o <strong>comando</strong> que a comprova.',
+    texto: t("t2"),
     tom: 'neutro'
   },
   {
     quem: 'ork verify',
-    texto: 'Reexecuta o comando no HEAD real, na worktree real, agora. Não no texto do modelo.',
+    texto: t("t3"),
     tom: 'latao'
   },
   {
-    quem: 'baseline de antes do GO',
+    quem: t("t4"),
     tom: 'ramos',
     ramos: [
-      { tag: 'passava antes', texto: 'vira <code>verify.regression</code>: o defeito é desta thread.', cor: 'brasa' },
-      { tag: 'já falhava', texto: 'vira dívida pré-existente: anotada, não imputada à thread.', cor: 'neutro' },
-      { tag: 'sem baseline', texto: 'vira <code>verify.failed</code>, sem chutar de quem é a culpa.', cor: 'neutro' }
+      { tag: t("t5"), texto: t("t8"), cor: 'brasa' },
+      { tag: t("t6"), texto: t("t9"), cor: 'neutro' },
+      { tag: t("t7"), texto: t("t10"), cor: 'neutro' }
     ]
   },
   {
-    quem: 'gate bloqueado',
-    texto: 'Motivo tipado, evidência real e correção sugerida. O <code>ork fix open</code> abre a spec da correção a partir do resultado do verify, não de prosa.',
+    quem: t("t11"),
+    texto: t("t12"),
     tom: 'neutro'
   }
 ];
@@ -78,14 +179,13 @@ const passos = [
   </ol>
 
   <div class="motivos">
-    <p class="titulo-3">Os 12 motivos tipados de gate</p>
-    <p class="motivos-sub paragrafo">Nenhum bloqueio é uma string de prosa. Todo bloqueio
-    é um destes, com ação de retry determinada.</p>
+    <p class="titulo-3">{t("t13")}</p>
+    <p class="motivos-sub paragrafo"><Fragment set:html={t("t14")} /></p>
 
     <ul class="chaves mono" aria-hidden="true">
-      <li><span class="chave chave-auto"></span> a máquina reexecuta</li>
-      <li><span class="chave chave-humano"></span> sobe para gente</li>
-      <li><span class="chave chave-nunca"></span> sem retry, nunca</li>
+      <li><span class="chave chave-auto"></span> {t("t15")}</li>
+      <li><span class="chave chave-humano"></span> {t("t16")}</li>
+      <li><span class="chave chave-nunca"></span> {t("t17")}</li>
     </ul>
 
     <ul class="grade-motivos escalona">
@@ -100,8 +200,7 @@ const passos = [
       ))}
     </ul>
 
-    <p class="motivos-nota paragrafo"><code>cost.violation</code> é o único motivo que
-    jamais recebe retry automático: reexecutar uma violação de custo é gastar de novo.</p>
+    <p class="motivos-nota paragrafo"><Fragment set:html={t("t18")} /></p>
   </div>
 </div>
 
