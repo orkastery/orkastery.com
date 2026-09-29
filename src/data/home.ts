@@ -2,11 +2,11 @@ export default {
   "pt": {
     "title": "Agentes ficaram bons. Conduzir agentes também precisa de método.",
     "description": "Condução de software com agentes, evidência verificável e memória governada.",
-    "lead": "Você conduz. A Orkastery é uma fábrica de software de agentes de IA que prova o próprio trabalho: threads em paralelo, resultado verificado e decisão curta só quando importa.",
+    "lead": "Uma fábrica de software de agentes de IA que prova o próprio trabalho. Você conduz: threads em paralelo, resultado verificado e decisão curta só quando importa.",
     "mechanism": "Como as peças se conectam",
     "mechanismText": "O host apresenta, o núcleo verifica e o runtime implementa. Conheça as fronteiras antes de conduzir o primeiro ciclo.",
     "install": "Comece pelo ambiente",
-    "installText": "Instale o CLI e confira os requisitos do seu projeto. A documentação acompanha configuração, fases e verificações.",
+    "installText": "Instale o CLI e confira os requisitos do seu projeto. A documentação acompanha configuração, fases e verificações. @orkastery/cli 0.5.0.",
     "command": "npm install -g @orkastery/cli\nork doctor",
     "sections": [
       {
@@ -38,11 +38,11 @@ export default {
   "en": {
     "title": "Agents got better. Conducting them needs a method too.",
     "description": "Software development with agents, verifiable evidence and governed memory.",
-    "lead": "You conduct. Orkastery is an AI agent software factory that proves its work: parallel threads, verified results and concise decisions when they matter.",
+    "lead": "A software factory of AI agents that proves its work: parallel threads, verified results, and short decisions only when they matter.",
     "mechanism": "How the pieces connect",
     "mechanismText": "The host presents, the core verifies and the runtime implements. Learn the boundaries before conducting your first cycle.",
     "install": "Start with the environment",
-    "installText": "Install the CLI and check your project’s requirements. The documentation covers setup, phases and verification.",
+    "installText": "Install the CLI and check your project’s requirements. The documentation covers setup, phases and verification. @orkastery/cli 0.5.0.",
     "command": "npm install -g @orkastery/cli\nork doctor",
     "sections": [
       {
@@ -74,11 +74,11 @@ export default {
   "es": {
     "title": "Los agentes mejoraron. Conducirlos también necesita un método.",
     "description": "Desarrollo de software con agentes, pruebas verificables y memoria gobernada.",
-    "lead": "Usted conduce. Orkastery es una fábrica de software con agentes de IA que demuestra su trabajo: threads en paralelo, resultados verificados y decisiones breves cuando importan.",
+    "lead": "Una fábrica de software de agentes de IA que demuestra su trabajo: threads en paralelo, resultados verificados y decisiones breves solo cuando importan.",
     "mechanism": "Cómo se conectan las piezas",
     "mechanismText": "El host presenta, el núcleo verifica y el runtime implementa. Conozca los límites antes de conducir el primer ciclo.",
     "install": "Empiece por el entorno",
-    "installText": "Instale el CLI y compruebe los requisitos del proyecto. La documentación cubre configuración, fases y verificación.",
+    "installText": "Instale el CLI y compruebe los requisitos del proyecto. La documentación cubre configuración, fases y verificación. @orkastery/cli 0.5.0.",
     "command": "npm install -g @orkastery/cli\nork doctor",
     "sections": [
       {
