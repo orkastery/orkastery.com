@@ -48,14 +48,16 @@ npm run docs:sync -- --source /caminho/do/repositorio
 npm run docs:check -- --source /caminho/do/repositorio
 
 # Depois de revisar de fato as traduções e fontes afetadas:
-npm run docs:sync -- --source /caminho/do/repositorio --review pt,en,es --reviewer editor
+npm run docs:sync -- --source /caminho/do/repositorio --review pt,en,es --reviewer executor-editorial --articles contribuir
 npm run build
 ```
 
 A sincronização comum preserva os recibos anteriores, mas uma fonte alterada
 invalida os hashes de revisão; não aprova traduções sozinha. `--review` é uma
 atestação editorial explícita de quem executa o comando, não revisão humana
-independente. Não use a opção antes de ler os textos. Fonte nova sem destino,
+independente. Selecione em `--articles` somente os slugs alterados, separados por vírgula.
+Os artigos fora da seleção preservam o revisor, a data e os hashes.
+Não use a opção antes de ler os textos. Fonte nova sem destino,
 fonte removida ainda referenciada e revisão desatualizada reprovam.
 
 Sem `--source`, o build verifica apenas a integridade e cobertura do snapshot
