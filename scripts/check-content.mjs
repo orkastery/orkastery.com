@@ -17,6 +17,22 @@ export function checkContent(dist=distArg()){
    }
   }
  }
+ for(const locale of ['pt','en','es']) {
+  const prefix=locale==='pt'?'':'/'+locale, home=all.find(p=>p.path===prefix+'/');
+  if(!home)throw Error('Missing translated home: '+locale);
+  const required={"pt": ["Aponte três agentes para o mesmo repositório", "Seis fases que nenhum agente pula", "Quanta pausa você quer? Escreva uma #TAG.", "Não peça para acreditar. Rode.", "O ecossistema Orkastery"], "en": ["Point three agents at the same repository", "Six phases no agent skips", "How much pause do you want? Write a #TAG.", "Don’t take our word for it. Run it.", "The Orkastery ecosystem"], "es": ["Apunte tres agentes al mismo repositorio", "Seis fases que ningún agente se salta", "¿Cuánta pausa quiere? Escriba una #TAG.", "No le pedimos que lo crea. Ejecútelo.", "El ecosistema Orkastery"]}[locale];
+  for(const heading of required)if(!home.nodes.some(n=>n.tagName==='h2'&&content(n).includes(heading)))throw Error('Missing restored home section: '+locale);
+  if(!home.nodes.some(n=>'data-ciclo' in attrs(n))||!home.nodes.some(n=>'data-modos' in attrs(n)))throw Error('Missing interactive cycle or modes: '+locale);
+  if(!content(home.nodes.find(n=>n.tagName==='main')).includes('@orkastery/cli 0.5.0'))throw Error('Missing release label');
+  const product=all.find(p=>p.path===prefix+'/ork/');if(!product||!product.nodes.some(n=>n.tagName==='h2'&&/dia cheio|full day|día lleno/.test(content(n))))throw Error('Missing approved decision card: '+locale);
+  const contribution=all.find(p=>p.path===prefix+'/docs/contribuir/');
+  if(!contribution)throw Error('Missing contribution page: '+locale);
+  for(const entry of [home,all.find(p=>p.path===prefix+'/docs/')])if(!entry?.nodes.some(n=>n.tagName==='a'&&attrs(n).href===prefix+'/docs/contribuir/'))throw Error('Missing contribution navigation: '+locale);
+  if(!contribution.nodes.some(n=>n.tagName==='a'&&attrs(n).href?.endsWith('/discussions')))throw Error('Missing feature discussion link');
+  if(!contribution.nodes.some(n=>n.tagName==='a'&&attrs(n).href?.endsWith('/CONTRIBUTING.md')))throw Error('Missing contribution source');
+  const visible=content(home.nodes.find(n=>n.tagName==='main'));
+  if(/OrkMind Web|Orkastery Web|Orkastery Board|pron[uú]ncia|pronunciation|pronunciación/.test(visible))throw Error('Excluded home content');
+ }
  return {pages:all.length,accessibleDiagrams:diagrams,manualVisualReview:'required'};
 }
 if(process.argv[1]===fileURLToPath(import.meta.url)){try{console.log(JSON.stringify(checkContent()));}catch(e){console.error(e.message);process.exitCode=1;}}
