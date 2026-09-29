@@ -7,14 +7,18 @@
       "sha256": "21d7115ac23c2412384b16dcbb8b76b0d8b2c0900f1fcf23a862a4215ebca2a3",
       "category": "root",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "comecar"
+      ]
     },
     {
       "path": "core/package.json",
       "sha256": "56d132bf0198d0b496a433b7b1bf712357ffd7bff9ffefe7628f7b442b48a826",
       "category": "package.json",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "comecar"
+      ]
     },
     {
       "path": "docs/README.md",
@@ -39,14 +43,18 @@
       "sha256": "e6d05e7cf9995caae703f7800b0ff9490517f66d6d57ebaf6fb3d5c6540d9caa",
       "category": "comecar",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "comecar"
+      ]
     },
     {
       "path": "docs/conceitos/arquitetura.md",
       "sha256": "453ee6378832700b818fce4271cc0606c5888e5ea2637571c399ee6639cf3026",
       "category": "conceitos",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "arquitetura"
+      ]
     },
     {
       "path": "docs/conceitos/diagramas/README.md",
@@ -62,7 +70,10 @@
       "sha256": "71eca401a016be1cdbd6226ed1452a64c156a829fcad1af9ce3273a1b2c386d5",
       "category": "conceitos",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "arquitetura",
+        "ciclo"
+      ]
     },
     {
       "path": "docs/guias/auditoria.md",
@@ -132,7 +143,9 @@
       "sha256": "b305706cf5d9862e9198a71d4d42772e1df21dcbcc1d6aa92a67bb9a28903598",
       "category": "produto",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "ciclo"
+      ]
     },
     {
       "path": "docs/produto/FEAT-002-modos-de-conducao.md",
@@ -798,6 +811,67 @@
       ]
     }
   ],
-  "inventoryHash": "0849ac8daecfd57e814318e490d8ff42f16e235abc79d71ad6de4a579bb74814",
-  "reviews": {}
+  "inventoryHash": "fbfcca64d87c1575e3ada65d99b353849212331caa09ab485d71370d22cb6423",
+  "reviews": {
+    "comecar": {
+      "pt": {
+        "sourceHash": "6ee12ab9a22704102d8353392dbcc6461b93b8f1a339034f8e47a7f6fdbcc43a",
+        "contentHash": "39fc389517631ac3b7a00fbe35793ab756888b9f6f67dc7723583fc36344d4e2",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "6ee12ab9a22704102d8353392dbcc6461b93b8f1a339034f8e47a7f6fdbcc43a",
+        "contentHash": "51e2464eaaa2913fa376df1a988e1077cc85c340c1b2e2ea4a388456247c23f3",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "6ee12ab9a22704102d8353392dbcc6461b93b8f1a339034f8e47a7f6fdbcc43a",
+        "contentHash": "52813fcb84eb71d952bec48e21ac827fd42905ae4cfb520b4a945a48d6cd7dae",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "arquitetura": {
+      "pt": {
+        "sourceHash": "e25e7b6b48ee95e8101b18405224fa096bab86893033e0d9db5cbb9abd5b7711",
+        "contentHash": "11c3ab754588ad5fcb5a4fb5d39f43d96ab9c730b5a3a17bca306ba4d0b58fbc",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "e25e7b6b48ee95e8101b18405224fa096bab86893033e0d9db5cbb9abd5b7711",
+        "contentHash": "51ae2ddcd1a77a41f218bdeb8acdd060c3b2301b5fc0e1acc301e67bb19d191f",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "e25e7b6b48ee95e8101b18405224fa096bab86893033e0d9db5cbb9abd5b7711",
+        "contentHash": "9fb17b2e345a6c923aacd1672293311e97169a3adaa9251f437c89aa86e739af",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "ciclo": {
+      "pt": {
+        "sourceHash": "3d1ce1870f6868292693af959a899c55a5d46e0d103f2b0ac7d68b5c84548b1c",
+        "contentHash": "9e086018741d2d3833176f80472ed696fc4f52476e7e99a758c159f4b46d00df",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "3d1ce1870f6868292693af959a899c55a5d46e0d103f2b0ac7d68b5c84548b1c",
+        "contentHash": "cb6108db501014ac7f47c9de7b578ac67e447a7b89e98c7998b648508b1f2126",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "3d1ce1870f6868292693af959a899c55a5d46e0d103f2b0ac7d68b5c84548b1c",
+        "contentHash": "8a667bb1d0a18330447989d9f8d43d60b3254136770510d776c766fdd03849a9",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    }
+  }
 }
