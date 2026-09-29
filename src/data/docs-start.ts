@@ -16,7 +16,7 @@ export default [
             "id": "instalar",
             "title": "Instale e confira",
             "paragraphs": [
-              "Use Node.js 20 ou superior, Git e um repositório de trabalho. O pacote se chama @orkastery/cli; o executável é ork. O núcleo não contém um modelo de IA. O runtime de agente configurado executa as fases."
+              "Use Node.js 20 ou superior, Git e um repositório de trabalho. O pacote se chama @orkastery/cli; o executável é ork. O núcleo não contém um modelo de IA. O runtime de agente configurado executa as fases. @orkastery/cli 0.5.0."
             ],
             "code": "npm install -g @orkastery/cli\nork doctor\nork demo"
           },
@@ -42,6 +42,14 @@ export default [
             "paragraphs": [
               "Um doctor bloqueado impede novo despacho. Resolva a causa indicada e execute-o novamente. A demo é um exercício local de uma alegação que falha e depois passa; não comprova que seu projeto está pronto para publicação."
             ]
+          },
+          {
+            "id": "prova-local",
+            "title": "Experimente sem conta",
+            "paragraphs": [
+              "ork demo funciona offline e sem conta: mostra uma claim falsa reprovada e a corrigida aceita. Para contribuir com o núcleo, a suíte hermética do CI não exige runtime de agente. A execução de fases usa o runtime e o perfil configurados no projeto."
+            ],
+            "code": "ork demo\nork --version"
           }
         ]
       },
@@ -53,7 +61,7 @@ export default [
             "id": "instalar",
             "title": "Install and check",
             "paragraphs": [
-              "Use Node.js 20 or later, Git and a working repository. The package is @orkastery/cli; its executable is ork. The core contains no AI model. Your configured agent runtime executes the phases."
+              "Use Node.js 20 or later, Git and a working repository. The package is @orkastery/cli; its executable is ork. The core contains no AI model. Your configured agent runtime executes the phases. @orkastery/cli 0.5.0."
             ],
             "code": "npm install -g @orkastery/cli\nork doctor\nork demo"
           },
@@ -79,6 +87,14 @@ export default [
             "paragraphs": [
               "A blocked doctor prevents a new dispatch. Resolve the reported cause and rerun it. The demo is a local exercise in a claim that fails and then passes; it does not establish that your project is ready for publication."
             ]
+          },
+          {
+            "id": "prova-local",
+            "title": "Try it without an account",
+            "paragraphs": [
+              "ork demo runs offline without an account: it shows a false claim failing and its correction passing. The hermetic core CI suite requires no agent runtime. Running phases uses the project’s configured runtime and profile."
+            ],
+            "code": "ork demo\nork --version"
           }
         ]
       },
@@ -90,7 +106,7 @@ export default [
             "id": "instalar",
             "title": "Instale y compruebe",
             "paragraphs": [
-              "Utilice Node.js 20 o posterior, Git y un repositorio de trabajo. El paquete se llama @orkastery/cli; su ejecutable es ork. El núcleo no contiene un modelo de IA. El runtime de agente configurado ejecuta las fases."
+              "Utilice Node.js 20 o posterior, Git y un repositorio de trabajo. El paquete se llama @orkastery/cli; su ejecutable es ork. El núcleo no contiene un modelo de IA. El runtime de agente configurado ejecuta las fases. @orkastery/cli 0.5.0."
             ],
             "code": "npm install -g @orkastery/cli\nork doctor\nork demo"
           },
@@ -116,6 +132,14 @@ export default [
             "paragraphs": [
               "Un doctor bloqueado impide un nuevo despacho. Resuelva la causa indicada y vuelva a ejecutarlo. La demo muestra una alegación que falla y después pasa; no demuestra que su proyecto esté listo para publicarse."
             ]
+          },
+          {
+            "id": "prova-local",
+            "title": "Pruébelo sin cuenta",
+            "paragraphs": [
+              "ork demo funciona sin red ni cuenta: muestra una claim falsa rechazada y su corrección aprobada. La suite hermética del CI del núcleo no exige runtime de agente. Las fases usan el runtime y el perfil configurados en el proyecto."
+            ],
+            "code": "ork demo\nork --version"
           }
         ]
       }

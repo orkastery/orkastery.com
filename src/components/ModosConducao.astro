@@ -1,13 +1,79 @@
 ---
+import {localeFor, localize} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname);
+const translations={
+  "t0": {
+    "pt": "pausas",
+    "en": "pauses",
+    "es": "pausas"
+  },
+  "t1": {
+    "pt": "supervisão humana",
+    "en": "human oversight",
+    "es": "supervisión humana"
+  },
+  "t2": {
+    "pt": "autonomia total",
+    "en": "autonomy",
+    "es": "autonomía"
+  },
+  "t3": {
+    "pt": "padrão",
+    "en": "default",
+    "es": "predeterminado"
+  },
+  "t4": {
+    "pt": "em breve",
+    "en": "coming soon",
+    "es": "próximamente"
+  },
+  "t5": {
+    "pt": "pausa sobre",
+    "en": "pause to decide",
+    "es": "pausa para decidir"
+  },
+  "t6": {
+    "pt": "use quando",
+    "en": "use when",
+    "es": "úselo cuando"
+  },
+  "t7": {
+    "pt": "slugs de sessão",
+    "en": "session slugs",
+    "es": "slugs de sesión"
+  },
+  "t8": {
+    "pt": "bloco que pausa e espera o veredito humano",
+    "en": "block that pauses for a human decision",
+    "es": "bloque que espera una decisión humana"
+  },
+  "t9": {
+    "pt": "bloco que segue sozinho, com decisão no ledger",
+    "en": "block that proceeds with decisions recorded in the ledger",
+    "es": "bloque que continúa con decisiones registradas en el ledger"
+  },
+  "t10": {
+    "pt": "O modo afrouxa a pausa. O modo <em>nunca</em> afrouxa a verificação.\n      Com Claude Code (<code>claude-bg</code>) e Codex (<code>codex</code>) homologados,\n      cada bloco pode abrir com runtime, modelo e esforço próprios, pelo\n      <code class=\"mono\">ork setup</code>.",
+    "en": "Modes change pauses. They <em>never</em> relax verification. Configure each block’s runtime, model and effort with <code>ork setup</code>.",
+    "es": "Los modos cambian las pausas. <em>Nunca</em> reducen la verificación. Configure runtime, modelo y esfuerzo de cada bloque con <code>ork setup</code>."
+  },
+  "t11": {
+    "pt": "explorar cada modo no Ork →",
+    "en": "explore every mode in Ork →",
+    "es": "explorar cada modo de Ork →"
+  }
+};
+const t=(key:keyof typeof translations)=>translations[key][locale];
 // O espectro de conducao na home: os 4 modos de uma vez, do que mais pausa ao mais
 // leve, desenhados sobre o eixo das 6 fases canonicas. Latao marca o bloco
 // que PARA e espera o veredito humano; patina marca o bloco que segue sozinho com
 // registro no ledger. Clicar numa linha abre o detalhe do modo, sem sair da pagina.
 // Fonte do conteudo: src/data/modos.ts, espelho de `ork modos`.
-import { FASES_CANONICAS, MODOS_DE_CONDUCAO } from '../data/modos';
+import { FASES_CANONICAS, modosFor } from '../data/modos';
 
 // D3: Classic = metais, Maestro = regente, Auto = percussao, Fast = madeiras (o flautim que
 // entra rapido). Ilustracoes locais, sem alterar a matriz canonica dos modos.
+const MODOS_DE_CONDUCAO=modosFor(locale);
 const naipes: Record<string, string[]> = {
   fast: ['m5 20 13-15 2 2L7 22Z', 'm17 6 1-3 3 1-1 3', 'm10 15 1 1m2-4 1 1m2-4 1 1'],
   classic: ['M4 10h10l6-5v14l-6-5H4Z', 'M7 14v4c0 3 7 3 7 0v-4', 'M7 7v3m3-3v3m3-3v3'],
@@ -24,14 +90,14 @@ const naipes: Record<string, string[]> = {
         <span class="eixo-fase">{fase}</span>
       ))}
     </div>
-    <span class="eixo-pausas mono">pausas</span>
+    <span class="eixo-pausas mono">{t("t0")}</span>
   </div>
 
   <div class="modos-corpo">
     <div class="modos-trilho" aria-hidden="true">
-      <span class="trilho-rotulo mono">supervisão humana</span>
+      <span class="trilho-rotulo mono">{t("t1")}</span>
       <span class="trilho-fio"></span>
-      <span class="trilho-rotulo mono">autonomia total</span>
+      <span class="trilho-rotulo mono">{t("t2")}</span>
     </div>
 
     <ul class="modos-linhas">
@@ -50,10 +116,10 @@ const naipes: Record<string, string[]> = {
                 {naipes[modo.modo].map((d) => <path d={d} />)}
               </svg>
               {modo.tag}
-              {modo.padrao && <span class="modo-padrao">padrão</span>}
-              {modo.emBreve && <span class="modo-breve">em breve</span>}
+              {modo.padrao && <span class="modo-padrao">{t("t3")}</span>}
+              {modo.emBreve && <span class="modo-breve">{t("t4")}</span>}
             </span>
-            <span class="modo-trilha" role="img" aria-label={`Ciclo ${modo.ciclo.map((b) => b.fases).join(', ')}`}>
+            <span class="modo-trilha" role="img" aria-label={`${locale === "en" ? "Cycle" : "Ciclo"} ${modo.ciclo.map((b) => b.fases).join(', ')}`}>
               {modo.ciclo.map((bloco) => (
                 <span
                   class={`modo-bloco mono ${bloco.pausa ? 'modo-bloco-pausa' : 'modo-bloco-auto'}`}
@@ -72,15 +138,15 @@ const naipes: Record<string, string[]> = {
           <div class="modo-detalhe" id={`modo-detalhe-${modo.modo}`} hidden>
             <dl class="detalhe-grade">
               <div>
-                <dt class="mono">pausa sobre</dt>
+                <dt class="mono">{t("t5")}</dt>
                 <dd>{modo.pausaSobre}</dd>
               </div>
               <div>
-                <dt class="mono">use quando</dt>
+                <dt class="mono">{t("t6")}</dt>
                 <dd>{modo.uso}</dd>
               </div>
               <div>
-                <dt class="mono">slugs de sessão</dt>
+                <dt class="mono">{t("t7")}</dt>
                 <dd class="mono">{modo.slugs}</dd>
               </div>
             </dl>
@@ -93,19 +159,16 @@ const naipes: Record<string, string[]> = {
   <div class="modos-legenda">
     <p class="legenda-item mono">
       <span class="legenda-amostra legenda-pausa" aria-hidden="true"></span>
-      bloco que pausa e espera o veredito humano
+      {t("t8")}
     </p>
     <p class="legenda-item mono">
       <span class="legenda-amostra legenda-auto" aria-hidden="true"></span>
-      bloco que segue sozinho, com decisão no ledger
+      {t("t9")}
     </p>
     <p class="legenda-regra">
-      O modo afrouxa a pausa. O modo <em>nunca</em> afrouxa a verificação.
-      Com Claude Code (<code>claude-bg</code>) e Codex (<code>codex</code>) homologados,
-      cada bloco pode abrir com runtime, modelo e esforço próprios, pelo
-      <code class="mono">ork setup</code>.
+      <Fragment set:html={t("t10")} />
     </p>
-    <a class="legenda-link mono" href="/ork/#ork-modos-titulo">explorar cada modo no Ork →</a>
+    <a class="legenda-link mono" href={localize("/docs/modos/",locale)}>{t("t11")}</a>
   </div>
 </div>
 

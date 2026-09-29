@@ -1,4 +1,124 @@
 ---
+import {localeFor, localize} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname);
+const translations={
+  "t0": {
+    "pt": "As seis fases do ciclo",
+    "en": "The six phases of the cycle",
+    "es": "Las seis fases del ciclo"
+  },
+  "t1": {
+    "pt": "o que vale a pena, e como se prova",
+    "en": "what matters and how to prove it",
+    "es": "qué merece la pena y cómo demostrarlo"
+  },
+  "t2": {
+    "pt": "Objetivo verificável, impact map, critérios de sucesso e claims com comando de verificação. Não implementa.",
+    "en": "Verifiable goal, impact map, success criteria and claims with verification commands. No implementation.",
+    "es": "Objetivo verificable, mapa de impacto, criterios de éxito y claims con comandos de verificación. Sin implementación."
+  },
+  "t3": {
+    "pt": "Claim sem comando é recusada como claims.unverifiable.",
+    "en": "A claim without a command is rejected as claims.unverifiable.",
+    "es": "Una claim sin comando se rechaza como claims.unverifiable."
+  },
+  "t4": {
+    "pt": "o caminho, com domicílio único por decisão",
+    "en": "the route, with one home for each decision",
+    "es": "el camino, con un único lugar para cada decisión"
+  },
+  "t5": {
+    "pt": "Tarefas, touch_paths, decisões D1..Dn com domicílio único e verify executável por tarefa. Não implementa.",
+    "en": "Tasks, touch_paths, decisions D1..Dn in one place and executable verification per task. No implementation.",
+    "es": "Tareas, touch_paths, decisiones D1..Dn en un único lugar y verificación ejecutable por tarea. Sin implementación."
+  },
+  "t6": {
+    "pt": "Plano sem verify executável não vira GO.",
+    "en": "A plan without executable verification cannot enter GO.",
+    "es": "Un plan sin verificación ejecutable no pasa a GO."
+  },
+  "t7": {
+    "pt": "a escrita, fatia por fatia",
+    "en": "implementation, one slice at a time",
+    "es": "implementación, paso a paso"
+  },
+  "t8": {
+    "pt": "Implementação fatia por fatia, um commit atômico por tarefa, dentro da worktree da thread.",
+    "en": "Implement one slice at a time, with an atomic commit per task inside the thread’s worktree.",
+    "es": "Implementación por partes, con un commit atómico por tarea dentro de la worktree de la thread."
+  },
+  "t9": {
+    "pt": "Escrita fora da worktree da thread é barrada por lease.",
+    "en": "Leases constrain writes to the thread’s worktree.",
+    "es": "Los leases limitan la escritura a la worktree de la thread."
+  },
+  "t10": {
+    "pt": "a desconfiança, com comando na mão",
+    "en": "scrutiny, with a command to run",
+    "es": "revisión crítica, con un comando para ejecutar"
+  },
+  "t11": {
+    "pt": "Verificação contra a baseline, review de código, testes, segurança e performance.",
+    "en": "Verification against the baseline, code review, tests, security and performance.",
+    "es": "Verificación contra la baseline, revisión de código, pruebas, seguridad y rendimiento."
+  },
+  "t12": {
+    "pt": "Claim reprovada vira verify.regression ou claims.failed, com a saída real anexada.",
+    "en": "Failed evidence produces typed reasons, including verify.regression or claims.failed, with actual output.",
+    "es": "Las pruebas fallidas generan motivos tipados, como verify.regression o claims.failed, con la salida real."
+  },
+  "t13": {
+    "pt": "o merge, um de cada vez",
+    "en": "merges, one at a time",
+    "es": "merges, de uno en uno"
+  },
+  "t14": {
+    "pt": "Merge serializado, push provado por comando, roadmap atualizado e plano de rollback.",
+    "en": "Serialized merge, command-verified push, updated roadmap and rollback plan.",
+    "es": "Merge serializado, push comprobado por comando, roadmap actualizado y plan de reversión."
+  },
+  "t15": {
+    "pt": "Push só conta quando git ls-remote bate com o sha local.",
+    "en": "Push counts only when git ls-remote matches the local SHA.",
+    "es": "El push cuenta solo cuando git ls-remote coincide con el SHA local."
+  },
+  "t16": {
+    "pt": "a nota, dada por gente",
+    "en": "feedback from a person",
+    "es": "la valoración de una persona"
+  },
+  "t17": {
+    "pt": "MASTER log com postmortem tipado, lições e o score humano de 0 a 5.",
+    "en": "MASTER log with typed postmortem, lessons and a human score from 0 to 5.",
+    "es": "Registro MASTER con postmortem tipado, lecciones y valoración humana de 0 a 5."
+  },
+  "t18": {
+    "pt": "Score sem justificativa é recusado, em qualquer modo.",
+    "en": "Scores require a reason in every mode.",
+    "es": "Toda valoración requiere una justificación, en cualquier modo."
+  },
+  "t19": {
+    "pt": "CHECK reprovou: GO-FIX com spec tipada",
+    "en": "CHECK failed: GO-FIX with a typed spec",
+    "es": "CHECK falló: GO-FIX con spec tipada"
+  },
+  "t20": {
+    "pt": "o score de 0 a 5 calibra a próxima thread",
+    "en": "the 0–5 score informs the next thread",
+    "es": "la valoración de 0 a 5 orienta la siguiente thread"
+  },
+  "t21": {
+    "pt": "o ork exige",
+    "en": "ork requires",
+    "es": "ork exige"
+  },
+  "t22": {
+    "pt": "O ciclo completo termina com MASTER log. #Fast tem contrato próprio, limitado ao GO. <strong>Implementação e entrega são resultados distintos.</strong>",
+    "en": "The full cycle ends with a MASTER log. #Fast has a separate, limited GO-only contract. <strong>Implementation and delivery are distinct outcomes.</strong>",
+    "es": "El ciclo completo termina con un registro MASTER. #Fast tiene un contrato propio, limitado a GO. <strong>Implementar y entregar son resultados distintos.</strong>"
+  }
+};
+const t=(key:keyof typeof translations)=>translations[key][locale];
 import Partitura from './Partitura.astro';
 // A looping thread: as seis fases que nenhum agente pula.
 // Trilha interativa: cada fase abre o contrato dela e o que o ork exige antes de
@@ -10,49 +130,49 @@ const fases = [
     id: 'goal',
     nome: 'GOAL',
     digito: 'F1',
-    resumo: 'o que vale a pena, e como se prova',
-    entrega: 'Objetivo verificável, impact map, critérios de sucesso e claims com comando de verificação. Não implementa.',
-    exige: 'Claim sem comando é recusada como claims.unverifiable.'
+    resumo: t("t1"),
+    entrega: t("t2"),
+    exige: t("t3")
   },
   {
     id: 'plan',
     nome: 'PLAN',
     digito: 'F2',
-    resumo: 'o caminho, com domicílio único por decisão',
-    entrega: 'Tarefas, touch_paths, decisões D1..Dn com domicílio único e verify executável por tarefa. Não implementa.',
-    exige: 'Plano sem verify executável não vira GO.'
+    resumo: t("t4"),
+    entrega: t("t5"),
+    exige: t("t6")
   },
   {
     id: 'go',
     nome: 'GO',
     digito: 'F3',
-    resumo: 'a escrita, fatia por fatia',
-    entrega: 'Implementação fatia por fatia, um commit atômico por tarefa, dentro da worktree da thread.',
-    exige: 'Escrita fora da worktree da thread é barrada por lease.'
+    resumo: t("t7"),
+    entrega: t("t8"),
+    exige: t("t9")
   },
   {
     id: 'check',
     nome: 'CHECK',
     digito: 'F4',
-    resumo: 'a desconfiança, com comando na mão',
-    entrega: 'Verificação contra a baseline, review de código, testes, segurança e performance.',
-    exige: 'Claim reprovada vira verify.regression ou claims.failed, com a saída real anexada.'
+    resumo: t("t10"),
+    entrega: t("t11"),
+    exige: t("t12")
   },
   {
     id: 'ship',
     nome: 'SHIP',
     digito: 'F5',
-    resumo: 'o merge, um de cada vez',
-    entrega: 'Merge serializado, push provado por comando, roadmap atualizado e plano de rollback.',
-    exige: 'Push só conta quando git ls-remote bate com o sha local.'
+    resumo: t("t13"),
+    entrega: t("t14"),
+    exige: t("t15")
   },
   {
     id: 'master',
     nome: 'MASTER',
     digito: 'F6',
-    resumo: 'a nota, dada por gente',
-    entrega: 'MASTER log com postmortem tipado, lições e o score humano de 0 a 5.',
-    exige: 'Score sem justificativa é recusado, em qualquer modo.'
+    resumo: t("t16"),
+    entrega: t("t17"),
+    exige: t("t18")
   }
 ];
 ---
@@ -65,7 +185,7 @@ const fases = [
       <path class="laco laco-score" d="M 1108 6 C 1108 124, 92 124, 92 6" />
     </svg>
 
-    <div class="trilha" role="tablist" aria-label="As seis fases do ciclo">
+    <div class="trilha" role="tablist" aria-label={t("t0")}>
       <span class="trilha-leito" aria-hidden="true"></span>
       <span class="trilha-preenchida" aria-hidden="true"></span>
 
@@ -95,8 +215,8 @@ const fases = [
   </div>
 
   <p class="lacos-legenda mono" aria-hidden="true">
-    <span class="legenda-fix">CHECK reprovou: GO-FIX com spec tipada</span>
-    <span class="legenda-score">o score de 0 a 5 calibra a próxima thread</span>
+    <span class="legenda-fix">{t("t19")}</span>
+    <span class="legenda-score">{t("t20")}</span>
   </p>
 
   <div
@@ -114,7 +234,7 @@ const fases = [
         </div>
         <p class="detalhe-entrega">{fase.entrega}</p>
         <p class="detalhe-exige">
-          <span class="exige-selo mono">o ork exige</span>
+          <span class="exige-selo mono">{t("t21")}</span>
           <span class="exige-texto mono">{fase.exige}</span>
         </p>
       </div>
@@ -122,8 +242,7 @@ const fases = [
   </div>
 
   <p class="ciclo-nota paragrafo">
-    Demanda pequena recebe fases compactas, nunca menos fases. Um fix de uma linha ainda
-    tem GOAL, ainda tem MASTER log. <strong>Uma entrega sem MASTER log não aconteceu.</strong>
+    <Fragment set:html={t("t22")} />
   </p>
 </div>
 
@@ -601,6 +720,7 @@ const fases = [
     });
 
     // O ponteiro pousado na trilha ja e um pedido de tempo: a trilha espera.
+    raiz.addEventListener('focusin', pararSozinho);
     raiz.addEventListener('pointerenter', () => window.clearInterval(temporizador));
     raiz.addEventListener('pointerleave', comecarSozinho);
 

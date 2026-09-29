@@ -201,6 +201,23 @@ export default [
               "Uma falha abre trabalho de correção com escopo explícito. Consulte a rodada antes de reexecutar. Correções que alteram comportamento exigem nova verificação completa; o limite de tentativas e a escalação pertencem ao núcleo."
             ],
             "code": "ork fix open <thread>\nork fix list <thread>\nork fix reverify <thread>"
+          },
+          {
+            "id": "verificacao-confiavel",
+            "title": "Falha, prazo e comando específico",
+            "paragraphs": [
+              "O verify registra causa, prazo e duração. Timeout é tipado e o prazo vem do manifesto; não deve virar falha genérica. Claims devem rodar o menor comando que prova a mudança. O lint avisa em claims add e ci prepare recusa a suíte local inteira: npm --prefix core test pode depender de recursos ausentes no CI.",
+              "O preparo do CI compila uma vez, vincula a identidade do produto e registra executado para distinguir resultado real de comando não executado. Em máquina sob contenção, a saída local pode expirar; isso não dispensa o CI no commit exato nem converte falha em aprovação."
+            ],
+            "code": "npm --prefix core run test:ci\nork ci prepare <thread>"
+          },
+          {
+            "id": "runtime-e-sessoes",
+            "title": "Modelo indisponível e conta da sessão",
+            "paragraphs": [
+              "model_not_found produz runtime.model-unavailable. O retry tenta destinos autorizados com o mesmo prompt, preserva o perfil para outros modelos e registra a troca. Sem destino, escala com a correção de setup; rate limit comum espera sua janela. sessions stop, logs e attach procuram a conta correta nos perfis Claude configurados. Inventário global, doctor, pulse e controle nativo de HITL ainda podem ter cobertura restrita à conta do processo."
+            ],
+            "code": "ork retry plan <thread>\nork retry run <thread> --dry-run"
           }
         ]
       },
@@ -231,6 +248,23 @@ export default [
               "A failure opens correction work with an explicit scope. Inspect the round before rerunning it. Behavior changes require full verification again; the core owns attempt limits and escalation."
             ],
             "code": "ork fix open <thread>\nork fix list <thread>\nork fix reverify <thread>"
+          },
+          {
+            "id": "verificacao-confiavel",
+            "title": "Failures, deadlines and focused commands",
+            "paragraphs": [
+              "Verify records cause, deadline and duration. Timeout has a typed reason and uses the manifest deadline. Claims should run the smallest command that proves the change. Lint warns during claims add, and ci prepare rejects the full local suite: npm --prefix core test may need resources unavailable in CI.",
+              "CI preparation compiles once, binds product identity and records executado to distinguish actual results from commands that never ran. Resource contention may cause a local timeout; it does not waive CI at the exact commit or turn failure into success."
+            ],
+            "code": "npm --prefix core run test:ci\nork ci prepare <thread>"
+          },
+          {
+            "id": "runtime-e-sessoes",
+            "title": "Unavailable models and session accounts",
+            "paragraphs": [
+              "model_not_found produces runtime.model-unavailable. Retry tries authorized destinations with the same prompt, retains the profile for other models and records the change. Without a destination it escalates with a setup correction; ordinary rate limits wait for their window. sessions stop, logs and attach find the correct account among configured Claude profiles. Global inventory, doctor, pulse and native HITL control may still be limited to the process account."
+            ],
+            "code": "ork retry plan <thread>\nork retry run <thread> --dry-run"
           }
         ]
       },
@@ -261,6 +295,23 @@ export default [
               "Un fallo abre trabajo de corrección con alcance explícito. Consulte la ronda antes de ejecutarla otra vez. Los cambios de comportamiento requieren una nueva verificación completa; el núcleo controla los límites de intentos y el escalado."
             ],
             "code": "ork fix open <thread>\nork fix list <thread>\nork fix reverify <thread>"
+          },
+          {
+            "id": "verificacao-confiavel",
+            "title": "Fallos, plazos y comandos específicos",
+            "paragraphs": [
+              "Verify registra causa, plazo y duración. El timeout tiene un motivo tipado y usa el plazo del manifiesto. Las claims deben ejecutar el comando más pequeño que demuestre el cambio. El lint avisa en claims add y ci prepare rechaza la suite local completa: npm --prefix core test puede necesitar recursos ausentes en CI.",
+              "La preparación del CI compila una vez, vincula la identidad del producto y registra executado para distinguir resultados reales de comandos no ejecutados. La contención puede agotar el plazo local; eso no exime del CI en el commit exacto ni convierte un fallo en aprobación."
+            ],
+            "code": "npm --prefix core run test:ci\nork ci prepare <thread>"
+          },
+          {
+            "id": "runtime-e-sessoes",
+            "title": "Modelo no disponible y cuenta de sesión",
+            "paragraphs": [
+              "model_not_found produce runtime.model-unavailable. El retry prueba destinos autorizados con el mismo prompt, conserva el perfil para otros modelos y registra el cambio. Sin destino, escala con la corrección de setup; el rate limit habitual espera su ventana. sessions stop, logs y attach buscan la cuenta correcta entre los perfiles Claude configurados. El inventario global, doctor, pulse y el control nativo de HITL aún pueden limitarse a la cuenta del proceso."
+            ],
+            "code": "ork retry plan <thread>\nork retry run <thread> --dry-run"
           }
         ]
       }
@@ -537,6 +588,30 @@ export default [
             "paragraphs": [
               "Sem --registrar, o radar é somente leitura. A opção de registro grava transições reais no ledger. Perguntas e alternativas devem vir da sessão observada; um estado desconhecido permanece desconhecido. A sessão filha não se apresenta como o dono para responder um gate."
             ]
+          },
+          {
+            "id": "pedido-curto",
+            "title": "Uma pergunta curta, com contexto",
+            "paragraphs": [
+              "O contrato ork.hitl-curto/v1 organiza título, pergunta em uma frase, o que trava e desde quando, alternativas de uma linha com consequência, recomendação com motivo e uma última linha dizendo como responder. Evidências, claims, riscos e diff ficam acessíveis pelo código seguido de detalhes. O ingresso autenticado e sua prova HMAC continuam obrigatórios."
+            ],
+            "code": "ork gate request <thread> --formato telegram"
+          },
+          {
+            "id": "texto-e-linha",
+            "title": "Texto livre e linha estável",
+            "paragraphs": [
+              "Texto livre inequívoco pode ser associado à ação de uma alternativa. Ambiguidade volta como pergunta. Uma palavra solta só vale na janela de escuta aberta pelo núcleo, com um único pedido para o dono em todas as threads, e nunca para ato irreversível. O agente não responde pelo dono.",
+              "Reabrir o mesmo gate no mesmo contexto mantém o código. Resposta vencida só passa ao pedido renovado quando conteúdo e contexto são idênticos; mudança recusa a resposta. Lotes reconferem cada gate antes de registrar."
+            ]
+          },
+          {
+            "id": "status-e-nota",
+            "title": "Status e nota com prova de origem",
+            "paragraphs": [
+              "ork roadmap status é leitura pura e reúne o relatório por grupos, #HITL no que espera o dono e o próximo passo. Impedimentos técnicos aparecem como responsabilidade do orquestrador. ork master pedir solicita a nota de 0 a 5 e o motivo pelo Telegram autenticado; o recibo acompanha a gravação. O diálogo MCP de nota ainda não está disponível. Um --por digitado pelo agente não substitui prova de canal."
+            ],
+            "code": "ork roadmap status\nork master pedir <thread> --formato telegram"
           }
         ]
       },
@@ -558,6 +633,30 @@ export default [
             "paragraphs": [
               "Without --registrar, the radar is read-only. The recording option writes actual transitions to the ledger. Questions and options must come from the observed session; unknown state remains unknown. A child session cannot impersonate the owner to answer a gate."
             ]
+          },
+          {
+            "id": "pedido-curto",
+            "title": "A short question with context",
+            "paragraphs": [
+              "ork.hitl-curto/v1 organizes a title, one-sentence question, what is blocked and since when, one-line options with consequences, a reasoned recommendation and a final response instruction. Evidence, claims, risks and diff are available using the short code followed by detalhes. Authenticated ingress and its HMAC proof remain required."
+            ],
+            "code": "ork gate request <thread> --formato telegram"
+          },
+          {
+            "id": "texto-e-linha",
+            "title": "Free text and stable codes",
+            "paragraphs": [
+              "Unambiguous free text can map to an option’s action. Ambiguity produces a clarification. A standalone word is accepted only within the core’s open listening window, with one request for the owner across all threads, and never for an irreversible action. The agent cannot answer for the owner.",
+              "Reopening the same gate in the same context retains its code. An expired response transfers to a renewed request only when content and context are identical; changes cause rejection. Batches revalidate every gate before recording."
+            ]
+          },
+          {
+            "id": "status-e-nota",
+            "title": "Status and scores with provenance",
+            "paragraphs": [
+              "ork roadmap status is read-only: it groups the report, marks owner decisions with #HITL and shows the next step. Technical blockers remain the orchestrator’s responsibility. ork master pedir requests a score from 0 to 5 and a reason through authenticated Telegram; the receipt accompanies the record. The MCP score dialog is not yet available. An agent-supplied --por cannot replace channel proof."
+            ],
+            "code": "ork roadmap status\nork master pedir <thread> --formato telegram"
           }
         ]
       },
@@ -579,6 +678,30 @@ export default [
             "paragraphs": [
               "Sin --registrar, el radar es de solo lectura. La opción de registro escribe transiciones reales en el ledger. Las preguntas y opciones deben proceder de la sesión observada; un estado desconocido sigue siendo desconocido. Una sesión hija no puede hacerse pasar por el dueño para responder a un gate."
             ]
+          },
+          {
+            "id": "pedido-curto",
+            "title": "Una pregunta breve con contexto",
+            "paragraphs": [
+              "ork.hitl-curto/v1 organiza título, pregunta en una frase, qué bloquea y desde cuándo, alternativas de una línea con consecuencia, recomendación justificada y una última línea que indica cómo responder. Las pruebas, claims, riesgos y diff se consultan con el código seguido de detalhes. El ingreso autenticado y su prueba HMAC siguen siendo obligatorios."
+            ],
+            "code": "ork gate request <thread> --formato telegram"
+          },
+          {
+            "id": "texto-e-linha",
+            "title": "Texto libre y códigos estables",
+            "paragraphs": [
+              "El texto libre inequívoco puede corresponder a la acción de una alternativa. La ambigüedad devuelve una pregunta. Una palabra aislada solo se acepta en la ventana de escucha abierta por el núcleo, con una única solicitud para el dueño en todas las threads, y nunca para un acto irreversible. El agente no responde por el dueño.",
+              "Reabrir el mismo gate en el mismo contexto conserva el código. Una respuesta vencida pasa a la solicitud renovada solo cuando contenido y contexto son idénticos; los cambios provocan rechazo. Los lotes vuelven a validar cada gate antes de registrar."
+            ]
+          },
+          {
+            "id": "status-e-nota",
+            "title": "Estado y valoración con procedencia",
+            "paragraphs": [
+              "ork roadmap status es de solo lectura: agrupa el informe, marca con #HITL lo que espera al dueño y muestra el siguiente paso. Los impedimentos técnicos siguen siendo responsabilidad del orquestador. ork master pedir solicita una nota de 0 a 5 y el motivo mediante Telegram autenticado; el recibo acompaña al registro. El diálogo MCP de valoración aún no está disponible. Un --por escrito por el agente no sustituye la prueba de canal."
+            ],
+            "code": "ork roadmap status\nork master pedir <thread> --formato telegram"
           }
         ]
       }

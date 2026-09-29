@@ -86,3 +86,21 @@ export const MODOS_DE_CONDUCAO: ModoDeConducao[] = [
 
 /** As 6 fases canonicas, na ordem, para eixos e legendas. */
 export const FASES_CANONICAS = ['GOAL', 'PLAN', 'GO', 'CHECK', 'SHIP', 'MASTER'];
+
+const translated = {
+ en: [
+  ['goal, plan and evidence, with prior push authorization','The ork init default: careful assumptions and verified delivery.'],
+  ['assumptions','A clear solution: pause once to agree on assumptions.'],
+  ['no scheduled pauses','Documentation, research, configuration, audits and migrations.'],
+  ['no scheduled pauses; pushing to the base still needs authorization','A small, clear request within the Fast limits. GO only.']
+ ],
+ es: [
+  ['objetivo, plan y pruebas, con autorización previa del push','El modo predeterminado de ork init: premisas delicadas y entrega verificada.'],
+  ['premisas','Una solución clara: una pausa para acordar las premisas.'],
+  ['sin pausas programadas','Documentación, investigación, configuración, auditorías y migraciones.'],
+  ['sin pausas programadas; el push a la base sigue requiriendo autorización','Un pedido pequeño y claro dentro de los límites de Fast. Solo GO.']
+ ]
+};
+export function modosFor(locale: 'pt'|'en'|'es') {
+ return MODOS_DE_CONDUCAO.map((modo,index)=>locale==='pt'?modo:{...modo,pausaSobre:translated[locale][index][0],uso:translated[locale][index][1]});
+}

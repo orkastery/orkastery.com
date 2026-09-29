@@ -544,7 +544,7 @@ export default [
             "id": "feat-011",
             "title": "FEAT-011 · Atenção humana em camadas",
             "paragraphs": [
-              "O resumo prepara a decisão, com alternativas e recomendação. Prazo vencido espera ou escala; não significa consentimento."
+              "O contrato ork.hitl-curto/v1 apresenta pergunta breve, bloqueio, alternativas, recomendação e como responder. Texto livre inequívoco do dono pode escolher uma ação; ambiguidades pedem esclarecimento. Palavra solta exige janela de escuta e um único pedido aberto, e não autoriza ato irreversível. O código permanece estável ao reabrir o mesmo contexto."
             ]
           },
           {
@@ -565,15 +565,17 @@ export default [
             "id": "feat-014",
             "title": "FEAT-014 · Monitor, board e pulse",
             "paragraphs": [
-              "O estado vem de threads, ledger e filas. Sessões mortas não devem pedir resposta como se ainda pudessem recebê-la; lacunas da fonte são declaradas."
-            ]
+              "O estado vem de threads, ledger e filas. ork roadmap status é leitura pura: agrupa o relatório no fuso do dono, marca #HITL no que espera decisão e mostra próximos passos. O orquestrador assume os impedimentos técnicos; sessão encerrada não vira pedido como se ainda pudesse receber resposta."
+            ],
+            "code": "ork roadmap status"
           },
           {
             "id": "feat-015",
             "title": "FEAT-015 · MASTER e índice de condução",
             "paragraphs": [
-              "MASTER registra postmortem e índice derivado do ledger. A nota humana posterior substitui a aceitação por omissão sem apagar o histórico."
-            ]
+              "MASTER registra postmortem e índice derivado do ledger. ork master pedir solicita nota e justificativa pelo Telegram autenticado. O registro inclui remetente, canal, mensagem e hash da prova; o agente não assina pelo dono. A nota humana posterior substitui a aceitação por omissão sem apagar histórico. O diálogo MCP de nota permanece uma lacuna."
+            ],
+            "code": "ork master pedir <thread> --formato telegram"
           }
         ]
       },
@@ -585,7 +587,7 @@ export default [
             "id": "feat-011",
             "title": "FEAT-011 · Layered human attention",
             "paragraphs": [
-              "The summary prepares the decision with options and a recommendation. Expired deadlines wait or escalate; they do not mean consent."
+              "ork.hitl-curto/v1 presents a short question, blocker, options, recommendation and response instructions. Unambiguous owner text can select an action; ambiguity asks for clarification. Standalone words require an open listening window and a single pending request, and cannot authorize irreversible actions. Codes remain stable when reopening the same context."
             ]
           },
           {
@@ -606,15 +608,17 @@ export default [
             "id": "feat-014",
             "title": "FEAT-014 · Monitor, board and pulse",
             "paragraphs": [
-              "State comes from threads, the ledger and queues. Dead sessions must not request answers as if they could receive them; source gaps are declared."
-            ]
+              "State comes from threads, the ledger and queues. ork roadmap status is read-only: it groups the report in the owner’s timezone, marks pending decisions with #HITL and shows next steps. The orchestrator handles technical blockers; ended sessions are not presented as able to receive a response."
+            ],
+            "code": "ork roadmap status"
           },
           {
             "id": "feat-015",
             "title": "FEAT-015 · MASTER and conduction index",
             "paragraphs": [
-              "MASTER records a postmortem and a ledger-derived index. A later human score supersedes default acceptance without erasing history."
-            ]
+              "MASTER records a postmortem and a ledger-derived index. ork master pedir requests a score and reason through authenticated Telegram. The record includes sender, channel, message and proof hash; the agent cannot sign for the owner. A later human score replaces acceptance by omission without erasing history. The MCP score dialog remains unavailable."
+            ],
+            "code": "ork master pedir <thread> --formato telegram"
           }
         ]
       },
@@ -626,7 +630,7 @@ export default [
             "id": "feat-011",
             "title": "FEAT-011 · Atención humana por capas",
             "paragraphs": [
-              "El resumen prepara la decisión con opciones y recomendación. Un plazo vencido espera o escala; no significa consentimiento."
+              "ork.hitl-curto/v1 presenta pregunta breve, bloqueo, alternativas, recomendación e instrucciones de respuesta. El texto inequívoco del dueño puede elegir una acción; la ambigüedad pide aclaración. Una palabra aislada exige ventana de escucha y una única solicitud pendiente, y no autoriza actos irreversibles. El código se conserva al reabrir el mismo contexto."
             ]
           },
           {
@@ -647,15 +651,17 @@ export default [
             "id": "feat-014",
             "title": "FEAT-014 · Monitor, board y pulse",
             "paragraphs": [
-              "El estado procede de threads, ledger y colas. Las sesiones terminadas no deben pedir respuestas como si pudieran recibirlas; se declaran las lagunas de la fuente."
-            ]
+              "El estado procede de threads, ledger y colas. ork roadmap status es de lectura: agrupa el informe en el huso del dueño, marca #HITL en lo que espera decisión y muestra próximos pasos. El orquestador se ocupa de los impedimentos técnicos; las sesiones terminadas no se presentan como capaces de recibir respuesta."
+            ],
+            "code": "ork roadmap status"
           },
           {
             "id": "feat-015",
             "title": "FEAT-015 · MASTER e índice de conducción",
             "paragraphs": [
-              "MASTER registra un postmortem y un índice derivado del ledger. Una nota humana posterior sustituye la aceptación por omisión sin borrar el historial."
-            ]
+              "MASTER registra postmortem e índice derivado del ledger. ork master pedir solicita nota y justificación mediante Telegram autenticado. El registro incluye remitente, canal, mensaje y hash de la prueba; el agente no firma por el dueño. La valoración humana posterior sustituye la aceptación por omisión sin borrar el historial. El diálogo MCP de valoración sigue sin estar disponible."
+            ],
+            "code": "ork master pedir <thread> --formato telegram"
           }
         ]
       }
@@ -710,8 +716,10 @@ export default [
             "id": "feat-024",
             "title": "FEAT-024 · Company Brain no CLI",
             "paragraphs": [
-              "ork brain usa a identidade do login autenticado e começa em leitura. Escrita exige ativação; principal ou DSN fornecidos pela conversa não se tornam autoridade."
-            ]
+              "ork brain context devolve o pacote ork.brain-context/v1 com pedido, itens, lacunas e digest do JSON canônico. Inclui as entidades pedidas e seus pais; sem --ids, usa o escopo vinculado por brain bind. Cada item traz source_ref, source_hash, source_version e location, além do frescor contra o portfólio canônico.",
+              "Citação incompleta vira lacuna citacao.incompleta. Item retido pela ACL traz só ID e frescor retido, nunca conteúdo recuperado da fonte local. Brain indisponível ou recusando não produz pacote fabricado só da fonte. Identidade vem do transporte autenticado; leitura não grava, e escrita exige ativação aceita e concessão do banco."
+            ],
+            "code": "ork brain context --thread <thread> --ids <ids>"
           },
           {
             "id": "feat-028",
@@ -758,8 +766,10 @@ export default [
             "id": "feat-024",
             "title": "FEAT-024 · Company Brain in the CLI",
             "paragraphs": [
-              "ork brain uses the authenticated login identity and defaults to reading. Writing requires activation; a principal or DSN supplied in conversation does not become authority."
-            ]
+              "ork brain context returns ork.brain-context/v1 with pedido, itens, lacunas and a canonical JSON digest. It includes requested entities and their parents; without --ids it uses the scope linked by brain bind. Every item carries source_ref, source_hash, source_version and location, plus freshness against the canonical portfolio.",
+              "Incomplete citations become citacao.incompleta gaps. ACL-withheld items expose only their ID and retido freshness, never content recovered from the local source. An unavailable or refusing Brain does not produce a package fabricated from local files. Identity comes from authenticated transport; reads do not write, and writes require accepted activation and a database grant."
+            ],
+            "code": "ork brain context --thread <thread> --ids <ids>"
           },
           {
             "id": "feat-028",
@@ -806,8 +816,10 @@ export default [
             "id": "feat-024",
             "title": "FEAT-024 · Company Brain en el CLI",
             "paragraphs": [
-              "ork brain usa la identidad del inicio de sesión autenticado y comienza en lectura. La escritura requiere activación; un principal o DSN aportado en la conversación no se convierte en autoridad."
-            ]
+              "ork brain context devuelve ork.brain-context/v1 con pedido, itens, lacunas y digest del JSON canónico. Incluye las entidades solicitadas y sus padres; sin --ids usa el ámbito vinculado por brain bind. Cada elemento contiene source_ref, source_hash, source_version y location, además de la vigencia frente al portafolio canónico.",
+              "Una cita incompleta produce la laguna citacao.incompleta. Un elemento retenido por ACL solo muestra ID y vigencia retido, nunca contenido recuperado de la fuente local. Un Brain no disponible o que rechaza la consulta no produce un paquete inventado desde archivos locales. La identidad procede del transporte autenticado; leer no escribe, y escribir requiere activación aceptada y concesión de la base."
+            ],
+            "code": "ork brain context --thread <thread> --ids <ids>"
           },
           {
             "id": "feat-028",
@@ -844,7 +856,7 @@ export default [
             "id": "feat-021",
             "title": "FEAT-021 · Ingresso autenticado",
             "paragraphs": [
-              "O ingresso Telegram valida a prova do update e sua identidade. Texto livre e envelopes fabricados pelo agente não aprovam gates."
+              "O ingresso Telegram valida o update autenticado e sua prova HMAC antes de registrar a resposta. Aceita códigos, respostas numeradas e texto livre inequívoco dentro das condições do núcleo. A janela de escuta serve só para encaminhar uma palavra solta; não é prova de identidade. Ambiguidade não aprova, e envelopes fabricados pelo agente são recusados."
             ]
           }
         ]
@@ -864,7 +876,7 @@ export default [
             "id": "feat-021",
             "title": "FEAT-021 · Authenticated ingress",
             "paragraphs": [
-              "Telegram ingress validates the update’s proof and identity. Free text and agent-fabricated envelopes do not approve gates."
+              "Telegram ingress validates the authenticated update and HMAC proof before recording a response. It accepts codes, numbered answers and unambiguous free text under the core’s conditions. The listening window only routes standalone words; it is not identity proof. Ambiguity never approves a request, and agent-fabricated envelopes are rejected."
             ]
           }
         ]
@@ -884,7 +896,7 @@ export default [
             "id": "feat-021",
             "title": "FEAT-021 · Ingreso autenticado",
             "paragraphs": [
-              "El ingreso de Telegram valida la prueba del update y su identidad. El texto libre y los sobres fabricados por un agente no aprueban gates."
+              "El ingreso Telegram valida el update autenticado y la prueba HMAC antes de registrar la respuesta. Acepta códigos, respuestas numeradas y texto libre inequívoco bajo las condiciones del núcleo. La ventana de escucha solo encamina palabras aisladas; no prueba identidad. La ambigüedad no aprueba solicitudes y los envelopes fabricados por agentes se rechazan."
             ]
           }
         ]
