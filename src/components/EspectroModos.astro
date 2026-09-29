@@ -1,13 +1,99 @@
 ---
+import {localeFor, localize} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname);
+const translations={
+  "t0": {
+    "pt": "Modos de condução",
+    "en": "Conduction modes",
+    "es": "Modos de conducción"
+  },
+  "t1": {
+    "pt": "padrão",
+    "en": "default",
+    "es": "predeterminado"
+  },
+  "t2": {
+    "pt": "em breve",
+    "en": "coming soon",
+    "es": "próximamente"
+  },
+  "t3": {
+    "pt": "mais pausa",
+    "en": "more pauses",
+    "es": "más pausas"
+  },
+  "t4": {
+    "pt": "mais autonomia",
+    "en": "more autonomy",
+    "es": "más autonomía"
+  },
+  "t5": {
+    "pt": "pausa",
+    "en": "pause",
+    "es": "pausa"
+  },
+  "t6": {
+    "pt": "slugs de sessão",
+    "en": "session slugs",
+    "es": "slugs de sesión"
+  },
+  "t7": {
+    "pt": "pausa sobre",
+    "en": "pause to decide",
+    "es": "pausa para decidir"
+  },
+  "t8": {
+    "pt": "use quando",
+    "en": "use when",
+    "es": "úselo cuando"
+  },
+  "t9": {
+    "pt": "regra central, que não é afrouxável",
+    "en": "the rule that always applies",
+    "es": "la regla que siempre se mantiene"
+  },
+  "t10": {
+    "pt": "O modo afrouxa a pausa. O modo <em>nunca</em> afrouxa a verificação.",
+    "en": "Modes relax pauses. They <em>never</em> relax verification.",
+    "es": "Los modos reducen las pausas. <em>Nunca</em> reducen la verificación."
+  },
+  "t11": {
+    "pt": "Claims, verify e policies rodam idênticos em todos os modos.",
+    "en": "Claims, verify and policies run identically in every mode.",
+    "es": "Claims, verify y policies se ejecutan igual en todos los modos."
+  },
+  "t12": {
+    "pt": "Policy <code>block</code> pausa qualquer modo, inclusive o #Auto.",
+    "en": "A <code>block</code> policy pauses any mode, including #Auto.",
+    "es": "Una policy <code>block</code> pausa cualquier modo, incluido #Auto."
+  },
+  "t13": {
+    "pt": "Escalação tipada para humano pausa qualquer modo, inclusive o #Auto.",
+    "en": "Typed human escalation pauses any mode, including #Auto.",
+    "es": "Una escalación tipada a una persona pausa cualquier modo, incluido #Auto."
+  },
+  "t14": {
+    "pt": "Toda entrega fecha com um índice derivado do ledger; a sua nota, quando você der, sobrescreve.",
+    "en": "Every delivery closes with a ledger-derived index; your score replaces it when provided.",
+    "es": "Cada entrega cierra con un índice derivado del ledger; su valoración lo sustituye cuando la proporcione."
+  },
+  "t15": {
+    "pt": "Toda decisão autônoma vai ao ledger: quem decidiu, com que evidência, por quê.",
+    "en": "Every autonomous decision records who decided, the evidence and the reason in the ledger.",
+    "es": "Cada decisión autónoma registra en el ledger quién decidió, con qué pruebas y por qué."
+  }
+};
+const t=(key:keyof typeof translations)=>translations[key][locale];
 // O espectro de conducao: 4 modos por #TAG; um modo planejado aparece marcado como em breve.
 // Fonte do conteudo: src/data/modos.ts, espelho da saida real de `ork modos`.
 // Selecionar uma tag redesenha os blocos, os medidores e a barra de pausa.
-import { MODOS_DE_CONDUCAO as modos } from '../data/modos';
+import { modosFor } from '../data/modos';
+const modos=modosFor(locale);
 ---
 
 <div class="espectro" data-espectro>
   <div class="tags-envelope">
-    <div class="tags" role="tablist" aria-label="Modos de condução">
+    <div class="tags" role="tablist" aria-label={t("t0")}>
       <span class="tag-indicador" aria-hidden="true" data-tag-indicador></span>
       {modos.map((modo, indice) => (
         <button
@@ -21,16 +107,16 @@ import { MODOS_DE_CONDUCAO as modos } from '../data/modos';
           type="button"
         >
           {modo.tag}
-          {modo.padrao && <span class="tag-padrao">padrão</span>}
-          {modo.emBreve && <span class="tag-breve">em breve</span>}
+          {modo.padrao && <span class="tag-padrao">{t("t1")}</span>}
+          {modo.emBreve && <span class="tag-breve">{t("t2")}</span>}
         </button>
       ))}
     </div>
 
     <p class="tags-guia mono" aria-hidden="true">
-      <span>mais pausa</span>
+      <span>{t("t3")}</span>
       <span class="guia-fio"></span>
-      <span>mais autonomia</span>
+      <span>{t("t4")}</span>
     </p>
   </div>
 
@@ -40,26 +126,26 @@ import { MODOS_DE_CONDUCAO as modos } from '../data/modos';
         <div class="medidores">
           <p class="medidor">
             <span class="medidor-valor numeral">{modo.blocos}</span>
-            <span class="medidor-rotulo mono">{modo.blocos === 1 ? 'bloco de sessão' : 'blocos de sessão'}</span>
+            <span class="medidor-rotulo mono">{locale==='pt' ? (modo.blocos===1?'bloco de sessão':'blocos de sessão') : locale==='en' ? (modo.blocos===1?'session block':'session blocks') : (modo.blocos===1?'bloque de sesión':'bloques de sesión')}</span>
           </p>
           <span class="medidor-divisa" aria-hidden="true"></span>
           <p class="medidor">
             <span class="medidor-valor numeral medidor-pausa">{modo.pausas}</span>
-            <span class="medidor-rotulo mono">{modo.pausas === 1 ? 'pausa humana' : 'pausas humanas'}</span>
+            <span class="medidor-rotulo mono">{locale==='pt' ? (modo.pausas===1?'pausa humana':'pausas humanas') : locale==='en' ? (modo.pausas===1?'human pause':'human pauses') : (modo.pausas===1?'pausa humana':'pausas humanas')}</span>
           </p>
           <span class="medidor-barra" aria-hidden="true">
             <span class="barra-preenchida" style={`--fracao: ${modo.pausas / 6}`}></span>
           </span>
         </div>
 
-        <div class="blocos" aria-label={`Ciclo do modo ${modo.tag}`}>
+        <div class="blocos" aria-label={`${locale==='en'?'Mode cycle':'Ciclo'} ${modo.tag}`}>
           {modo.ciclo.map((bloco, ordem) => (
             <span
               class={`bloco mono ${bloco.pausa ? 'bloco-pausa' : ''}`}
               style={`--ordem: ${ordem}`}
             >
               {bloco.fases}
-              {bloco.pausa && <span class="pausa-selo">pausa</span>}
+              {bloco.pausa && <span class="pausa-selo">{t("t5")}</span>}
             </span>
           ))}
         </div>
@@ -70,15 +156,15 @@ import { MODOS_DE_CONDUCAO as modos } from '../data/modos';
 
         <dl class="modo-dados">
           <div>
-            <dt class="mono">slugs de sessão</dt>
+            <dt class="mono">{t("t6")}</dt>
             <dd class="mono">{modo.slugs}</dd>
           </div>
           <div>
-            <dt class="mono">pausa sobre</dt>
+            <dt class="mono">{t("t7")}</dt>
             <dd>{modo.pausaSobre}</dd>
           </div>
           <div>
-            <dt class="mono">use quando</dt>
+            <dt class="mono">{t("t8")}</dt>
             <dd>{modo.uso}</dd>
           </div>
         </dl>
@@ -87,14 +173,14 @@ import { MODOS_DE_CONDUCAO as modos } from '../data/modos';
   </div>
 
   <aside class="painel painel-latao regra-central">
-    <p class="micro-rotulo">regra central, que não é afrouxável</p>
-    <p class="regra-frase display">O modo afrouxa a pausa. O modo <em>nunca</em> afrouxa a verificação.</p>
+    <p class="micro-rotulo">{t("t9")}</p>
+    <p class="regra-frase display"><Fragment set:html={t("t10")} /></p>
     <ul class="invariantes">
-      <li>Claims, verify e policies rodam idênticos em todos os modos.</li>
-      <li>Policy <code>block</code> pausa qualquer modo, inclusive o #Auto.</li>
-      <li>Escalação tipada para humano pausa qualquer modo, inclusive o #Auto.</li>
-      <li>Toda entrega fecha com um índice derivado do ledger; a sua nota, quando você der, sobrescreve.</li>
-      <li>Toda decisão autônoma vai ao ledger: quem decidiu, com que evidência, por quê.</li>
+      <li>{t("t11")}</li>
+      <li><Fragment set:html={t("t12")} /></li>
+      <li>{t("t13")}</li>
+      <li>{t("t14")}</li>
+      <li>{t("t15")}</li>
     </ul>
   </aside>
 </div>
