@@ -4,7 +4,9 @@ export default [
     "group": "concepts",
     "sources": [
       "docs/conceitos/arquitetura.md",
-      "docs/conceitos/visao-geral.md"
+      "docs/conceitos/visao-geral.md",
+      "docs/referencia/contratos/grafo-deterministico-kg1.md",
+      "docs/referencia/contratos/benchmark-grafo-kg1.md"
     ],
     "diagram": "layers",
     "translations": {
@@ -42,6 +44,14 @@ export default [
             "paragraphs": [
               "O índice de condução deriva dos eventos do ledger e descreve como o ciclo foi conduzido. A nota humana registra a avaliação do dono sobre o resultado. São origens diferentes: nenhuma deve ser inventada ou tratada como medida da outra.",
               "Uma taxa de entregas exige intervalo, população e registros de origem. Esta página não apresenta uma taxa sem essa medição."
+            ]
+          },
+          {
+            "id": "kg1",
+            "title": "Grafo determinístico: o contrato KG1",
+            "paragraphs": [
+              "KG1 define ork.code-artifact-graph/v1 e ork.graph-benchmark/v1, com validação pura e corpus sintético. A mesma entrada, configuração e versão do extrator produzem as mesmas identidades e conteúdo canônico. Cada relação exige evidência localizável e preserva as restrições de acesso das fontes.",
+              "O grafo é uma projeção local descartável. KG1 não entrega extração, índice, CLI de consulta, watcher nem consumo pelas fases. Não altera orkmind.company-brain/v1 nem substitui o estado do Ork ou o Company Brain. Nenhum benchmark medido comprova economia nesta etapa."
             ]
           }
         ]
@@ -81,6 +91,14 @@ export default [
               "The conduction index derives from ledger events and describes how the cycle was conducted. The human score records the owner’s assessment of the result. They have different sources: neither should be invented or used as a measure of the other.",
               "A delivery rate requires a time interval, a defined population and source records. This page does not report a rate without that measurement."
             ]
+          },
+          {
+            "id": "kg1",
+            "title": "Deterministic graph: the KG1 contract",
+            "paragraphs": [
+              "KG1 defines ork.code-artifact-graph/v1 and ork.graph-benchmark/v1, with pure validation and a synthetic corpus. Identical input, configuration and extractor versions produce identical identities and canonical content. Each relationship requires locatable evidence and preserves source access restrictions.",
+              "The graph is a disposable local projection. KG1 does not provide extraction, an index, a query CLI, a watcher or phase consumption. It does not change orkmind.company-brain/v1 or replace Ork state or Company Brain. No measured benchmark demonstrates savings at this stage."
+            ]
           }
         ]
       },
@@ -118,6 +136,14 @@ export default [
             "paragraphs": [
               "El índice de conducción deriva de los eventos del ledger y describe cómo se condujo el ciclo. La nota humana registra la valoración del dueño sobre el resultado. Sus fuentes son distintas: ninguna debe inventarse ni usarse como medida de la otra.",
               "Una tasa de entregas requiere un intervalo, una población definida y registros de origen. Esta página no presenta una tasa sin esa medición."
+            ]
+          },
+          {
+            "id": "kg1",
+            "title": "Grafo determinista: el contrato KG1",
+            "paragraphs": [
+              "KG1 define ork.code-artifact-graph/v1 y ork.graph-benchmark/v1, con validación pura y corpus sintético. La misma entrada, configuración y versión del extractor producen las mismas identidades y contenido canónico. Cada relación exige pruebas localizables y conserva las restricciones de acceso de las fuentes.",
+              "El grafo es una proyección local descartable. KG1 no ofrece extracción, índice, CLI de consulta, watcher ni consumo por las fases. No modifica orkmind.company-brain/v1 ni sustituye el estado de Ork o el Company Brain. Ningún benchmark medido demuestra ahorro en esta etapa."
             ]
           }
         ]
