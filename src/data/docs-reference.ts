@@ -32,6 +32,14 @@ export default [
             "paragraphs": [
               "adapter e mcp conectam o host. accounts e setup descrevem runtimes e perfis. sessions, monitor e pulse observam execução e atenção humana. brain e portfolio consultam memória e catálogo. fabrica e roadmap coordenam trabalho entre máquinas. A referência canônica no repositório detalha as opções de cada família."
             ]
+          },
+          {
+            "id": "contexto-e-atencao",
+            "title": "Contexto citável e atenção humana",
+            "paragraphs": [
+              "brain context devolve entidades, pais, citações, frescor e lacunas sem conceder permissão de escrita. roadmap status monta um relatório de leitura com a atenção que cabe ao dono. master pedir gera o pedido de nota para resposta pelo canal autenticado; não é uma nota dada pelo agente."
+            ],
+            "code": "ork brain context --thread <thread> --ids <ids>\nork roadmap status --json\nork master pedir <thread> --formato telegram"
           }
         ]
       },
@@ -61,6 +69,14 @@ export default [
             "paragraphs": [
               "adapter and mcp connect the host. accounts and setup describe runtimes and profiles. sessions, monitor and pulse observe execution and human attention. brain and portfolio access memory and the catalog. fabrica and roadmap coordinate work across machines. The canonical repository reference details each family’s options."
             ]
+          },
+          {
+            "id": "contexto-e-atencao",
+            "title": "Citable context and human attention",
+            "paragraphs": [
+              "brain context returns entities, parents, citations, freshness and gaps without granting write access. roadmap status builds a read-only report showing where the owner’s attention is needed. master pedir creates a score request for an authenticated human response; it is not an agent-supplied score."
+            ],
+            "code": "ork brain context --thread <thread> --ids <ids>\nork roadmap status --json\nork master pedir <thread> --formato telegram"
           }
         ]
       },
@@ -90,6 +106,14 @@ export default [
             "paragraphs": [
               "adapter y mcp conectan el host. accounts y setup describen runtimes y perfiles. sessions, monitor y pulse observan la ejecución y la atención humana. brain y portfolio consultan memoria y catálogo. fabrica y roadmap coordinan el trabajo entre máquinas. La referencia canónica del repositorio detalla las opciones de cada familia."
             ]
+          },
+          {
+            "id": "contexto-e-atencao",
+            "title": "Contexto citable y atención humana",
+            "paragraphs": [
+              "brain context devuelve entidades, padres, citas, vigencia y lagunas sin conceder escritura. roadmap status crea un informe de lectura con lo que requiere atención del dueño. master pedir genera la solicitud de nota para una respuesta humana autenticada; no es una nota dada por el agente."
+            ],
+            "code": "ork brain context --thread <thread> --ids <ids>\nork roadmap status --json\nork master pedir <thread> --formato telegram"
           }
         ]
       }

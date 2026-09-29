@@ -1135,20 +1135,20 @@
     },
     "verificacao": {
       "pt": {
-        "sourceHash": "282208f9d9542acc5519a3effaa9117ded02a54ce09e15d826132dbc5e60d230",
-        "contentHash": "c4f3df273efcb32505cd0e8125e7c3d7060d6a41de24734f77180783e6ad9307",
+        "sourceHash": "5695a867f77962d1153cdd67cd5ecb2543bf4c09b4821129fcf6834cb1605a3b",
+        "contentHash": "06e132ae21396da0a6d88c7d1eae6c5ce6706380beaf18b4cbd5d047fac50cfc",
         "reviewer": "executor-editorial",
         "date": "2026-09-29"
       },
       "en": {
-        "sourceHash": "282208f9d9542acc5519a3effaa9117ded02a54ce09e15d826132dbc5e60d230",
-        "contentHash": "0e1fcba9c6f619aab45eb1a73b2b9caf4642066c0af5057f2cea3b5817e2ddb1",
+        "sourceHash": "5695a867f77962d1153cdd67cd5ecb2543bf4c09b4821129fcf6834cb1605a3b",
+        "contentHash": "9e3e5f30dbc9be8d96f67ea243fc84b842b25fc2955d432fc86e24ea25e7e78f",
         "reviewer": "executor-editorial",
         "date": "2026-09-29"
       },
       "es": {
-        "sourceHash": "282208f9d9542acc5519a3effaa9117ded02a54ce09e15d826132dbc5e60d230",
-        "contentHash": "c2c45b3dc49cfc55b8317cdcc0adb3c3ca796bb73f68b25b783ac9b27da1c441",
+        "sourceHash": "5695a867f77962d1153cdd67cd5ecb2543bf4c09b4821129fcf6834cb1605a3b",
+        "contentHash": "e0b2ec5b84d1443b9a8d1575e499dda890290daa55a2068cd92aed0e5fa13298",
         "reviewer": "executor-editorial",
         "date": "2026-09-29"
       }
@@ -1215,40 +1215,40 @@
     },
     "hitl": {
       "pt": {
-        "sourceHash": "0c89462af20851f5dade44261ada41b25a53a4b8f0980b97190c480f752b5868",
-        "contentHash": "a691b44ccb8ddcff46b81f1e2815cf335eb4ddbc9e2687377ff1b4a96a75cc26",
+        "sourceHash": "aa14e0ca9fe2425ce25db1e029e5cf9641bc8809184e7f5cd8b002a56014cce4",
+        "contentHash": "40d7d6eaee3da209e6fb64077cd5b1b43009fe490cabf91899f42f08ecfc408c",
         "reviewer": "executor-editorial",
         "date": "2026-09-29"
       },
       "en": {
-        "sourceHash": "0c89462af20851f5dade44261ada41b25a53a4b8f0980b97190c480f752b5868",
-        "contentHash": "3caa94a782b94bd7c4f81e487ac556c4daf5ff995100cc8bae2389b0a17420af",
+        "sourceHash": "aa14e0ca9fe2425ce25db1e029e5cf9641bc8809184e7f5cd8b002a56014cce4",
+        "contentHash": "d29dc0dccce47dd5ecd5735663ad1df7c8e52cd2425b47e31fde396884fb67f8",
         "reviewer": "executor-editorial",
         "date": "2026-09-29"
       },
       "es": {
-        "sourceHash": "0c89462af20851f5dade44261ada41b25a53a4b8f0980b97190c480f752b5868",
-        "contentHash": "03ee565bff12dce06a989ebdb557e4eefec82a9596452c29dbb2aa1342505b4d",
+        "sourceHash": "aa14e0ca9fe2425ce25db1e029e5cf9641bc8809184e7f5cd8b002a56014cce4",
+        "contentHash": "f69b2e128ac07e2c6d92e92057f17245fa0e1c934a542f585a30ba3df0b586be",
         "reviewer": "executor-editorial",
         "date": "2026-09-29"
       }
     },
     "cli": {
       "pt": {
-        "sourceHash": "f98b06fceed7760c051156ba224c5a9c4614ff2143b112f276dc9c07e0fefd94",
-        "contentHash": "6a3f2c00856f0f36d5ddcd1778196790e71c35497893d4c7631622e7498f8e94",
+        "sourceHash": "b226f35065862d940e56a0701c48a11243fd310da4b9b1b14e618a21d17de599",
+        "contentHash": "ddda80ccadcdba9561102f2d6a2f26144318874ec5caf1c0421843f8a8e8317f",
         "reviewer": "executor-editorial",
         "date": "2026-09-29"
       },
       "en": {
-        "sourceHash": "f98b06fceed7760c051156ba224c5a9c4614ff2143b112f276dc9c07e0fefd94",
-        "contentHash": "d6f95dd6e86127f2149fffb6b29d45cc4a6a5b56886ed8aa3c03514628304072",
+        "sourceHash": "b226f35065862d940e56a0701c48a11243fd310da4b9b1b14e618a21d17de599",
+        "contentHash": "7931af40adf0a651c6522d4308731fd701fb723d2f2a25ab821fc44ea5d2af21",
         "reviewer": "executor-editorial",
         "date": "2026-09-29"
       },
       "es": {
-        "sourceHash": "f98b06fceed7760c051156ba224c5a9c4614ff2143b112f276dc9c07e0fefd94",
-        "contentHash": "3cc9e417ddaca4e69632f4a71664c6e85897ade43ba3779fc0f6445cf140bcf1",
+        "sourceHash": "b226f35065862d940e56a0701c48a11243fd310da4b9b1b14e618a21d17de599",
+        "contentHash": "48860c58173b97d8941718efbf2f42f0c36428467254910c93b800cb7441a277",
         "reviewer": "executor-editorial",
         "date": "2026-09-29"
       }
