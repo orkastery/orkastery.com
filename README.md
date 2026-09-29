@@ -1,80 +1,119 @@
-# orkastery.com
+# Orkastery — site e documentação
 
-O portal da Orkastery: a organização de código aberto e o produto Ork, a AI Software
-Factory. Quatro rotas estáticas, um único tema escuro deliberado, conteúdo extraído dos
-documentos reais do núcleo.
+Site estático Astro com português em `/`, inglês em `/en/` e espanhol em `/es/`.
+Todas as páginas HTML têm idioma, canonical, alternates recíprocos e seletor para
+a mesma página. Os slugs e IDs técnicos permanecem estáveis entre línguas.
 
-## Rotas
+## Desenvolvimento e prova local
 
-| Rota | O que mostra |
-|---|---|
-| `/` | A organização: manifesto, as três camadas, o ciclo de seis fases, números com comando de prova, ecossistema e contato |
-| `/ork/` | O produto: instalação via npm, fases, modos por #TAG, verificação de claims, threads paralelas, gate de tokens, radar HITL, auditores, score e adaptadores |
-| `/docs/` | Guia do usuário: instalação, primeira entrega, uso nativo no Claude Code/Codex, acompanhamento, verificação, memória e problemas comuns |
-| `/orkmind/` | Ponte para o site próprio do OrkMind (https://orkmind.com), sem duplicar conteúdo |
-| `/versao.json` | O commit que gerou o build publicado |
+Requer Node.js 22 e as dependências do lockfile. Com a instalação já preparada,
+nenhuma etapa do build acessa a rede. As fontes, fontes tipográficas e ativos são locais.
+Em uma instalação nova, `npm ci` prepara dependências; essa preparação exige que
+os pacotes estejam disponíveis no cache ou no registry e não faz parte da prova offline.
 
-## Stack
-
-- Astro 5 com saída estática e zero framework de UI
-- CSS autoral com custom properties, sem biblioteca de animação
-- Hero em WebGL autoral (shader de ruído fbm) com fallback estático e respeito a
-  `prefers-reduced-motion`
-- Diagramas interativos em SVG e CSS, com teclado e leitores de tela atendidos
-
-## Sistema de design: "a fundição regida"
-
-Um chão de carvão morno, latão como acento de condução, brasa como calor e falha,
-pátina como o contrapeso frio do que é determinístico. A cor carrega sentido: no
-diagrama das três camadas o pedido desce em latão e a evidência sobe em pátina; nos
-doze motivos de gate, latão é o que a máquina reexecuta e brasa é o que sobe para
-gente.
-
-| Papel | Token | Valor |
-|---|---|---|
-| Poço, palco, painel, relevo | `--poco` … `--relevo` | `#0a0908` → `#211d19` |
-| Tinta (três degraus legíveis) | `--tinta`, `--tinta-2`, `--tinta-3` | `#f5f1ea`, `#b3aaa0`, `#968e84` |
-| Traço e borda, nunca texto | `--tinta-4` | `#5d564f` |
-| Condução, verificado | `--latao` | `#e0b264` |
-| Calor, alerta, falha | `--brasa` | `#e2603c` |
-| Determinístico, medido | `--patina` | `#6fb9a8` |
-
-Todo texto do site fica acima de 5:1 de contraste sobre qualquer superfície da paleta.
-
-### Tipografia
-
-Um único display em toda a superfície: **Fraunces** variável, com o eixo de tamanho
-óptico calibrado por tamanho (`opsz` 144 no título, 28 no subtítulo, 30 na marca) para
-que o mesmo tipo tenha alto contraste no grande e forma robusta no pequeno. **Instrument
-Sans** para interface e texto, **Geist Mono** para código e micro-rótulos. Tudo
-self-host via Fontsource, com precarga do corte latino que pinta o primeiro quadro.
-
-### Movimento
-
-Um observador revela ao rolar, um laço de rolagem cuida de progresso e paralaxe, e um
-laço de ponteiro move o holofote das superfícies. Blocos marcados com `data-anima`
-param de animar fora de cena. Sem JS a página aparece pronta; com
-`prefers-reduced-motion` nenhum laço contínuo é armado.
-
-## Desenvolvimento
-
-```bash
-npm install
-npm run dev        # servidor local
-npm run build      # gera dist/
+```sh
+npm run dev
+npm run build
+npm run docs:check
+npm run check:links
+npm run check:i18n
+npm run check:public
+npm run check:content
+npm run test:docs
 ```
 
-## Publicação: teste, aprovação e produção
+O prebuild confere o snapshot e a revisão editorial. O postbuild confere HTML,
+links, fragmentos, idiomas, metadados, padrões públicos e semântica, e executa
+canários negativos. Build aprovado não é revisão visual nem prova de naturalidade
+da tradução. Links externos são inventariados, mas não consultados pela prova offline.
+`parse5` já integra a árvore do Astro; a mesma versão do lockfile é declarada
+diretamente para os auditores de HTML, sem adicionar outro parser.
 
-O site é publicado em https://orkastery.com pelo GitHub Pages, e só quando uma versão é
-promovida. Um push na `main` não publica nada.
+## Conteúdo e fontes
 
-- **Ver antes:** `npm run build && npm run preview` mostra exatamente o build que vai ao ar.
-- **Versão:** todo build publica `/versao.json` com o SHA e a data do commit. É assim que se
-  confere que a produção recebeu exatamente o commit aprovado.
-- **Promover:** criar a tag `producao-AAAAMMDD-HHMM` no commit aprovado. O workflow
-  `.github/workflows/publicar.yml` compila esse commit, confere o `/versao.json` e publica.
-- **Desfazer:** promover de novo o commit da promoção anterior (tag nova apontando para ele),
-  ou rodar o workflow à mão com o `ref` desejado.
-- **Links ainda fechados:** o que ainda não é público aparece como "em breve". A chave fica em
-  `src/data/externos.ts`.
+`src/data/docs-catalog.ts` lista módulos editoriais. Cada artigo tem slug, grupo,
+fontes e texto explícito em PT, EN e ES. Não há fallback silencioso ou tradução
+remota durante o build. `docs-schema.ts` descreve o formato; o verificador valida
+os módulos usados pelas rotas. Os arquivos `.ts` editoriais exportam dados JSON
+por default para permitir leitura pelo Astro e por Node sem executar conteúdo.
+
+`src/data/docs-sources.json` contém caminhos relativos, SHA-256, classificação,
+tratamento e destinos das fontes. Cada revisão registra hash das fontes, hash
+do texto, autor editorial e data. O inventário inclui documentação e metadados de
+versão; não copia responsáveis pessoais nem conteúdo interno para o site.
+
+```sh
+# Use um clone local do repositório de produto correspondente.
+npm run docs:sync -- --source /caminho/do/repositorio
+npm run docs:check -- --source /caminho/do/repositorio
+
+# Depois de revisar de fato as traduções e fontes afetadas:
+npm run docs:sync -- --source /caminho/do/repositorio --review pt,en,es --reviewer editor
+npm run build
+```
+
+A sincronização comum preserva os recibos anteriores, mas uma fonte alterada
+invalida os hashes de revisão; não aprova traduções sozinha. `--review` é uma
+atestação editorial explícita de quem executa o comando, não revisão humana
+independente. Não use a opção antes de ler os textos. Fonte nova sem destino,
+fonte removida ainda referenciada e revisão desatualizada reprovam.
+
+Sem `--source`, o build verifica apenas a integridade e cobertura do snapshot
+versionado. Isso permite CI offline, mas não prova que o upstream não mudou.
+Índices, modelos e marca têm tratamento explícito; roadmap é exceção deliberada:
+um resumo mensal traduzido e um link para o repositório, sem cópia de tickets.
+
+## Revisão mensal do roadmap
+
+Revise `src/data/roadmap.json`, atualize `updatedAt`, `nextReview` e os três resumos.
+A página editorial `roadmap` contextualiza o mês em `docs-standards.ts` (Orkastery)
+ou `docs-retrieval.ts` (OrkMind): atualize-a na mesma revisão e registre os hashes.
+Uma intenção não é uma capacidade entregue. Datas de revisão não são prazos de entrega.
+
+## Tipografia, caixa e diagramas
+
+Preserve `src/styles/tokens.css`, logos, fontes e paleta da marca. Títulos, menus,
+links, botões e rótulos usam caixa de frase. Siglas, comandos e nomes próprios
+conservam a grafia original. Display é para títulos; a fonte de texto sustenta
+prosa com largura de leitura limitada e entrelinha generosa; mono identifica código.
+
+O layout documental tem trilha, sumário, navegação por assunto e anterior/próximo.
+SVGs têm title, desc, relações numeradas e legenda textual; a leitura não depende
+só da cor. A superfície documental adapta os tokens existentes ao esquema claro;
+as páginas de apresentação mantêm o tema escuro da marca. Testar o navegador em
+modo claro não significa que a home ofereça um tema claro.
+
+Os componentes demonstrativos legados permanecem no histórico de desenvolvimento,
+mas não são importados pelas rotas atuais. As páginas ativas usam HomePage,
+DocsArticle e DocsDiagram com os catálogos editoriais. Não reintroduza componentes
+com texto fixo em português sem revisão das três línguas.
+
+## Prova visual sem rede
+
+Forneça uma instalação local de Playwright e Chromium. Nenhum caminho pessoal
+ou navegador é fixado no código ou no lockfile do site.
+
+```sh
+PLAYWRIGHT_MODULE=/caminho/playwright-core/index.mjs \
+CHROMIUM_EXECUTABLE=/caminho/chromium \
+npm run check:visual -- --output /diretorio/privado/screenshots
+```
+
+O verificador intercepta todas as requisições, serve somente `dist` em memória e
+bloqueia destinos externos. Exercita home, índice e arquitetura nos três idiomas,
+1280/390 px e esquemas claro/escuro: 36 screenshots, overflow e navegação por teclado.
+Os PNGs e `report.json` ficam fora do repositório público. Se o navegador não puder
+iniciar, o comando falha e registra o impedimento; não muda sandbox nem permissões.
+A inspeção humana das imagens ainda é necessária para avaliar qualidade visual.
+
+## Privacidade e publicação
+
+`check:public` procura padrões de dados pessoais e credenciais em fontes e saída,
+sem imprimir o valor encontrado. O email institucional de contato é uma exceção
+explícita; a busca não substitui revisão contextual. O formulário apenas prepara
+um email no aplicativo do visitante; não tem backend de coleta.
+
+O workflow existente `.github/workflows/publicar.yml` publica somente por promoção
+explícita com tag `producao-*` ou execução manual com ref. Um commit local não
+publica. A reversão operacional é promover uma revisão anteriormente validada,
+com autorização do responsável; o workflow não foi alterado por esta revisão.

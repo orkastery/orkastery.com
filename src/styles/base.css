@@ -167,7 +167,7 @@ h3,
   font-family: var(--f-mono);
   font-size: var(--t-micro);
   font-variation-settings: 'wght' 500;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.2em;
   color: var(--latao);
 }
@@ -851,7 +851,7 @@ html.js .escalona.visivel > *:nth-child(n + 10) { transition-delay: 0.58s; }
   font-size: var(--t-micro);
   font-variation-settings: 'wght' 500;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--tinta-2);
   white-space: nowrap;
   vertical-align: middle;

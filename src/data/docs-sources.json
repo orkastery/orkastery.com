@@ -1,0 +1,1340 @@
+{
+  "schemaVersion": 1,
+  "product": "orkastery",
+  "sources": [
+    {
+      "path": "README.md",
+      "sha256": "a93d0e73d8b3c73803ea9e960a85affd01a9149be58c9622f2a665a4812ee390",
+      "category": "root",
+      "treatment": "article",
+      "targets": [
+        "comecar"
+      ]
+    },
+    {
+      "path": "core/package.json",
+      "sha256": "7349b6f7eb06bb67af6be47084a38893ca790f9ef100ce2521c48077a0281d70",
+      "category": "package.json",
+      "treatment": "article",
+      "targets": [
+        "comecar"
+      ]
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "ab402b61b3d3052a1f49d1492305d189742b5d291ad7e318b615ff6779fad86d",
+      "category": "README.md",
+      "treatment": "index",
+      "targets": [
+        "padroes"
+      ]
+    },
+    {
+      "path": "docs/assets/marca/README.md",
+      "sha256": "6399cbc387e0f03d7ba7f31916efea5594f7996ef1b02e65bcc483d4709caa15",
+      "category": "assets",
+      "treatment": "brand",
+      "targets": [
+        "padroes"
+      ]
+    },
+    {
+      "path": "docs/comecar/quickstart.md",
+      "sha256": "e6d05e7cf9995caae703f7800b0ff9490517f66d6d57ebaf6fb3d5c6540d9caa",
+      "category": "comecar",
+      "treatment": "article",
+      "targets": [
+        "comecar"
+      ]
+    },
+    {
+      "path": "docs/conceitos/arquitetura.md",
+      "sha256": "555204d44378694f193be5041d040092948937e25cf9b868815889f2d5faf67f",
+      "category": "conceitos",
+      "treatment": "article",
+      "targets": [
+        "arquitetura"
+      ]
+    },
+    {
+      "path": "docs/conceitos/diagramas/README.md",
+      "sha256": "33902bb1d650edfe5a0c047e03463d94936c23de7b3e105fb19695ffbe765966",
+      "category": "conceitos",
+      "treatment": "index",
+      "targets": [
+        "padroes"
+      ]
+    },
+    {
+      "path": "docs/conceitos/visao-geral.md",
+      "sha256": "71eca401a016be1cdbd6226ed1452a64c156a829fcad1af9ce3273a1b2c386d5",
+      "category": "conceitos",
+      "treatment": "article",
+      "targets": [
+        "arquitetura",
+        "ciclo"
+      ]
+    },
+    {
+      "path": "docs/guias/auditoria.md",
+      "sha256": "6a479033bc4bbcbf6521e100757d0034c1a0843eb1f994a60ce9c63aebb4c29f",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "auditoria"
+      ]
+    },
+    {
+      "path": "docs/guias/memoria-e-handoff.md",
+      "sha256": "f585d1793692522fb49cf271cdf2e0886156be092b7d83a2dbc496fe63e48aa9",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "memoria"
+      ]
+    },
+    {
+      "path": "docs/guias/modos.md",
+      "sha256": "7ba67ab85f51fe1b71dd7bc901c7e8876db184b38b6bcce06b8a41725c62d563",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "modos"
+      ]
+    },
+    {
+      "path": "docs/guias/onboarding.md",
+      "sha256": "f479cdc305779dfe91c3a0c58b009d4eea695728dac09c2117a787c6225ec636",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "onboarding"
+      ]
+    },
+    {
+      "path": "docs/guias/sincronismo-hitl.md",
+      "sha256": "d6c91fbac05709078a547a3fd0a5843b586c78177acc76019f4cfb68976e40f7",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "hitl"
+      ]
+    },
+    {
+      "path": "docs/guias/varias-maquinas.md",
+      "sha256": "a982b8dc7a588e099da24c67863cc46a7416042f260d8ff7ed9160e0f3c1b0ba",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "varias-maquinas"
+      ]
+    },
+    {
+      "path": "docs/guias/verificacao.md",
+      "sha256": "ae288c29032abd09f1cae4b5200b132cbdba7fbe9384c3151ddbb15d26f59e89",
+      "category": "guias",
+      "treatment": "article",
+      "targets": [
+        "verificacao"
+      ]
+    },
+    {
+      "path": "docs/padroes/documentacao-de-produto.md",
+      "sha256": "2f250e361931651b7f21792ad0c5b5102f0e259aa7282b093a6c35a803c848a8",
+      "category": "padroes",
+      "treatment": "article",
+      "targets": [
+        "padroes"
+      ]
+    },
+    {
+      "path": "docs/padroes/roadmap-de-produto.md",
+      "sha256": "0c6ab518c79a64bdca20b258aa17c6aa20cdbf063a7540e471ca90d52a8741e6",
+      "category": "padroes",
+      "treatment": "article",
+      "targets": [
+        "padroes"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-001-thread-e-seis-fases.md",
+      "sha256": "b305706cf5d9862e9198a71d4d42772e1df21dcbcc1d6aa92a67bb9a28903598",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "ciclo",
+        "mod-01"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-002-modos-de-conducao.md",
+      "sha256": "b95f8cba1b9f5c7ee092f736736b2a6a93135ed54d6660f6044a05d782edf514",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-01"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-003-despacho-de-fase.md",
+      "sha256": "49f6cbdaa76f3932ed9128cdc8c0598d9c948f5eeb62df10c4d31de038f51442",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-01"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-004-claims-e-verify.md",
+      "sha256": "d0071cad6ffcf613f6ae8b17f46cf56b3cd7d1565af685b78653e1fdb3079d48",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-02"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-005-ci-check-independente.md",
+      "sha256": "7c87e4a8d740b49170806fc53be16b5c30069d14494900ff4e31af90da31ef7c",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-02"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-006-ship-com-push-provado.md",
+      "sha256": "6e72d6c931bc0b0eeb78e6b23ebf5ebd5c03f78c46b5722207f349486b4aa251",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-02"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-007-worktree-e-leases.md",
+      "sha256": "fc315d12c118aa91f83e09f932592b44e4ace25408e09e98e916e719a5ea230c",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-02"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-008-rodizio-de-contas.md",
+      "sha256": "5973e21a4212d8898393f1edd0e692e2c500cee1daa0def806f73d23bc806b64",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-03"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-009-retry-tipado.md",
+      "sha256": "879968d8aa72a341a0c23167c99e7b7874281be11c0b3f56a45db4f5590f63cc",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-03"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-010-observacao-de-sessoes.md",
+      "sha256": "e0a1b9a547fa837a7207e25569c8bc4d1b489d484365970a16dba97ea0655c82",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-03"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-011-hitl-em-camadas.md",
+      "sha256": "ce908dbd69cda71e879ccb1922d74d271dec8cfc9110d48bb386da5e3347f4f1",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-04"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-012-decisao-tomada.md",
+      "sha256": "e40ec04ec299765ed441314614fa9473ff16f817e8f000f8bb41c6ca7952ad44",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-04"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-013-horario-do-dono.md",
+      "sha256": "76b02653ae1565cc803f1a439b02054852154d564857f64e8201b290d49005e1",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-04"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-014-monitor-board-e-pulse.md",
+      "sha256": "4b475d0ff9dcea3b41da44ffd9ce923cd25ce5f4c7d549122ed3972ca97c8772",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-04"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-015-entrega-e-indice-master.md",
+      "sha256": "079cb653571d28c96b2429691685d6879a6be5853fd4c760970f91106217a655",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-04"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-016-handoff-e-recall.md",
+      "sha256": "f9cd470c037f4bc5bcc6a0766534ba0df89a84b0a4175f2296d59f950cdca188",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-05"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-017-memoria-orkmind.md",
+      "sha256": "a09fb9902236638ec86ac995e6799306c1b60a9edfd3c30e37a81517e714ea33",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-05"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-018-documentacao-como-codigo.md",
+      "sha256": "be29d3375757ccf7da34355009b6c5e061dad4e2215b54dae4de75180eae5951",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-05"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-019-telemetria-do-ledger.md",
+      "sha256": "2e304125bf839ce4967e7409a139919dd5367d1423d3cf1c30bac5cbd2015836",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-05"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-020-mcp-e-adaptadores.md",
+      "sha256": "ed40a5e72ce0e6256080375d0cdf34628f4a4be485a80ea0d22ce05e874915c1",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-06"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-021-ingresso-hitl-telegram.md",
+      "sha256": "91346791ddde05b8dd85a0aab84979f7c764801c7f313906d3bd03582d689867",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-06"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-022-auditoria-e-divida.md",
+      "sha256": "57c49e4397d5a8f7f9363135427f73ff99bea57b1440f6a1978ac24ed7136f2c",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-03"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-023-onboarding-do-projeto.md",
+      "sha256": "d73453696852122f677e2b9b8debcd133daa9c72f89ecd37c427a1fcec7ca94e",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-01"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-024-company-brain-no-cli.md",
+      "sha256": "61129bd64e1859776fbea980092362f50facfebd969c531618abd4c55d7dd25f",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-05"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-025-catalogo-de-portfolio.md",
+      "sha256": "15d918e12ff1799bbd910481b77e28083b02be28081806cb8e408f1f7ea48276",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-01"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-026-reservas-do-roadmap.md",
+      "sha256": "844ab857bea0ad908a61674a8ce4c76b26bdaec6682b24612aadb316676c594a",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-01"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-027-fabrica-compartilhada.md",
+      "sha256": "35a4cadacbeb591794c03e804297fa56033413f26932855bb207c40a935b67f9",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-01"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-028-loop-de-aprendizado.md",
+      "sha256": "c6ca1fa080df2890561896cf976cce235a5693b1270ce79040d06577b47016ea",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-05"
+      ]
+    },
+    {
+      "path": "docs/produto/FEAT-029-conducao-multicanal.md",
+      "sha256": "fb11211e22d5fa3c32a25686bfd7392ca4dddf63c3bb02535ea7ed5734655557",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-01"
+      ]
+    },
+    {
+      "path": "docs/produto/MOD-01-conducao-de-threads.md",
+      "sha256": "7503cd124a5504a3117385b1c466ff164250bbe1155a69445aed4499f159ce5c",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-01"
+      ]
+    },
+    {
+      "path": "docs/produto/MOD-02-verdade-e-entrega.md",
+      "sha256": "90c047235c5b6beb66e9f41ca84254a0a794e70a90cbb7e0fd0ecc74cfe9ecc2",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-02"
+      ]
+    },
+    {
+      "path": "docs/produto/MOD-03-runtimes-e-contas.md",
+      "sha256": "9a7490dccde311890f09d7589115feb9fa231791d5eb5720c5f8a66dd7954a0c",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-03"
+      ]
+    },
+    {
+      "path": "docs/produto/MOD-04-atencao-humana.md",
+      "sha256": "21c763d182bf3ca6b14f093eb8899f4202610c425c905bf742b26ffacadf5caa",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-04"
+      ]
+    },
+    {
+      "path": "docs/produto/MOD-05-memoria-e-registro.md",
+      "sha256": "da944965d0d60e13314590fd4855c667e3989e2817329b482d784d49d10a5d9b",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-05"
+      ]
+    },
+    {
+      "path": "docs/produto/MOD-06-integracao-com-hosts.md",
+      "sha256": "713e0b12c4641a427a12c642bc7bfa8384785f464931e07a3cd8e0bb44c21937",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "mod-06"
+      ]
+    },
+    {
+      "path": "docs/produto/PLAT-01-orkastery.md",
+      "sha256": "d0364934b25438c00a0b5fae825fb0c26dc34d50301854ca90c3abde6969a7ae",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "produto"
+      ]
+    },
+    {
+      "path": "docs/produto/README.md",
+      "sha256": "96dc980787180ddb3d7364471352d13123a4b850229a69c6f0692f97cd55e3d4",
+      "category": "produto",
+      "treatment": "index",
+      "targets": [
+        "padroes"
+      ]
+    },
+    {
+      "path": "docs/produto/SYS-01-nucleo-ork.md",
+      "sha256": "89ad95872451c38ef61f085de49618524c7f1b2df54e598bd49770af3eb4e295",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "produto"
+      ]
+    },
+    {
+      "path": "docs/produto/SYS-02-hosts-e-canais.md",
+      "sha256": "af3994b8c278f508a4e9460f65e05da352bc89afd73ab8d5a141e7e5de7aeb28",
+      "category": "produto",
+      "treatment": "article",
+      "targets": [
+        "produto"
+      ]
+    },
+    {
+      "path": "docs/produto/_modelo-feature.md",
+      "sha256": "6271adfb1bec78e2350102ec95782eea32bc71fb202c13ec5f209689e8609140",
+      "category": "produto",
+      "treatment": "template",
+      "targets": [
+        "padroes"
+      ]
+    },
+    {
+      "path": "docs/referencia/cli.md",
+      "sha256": "ce0d4828f120e39590b292516bcb0fb7aae87f6ce8d199d1a6f0e533051cf2e6",
+      "category": "referencia",
+      "treatment": "article",
+      "targets": [
+        "cli"
+      ]
+    },
+    {
+      "path": "docs/referencia/contratos/maestro-i32.md",
+      "sha256": "7f46b322f166e8bc8613464a265393716618feffa78ffb761834483d1faa7d74",
+      "category": "referencia",
+      "treatment": "article",
+      "targets": [
+        "contratos"
+      ]
+    },
+    {
+      "path": "docs/referencia/contratos/playbook-runtimes-i09.md",
+      "sha256": "789e067c0ff3eb533a48849d3543d232efbd7d88cb26da5d9e789130ba1a22da",
+      "category": "referencia",
+      "treatment": "article",
+      "targets": [
+        "contratos"
+      ]
+    },
+    {
+      "path": "docs/referencia/contratos/telemetria-i07.md",
+      "sha256": "e85053c7400ed08e0db499053ab8efbb0f477f6badd6ca4dcd86b132023f98f5",
+      "category": "referencia",
+      "treatment": "article",
+      "targets": [
+        "contratos"
+      ]
+    },
+    {
+      "path": "docs/referencia/maestro-capacidades.json",
+      "sha256": "f00870feae9f0c233d35d998280dddd57c37cb88e071a90e351c3a43e1a6dea6",
+      "category": "referencia",
+      "treatment": "article",
+      "targets": [
+        "contratos"
+      ]
+    },
+    {
+      "path": "docs/roadmap/README.md",
+      "sha256": "15a1a354d64b216272f1171709e68f2d69082ca81e8ecc42edc4ec6efa24a07b",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-001-radar-ork-pulse.md",
+      "sha256": "953cfd290577c7222719f191a4c5e016118a1b72e752624b09ac78901b12dace",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-002-higiene-de-runtime.md",
+      "sha256": "cdf3da093734688c9e82758d51a74152e2163373799e1cf94f7ab0f86438d3ae",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-003-hitl-bidirecional-telegram.md",
+      "sha256": "45de8e4c4954e437ed9af265ba5334d060bf088d699eada8b6950f75354a20a1",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-004-sensores-por-hooks.md",
+      "sha256": "cffb530d662e3bd01872e8c3ed1113faf84de3ff903920d5d0ed65b493c20c8a",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-005-master-e-digest.md",
+      "sha256": "983d8997642a4758c27656105f57b6286a745cdd590b39decd6d7bc724fa5fd4",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-006-orkmind-na-fabrica.md",
+      "sha256": "efb536fb3266f51c2b9dfc07670524144ac225b34122f6f0ec11734bf991b3d3",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-007-telemetria-economica.md",
+      "sha256": "5d110c56bcdd3f4e0942e4585d518a28388180c277e654d81b5b076a69ab16ad",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-008-loop-de-aprendizado.md",
+      "sha256": "1a5fe8470549c58fbeda9e2c953ecff7a76a0889ac3c9c7fca03839295af5ac3",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-009-playbook-dos-runtimes.md",
+      "sha256": "60453f19e7b20350ce4a9c64f4780c715738ffb82366827aa8ce27e0116a4034",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-012-ci-check-independente.md",
+      "sha256": "17cd6d9e81461d185e997d9abf18456a5dfa411e3949734fc24e356758b8c4ff",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-013-maestro-objetivo.md",
+      "sha256": "e800cff1fe7005b25d8527434587b3e9483209c8fb2ed6d78b6da1e7566a6714",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-015-onboarding-do-nucleo.md",
+      "sha256": "872ad9dd3680c5ec2b2c0e1b3f9adf3839616be4605731de721c0756519b35a2",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-016-experiencia-do-builder.md",
+      "sha256": "162d58e7c72ef403af8a716c9017086504c39aa6f5a4e95e635e76a1f6b90d10",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-018-ontologia-de-portfolio.md",
+      "sha256": "7eac2ac97940d80c0ef04b869c665470e8869724868cead1f7d3e3bd25ed19f8",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-019-catalogo-multi-repositorio.md",
+      "sha256": "f8d31628a6755e629e806961f3c4c6aaaa3658349afc135d4b25595ab2dcbc91",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-025-company-brain-fundacao.md",
+      "sha256": "d03f0dbe9f38936c49f827dd9126ab843ada588a1402df2a3f1896951e1366ed",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-026-workspace-empresarial.md",
+      "sha256": "800ba71e0ae7a9461e501bade2153cadcd1e7ac71e0571edc4a80a409aa1d943",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-031-grafo-de-codigo.md",
+      "sha256": "a62e591d954cac15441068eb700a80458a977ac95068eefacbb31b8c9624d190",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-032-bootstrap-maestro.md",
+      "sha256": "807a7e7003973872aa723eed51e7ce1c3b6002779911f623346cb975ba49a41e",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-033-rotacao-de-contas.md",
+      "sha256": "b02452a94d2fe04aa1573ff03a276b534063b75258b5ee566757c49dbd6f0922",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-034-conclusao-claude-bg.md",
+      "sha256": "ad116029c6bba1b90d1145958b8b565e46e04e95f237d87cf370e57765ad3302",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-035-horario-do-dono.md",
+      "sha256": "f4ab57376af29ea26b7916ef6d1cc6697457a5a54c9bf64302aad6f1f6e04537",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-036-maestro-multicanal.md",
+      "sha256": "f6667f085a6224230f9b65a3c11c332a87079ca64e876e630ba9332a7d5f9147",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-037-verify-rapido-e-confiavel.md",
+      "sha256": "d8f9c112eb2f3c1700978cf5a89d45781cf7dfdbc25df57593e22c04a5affcb0",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-038-busca-semantica-na-memoria.md",
+      "sha256": "11768294fe06e0d45a997dc1d3df746e20facd06076bbb3b085fb1ec9e781216",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-039-cadencia-do-pulse-por-tag.md",
+      "sha256": "f947b9cec82dcc6009796e61b11e7ee84604070a3c0b44153db02648ecc9d606",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-040-estado-de-conta-compartilhado.md",
+      "sha256": "3a210da3d19ae18b0a355e43ef57db65244b8d4c2ba6b5f9de1f7b9d0f30a0fe",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-041-hitl-invertido.md",
+      "sha256": "e1ac4cedba5438fa19f22afa644e1eb4ccaf2d1b7b699a2cf9d46cab66e79dbe",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-042-modo-fast.md",
+      "sha256": "26e13df0f40503c9003056d7a4b6f79046566ed220fcb997c53a132ac1dd4fb2",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-043-aposentadoria.md",
+      "sha256": "698627e40451dca86e8021b42163cdc9e152340172518e026f65c9704d81eb7e",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-044-documentacao-como-codigo.md",
+      "sha256": "4c521e56018a6fd1566a9dbdb479f40bdafa16e4489ea326f6b285f145c94c7b",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-045-pulse-enxuto.md",
+      "sha256": "3ac993c8d8d8030cc7b617768e63aed25532b2c76787ad18783cec32a37cb1b9",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-046-go-to-open-source.md",
+      "sha256": "6dceffb9932ec7d9a673ecbe8e84eca5922b986b9e312ac6c0a724a73240bc18",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-047-fabrica-em-varias-maquinas.md",
+      "sha256": "9f538c7bf6f5782788461474a2035dd878aa2a6ea2dec8c57087f7ed7f6bca8f",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-048-hitl-humano-no-centro.md",
+      "sha256": "7026f266c08354d2a81f282ed77f14142a0c5b5ceb34f31ce6c3185aaa34529b",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-049-lancamento.md",
+      "sha256": "a8d6d3abf5d3892775d3d8399965a543e7a555730e24bb74797f4c9d3e168704",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-100-fundacao-do-nucleo.md",
+      "sha256": "07cf6e7eb35c74dfbfd84e6008fe6c8416fc223baa40bedab197e83e9d481e3b",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/_modelo-item.md",
+      "sha256": "03b70dc675cdbd1a14fce7e816e48b197c61a53c423ac95dcc634f21d4ea83d4",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    }
+  ],
+  "inventoryHash": "c6b39a890ae08ee9db8ddc5f6da3a9953edfe465172119478ab357f44e69d920",
+  "reviews": {
+    "comecar": {
+      "pt": {
+        "sourceHash": "f8cfd6c7bf20f1f9fe8cfb62f88d4a5cc231697ff7b1b77c4217fcf507ec577b",
+        "contentHash": "39fc389517631ac3b7a00fbe35793ab756888b9f6f67dc7723583fc36344d4e2",
+        "reviewer": "condutor-editorial",
+        "date": "2026-09-28"
+      },
+      "en": {
+        "sourceHash": "f8cfd6c7bf20f1f9fe8cfb62f88d4a5cc231697ff7b1b77c4217fcf507ec577b",
+        "contentHash": "51e2464eaaa2913fa376df1a988e1077cc85c340c1b2e2ea4a388456247c23f3",
+        "reviewer": "condutor-editorial",
+        "date": "2026-09-28"
+      },
+      "es": {
+        "sourceHash": "f8cfd6c7bf20f1f9fe8cfb62f88d4a5cc231697ff7b1b77c4217fcf507ec577b",
+        "contentHash": "52813fcb84eb71d952bec48e21ac827fd42905ae4cfb520b4a945a48d6cd7dae",
+        "reviewer": "condutor-editorial",
+        "date": "2026-09-28"
+      }
+    },
+    "arquitetura": {
+      "pt": {
+        "sourceHash": "f404ce971eda3eae2a7edcc821bf0ca675fe9a6d12d287b0eb9abf416399078c",
+        "contentHash": "11c3ab754588ad5fcb5a4fb5d39f43d96ab9c730b5a3a17bca306ba4d0b58fbc",
+        "reviewer": "condutor-editorial",
+        "date": "2026-09-28"
+      },
+      "en": {
+        "sourceHash": "f404ce971eda3eae2a7edcc821bf0ca675fe9a6d12d287b0eb9abf416399078c",
+        "contentHash": "51ae2ddcd1a77a41f218bdeb8acdd060c3b2301b5fc0e1acc301e67bb19d191f",
+        "reviewer": "condutor-editorial",
+        "date": "2026-09-28"
+      },
+      "es": {
+        "sourceHash": "f404ce971eda3eae2a7edcc821bf0ca675fe9a6d12d287b0eb9abf416399078c",
+        "contentHash": "9fb17b2e345a6c923aacd1672293311e97169a3adaa9251f437c89aa86e739af",
+        "reviewer": "condutor-editorial",
+        "date": "2026-09-28"
+      }
+    },
+    "ciclo": {
+      "pt": {
+        "sourceHash": "3d1ce1870f6868292693af959a899c55a5d46e0d103f2b0ac7d68b5c84548b1c",
+        "contentHash": "9e086018741d2d3833176f80472ed696fc4f52476e7e99a758c159f4b46d00df",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "3d1ce1870f6868292693af959a899c55a5d46e0d103f2b0ac7d68b5c84548b1c",
+        "contentHash": "cb6108db501014ac7f47c9de7b578ac67e447a7b89e98c7998b648508b1f2126",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "3d1ce1870f6868292693af959a899c55a5d46e0d103f2b0ac7d68b5c84548b1c",
+        "contentHash": "8a667bb1d0a18330447989d9f8d43d60b3254136770510d776c766fdd03849a9",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "modos": {
+      "pt": {
+        "sourceHash": "decc8e278a8c37ee83312fd95025f97aa3abb72c45f21e39a337e84453dcf450",
+        "contentHash": "0953f5e6e4e42765cc1cb397cafd2b01df68bf2332da54c689eb616e5812ec09",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "decc8e278a8c37ee83312fd95025f97aa3abb72c45f21e39a337e84453dcf450",
+        "contentHash": "711ba9e349c4510bb351709bc07aced5b8b74e4dfa8da0a2adf976efc206f6c8",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "decc8e278a8c37ee83312fd95025f97aa3abb72c45f21e39a337e84453dcf450",
+        "contentHash": "32f3f3032fc15a7bf8ccb09d508a43fc3b6299c240cd6ddcb76e828229a74158",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "onboarding": {
+      "pt": {
+        "sourceHash": "5b311e8d96837db8034396853cb5786d99065b682323974a761977cbd04a2da1",
+        "contentHash": "24a39d047156dede0214354e08bc6d8e202afb4a8b5468abdb450bcacc71a284",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "5b311e8d96837db8034396853cb5786d99065b682323974a761977cbd04a2da1",
+        "contentHash": "1a4fbb364cd9d3d904a6a5a4037b5835eb5203f997c99d3ef67a67d810137ed5",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "5b311e8d96837db8034396853cb5786d99065b682323974a761977cbd04a2da1",
+        "contentHash": "6f2a5baf52c28c4d93d63a200893459b2c3e9e68d3d40d491d2d0c3096f9558d",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "verificacao": {
+      "pt": {
+        "sourceHash": "282208f9d9542acc5519a3effaa9117ded02a54ce09e15d826132dbc5e60d230",
+        "contentHash": "c4f3df273efcb32505cd0e8125e7c3d7060d6a41de24734f77180783e6ad9307",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "282208f9d9542acc5519a3effaa9117ded02a54ce09e15d826132dbc5e60d230",
+        "contentHash": "0e1fcba9c6f619aab45eb1a73b2b9caf4642066c0af5057f2cea3b5817e2ddb1",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "282208f9d9542acc5519a3effaa9117ded02a54ce09e15d826132dbc5e60d230",
+        "contentHash": "c2c45b3dc49cfc55b8317cdcc0adb3c3ca796bb73f68b25b783ac9b27da1c441",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "auditoria": {
+      "pt": {
+        "sourceHash": "f2be13780c1fd36ef474ec403a63accad910bd4e153576804c55fa8d0be6803b",
+        "contentHash": "3546a94d585649fd709a913d303ff4b29e6bbf30cf71d28bf0a6d94c49da8271",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "f2be13780c1fd36ef474ec403a63accad910bd4e153576804c55fa8d0be6803b",
+        "contentHash": "2625368fa8918f8af85745b1b2f4b7b1e8071e40021318c57f197a1e80ab8803",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "f2be13780c1fd36ef474ec403a63accad910bd4e153576804c55fa8d0be6803b",
+        "contentHash": "651d9c9cd0cf2f0caf8b0e78c82949a138ed974309bd4ce8c3f48cd9ce84c76c",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "memoria": {
+      "pt": {
+        "sourceHash": "b766a19676963740c3ad0cba4c6edafb0d4b52b9cd73a1c5de8139d3d38f6eae",
+        "contentHash": "90d021dfd6e67603952c8685e88c879340999febd24d0b626725103cf72b6e3d",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "b766a19676963740c3ad0cba4c6edafb0d4b52b9cd73a1c5de8139d3d38f6eae",
+        "contentHash": "39a6b199cc1147e7e793c06e570e5a22e5e89cac35a0289d13b9c3bdf1522499",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "b766a19676963740c3ad0cba4c6edafb0d4b52b9cd73a1c5de8139d3d38f6eae",
+        "contentHash": "f77ec2f0c91e60c773bd2357befb38951e05e80796b024ad067994ef602619f3",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "varias-maquinas": {
+      "pt": {
+        "sourceHash": "9019e3b6098bb47c303a4888647444b1c9f814184638c690314e0ff1340f3613",
+        "contentHash": "3552ee039fda1bfd296034c614b87b7032063f420b1f307e5f324573395876bc",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "9019e3b6098bb47c303a4888647444b1c9f814184638c690314e0ff1340f3613",
+        "contentHash": "d8395c9e020f533833881c28bf211da5c2063f63b10d6cf5f0017111a3b673b0",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "9019e3b6098bb47c303a4888647444b1c9f814184638c690314e0ff1340f3613",
+        "contentHash": "0e03b289e1c76766c1d1e28a314ba288def1139c63a57319faca67d772880668",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "hitl": {
+      "pt": {
+        "sourceHash": "0c89462af20851f5dade44261ada41b25a53a4b8f0980b97190c480f752b5868",
+        "contentHash": "a691b44ccb8ddcff46b81f1e2815cf335eb4ddbc9e2687377ff1b4a96a75cc26",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "0c89462af20851f5dade44261ada41b25a53a4b8f0980b97190c480f752b5868",
+        "contentHash": "3caa94a782b94bd7c4f81e487ac556c4daf5ff995100cc8bae2389b0a17420af",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "0c89462af20851f5dade44261ada41b25a53a4b8f0980b97190c480f752b5868",
+        "contentHash": "03ee565bff12dce06a989ebdb557e4eefec82a9596452c29dbb2aa1342505b4d",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "cli": {
+      "pt": {
+        "sourceHash": "f98b06fceed7760c051156ba224c5a9c4614ff2143b112f276dc9c07e0fefd94",
+        "contentHash": "6a3f2c00856f0f36d5ddcd1778196790e71c35497893d4c7631622e7498f8e94",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "f98b06fceed7760c051156ba224c5a9c4614ff2143b112f276dc9c07e0fefd94",
+        "contentHash": "d6f95dd6e86127f2149fffb6b29d45cc4a6a5b56886ed8aa3c03514628304072",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "f98b06fceed7760c051156ba224c5a9c4614ff2143b112f276dc9c07e0fefd94",
+        "contentHash": "3cc9e417ddaca4e69632f4a71664c6e85897ade43ba3779fc0f6445cf140bcf1",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "contratos": {
+      "pt": {
+        "sourceHash": "1f66a27dc7a005e18b322c4ffc1eac4387ac7bec474982a90984a243471e6a03",
+        "contentHash": "f1f1fc73e4665d88ec0c3751761177f1b45a2457f9e4e7ca8fff4e982dff210d",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "1f66a27dc7a005e18b322c4ffc1eac4387ac7bec474982a90984a243471e6a03",
+        "contentHash": "f5da989eb9d5b6b315a0eb88263c1a209f77f9199d8d3eb403d056df67a900d4",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "1f66a27dc7a005e18b322c4ffc1eac4387ac7bec474982a90984a243471e6a03",
+        "contentHash": "ad2617706b1baf3d29102f649ed70f4541c6c94490f28958bf516e2fb762f587",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "padroes": {
+      "pt": {
+        "sourceHash": "34d7df724463de07290c05f7780d08c2bf5ab3537231d071502bf9c907d8eaa3",
+        "contentHash": "46d2ea246499c91b7b5c4df47205d283e164b258091d206b9e0c4fe932474e83",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "34d7df724463de07290c05f7780d08c2bf5ab3537231d071502bf9c907d8eaa3",
+        "contentHash": "1b756cb609e1165e262932bf1e9404211d86a13596cf0d25dbd4828eed4624b4",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "34d7df724463de07290c05f7780d08c2bf5ab3537231d071502bf9c907d8eaa3",
+        "contentHash": "679feecd2a84d9c2ab971f3015b7d148806665aef5ecf25d3f9a8f58bbf90850",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "roadmap": {
+      "pt": {
+        "sourceHash": "eefda492a972c883a3950f40823bf65c1777a31cb1e16dc7f1f55def3b3c46e1",
+        "contentHash": "bc3be7f44f349eef32104d9df8d48ec417daeec2c339988e0a295899ac142f01",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "eefda492a972c883a3950f40823bf65c1777a31cb1e16dc7f1f55def3b3c46e1",
+        "contentHash": "1da086fe9a19cc136194a7f55593da11c5a4ce76b83df7ecf49c94f91d649c38",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "eefda492a972c883a3950f40823bf65c1777a31cb1e16dc7f1f55def3b3c46e1",
+        "contentHash": "4d255dad201e7acfb214c350a46e412a1dae4ae29cc8872d74e034afb424d3d2",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "produto": {
+      "pt": {
+        "sourceHash": "823efbe26917fc34372bec9b9945ad6209055b58b8993088bb610c6d3c8ba581",
+        "contentHash": "3bd917a7f0e23aa96f3c5a44e909e1a27e25ffb62007a1391f7f6c56f7c7bf93",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "823efbe26917fc34372bec9b9945ad6209055b58b8993088bb610c6d3c8ba581",
+        "contentHash": "7960cf07fce4701fa4f9ee01d98355b5c36160711b69c2b5d52ce161d29d7757",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "823efbe26917fc34372bec9b9945ad6209055b58b8993088bb610c6d3c8ba581",
+        "contentHash": "706f559e5edb297a76197eac8d5be96256a0d4281ea4e843c1fc527d26b9ad33",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "mod-01": {
+      "pt": {
+        "sourceHash": "a4c287116f08e1205c672422f57e9dc627c9af8a887dcdfbaf3444b0098a7c99",
+        "contentHash": "21be76cd1ec20a3cd75d47d5c13309c981244a7c7e4cf58c0e1800854782d899",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "a4c287116f08e1205c672422f57e9dc627c9af8a887dcdfbaf3444b0098a7c99",
+        "contentHash": "6157cf60f6a407fa31c59ecec9b119ecc46920067becf6b480d2ef02f161a4c8",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "a4c287116f08e1205c672422f57e9dc627c9af8a887dcdfbaf3444b0098a7c99",
+        "contentHash": "d0a2c975c60c7baed184807759373024f0d3e0c4187d55a0808fc4922680650a",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "mod-02": {
+      "pt": {
+        "sourceHash": "1d70cf4bc78c65d2e629383f07c362397747a0a4dca68365b71dffc8c93af6ce",
+        "contentHash": "9f624f635d62653893e0c6eb086222f1ab26f36ccc5d8a25168e679d90cbc62c",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "1d70cf4bc78c65d2e629383f07c362397747a0a4dca68365b71dffc8c93af6ce",
+        "contentHash": "9b2134329cdd96c949ec26dc1617ba373b130c3eda3a1d30f2b009639e95c0eb",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "1d70cf4bc78c65d2e629383f07c362397747a0a4dca68365b71dffc8c93af6ce",
+        "contentHash": "c9eb107c3742923e07a65c0342b8ec8cb85c77b0cac5f004da7776c1ba155667",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "mod-03": {
+      "pt": {
+        "sourceHash": "c12fb32b1ad05f6e148a6abfd0c3ff7356a7b6453180c431a4255b15aa856825",
+        "contentHash": "a21bbd48d81c83a7f6492b81caadb12acd118ba87b05169ddbd926bfcebf969c",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "c12fb32b1ad05f6e148a6abfd0c3ff7356a7b6453180c431a4255b15aa856825",
+        "contentHash": "521eafcdde1706d290b4a84d74551969a9e68d7cc7997814ea8da154561df704",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "c12fb32b1ad05f6e148a6abfd0c3ff7356a7b6453180c431a4255b15aa856825",
+        "contentHash": "5f1753f90ec286df6dc7cbb0d59fa8967f26d58497635b2a618b9ff71de34730",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "mod-04": {
+      "pt": {
+        "sourceHash": "784bb0ca84af6c1fb9f2cf64376ba3e7e58a660f51fe29e96f244519fbd3f585",
+        "contentHash": "809d2c477633f1e70a257808192bb8bee6e2c95e7834d1ca8f87c06e54defa64",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "784bb0ca84af6c1fb9f2cf64376ba3e7e58a660f51fe29e96f244519fbd3f585",
+        "contentHash": "1395db34b505d372b9ae23ca11f9cbaeb80c489d748e09f4410e002c96102215",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "784bb0ca84af6c1fb9f2cf64376ba3e7e58a660f51fe29e96f244519fbd3f585",
+        "contentHash": "e6cc8c153f13c330ace5e85b26e6fb0addfb9b8c64bb2b157063951388597274",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "mod-05": {
+      "pt": {
+        "sourceHash": "bef88e65bbd08fb0d9499751435eca5a333a8531bc841b00c36bfb99c1e78585",
+        "contentHash": "f71fa72f234085c39530e5224fea0e841d5313f9c1691768530b4e361c8f4095",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "bef88e65bbd08fb0d9499751435eca5a333a8531bc841b00c36bfb99c1e78585",
+        "contentHash": "c6eead2d7ee6593fe10968497479f582e0a4954fc6200d5617963e8d5b9ce36c",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "bef88e65bbd08fb0d9499751435eca5a333a8531bc841b00c36bfb99c1e78585",
+        "contentHash": "8c9b8da45978f860bee3fce3263e5dd065b1446622e04f8a6e0e26026d830d74",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "mod-06": {
+      "pt": {
+        "sourceHash": "081a426f762401583d2b3bbb42e00885c8ebdd3b755329c2fb0fbe2f0feab53c",
+        "contentHash": "4bbb9834aea890e6e4b24c954261bf80635eab02a65057e7067228697fd00198",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "081a426f762401583d2b3bbb42e00885c8ebdd3b755329c2fb0fbe2f0feab53c",
+        "contentHash": "00175f10c9feda62250d77b3ba34057264786226ccb037fa625b4289d2210a89",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "081a426f762401583d2b3bbb42e00885c8ebdd3b755329c2fb0fbe2f0feab53c",
+        "contentHash": "27589f0ad67afcb3cf31453ffb290826a71059806fbe98cc7c52776cbc3ec96f",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+---
+import HomePage from '../../../components/HomePage.astro';
+import products from '../../../data/product-pages';
+import {localeFor} from '../../../data/i18n';
+export function getStaticPaths(){return ['en','es'].map(lang=>({params:{lang}}));}
+const locale=localeFor(Astro.url.pathname);
+---
+<HomePage content={products.ork[locale]} product="Ork"/>
