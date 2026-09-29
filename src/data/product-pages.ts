@@ -23,6 +23,12 @@ export default {
           "href": "/docs/modos/"
         },
         {
+          "id": "decisoes",
+          "title": "Decisões do tamanho de um dia cheio",
+          "text": "Quem conduz agentes também toca dezenas de outras frentes. Toda pergunta do ork chega curta e organizada, com alternativas e uma recomendação, para você decidir em segundos. Essa leveza é objetivo de projeto e pensa também em quem tem TDAH.",
+          "href": "/docs/hitl/"
+        },
+        {
           "id": "evidencia",
           "title": "Evidência antes de crença",
           "text": "Claims carregam comandos reproduzíveis. A baseline distingue falha anterior de regressão. CHECK independente e push comprovado separam implementação de entrega.",
@@ -59,6 +65,12 @@ export default {
           "href": "/docs/modos/"
         },
         {
+          "id": "decisoes",
+          "title": "Decisions sized for a full day",
+          "text": "Whoever conducts agents is also running dozens of other things. Every question ork brings you arrives short and organized, with alternatives and one recommendation, so you decide in seconds. That lightness is a design goal, meant also for people with ADHD.",
+          "href": "/docs/hitl/"
+        },
+        {
           "id": "evidencia",
           "title": "Evidence before belief",
           "text": "Claims carry reproducible commands. A baseline separates existing failures from regressions. Independent CHECK and verified push distinguish implementation from delivery.",
@@ -93,6 +105,12 @@ export default {
           "title": "Su atención, donde importa",
           "text": "Elija #Classic, #Maestro o #Auto para el ciclo completo. #Fast atiende ajustes pequeños dentro de sus límites. Los modos controlan pausas; los permisos y las pruebas siguen siendo explícitos.",
           "href": "/docs/modos/"
+        },
+        {
+          "id": "decisoes",
+          "title": "Decisiones a la medida de un día lleno",
+          "text": "Quien conduce agentes también lleva decenas de otros frentes. Cada pregunta de ork llega breve y ordenada, con alternativas y una recomendación, para que usted decida en segundos. Esa ligereza es un objetivo de diseño, pensado también para personas con TDAH.",
+          "href": "/docs/hitl/"
         },
         {
           "id": "evidencia",

@@ -4,7 +4,7 @@
   "sources": [
     {
       "path": "README.md",
-      "sha256": "21d7115ac23c2412384b16dcbb8b76b0d8b2c0900f1fcf23a862a4215ebca2a3",
+      "sha256": "a93d0e73d8b3c73803ea9e960a85affd01a9149be58c9622f2a665a4812ee390",
       "category": "root",
       "treatment": "article",
       "targets": [
@@ -13,7 +13,7 @@
     },
     {
       "path": "core/package.json",
-      "sha256": "56d132bf0198d0b496a433b7b1bf712357ffd7bff9ffefe7628f7b442b48a826",
+      "sha256": "7349b6f7eb06bb67af6be47084a38893ca790f9ef100ce2521c48077a0281d70",
       "category": "package.json",
       "treatment": "article",
       "targets": [
@@ -49,7 +49,7 @@
     },
     {
       "path": "docs/conceitos/arquitetura.md",
-      "sha256": "453ee6378832700b818fce4271cc0606c5888e5ea2637571c399ee6639cf3026",
+      "sha256": "555204d44378694f193be5041d040092948937e25cf9b868815889f2d5faf67f",
       "category": "conceitos",
       "treatment": "article",
       "targets": [
@@ -914,46 +914,46 @@
       ]
     }
   ],
-  "inventoryHash": "7dc81ba4ee32f594b8a9878c08eab51f1ec4bbc5a8d57fd18a34dff946956f8e",
+  "inventoryHash": "c6b39a890ae08ee9db8ddc5f6da3a9953edfe465172119478ab357f44e69d920",
   "reviews": {
     "comecar": {
       "pt": {
-        "sourceHash": "6ee12ab9a22704102d8353392dbcc6461b93b8f1a339034f8e47a7f6fdbcc43a",
+        "sourceHash": "f8cfd6c7bf20f1f9fe8cfb62f88d4a5cc231697ff7b1b77c4217fcf507ec577b",
         "contentHash": "39fc389517631ac3b7a00fbe35793ab756888b9f6f67dc7723583fc36344d4e2",
-        "reviewer": "executor-editorial",
-        "date": "2026-09-29"
+        "reviewer": "condutor-editorial",
+        "date": "2026-09-28"
       },
       "en": {
-        "sourceHash": "6ee12ab9a22704102d8353392dbcc6461b93b8f1a339034f8e47a7f6fdbcc43a",
+        "sourceHash": "f8cfd6c7bf20f1f9fe8cfb62f88d4a5cc231697ff7b1b77c4217fcf507ec577b",
         "contentHash": "51e2464eaaa2913fa376df1a988e1077cc85c340c1b2e2ea4a388456247c23f3",
-        "reviewer": "executor-editorial",
-        "date": "2026-09-29"
+        "reviewer": "condutor-editorial",
+        "date": "2026-09-28"
       },
       "es": {
-        "sourceHash": "6ee12ab9a22704102d8353392dbcc6461b93b8f1a339034f8e47a7f6fdbcc43a",
+        "sourceHash": "f8cfd6c7bf20f1f9fe8cfb62f88d4a5cc231697ff7b1b77c4217fcf507ec577b",
         "contentHash": "52813fcb84eb71d952bec48e21ac827fd42905ae4cfb520b4a945a48d6cd7dae",
-        "reviewer": "executor-editorial",
-        "date": "2026-09-29"
+        "reviewer": "condutor-editorial",
+        "date": "2026-09-28"
       }
     },
     "arquitetura": {
       "pt": {
-        "sourceHash": "e25e7b6b48ee95e8101b18405224fa096bab86893033e0d9db5cbb9abd5b7711",
+        "sourceHash": "f404ce971eda3eae2a7edcc821bf0ca675fe9a6d12d287b0eb9abf416399078c",
         "contentHash": "11c3ab754588ad5fcb5a4fb5d39f43d96ab9c730b5a3a17bca306ba4d0b58fbc",
-        "reviewer": "executor-editorial",
-        "date": "2026-09-29"
+        "reviewer": "condutor-editorial",
+        "date": "2026-09-28"
       },
       "en": {
-        "sourceHash": "e25e7b6b48ee95e8101b18405224fa096bab86893033e0d9db5cbb9abd5b7711",
+        "sourceHash": "f404ce971eda3eae2a7edcc821bf0ca675fe9a6d12d287b0eb9abf416399078c",
         "contentHash": "51ae2ddcd1a77a41f218bdeb8acdd060c3b2301b5fc0e1acc301e67bb19d191f",
-        "reviewer": "executor-editorial",
-        "date": "2026-09-29"
+        "reviewer": "condutor-editorial",
+        "date": "2026-09-28"
       },
       "es": {
-        "sourceHash": "e25e7b6b48ee95e8101b18405224fa096bab86893033e0d9db5cbb9abd5b7711",
+        "sourceHash": "f404ce971eda3eae2a7edcc821bf0ca675fe9a6d12d287b0eb9abf416399078c",
         "contentHash": "9fb17b2e345a6c923aacd1672293311e97169a3adaa9251f437c89aa86e739af",
-        "reviewer": "executor-editorial",
-        "date": "2026-09-29"
+        "reviewer": "condutor-editorial",
+        "date": "2026-09-28"
       }
     },
     "ciclo": {
