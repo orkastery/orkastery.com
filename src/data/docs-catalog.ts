@@ -3,7 +3,9 @@ export default {
   "modules": [
     "docs-start.ts",
     "docs-concepts.ts",
-    "docs-guides.ts"
+    "docs-guides.ts",
+    "docs-reference.ts",
+    "docs-standards.ts"
   ],
   "repository": "https://github.com/orkastery/orkastery"
 };

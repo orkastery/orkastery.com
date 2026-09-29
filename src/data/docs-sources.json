@@ -143,14 +143,18 @@
       "sha256": "2f250e361931651b7f21792ad0c5b5102f0e259aa7282b093a6c35a803c848a8",
       "category": "padroes",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "padroes"
+      ]
     },
     {
       "path": "docs/padroes/roadmap-de-produto.md",
       "sha256": "0c6ab518c79a64bdca20b258aa17c6aa20cdbf063a7540e471ca90d52a8741e6",
       "category": "padroes",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "padroes"
+      ]
     },
     {
       "path": "docs/produto/FEAT-001-thread-e-seis-fases.md",
@@ -443,35 +447,45 @@
       "sha256": "ce0d4828f120e39590b292516bcb0fb7aae87f6ce8d199d1a6f0e533051cf2e6",
       "category": "referencia",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "cli"
+      ]
     },
     {
       "path": "docs/referencia/contratos/maestro-i32.md",
       "sha256": "7f46b322f166e8bc8613464a265393716618feffa78ffb761834483d1faa7d74",
       "category": "referencia",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "contratos"
+      ]
     },
     {
       "path": "docs/referencia/contratos/playbook-runtimes-i09.md",
       "sha256": "789e067c0ff3eb533a48849d3543d232efbd7d88cb26da5d9e789130ba1a22da",
       "category": "referencia",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "contratos"
+      ]
     },
     {
       "path": "docs/referencia/contratos/telemetria-i07.md",
       "sha256": "e85053c7400ed08e0db499053ab8efbb0f477f6badd6ca4dcd86b132023f98f5",
       "category": "referencia",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "contratos"
+      ]
     },
     {
       "path": "docs/referencia/maestro-capacidades.json",
       "sha256": "f00870feae9f0c233d35d998280dddd57c37cb88e071a90e351c3a43e1a6dea6",
       "category": "referencia",
       "treatment": "article",
-      "targets": []
+      "targets": [
+        "contratos"
+      ]
     },
     {
       "path": "docs/roadmap/README.md",
@@ -825,7 +839,7 @@
       ]
     }
   ],
-  "inventoryHash": "c91ebdac3ed7fc8436a5f7b11760e7e489bbd33de5b0730a36f0154368572c28",
+  "inventoryHash": "4b239bfc1a3e4aa5303b620da930d5e0adad73f1ebce1e55ff5d9c714679ffc6",
   "reviews": {
     "comecar": {
       "pt": {
@@ -1023,6 +1037,86 @@
       "es": {
         "sourceHash": "0c89462af20851f5dade44261ada41b25a53a4b8f0980b97190c480f752b5868",
         "contentHash": "03ee565bff12dce06a989ebdb557e4eefec82a9596452c29dbb2aa1342505b4d",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "cli": {
+      "pt": {
+        "sourceHash": "f98b06fceed7760c051156ba224c5a9c4614ff2143b112f276dc9c07e0fefd94",
+        "contentHash": "6a3f2c00856f0f36d5ddcd1778196790e71c35497893d4c7631622e7498f8e94",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "f98b06fceed7760c051156ba224c5a9c4614ff2143b112f276dc9c07e0fefd94",
+        "contentHash": "d6f95dd6e86127f2149fffb6b29d45cc4a6a5b56886ed8aa3c03514628304072",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "f98b06fceed7760c051156ba224c5a9c4614ff2143b112f276dc9c07e0fefd94",
+        "contentHash": "3cc9e417ddaca4e69632f4a71664c6e85897ade43ba3779fc0f6445cf140bcf1",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "contratos": {
+      "pt": {
+        "sourceHash": "1f66a27dc7a005e18b322c4ffc1eac4387ac7bec474982a90984a243471e6a03",
+        "contentHash": "f1f1fc73e4665d88ec0c3751761177f1b45a2457f9e4e7ca8fff4e982dff210d",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "1f66a27dc7a005e18b322c4ffc1eac4387ac7bec474982a90984a243471e6a03",
+        "contentHash": "f5da989eb9d5b6b315a0eb88263c1a209f77f9199d8d3eb403d056df67a900d4",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "1f66a27dc7a005e18b322c4ffc1eac4387ac7bec474982a90984a243471e6a03",
+        "contentHash": "ad2617706b1baf3d29102f649ed70f4541c6c94490f28958bf516e2fb762f587",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "padroes": {
+      "pt": {
+        "sourceHash": "34d7df724463de07290c05f7780d08c2bf5ab3537231d071502bf9c907d8eaa3",
+        "contentHash": "46d2ea246499c91b7b5c4df47205d283e164b258091d206b9e0c4fe932474e83",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "34d7df724463de07290c05f7780d08c2bf5ab3537231d071502bf9c907d8eaa3",
+        "contentHash": "1b756cb609e1165e262932bf1e9404211d86a13596cf0d25dbd4828eed4624b4",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "34d7df724463de07290c05f7780d08c2bf5ab3537231d071502bf9c907d8eaa3",
+        "contentHash": "679feecd2a84d9c2ab971f3015b7d148806665aef5ecf25d3f9a8f58bbf90850",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      }
+    },
+    "roadmap": {
+      "pt": {
+        "sourceHash": "eefda492a972c883a3950f40823bf65c1777a31cb1e16dc7f1f55def3b3c46e1",
+        "contentHash": "bc3be7f44f349eef32104d9df8d48ec417daeec2c339988e0a295899ac142f01",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "en": {
+        "sourceHash": "eefda492a972c883a3950f40823bf65c1777a31cb1e16dc7f1f55def3b3c46e1",
+        "contentHash": "1da086fe9a19cc136194a7f55593da11c5a4ce76b83df7ecf49c94f91d649c38",
+        "reviewer": "executor-editorial",
+        "date": "2026-09-29"
+      },
+      "es": {
+        "sourceHash": "eefda492a972c883a3950f40823bf65c1777a31cb1e16dc7f1f55def3b3c46e1",
+        "contentHash": "4d255dad201e7acfb214c350a46e412a1dae4ae29cc8872d74e034afb424d3d2",
         "reviewer": "executor-editorial",
         "date": "2026-09-29"
       }
