@@ -6,7 +6,9 @@ export default [
       "docs/conceitos/arquitetura.md",
       "docs/conceitos/visao-geral.md",
       "docs/referencia/contratos/grafo-deterministico-kg1.md",
-      "docs/referencia/contratos/benchmark-grafo-kg1.md"
+      "docs/referencia/contratos/benchmark-grafo-kg1.md",
+      "docs/referencia/contratos/extracao-grafo-kg2.md",
+      "docs/referencia/contratos/indice-grafo-kg3.md"
     ],
     "diagram": "layers",
     "translations": {
@@ -51,8 +53,17 @@ export default [
             "title": "Grafo determinístico: o contrato KG1",
             "paragraphs": [
               "KG1 define ork.code-artifact-graph/v1 e ork.graph-benchmark/v1, com validação pura e corpus sintético. A mesma entrada, configuração e versão do extrator produzem as mesmas identidades e conteúdo canônico. Cada relação exige evidência localizável e preserva as restrições de acesso das fontes.",
-              "O grafo é uma projeção local descartável. KG1 não entrega extração, índice, CLI de consulta, watcher nem consumo pelas fases. Não altera orkmind.company-brain/v1 nem substitui o estado do Ork ou o Company Brain. Nenhum benchmark medido comprova economia nesta etapa."
+              "O grafo é uma projeção local descartável. O KG1 entrega o contrato, a validação pura e o corpus; a extração é o KG2, e o índice com a consulta pelo ork grafo é o KG3. Não altera orkmind.company-brain/v1 nem substitui o estado do Ork ou o Company Brain. Nenhum benchmark medido comprova economia nesta etapa."
             ]
+          },
+          {
+            "id": "kg2-kg3",
+            "title": "Extração, índice e consulta: KG2 e KG3",
+            "paragraphs": [
+              "O KG2 extrai de um repositório Git local um grafo no mesmo contrato: TypeScript e JavaScript pelo compilador, Markdown com seções, links, frontmatter e IDs citados, e a proveniência de cada aresta. Aresta só existe com prova; o que não se prova fica fora e é declarado, como diagnóstico ou lacuna do relatório de extração. A mesma entrada dá o mesmo grafo e o mesmo digest em qualquer ordem de leitura.",
+              "O KG3 guarda esse grafo num índice local do HEAD limpo, fora do git, e o consulta por vizinhança, chamadores, importadores e caminho. A mesma pergunta dá a mesma saída, toda aresta traz extrator e evidência, e a resposta se declara parcial. Registro fora da concessão local não aparece em resposta, contagem nem candidato. Extração incremental, consumo pelas fases, federação e ferramenta MCP continuam fora."
+            ],
+            "code": "ork grafo indexar --verificar\nork grafo vizinhos <nó> --json"
           }
         ]
       },
@@ -97,8 +108,17 @@ export default [
             "title": "Deterministic graph: the KG1 contract",
             "paragraphs": [
               "KG1 defines ork.code-artifact-graph/v1 and ork.graph-benchmark/v1, with pure validation and a synthetic corpus. Identical input, configuration and extractor versions produce identical identities and canonical content. Each relationship requires locatable evidence and preserves source access restrictions.",
-              "The graph is a disposable local projection. KG1 does not provide extraction, an index, a query CLI, a watcher or phase consumption. It does not change orkmind.company-brain/v1 or replace Ork state or Company Brain. No measured benchmark demonstrates savings at this stage."
+              "The graph is a disposable local projection. KG1 provides the contract, pure validation and the corpus; extraction is KG2, and the index with ork grafo queries is KG3. It does not change orkmind.company-brain/v1 or replace Ork state or Company Brain. No measured benchmark demonstrates savings at this stage."
             ]
+          },
+          {
+            "id": "kg2-kg3",
+            "title": "Extraction, index and queries: KG2 and KG3",
+            "paragraphs": [
+              "KG2 extracts a graph in the same contract from a local Git repository: TypeScript and JavaScript through the compiler, Markdown with sections, links, frontmatter and cited IDs, and provenance for every edge. An edge exists only with proof; anything unproven stays out and is declared as a diagnostic or as a gap in the extraction report. The same input yields the same graph and digest in any read order.",
+              "KG3 stores that graph in a local index for a clean HEAD, outside git, and queries it for neighbors, callers, importers and paths. The same question produces the same output, every edge carries its extractor and evidence, and answers declare themselves partial. Records outside the local grant appear in no answer, count or candidate. Incremental extraction, phase consumption, federation and an MCP tool remain out of scope."
+            ],
+            "code": "ork grafo indexar --verificar\nork grafo vizinhos <node> --json"
           }
         ]
       },
@@ -143,8 +163,17 @@ export default [
             "title": "Grafo determinista: el contrato KG1",
             "paragraphs": [
               "KG1 define ork.code-artifact-graph/v1 y ork.graph-benchmark/v1, con validación pura y corpus sintético. La misma entrada, configuración y versión del extractor producen las mismas identidades y contenido canónico. Cada relación exige pruebas localizables y conserva las restricciones de acceso de las fuentes.",
-              "El grafo es una proyección local descartable. KG1 no ofrece extracción, índice, CLI de consulta, watcher ni consumo por las fases. No modifica orkmind.company-brain/v1 ni sustituye el estado de Ork o el Company Brain. Ningún benchmark medido demuestra ahorro en esta etapa."
+              "El grafo es una proyección local descartable. KG1 ofrece el contrato, la validación pura y el corpus; la extracción es KG2, y el índice con la consulta mediante ork grafo es KG3. No modifica orkmind.company-brain/v1 ni sustituye el estado de Ork o el Company Brain. Ningún benchmark medido demuestra ahorro en esta etapa."
             ]
+          },
+          {
+            "id": "kg2-kg3",
+            "title": "Extracción, índice y consulta: KG2 y KG3",
+            "paragraphs": [
+              "KG2 extrae de un repositorio Git local un grafo con el mismo contrato: TypeScript y JavaScript mediante el compilador, Markdown con secciones, enlaces, frontmatter e IDs citados, y la procedencia de cada arista. Una arista solo existe con prueba; lo que no se demuestra queda fuera y se declara como diagnóstico o como laguna del informe de extracción. La misma entrada produce el mismo grafo y el mismo digest en cualquier orden de lectura.",
+              "KG3 guarda ese grafo en un índice local del HEAD limpio, fuera de git, y lo consulta por vecindad, llamadores, importadores y camino. La misma pregunta produce la misma salida, cada arista incluye extractor y prueba, y la respuesta se declara parcial. Los registros fuera de la concesión local no aparecen en respuestas, recuentos ni candidatos. La extracción incremental, el consumo por las fases, la federación y una herramienta MCP siguen fuera."
+            ],
+            "code": "ork grafo indexar --verificar\nork grafo vizinhos <nodo> --json"
           }
         ]
       }

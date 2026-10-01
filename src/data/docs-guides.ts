@@ -115,9 +115,17 @@ export default [
             "id": "respostas",
             "title": "Registre informação pública",
             "paragraphs": [
-              "Use ork onboarding set para registrar uma etapa com autoria. Revise a saída antes de publicar a entrevista na memória. DSNs, tokens e senhas não pertencem às respostas públicas; a configuração aponta para variáveis protegidas."
+              "Use ork onboarding set para registrar uma etapa com autoria. Revise a saída antes de publicar a entrevista na memória. DSNs, tokens e senhas não pertencem às respostas públicas; a configuração aponta para variáveis protegidas. Sem --por, a autoria registrada é owner, o que não comprova a resposta de uma pessoa."
             ],
             "code": "ork onboarding set produtos --conteudo '{\"produtos\":[\"meu-produto\"]}' --por operador"
+          },
+          {
+            "id": "experiencia",
+            "title": "Preferências da conversa",
+            "paragraphs": [
+              "A etapa maestro também oferece ativar o pacote de experiência com os valores detectados, configurá-lo ou desativá-lo. Uma resposta com o objeto owner grava idioma, fuso, profundidade e ativação no manifesto, preservando as outras seções e respostas. Consultar as preferências não cria resposta, autoria nem aprovação."
+            ],
+            "code": "ork experiencia show --json\nork onboarding set maestro --conteudo '{\"owner\":{\"language\":\"pt-BR\",\"timezone\":\"UTC\",\"depth\":\"curta\",\"experience\":true}}' --por equipe"
           }
         ]
       },
@@ -137,9 +145,17 @@ export default [
             "id": "respostas",
             "title": "Record public information",
             "paragraphs": [
-              "Use ork onboarding set to record a stage with attribution. Review the output before publishing the interview to memory. DSNs, tokens and passwords do not belong in public answers; configuration refers to protected variables."
+              "Use ork onboarding set to record a stage with attribution. Review the output before publishing the interview to memory. DSNs, tokens and passwords do not belong in public answers; configuration refers to protected variables. Without --por, the recorded author is owner, which does not prove that a person answered."
             ],
             "code": "ork onboarding set produtos --conteudo '{\"produtos\":[\"meu-produto\"]}' --por operador"
+          },
+          {
+            "id": "experiencia",
+            "title": "Conversation preferences",
+            "paragraphs": [
+              "The maestro stage also offers to activate the experience pack with detected values, configure it or turn it off. An answer with the owner object stores language, timezone, depth and activation in the manifest, preserving other sections and answers. Reading preferences creates no answer, authorship or approval."
+            ],
+            "code": "ork experiencia show --json\nork onboarding set maestro --conteudo '{\"owner\":{\"language\":\"en-US\",\"timezone\":\"UTC\",\"depth\":\"curta\",\"experience\":true}}' --por equipe"
           }
         ]
       },
@@ -159,9 +175,174 @@ export default [
             "id": "respostas",
             "title": "Registre información pública",
             "paragraphs": [
-              "Use ork onboarding set para registrar una etapa con autoría. Revise la salida antes de publicar la entrevista en la memoria. Los DSN, tokens y contraseñas no pertenecen a las respuestas públicas; la configuración referencia variables protegidas."
+              "Use ork onboarding set para registrar una etapa con autoría. Revise la salida antes de publicar la entrevista en la memoria. Los DSN, tokens y contraseñas no pertenecen a las respuestas públicas; la configuración referencia variables protegidas. Sin --por, la autoría registrada es owner, lo que no demuestra la respuesta de una persona."
             ],
             "code": "ork onboarding set produtos --conteudo '{\"produtos\":[\"meu-produto\"]}' --por operador"
+          },
+          {
+            "id": "experiencia",
+            "title": "Preferencias de la conversación",
+            "paragraphs": [
+              "La etapa maestro también ofrece activar el paquete de experiencia con los valores detectados, configurarlo o desactivarlo. Una respuesta con el objeto owner guarda idioma, zona horaria, profundidad y activación en el manifiesto, conservando las demás secciones y respuestas. Consultar las preferencias no crea respuesta, autoría ni aprobación."
+            ],
+            "code": "ork experiencia show --json\nork onboarding set maestro --conteudo '{\"owner\":{\"language\":\"es-ES\",\"timezone\":\"UTC\",\"depth\":\"curta\",\"experience\":true}}' --por equipe"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "slug": "experiencia",
+    "group": "guides",
+    "sources": [
+      "docs/guias/orchestration-experience.md",
+      "docs/guias/orchestration-experience.pt-BR.md"
+    ],
+    "translations": {
+      "pt": {
+        "title": "Experiência de orquestração",
+        "description": "Defina idioma, fuso e profundidade da conversa e instale ou remova o pacote em cada host.",
+        "sections": [
+          {
+            "id": "configurar",
+            "title": "Configure as preferências",
+            "paragraphs": [
+              "O pacote orienta como o agente conversa ao conduzir o projeto. Doze regras guiam mensagens, decisões, evidências, documentação, coordenação e entrega. Gates, permissões e identidade humana continuam no núcleo.",
+              "owner.language recebe um locale BCP-47; owner.timezone, um fuso IANA; owner.depth, curta ou detalhada; owner.experience, true ou false. Sem valor, valem o locale do sistema, o fuso resolvido pelo núcleo, curta e true. Locales portugueses usam a variante pt-BR das skills; os demais usam a inglesa e mantêm o idioma de resposta configurado. Entrada inválida é recusada antes de gravar; valor inválido editado à mão gera aviso e vale o padrão."
+            ],
+            "code": "ork onboarding\nork experiencia show --json"
+          },
+          {
+            "id": "instalar",
+            "title": "Instale em cada host",
+            "paragraphs": [
+              "adapter install grava o catálogo e um bloco próprio em CLAUDE.md, no Claude Code, ou em AGENTS.md, no Codex; o Hermes recebe as duas variantes ao lado da skill existente. O bloco aponta o catálogo por caminho relativo ao projeto, para valer em outro clone, e preserva o bloco do ork init e o conteúdo externo. Num clone sem recibo, um bloco igual ao gerado é adotado sem duplicar.",
+              "Copiar arquivos não comprova descoberta nativa nem uso pelo modelo: confira a preferência efetiva no chat do host. O Claude Code também exige a ativação do plugin indicada pelo instalador, e outra worktree precisa da própria instalação. O OpenClaw ainda não distribui essas skills."
+            ],
+            "code": "ork adapter install codex --dry-run\nork adapter install codex"
+          },
+          {
+            "id": "desativar",
+            "title": "Desative ou remova",
+            "paragraphs": [
+              "Com owner.experience false, a reinstalação tira o bloco gerenciado; repita adapter install em cada host com bloco. O Hermes respeita a preferência pela entrada da skill. experiencia uninstall remove só o bloco de codex ou claude-code, preserva o adaptador e não muda a preferência global. Sem mudança externa, a remoção restaura os bytes anteriores.",
+              "Bloco editado ou duplicado, recibo incompatível ou arquivo de instruções por link fazem adapter install pular só o pacote, com aviso, e experiencia uninstall recusar sem escrever. Corrija o arquivo à mão; não apague o recibo para forçar a instalação."
+            ],
+            "code": "ork onboarding set maestro --conteudo '{\"owner\":{\"experience\":false}}' --por equipe\nork adapter install codex\nork experiencia uninstall codex --dry-run"
+          },
+          {
+            "id": "coordenar",
+            "title": "Coordene antes de assumir um item",
+            "paragraphs": [
+              "Consulte reservas e fábrica antes de assumir trabalho. O dry-run de thread new não reserva; sem ele, --roadmap usa a reserva do núcleo, e RM-NNN apenas no nome gera aviso sem associar o item.",
+              "No MCP, ork_roadmap_reservas e ork_fabrica usam o projeto fixado pelo servidor e respondem atualizado, desatualizado ou indisponivel. Indisponibilidade traz dados nulos, nunca uma falsa lista vazia. As consultas não reservam, não publicam, não fazem push nem assinam gates."
+            ],
+            "code": "ork roadmap reservas\nork fabrica\nork thread new \"RM-012 exemplo de melhoria\" --modo auto --roadmap RM-012 --dry-run"
+          },
+          {
+            "id": "limites",
+            "title": "Evidência e limites",
+            "paragraphs": [
+              "Testes focados cobrem preferências, blocos, clone sem recibo, conflitos, adaptadores e contratos MCP. Os evals das skills são estáticos e não comprovam o comportamento real de um modelo. Um ensaio do repositório do produto instala o pacote local em prefixo e HOME temporários e confere instalação, reinstalação, opt-out, remoção e restauração."
+            ]
+          }
+        ]
+      },
+      "en": {
+        "title": "Orchestration experience",
+        "description": "Set the conversation’s language, timezone and depth, and install or remove the pack in each host.",
+        "sections": [
+          {
+            "id": "configurar",
+            "title": "Configure preferences",
+            "paragraphs": [
+              "The pack shapes how the agent talks while running your project. Twelve rules guide messages, decisions, evidence, documentation, coordination and delivery. Gates, permissions and human identity remain in the core.",
+              "owner.language takes a BCP-47 locale; owner.timezone, an IANA timezone; owner.depth, curta (short) or detalhada (detailed); owner.experience, true or false. When a value is absent, the system locale, the core’s timezone resolution, curta and true apply. Portuguese locales select the pt-BR skill variant; other locales select English while keeping the configured response language. Invalid input is rejected before anything is stored; an invalid value edited by hand raises a warning and falls back to the default."
+            ],
+            "code": "ork onboarding\nork experiencia show --json"
+          },
+          {
+            "id": "instalar",
+            "title": "Install in each host",
+            "paragraphs": [
+              "adapter install writes the catalog and a dedicated block to CLAUDE.md for Claude Code, or to AGENTS.md for Codex; Hermes receives both variants next to its existing skill. The block points to the catalog by a path relative to the project, so it works in another clone, and keeps the ork init block and outside content intact. In a clone without a receipt, a block identical to the generated one is adopted without duplication.",
+              "File copies do not prove native discovery or model behavior: check the effective preferences in the host chat. Claude Code also needs the plugin activation reported by the installer, and another worktree needs its own installation. OpenClaw does not distribute these skills yet."
+            ],
+            "code": "ork adapter install codex --dry-run\nork adapter install codex"
+          },
+          {
+            "id": "desativar",
+            "title": "Opt out or remove",
+            "paragraphs": [
+              "With owner.experience set to false, reinstalling removes the managed block; repeat adapter install for every host with a block. Hermes honors the preference through its skill entry. experiencia uninstall removes only the codex or claude-code block, keeps the adapter and leaves the global preference unchanged. Without outside changes, removal restores the previous bytes.",
+              "A modified or duplicate block, an incompatible receipt or a linked instruction file makes adapter install skip only the pack, with a warning, and makes experiencia uninstall refuse without writing. Fix the file by hand; do not delete the receipt to force installation."
+            ],
+            "code": "ork onboarding set maestro --conteudo '{\"owner\":{\"experience\":false}}' --por equipe\nork adapter install codex\nork experiencia uninstall codex --dry-run"
+          },
+          {
+            "id": "coordenar",
+            "title": "Coordinate before taking an item",
+            "paragraphs": [
+              "Check reservations and the factory before taking work. A thread new dry run does not reserve; without it, --roadmap uses core reservation, and an RM-NNN in the name alone raises a warning without linking the item.",
+              "Over MCP, ork_roadmap_reservas and ork_fabrica use the server’s pinned project and report atualizado (current), desatualizado (stale) or indisponivel (unavailable). Unavailable results carry null data, never a misleading empty list. These queries cannot reserve, publish, push or sign gates."
+            ],
+            "code": "ork roadmap reservas\nork fabrica\nork thread new \"RM-012 example improvement\" --modo auto --roadmap RM-012 --dry-run"
+          },
+          {
+            "id": "limites",
+            "title": "Evidence and limits",
+            "paragraphs": [
+              "Focused tests cover preferences, blocks, fresh clones without a receipt, conflicts, adapters and MCP contracts. Skill evals are static and do not prove real model behavior. A rehearsal from the product repository installs the local package into a temporary prefix and HOME and checks installation, reinstallation, opt-out, removal and restoration."
+            ]
+          }
+        ]
+      },
+      "es": {
+        "title": "Experiencia de orquestación",
+        "description": "Defina idioma, zona horaria y profundidad de la conversación e instale o retire el paquete en cada host.",
+        "sections": [
+          {
+            "id": "configurar",
+            "title": "Configure las preferencias",
+            "paragraphs": [
+              "El paquete orienta cómo conversa el agente al conducir el proyecto. Doce reglas guían mensajes, decisiones, pruebas, documentación, coordinación y entrega. Los gates, los permisos y la identidad humana siguen en el núcleo.",
+              "owner.language recibe un locale BCP-47; owner.timezone, una zona horaria IANA; owner.depth, curta (breve) o detalhada (detallada); owner.experience, true o false. Sin valor, se aplican el locale del sistema, la zona que resuelve el núcleo, curta y true. Los locales portugueses usan la variante pt-BR de las skills; los demás usan la inglesa y conservan el idioma de respuesta configurado. Una entrada inválida se rechaza antes de guardar; un valor inválido editado a mano genera un aviso y se aplica el valor predeterminado."
+            ],
+            "code": "ork onboarding\nork experiencia show --json"
+          },
+          {
+            "id": "instalar",
+            "title": "Instale en cada host",
+            "paragraphs": [
+              "adapter install escribe el catálogo y un bloque propio en CLAUDE.md, para Claude Code, o en AGENTS.md, para Codex; Hermes recibe las dos variantes junto a la skill existente. El bloque apunta al catálogo con una ruta relativa al proyecto, para que funcione en otro clon, y conserva el bloque de ork init y el contenido externo. En un clon sin comprobante, un bloque idéntico al generado se adopta sin duplicarse.",
+              "Copiar archivos no demuestra el descubrimiento nativo ni el uso por el modelo: compruebe la preferencia efectiva en el chat del host. Claude Code también exige la activación del plugin que indica el instalador, y otra worktree necesita su propia instalación. OpenClaw todavía no distribuye estas skills."
+            ],
+            "code": "ork adapter install codex --dry-run\nork adapter install codex"
+          },
+          {
+            "id": "desativar",
+            "title": "Desactive o retire",
+            "paragraphs": [
+              "Con owner.experience en false, la reinstalación retira el bloque gestionado; repita adapter install en cada host con bloque. Hermes respeta la preferencia mediante la entrada de su skill. experiencia uninstall retira solo el bloque de codex o claude-code, conserva el adaptador y no cambia la preferencia global. Sin cambios externos, la retirada restaura los bytes anteriores.",
+              "Un bloque editado o duplicado, un comprobante incompatible o un archivo de instrucciones enlazado hacen que adapter install omita solo el paquete, con aviso, y que experiencia uninstall se niegue sin escribir. Corrija el archivo a mano; no borre el comprobante para forzar la instalación."
+            ],
+            "code": "ork onboarding set maestro --conteudo '{\"owner\":{\"experience\":false}}' --por equipe\nork adapter install codex\nork experiencia uninstall codex --dry-run"
+          },
+          {
+            "id": "coordenar",
+            "title": "Coordine antes de asumir un elemento",
+            "paragraphs": [
+              "Consulte reservas y fábrica antes de asumir trabajo. El dry-run de thread new no reserva; sin él, --roadmap usa la reserva del núcleo, y un RM-NNN solo en el nombre genera un aviso sin asociar el elemento.",
+              "En MCP, ork_roadmap_reservas y ork_fabrica usan el proyecto fijado por el servidor y responden atualizado (actualizado), desatualizado (desactualizado) o indisponivel (no disponible). La falta de disponibilidad trae datos nulos, nunca una lista vacía engañosa. Estas consultas no reservan, no publican, no hacen push ni firman gates."
+            ],
+            "code": "ork roadmap reservas\nork fabrica\nork thread new \"RM-012 ejemplo de mejora\" --modo auto --roadmap RM-012 --dry-run"
+          },
+          {
+            "id": "limites",
+            "title": "Pruebas y límites",
+            "paragraphs": [
+              "Las pruebas específicas cubren preferencias, bloques, clones sin comprobante, conflictos, adaptadores y contratos MCP. Los evals de las skills son estáticos y no demuestran el comportamiento real de un modelo. Un ensayo desde el repositorio del producto instala el paquete local en un prefijo y un HOME temporales y comprueba instalación, reinstalación, desactivación, retirada y restauración."
+            ]
           }
         ]
       }
@@ -426,6 +607,15 @@ export default [
               "OrkMind é uma integração de memória, não uma autoridade de gate. Quando indisponível, o modo efetivo e a degradação devem ser explícitos. Consulte ork memory status antes de afirmar que o contexto foi persistido ou recuperado."
             ],
             "code": "ork memory status"
+          },
+          {
+            "id": "significado",
+            "title": "Busca por significado",
+            "paragraphs": [
+              "A busca por tag continua sendo o caminho determinístico: é ela que monta o prompt, o recall e o handoff. A busca por significado é uma superfície separada, que acha por paráfrase o que a tag e a palavra exata não acham. Cada resultado sai marcado deterministico: false, e nada semântico entra no prompt sozinho.",
+              "Ela fica desligada até o manifesto declarar o bloco memory.embedding, com provider, modelo, dimensão e o nome da variável da chave, nunca o valor. O índice vetorial é local, derivado do tenant e fora do git; reindexar sem mudança não embeda nada. O texto indexado e cada consulta saem para o provider configurado: use uma chave dedicada, com limite de crédito. A estimativa de tokens e custo não é fatura. Sem embeddings, o motivo é embeddings.*, e o regime orkmind e o recall por tag seguem iguais."
+            ],
+            "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory index\nork memory search --texto \"trocar de conta quando acaba a cota\" --json"
           }
         ]
       },
@@ -456,6 +646,15 @@ export default [
               "OrkMind is a memory integration, not gate authority. When unavailable, the effective mode and degradation must be explicit. Check ork memory status before claiming context was stored or retrieved."
             ],
             "code": "ork memory status"
+          },
+          {
+            "id": "significado",
+            "title": "Search by meaning",
+            "paragraphs": [
+              "Tag search remains the deterministic path: it builds the prompt, recall and handoff. Search by meaning is a separate surface that finds paraphrases that tags and exact words miss. Every result is marked deterministico: false, and nothing semantic enters the prompt on its own.",
+              "It stays off until the manifest declares the memory.embedding block, with provider, model, dimension and the name of the key variable, never its value. The vector index is local, derived from the tenant and kept out of git; reindexing unchanged content embeds nothing. Indexed text and every query go to the configured provider: use a dedicated key with a credit limit. The token and cost estimate is not an invoice. Without embeddings, the reason is embeddings.*, and the orkmind regime and tag recall stay the same."
+            ],
+            "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory index\nork memory search --texto \"trocar de conta quando acaba a cota\" --json"
           }
         ]
       },
@@ -486,6 +685,15 @@ export default [
               "OrkMind es una integración de memoria, no una autoridad de gate. Cuando no está disponible, el modo efectivo y la degradación deben ser explícitos. Consulte ork memory status antes de afirmar que se guardó o recuperó contexto."
             ],
             "code": "ork memory status"
+          },
+          {
+            "id": "significado",
+            "title": "Búsqueda por significado",
+            "paragraphs": [
+              "La búsqueda por etiqueta sigue siendo el camino determinista: es la que construye el prompt, el recall y el handoff. La búsqueda por significado es una superficie separada que encuentra por paráfrasis lo que la etiqueta y la palabra exacta no encuentran. Cada resultado se marca deterministico: false, y nada semántico entra solo en el prompt.",
+              "Permanece desactivada hasta que el manifiesto declare el bloque memory.embedding, con provider, modelo, dimensión y el nombre de la variable de la clave, nunca su valor. El índice vectorial es local, derivado del tenant y fuera de git; reindexar sin cambios no genera embeddings. El texto indexado y cada consulta salen hacia el provider configurado: use una clave dedicada con límite de crédito. La estimación de tokens y coste no es una factura. Sin embeddings, el motivo es embeddings.*, y el régimen orkmind y el recall por etiqueta no cambian."
+            ],
+            "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory index\nork memory search --texto \"trocar de conta quando acaba a cota\" --json"
           }
         ]
       }
@@ -516,6 +724,15 @@ export default [
               "Reservas evitam que duas máquinas assumam o mesmo item. Sem rede, consulte a última cópia e considere sua data. O retrato público não leva prompts, transcripts, credenciais ou caminhos locais. Uma decisão pendente precisa ser respondida pelo ingresso autenticado da máquina responsável."
             ],
             "code": "ork board --sem-remoto\nork fabrica --sem-remoto"
+          },
+          {
+            "id": "rede",
+            "title": "O roadmap da rede, de qualquer diretório",
+            "paragraphs": [
+              "ork network roadmap junta o status report do roadmap, as reservas e as threads de cada máquina, com a fonte e a hora de cada parte. Roda de qualquer diretório, inclusive fora de um clone. O roadmap vem da base remota, igual para toda máquina; esta máquina entra pelo estado local, e as outras pelo retrato publicado.",
+              "Sem clone, a leitura usa a CLI da forja já autenticada, gh ou glab, só com consulta; nenhum token sai dela. O que não foi lido sai como lacuna, com o tipo e o que fazer: máquina sem batida há mais de 3 h, forja sem login, sem rede. A resposta nunca diz vazio por não ter lido."
+            ],
+            "code": "ork network roadmap\nork network roadmap --projeto github:orkastery/orkastery\nork network roadmap --projeto meu-produto --json"
           }
         ]
       },
@@ -537,6 +754,15 @@ export default [
               "Reservations prevent two machines from taking the same item. Offline, inspect the last copy and consider its timestamp. The public snapshot excludes prompts, transcripts, credentials and local paths. Pending decisions must be answered through the responsible machine’s authenticated ingress."
             ],
             "code": "ork board --sem-remoto\nork fabrica --sem-remoto"
+          },
+          {
+            "id": "rede",
+            "title": "The network roadmap, from any directory",
+            "paragraphs": [
+              "ork network roadmap combines the roadmap status report, reservations and each machine’s threads, with the source and time of every part. It runs from any directory, even outside a clone. The roadmap comes from the remote base, the same for every machine; this machine contributes its local state, and the others their published snapshots.",
+              "Without a clone, it reads through the forge CLI you have already authenticated, gh or glab, using queries only; no token leaves it. Anything not read appears as a typed gap with the next step: a machine without a heartbeat for more than 3 h, a forge without login, no network. The answer never says empty because it did not read."
+            ],
+            "code": "ork network roadmap\nork network roadmap --projeto github:orkastery/orkastery\nork network roadmap --projeto meu-produto --json"
           }
         ]
       },
@@ -558,6 +784,15 @@ export default [
               "Las reservas evitan que dos máquinas asuman el mismo elemento. Sin red, consulte la última copia y tenga en cuenta su fecha. La instantánea pública excluye prompts, transcripciones, credenciales y rutas locales. Las decisiones pendientes deben responderse mediante el ingreso autenticado de la máquina responsable."
             ],
             "code": "ork board --sem-remoto\nork fabrica --sem-remoto"
+          },
+          {
+            "id": "rede",
+            "title": "El roadmap de la red, desde cualquier directorio",
+            "paragraphs": [
+              "ork network roadmap reúne el informe de estado del roadmap, las reservas y las threads de cada máquina, con la fuente y la hora de cada parte. Funciona desde cualquier directorio, incluso fuera de un clon. El roadmap procede de la base remota, igual para todas las máquinas; esta máquina aporta su estado local, y las demás, su instantánea publicada.",
+              "Sin clon, la lectura usa la CLI de la forja ya autenticada, gh o glab, solo con consultas; ningún token sale de ella. Lo que no se leyó aparece como laguna tipada, con lo que hay que hacer: máquina sin latido desde hace más de 3 h, forja sin sesión iniciada, sin red. La respuesta nunca dice vacío por no haber leído."
+            ],
+            "code": "ork network roadmap\nork network roadmap --projeto github:orkastery/orkastery\nork network roadmap --projeto meu-produto --json"
           }
         ]
       }

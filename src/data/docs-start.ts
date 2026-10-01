@@ -24,9 +24,10 @@ export default [
             "id": "projeto",
             "title": "Prepare o projeto",
             "paragraphs": [
-              "Execute init na raiz do seu repositório. O manifesto define verificações, modo e integração com runtimes. Em seguida, responda à pauta de onboarding. Registre apenas nomes de variáveis de credenciais; mantenha os valores no ambiente protegido."
+              "Execute init na raiz do seu repositório. O manifesto define verificações, modo e integração com runtimes. Em seguida, responda à pauta de onboarding. Registre apenas nomes de variáveis de credenciais; mantenha os valores no ambiente protegido.",
+              "A etapa maestro do onboarding também oferece as preferências da conversa: idioma, fuso e profundidade, ou o opt-out. Confira os valores efetivos com ork experiencia show --json; o guia de experiência de orquestração explica a instalação em cada host."
             ],
-            "code": "ork init --name \"meu-produto\" --abbrev prd\nork onboarding\nork doctor"
+            "code": "ork init --name \"meu-produto\" --abbrev prd\nork onboarding\nork experiencia show --json\nork doctor"
           },
           {
             "id": "primeira-thread",
@@ -69,9 +70,10 @@ export default [
             "id": "projeto",
             "title": "Prepare the project",
             "paragraphs": [
-              "Run init at the root of your repository. The manifest defines checks, conduction mode and runtime integration. Then complete onboarding. Record credential variable names only; keep their values in the protected environment."
+              "Run init at the root of your repository. The manifest defines checks, conduction mode and runtime integration. Then complete onboarding. Record credential variable names only; keep their values in the protected environment.",
+              "The onboarding maestro stage also offers conversation preferences: language, timezone and depth, or opt-out. Check the effective values with ork experiencia show --json; the orchestration experience guide explains installation in each host."
             ],
-            "code": "ork init --name \"meu-produto\" --abbrev prd\nork onboarding\nork doctor"
+            "code": "ork init --name \"meu-produto\" --abbrev prd\nork onboarding\nork experiencia show --json\nork doctor"
           },
           {
             "id": "primeira-thread",
@@ -114,9 +116,10 @@ export default [
             "id": "projeto",
             "title": "Prepare el proyecto",
             "paragraphs": [
-              "Ejecute init en la raíz del repositorio. El manifiesto define las verificaciones, el modo de conducción y la integración con runtimes. Después complete el onboarding. Registre solo los nombres de las variables de credenciales; guarde los valores en el entorno protegido."
+              "Ejecute init en la raíz del repositorio. El manifiesto define las verificaciones, el modo de conducción y la integración con runtimes. Después complete el onboarding. Registre solo los nombres de las variables de credenciales; guarde los valores en el entorno protegido.",
+              "La etapa maestro del onboarding también ofrece las preferencias de la conversación: idioma, zona horaria y profundidad, o la desactivación. Compruebe los valores efectivos con ork experiencia show --json; la guía de experiencia de orquestación explica la instalación en cada host."
             ],
-            "code": "ork init --name \"meu-produto\" --abbrev prd\nork onboarding\nork doctor"
+            "code": "ork init --name \"meu-produto\" --abbrev prd\nork onboarding\nork experiencia show --json\nork doctor"
           },
           {
             "id": "primeira-thread",
