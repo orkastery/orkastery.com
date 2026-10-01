@@ -11,7 +11,8 @@ export default [
       "docs/produto/README.md",
       "docs/produto/_modelo-feature.md",
       "docs/referencia/contratos/grafo-deterministico-kg1.md",
-      "docs/referencia/contratos/benchmark-grafo-kg1.md"
+      "docs/referencia/contratos/benchmark-grafo-kg1.md",
+      "docs/referencia/contratos/indice-grafo-kg3.md"
     ],
     "translations": {
       "pt": {
@@ -22,15 +23,16 @@ export default [
             "id": "produto",
             "title": "Documente comportamento verificável",
             "paragraphs": [
-              "A hierarquia PLAT → SYS → MOD → FEAT organiza o produto. Cada página identifica finalidade, estado, origem e vínculos. Uma feature descreve pré-condições, fluxo, alternativas, pós-condições, regras e critérios de aceite. Dados, APIs e operação precisam de limites explícitos."
+              "A hierarquia PLAT → SYS → MOD → FEAT organiza o produto. Cada página identifica finalidade, estado, origem e vínculos. Uma feature descreve pré-condições, fluxo, alternativas, pós-condições, regras e critérios de aceite. Dados, APIs e operação precisam de limites explícitos. No Orkastery, o número de uma FEAT nova sai de ork roadmap feat, reservado entre máquinas; nunca do maior número da sua branch."
             ],
-            "code": "ork docs verificar\nork docs sincronizar"
+            "code": "ork roadmap feat --thread <thread>\nork docs verificar\nork docs sincronizar"
           },
           {
             "id": "planejamento",
             "title": "Separe plano de disponibilidade",
             "paragraphs": [
-              "O roadmap registra problema, objetivo, escopo, dependências, decisões e critérios de validação. Código mesclado, testes aprovados, deploy e exposição ao usuário são fatos diferentes. Nos sites, o roadmap aparece somente como resumo mensal com link para a fonte."
+              "O roadmap registra problema, objetivo, escopo, dependências, decisões e critérios de validação. Código mesclado, testes aprovados, deploy e exposição ao usuário são fatos diferentes. Nos sites, o roadmap aparece somente como resumo mensal com link para a fonte.",
+              "No Orkastery, ork docs sincronizar atualiza o estado do código a partir do ledger e do git, e a seção sdlc a partir da thread; nunca mexe em ciclo, documentação, deploy, exposição ou habilitação. Na worktree de uma thread, só toca o item dela; --so escolhe os itens e --todos volta a todos. Fechar a thread solta a reserva do item ou a passa para outra thread aberta do mesmo item."
             ]
           },
           {
@@ -45,7 +47,7 @@ export default [
             "id": "contratos-kg1",
             "title": "Contrato não é resultado medido",
             "paragraphs": [
-              "Os contratos KG1 fixam grafo e benchmark separadamente. O grafo conserva proveniência e restrições de acesso e recalcula identidades pelo conteúdo. O benchmark fixa pares A/B, tarefas, controles, tentativas e fontes de medida. Corpus sintético valida o contrato; não demonstra economia de tokens, latência ou significância. Uma medida ausente fica null com motivo. Extração, índice e consumo pelas fases continuam fora do KG1."
+              "Os contratos KG1 fixam grafo e benchmark separadamente. O grafo conserva proveniência e restrições de acesso e recalcula identidades pelo conteúdo. O benchmark fixa pares A/B, tarefas, controles, tentativas e fontes de medida. Corpus sintético valida o contrato; não demonstra economia de tokens, latência ou significância. Uma medida ausente fica null com motivo. A extração do KG2 e o índice com consulta do KG3 vieram sem mudar o contrato. A primeira medida de custo de consulta do KG3 registra bytes e latência dos dois braços, sem tokens medidos; não é a linha de base do benchmark e não conclui economia. O consumo pelas fases continua fora."
             ]
           }
         ]
@@ -58,15 +60,16 @@ export default [
             "id": "produto",
             "title": "Document verifiable behavior",
             "paragraphs": [
-              "The PLAT → SYS → MOD → FEAT hierarchy organizes the product. Each page identifies purpose, state, sources and relationships. A feature describes preconditions, flow, alternatives, postconditions, rules and acceptance criteria. Data, APIs and operations need explicit limits."
+              "The PLAT → SYS → MOD → FEAT hierarchy organizes the product. Each page identifies purpose, state, sources and relationships. A feature describes preconditions, flow, alternatives, postconditions, rules and acceptance criteria. Data, APIs and operations need explicit limits. In Orkastery, a new FEAT number comes from ork roadmap feat, reserved across machines; never from the highest number on your branch."
             ],
-            "code": "ork docs verificar\nork docs sincronizar"
+            "code": "ork roadmap feat --thread <thread>\nork docs verificar\nork docs sincronizar"
           },
           {
             "id": "planejamento",
             "title": "Separate plans from availability",
             "paragraphs": [
-              "The roadmap records the problem, goal, scope, dependencies, decisions and validation criteria. Merged code, passing tests, deployment and user exposure are different facts. On these sites, the roadmap appears only as a monthly summary linked to its source."
+              "The roadmap records the problem, goal, scope, dependencies, decisions and validation criteria. Merged code, passing tests, deployment and user exposure are different facts. On these sites, the roadmap appears only as a monthly summary linked to its source.",
+              "In Orkastery, ork docs sincronizar updates code state from the ledger and git, and the sdlc section from the thread; it never changes lifecycle, documentation, deployment, exposure or enablement. In a thread’s worktree it touches only that thread’s item; --so selects items and --todos covers all of them. Closing a thread releases its item reservation or passes it to another open thread on the same item."
             ]
           },
           {
@@ -81,7 +84,7 @@ export default [
             "id": "contratos-kg1",
             "title": "A contract is not a measured result",
             "paragraphs": [
-              "KG1 defines separate graph and benchmark contracts. The graph preserves provenance and access restrictions and recomputes content-derived identities. The benchmark fixes A/B pairs, tasks, controls, attempts and measurement sources. A synthetic corpus validates the contract; it demonstrates neither token savings, latency nor significance. Missing measurements remain null with a reason. Extraction, indexing and phase consumption remain outside KG1."
+              "KG1 defines separate graph and benchmark contracts. The graph preserves provenance and access restrictions and recomputes content-derived identities. The benchmark fixes A/B pairs, tasks, controls, attempts and measurement sources. A synthetic corpus validates the contract; it demonstrates neither token savings, latency nor significance. Missing measurements remain null with a reason. KG2 extraction and the KG3 index and queries arrived without changing the contract. KG3’s first query-cost measurement records bytes and latency for both arms, with no measured tokens; it is not the benchmark baseline and draws no conclusion about savings. Phase consumption remains out of scope."
             ]
           }
         ]
@@ -94,15 +97,16 @@ export default [
             "id": "produto",
             "title": "Documente comportamiento verificable",
             "paragraphs": [
-              "La jerarquía PLAT → SYS → MOD → FEAT organiza el producto. Cada página identifica finalidad, estado, fuentes y relaciones. Una feature describe precondiciones, flujo, alternativas, postcondiciones, reglas y criterios de aceptación. Los datos, APIs y operaciones necesitan límites explícitos."
+              "La jerarquía PLAT → SYS → MOD → FEAT organiza el producto. Cada página identifica finalidad, estado, fuentes y relaciones. Una feature describe precondiciones, flujo, alternativas, postcondiciones, reglas y criterios de aceptación. Los datos, APIs y operaciones necesitan límites explícitos. En Orkastery, el número de una FEAT nueva sale de ork roadmap feat, reservado entre máquinas; nunca del mayor número de su branch."
             ],
-            "code": "ork docs verificar\nork docs sincronizar"
+            "code": "ork roadmap feat --thread <thread>\nork docs verificar\nork docs sincronizar"
           },
           {
             "id": "planejamento",
             "title": "Separe los planes de la disponibilidad",
             "paragraphs": [
-              "El roadmap registra problema, objetivo, alcance, dependencias, decisiones y criterios de validación. Código fusionado, pruebas aprobadas, despliegue y exposición al usuario son hechos distintos. En estos sitios, el roadmap aparece solo como resumen mensual con enlace a su fuente."
+              "El roadmap registra problema, objetivo, alcance, dependencias, decisiones y criterios de validación. Código fusionado, pruebas aprobadas, despliegue y exposición al usuario son hechos distintos. En estos sitios, el roadmap aparece solo como resumen mensual con enlace a su fuente.",
+              "En Orkastery, ork docs sincronizar actualiza el estado del código desde el ledger y git, y la sección sdlc desde la thread; nunca modifica ciclo, documentación, despliegue, exposición o habilitación. En la worktree de una thread solo toca su elemento; --so elige los elementos y --todos vuelve a cubrirlos todos. Cerrar la thread libera la reserva del elemento o la pasa a otra thread abierta del mismo elemento."
             ]
           },
           {
@@ -117,7 +121,7 @@ export default [
             "id": "contratos-kg1",
             "title": "Un contrato no es un resultado medido",
             "paragraphs": [
-              "KG1 define contratos separados de grafo y benchmark. El grafo conserva procedencia y restricciones de acceso y recalcula las identidades por contenido. El benchmark fija pares A/B, tareas, controles, intentos y fuentes de medida. El corpus sintético valida el contrato; no demuestra ahorro de tokens, latencia ni significancia. Una medida ausente queda null con motivo. Extracción, índice y consumo por las fases siguen fuera de KG1."
+              "KG1 define contratos separados de grafo y benchmark. El grafo conserva procedencia y restricciones de acceso y recalcula las identidades por contenido. El benchmark fija pares A/B, tareas, controles, intentos y fuentes de medida. El corpus sintético valida el contrato; no demuestra ahorro de tokens, latencia ni significancia. Una medida ausente queda null con motivo. La extracción de KG2 y el índice con consulta de KG3 llegaron sin cambiar el contrato. La primera medida del coste de consulta de KG3 registra bytes y latencia de ambos brazos, sin tokens medidos; no es la línea de base del benchmark ni permite concluir ahorro. El consumo por las fases sigue fuera."
             ]
           }
         ]
@@ -146,9 +150,9 @@ export default [
             "id": "acompanhar",
             "title": "Consulte o status atual",
             "paragraphs": [
-              "O relatório do CLI agrupa iniciativas, sinaliza o que espera o dono com #HITL e mostra o próximo passo, sem alterar o roadmap. As fontes atuais incluem o HITL curto, o pacote de contexto do Company Brain, os contratos KG1, as correções de condução e os guias de contribuição. Contratos e código em uma branch não equivalem a publicação; confira as dimensões de estado na origem."
+              "O relatório do CLI agrupa iniciativas, sinaliza o que espera o dono com #HITL e mostra o próximo passo, sem alterar o roadmap. ork network roadmap traz o mesmo relatório com as threads de todas as máquinas e a fonte de cada parte. As fontes atuais incluem o HITL curto, o pacote de contexto e o dossiê de decisão do Company Brain, o grafo de código, a busca por significado na memória, o projeto-alvo explícito, o roadmap da rede, o pacote de experiência, o plugin nos marketplaces, as correções de condução e os guias de contribuição. Código mesclado ou numa branch não equivale a publicação; confira as dimensões de estado na origem."
             ],
-            "code": "ork roadmap status"
+            "code": "ork roadmap status\nork network roadmap"
           }
         ]
       },
@@ -167,9 +171,9 @@ export default [
             "id": "acompanhar",
             "title": "Read the current status",
             "paragraphs": [
-              "The CLI report groups initiatives, marks owner decisions with #HITL and shows the next step without changing the roadmap. Current sources cover short HITL requests, the Company Brain context package, KG1 contracts, conduction fixes and contribution guides. Contracts and branch code do not establish publication; check the state dimensions at the source."
+              "The CLI report groups initiatives, marks owner decisions with #HITL and shows the next step without changing the roadmap. ork network roadmap provides the same report with threads from every machine and the source of each part. Current sources cover short HITL requests, the Company Brain context package and decision dossier, the code graph, search by meaning in memory, explicit target projects, the network roadmap, the experience pack, the marketplace plugin, conduction fixes and contribution guides. Merged or branch code does not establish publication; check the state dimensions at the source."
             ],
-            "code": "ork roadmap status"
+            "code": "ork roadmap status\nork network roadmap"
           }
         ]
       },
@@ -188,9 +192,9 @@ export default [
             "id": "acompanhar",
             "title": "Consulte el estado actual",
             "paragraphs": [
-              "El informe del CLI agrupa iniciativas, marca con #HITL lo que espera al dueño y muestra el siguiente paso sin modificar el roadmap. Las fuentes actuales incluyen HITL breve, el paquete de contexto del Company Brain, los contratos KG1, las correcciones de conducción y las guías de contribución. Los contratos y el código en una branch no equivalen a publicación; consulte las dimensiones de estado en la fuente."
+              "El informe del CLI agrupa iniciativas, marca con #HITL lo que espera al dueño y muestra el siguiente paso sin modificar el roadmap. ork network roadmap ofrece el mismo informe con las threads de todas las máquinas y la fuente de cada parte. Las fuentes actuales incluyen HITL breve, el paquete de contexto y el dosier de decisión del Company Brain, el grafo de código, la búsqueda por significado en la memoria, el proyecto objetivo explícito, el roadmap de la red, el paquete de experiencia, el plugin en los marketplaces, las correcciones de conducción y las guías de contribución. El código fusionado o en una branch no equivale a publicación; consulte las dimensiones de estado en la fuente."
             ],
-            "code": "ork roadmap status"
+            "code": "ork roadmap status\nork network roadmap"
           }
         ]
       }

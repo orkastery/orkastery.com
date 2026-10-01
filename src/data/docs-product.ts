@@ -103,7 +103,8 @@ export default [
       "docs/produto/FEAT-025-catalogo-de-portfolio.md",
       "docs/produto/FEAT-026-reservas-do-roadmap.md",
       "docs/produto/FEAT-027-fabrica-compartilhada.md",
-      "docs/produto/FEAT-029-conducao-multicanal.md"
+      "docs/produto/FEAT-029-conducao-multicanal.md",
+      "docs/produto/FEAT-032-roadmap-da-rede.md"
     ],
     "translations": {
       "pt": {
@@ -149,14 +150,14 @@ export default [
             "id": "feat-026",
             "title": "FEAT-026 · Reservas entre máquinas",
             "paragraphs": [
-              "A reserva coordena quem assume um item por uma gravação atômica no remoto. Conflito informa a máquina responsável; requer acesso de rede autorizado."
+              "A reserva coordena quem assume um item por uma gravação atômica no remoto. Conflito informa a máquina responsável; requer acesso de rede autorizado. Fechar a thread solta a reserva ou a passa para outra thread aberta do mesmo item; a reserva órfã é marcada e sai com --soltar-orfas. ork roadmap feat reserva o próximo número de FEAT entre máquinas, e o número reservado não volta."
             ]
           },
           {
             "id": "feat-027",
             "title": "FEAT-027 · Fábrica compartilhada",
             "paragraphs": [
-              "Cada máquina publica seu retrato numa branch própria de estado. Sem rede, a leitura usa a última cópia com aviso; não presume dados atuais."
+              "Cada máquina publica seu retrato numa branch própria de estado. Sem rede, a leitura usa a última cópia com aviso; não presume dados atuais. O retrato traz runtime, modelo e esforço de cada thread, vindos do último despacho; thread sem despacho aparece sem runtime, nunca com um inventado."
             ]
           },
           {
@@ -164,6 +165,13 @@ export default [
             "title": "FEAT-029 · Condução multicanal",
             "paragraphs": [
               "Os canais compartilham a autoridade do núcleo. Uma segunda execução concorrente na mesma worktree é recusada com a identificação de quem conduz."
+            ]
+          },
+          {
+            "id": "feat-032",
+            "title": "FEAT-032 · Roadmap da rede",
+            "paragraphs": [
+              "ork network roadmap junta, de qualquer diretório, o roadmap da base remota, as reservas e as threads de cada máquina, com a fonte e a hora de cada parte. Sem clone, só consulta a forja pela CLI já autenticada; o que não foi lido sai como lacuna tipada, nunca como vazio. Nos hosts, ork_network_roadmap transporta essa leitura como vem. No catálogo, a página está em desenvolvimento."
             ]
           }
         ]
@@ -211,14 +219,14 @@ export default [
             "id": "feat-026",
             "title": "FEAT-026 · Cross-machine reservations",
             "paragraphs": [
-              "Reservations coordinate who takes an item through an atomic remote write. Conflicts identify the responsible machine; authorized network access is required."
+              "Reservations coordinate who takes an item through an atomic remote write. Conflicts identify the responsible machine; authorized network access is required. Closing a thread releases its reservation or passes it to another open thread on the same item; orphaned reservations are flagged and released with --soltar-orfas. ork roadmap feat reserves the next FEAT number across machines, and a reserved number is never reused."
             ]
           },
           {
             "id": "feat-027",
             "title": "FEAT-027 · Shared factory",
             "paragraphs": [
-              "Each machine publishes its snapshot to a dedicated state branch. Offline reads use the last copy with a warning; they do not assume current data."
+              "Each machine publishes its snapshot to a dedicated state branch. Offline reads use the last copy with a warning; they do not assume current data. The snapshot shows each thread’s runtime, model and effort from its last dispatch; a thread without a dispatch shows no runtime rather than an invented one."
             ]
           },
           {
@@ -226,6 +234,13 @@ export default [
             "title": "FEAT-029 · Multichannel conduction",
             "paragraphs": [
               "Channels share core authority. A second concurrent execution in the same worktree is rejected with the current conductor identified."
+            ]
+          },
+          {
+            "id": "feat-032",
+            "title": "FEAT-032 · Network roadmap",
+            "paragraphs": [
+              "From any directory, ork network roadmap combines the remote base roadmap, reservations and each machine’s threads, with the source and time of every part. Without a clone, it only queries the forge through the already authenticated CLI; anything not read appears as a typed gap, never as empty. In hosts, ork_network_roadmap passes this result through unchanged. The catalog lists the page as in development."
             ]
           }
         ]
@@ -273,14 +288,14 @@ export default [
             "id": "feat-026",
             "title": "FEAT-026 · Reservas entre máquinas",
             "paragraphs": [
-              "Las reservas coordinan quién asume un elemento mediante una escritura atómica en el remoto. Los conflictos identifican la máquina responsable; se requiere acceso de red autorizado."
+              "Las reservas coordinan quién asume un elemento mediante una escritura atómica en el remoto. Los conflictos identifican la máquina responsable; se requiere acceso de red autorizado. Cerrar la thread libera la reserva o la pasa a otra thread abierta del mismo elemento; la reserva huérfana se marca y se libera con --soltar-orfas. ork roadmap feat reserva el siguiente número de FEAT entre máquinas, y el número reservado no se reutiliza."
             ]
           },
           {
             "id": "feat-027",
             "title": "FEAT-027 · Fábrica compartida",
             "paragraphs": [
-              "Cada máquina publica su instantánea en una rama de estado dedicada. Sin red se lee la última copia con aviso; no se presumen datos actuales."
+              "Cada máquina publica su instantánea en una rama de estado dedicada. Sin red se lee la última copia con aviso; no se presumen datos actuales. La instantánea muestra el runtime, el modelo y el esfuerzo de cada thread a partir del último despacho; una thread sin despacho aparece sin runtime, nunca con uno inventado."
             ]
           },
           {
@@ -288,6 +303,13 @@ export default [
             "title": "FEAT-029 · Conducción multicanal",
             "paragraphs": [
               "Los canales comparten la autoridad del núcleo. Una segunda ejecución simultánea en la misma worktree se rechaza identificando a quien conduce."
+            ]
+          },
+          {
+            "id": "feat-032",
+            "title": "FEAT-032 · Roadmap de la red",
+            "paragraphs": [
+              "Desde cualquier directorio, ork network roadmap reúne el roadmap de la base remota, las reservas y las threads de cada máquina, con la fuente y la hora de cada parte. Sin clon, solo consulta la forja mediante la CLI ya autenticada; lo que no se leyó aparece como laguna tipada, nunca como vacío. En los hosts, ork_network_roadmap transmite esa lectura tal como llega. En el catálogo, la página figura en desarrollo."
             ]
           }
         ]
@@ -320,7 +342,7 @@ export default [
             "id": "feat-005",
             "title": "FEAT-005 · CHECK independente no CI",
             "paragraphs": [
-              "O bundle de claims é reexecutado no SHA exato da candidata. Uma execução de outra thread ou outro commit não prova esta mudança."
+              "O bundle de claims é reexecutado no SHA exato da candidata. Uma execução de outra thread ou outro commit não prova esta mudança. Cada thread tem o próprio bundle, .ork-ci/<thread>.json, que o CI acha pelo nome da branch; branch de thread sem bundle reprova, e a main roda só os comandos do manifesto."
             ]
           },
           {
@@ -354,7 +376,7 @@ export default [
             "id": "feat-005",
             "title": "FEAT-005 · Independent CHECK in CI",
             "paragraphs": [
-              "The claim bundle is rerun against the candidate’s exact SHA. A run for another thread or commit does not prove this change."
+              "The claim bundle is rerun against the candidate’s exact SHA. A run for another thread or commit does not prove this change. Each thread has its own bundle, .ork-ci/<thread>.json, which CI finds by branch name; a thread branch without a bundle fails, and main runs only the manifest commands."
             ]
           },
           {
@@ -388,7 +410,7 @@ export default [
             "id": "feat-005",
             "title": "FEAT-005 · CHECK independiente en CI",
             "paragraphs": [
-              "El bundle de claims se vuelve a ejecutar sobre el SHA exacto de la candidata. Una ejecución de otra thread o commit no demuestra este cambio."
+              "El bundle de claims se vuelve a ejecutar sobre el SHA exacto de la candidata. Una ejecución de otra thread o commit no demuestra este cambio. Cada thread tiene su propio bundle, .ork-ci/<thread>.json, que el CI encuentra por el nombre de la branch; una branch de thread sin bundle no se aprueba, y main ejecuta solo los comandos del manifiesto."
             ]
           },
           {
@@ -677,7 +699,8 @@ export default [
       "docs/produto/FEAT-018-documentacao-como-codigo.md",
       "docs/produto/FEAT-019-telemetria-do-ledger.md",
       "docs/produto/FEAT-024-company-brain-no-cli.md",
-      "docs/produto/FEAT-028-loop-de-aprendizado.md"
+      "docs/produto/FEAT-028-loop-de-aprendizado.md",
+      "docs/produto/FEAT-033-dossie-de-decisao.md"
     ],
     "translations": {
       "pt": {
@@ -695,7 +718,8 @@ export default [
             "id": "feat-017",
             "title": "FEAT-017 · Memória OrkMind",
             "paragraphs": [
-              "O tenant do projeto recebe decisões, handoffs e lições conforme as permissões. Indisponibilidade degrada para arquivos com evento explícito; não usa outra base silenciosamente."
+              "O tenant do projeto recebe decisões, handoffs e lições conforme as permissões. Indisponibilidade degrada para arquivos com evento explícito; não usa outra base silenciosamente.",
+              "A busca por significado é separada da busca por tag: índice vetorial local e derivado, resultados de um único tenant marcados como não determinísticos e nada no prompt sozinho. Vetores de modelos ou dimensões diferentes nunca se comparam, e embedding indisponível tem motivo embeddings.* sem derrubar o regime."
             ]
           },
           {
@@ -727,6 +751,15 @@ export default [
             "paragraphs": [
               "Lições de threads fechadas voltam ao GOAL e PLAN do mesmo produto. Falhas repetidas propõem policies; a proposta não ativa um bloqueio sozinha."
             ]
+          },
+          {
+            "id": "feat-033",
+            "title": "FEAT-033 · Dossiê de decisão",
+            "paragraphs": [
+              "ork brain dossie reúne as decisões de uma thread com o objetivo, o projeto e o contexto citável, com as alternativas registradas, quem decidiu e a evidência. Cada decisão traz a citação da linha do ledger e os ids que o Company Brain dá ao fato. Somente leitura, também como ork_brain_dossie no MCP e no OpenClaw.",
+              "A resposta do dono só aparece quando o recibo do ingresso confere; sem ele, vira a lacuna resposta.sem-prova. Relato sobre o dono sem recibo nunca vira decisão. A decisão informada não guarda alternativas e mostra a lacuna alternativas.nao-registradas; fato retido pela ACL sai só com o id e o frescor retido."
+            ],
+            "code": "ork brain dossie --thread <thread>\nork brain dossie --thread <thread> --decisao <id>"
           }
         ]
       },
@@ -745,7 +778,8 @@ export default [
             "id": "feat-017",
             "title": "FEAT-017 · OrkMind memory",
             "paragraphs": [
-              "The project tenant receives decisions, handoffs and lessons according to permissions. Unavailability degrades to files with an explicit event; it does not silently use another database."
+              "The project tenant receives decisions, handoffs and lessons according to permissions. Unavailability degrades to files with an explicit event; it does not silently use another database.",
+              "Search by meaning is separate from tag search: a local derived vector index, results from a single tenant marked as non-deterministic, and nothing entering the prompt on its own. Vectors from different models or dimensions are never compared, and unavailable embeddings have an embeddings.* reason without bringing down the regime."
             ]
           },
           {
@@ -777,6 +811,15 @@ export default [
             "paragraphs": [
               "Lessons from closed threads feed GOAL and PLAN for the same product. Repeated failures propose policies; a proposal does not activate a block on its own."
             ]
+          },
+          {
+            "id": "feat-033",
+            "title": "FEAT-033 · Decision dossier",
+            "paragraphs": [
+              "ork brain dossie gathers a thread’s decisions with the goal, project and citable context, including recorded options, who decided and the evidence. Each decision carries the ledger line citation and the IDs that Company Brain assigns to the fact. Read-only, also available as ork_brain_dossie in MCP and OpenClaw.",
+              "The owner’s answer appears only when the ingress receipt checks out; otherwise it becomes the resposta.sem-prova gap. A report about the owner without a receipt never becomes a decision. Informed decisions do not store options and show the alternativas.nao-registradas gap; facts withheld by ACL expose only their ID and retido freshness."
+            ],
+            "code": "ork brain dossie --thread <thread>\nork brain dossie --thread <thread> --decisao <id>"
           }
         ]
       },
@@ -795,7 +838,8 @@ export default [
             "id": "feat-017",
             "title": "FEAT-017 · Memoria OrkMind",
             "paragraphs": [
-              "El tenant del proyecto recibe decisiones, handoffs y lecciones según los permisos. La indisponibilidad degrada a archivos con un evento explícito; no usa otra base en silencio."
+              "El tenant del proyecto recibe decisiones, handoffs y lecciones según los permisos. La indisponibilidad degrada a archivos con un evento explícito; no usa otra base en silencio.",
+              "La búsqueda por significado está separada de la búsqueda por etiqueta: índice vectorial local y derivado, resultados de un solo tenant marcados como no deterministas y nada que entre solo en el prompt. Nunca se comparan vectores de modelos o dimensiones distintos, y un embedding no disponible tiene el motivo embeddings.* sin hacer caer el régimen."
             ]
           },
           {
@@ -827,6 +871,15 @@ export default [
             "paragraphs": [
               "Las lecciones de threads cerradas alimentan GOAL y PLAN del mismo producto. Los fallos repetidos proponen políticas; una propuesta no activa un bloqueo por sí sola."
             ]
+          },
+          {
+            "id": "feat-033",
+            "title": "FEAT-033 · Dosier de decisión",
+            "paragraphs": [
+              "ork brain dossie reúne las decisiones de una thread con el objetivo, el proyecto y el contexto citable, incluidas las alternativas registradas, quién decidió y la prueba. Cada decisión incluye la cita de la línea del ledger y los IDs que el Company Brain asigna al hecho. Solo lectura, también disponible como ork_brain_dossie en MCP y OpenClaw.",
+              "La respuesta del dueño solo aparece cuando el comprobante del ingreso es válido; si no, se convierte en la laguna resposta.sem-prova. Un relato sobre el dueño sin comprobante nunca se convierte en decisión. La decisión informada no guarda alternativas y muestra la laguna alternativas.nao-registradas; un hecho retenido por ACL solo muestra su ID y la vigencia retido."
+            ],
+            "code": "ork brain dossie --thread <thread>\nork brain dossie --thread <thread> --decisao <id>"
           }
         ]
       }
@@ -838,7 +891,9 @@ export default [
     "sources": [
       "docs/produto/MOD-06-integracao-com-hosts.md",
       "docs/produto/FEAT-020-mcp-e-adaptadores.md",
-      "docs/produto/FEAT-021-ingresso-hitl-telegram.md"
+      "docs/produto/FEAT-021-ingresso-hitl-telegram.md",
+      "docs/produto/FEAT-030-projeto-alvo-explicito.md",
+      "docs/produto/FEAT-034-pacote-de-experiencia.md"
     ],
     "translations": {
       "pt": {
@@ -857,6 +912,20 @@ export default [
             "title": "FEAT-021 · Ingresso autenticado",
             "paragraphs": [
               "O ingresso Telegram valida o update autenticado e sua prova HMAC antes de registrar a resposta. Aceita códigos, respostas numeradas e texto livre inequívoco dentro das condições do núcleo. A janela de escuta serve só para encaminhar uma palavra solta; não é prova de identidade. Ambiguidade não aprova, e envelopes fabricados pelo agente são recusados."
+            ]
+          },
+          {
+            "id": "feat-030",
+            "title": "FEAT-030 · Projeto-alvo explícito",
+            "paragraphs": [
+              "Todo comando e toda tool ork_* leem o projeto pedido, nunca o do diretório do gateway, e a resposta diz qual projeto leu e o que não leu. OpenClaw e Hermes declaram ORK_PROJETO_EXPLICITO=1: sem projeto e com mais de um conhecido, devolvem a escolha. No host, --projeto aceita só nome; o MCP continua fixado na instalação e recusa outro projeto com projeto.fora-do-servidor. No catálogo, a página está como proposta."
+            ]
+          },
+          {
+            "id": "feat-034",
+            "title": "FEAT-034 · Pacote de experiência",
+            "paragraphs": [
+              "Preferências de idioma, fuso e profundidade orientam a conversa de orquestração, com opt-out e restauração dos arquivos de instrução. Claude Code e Codex recebem blocos de projeto, e Hermes, referências pela skill existente; o OpenClaw continua sem essa distribuição. Consultas MCP de reservas e fábrica não reservam nem publicam. O opt-out não desliga policies nem gates, e nenhuma preferência muda a proveniência HMAC do HITL. No catálogo, a página está em desenvolvimento."
             ]
           }
         ]
@@ -878,6 +947,20 @@ export default [
             "paragraphs": [
               "Telegram ingress validates the authenticated update and HMAC proof before recording a response. It accepts codes, numbered answers and unambiguous free text under the core’s conditions. The listening window only routes standalone words; it is not identity proof. Ambiguity never approves a request, and agent-fabricated envelopes are rejected."
             ]
+          },
+          {
+            "id": "feat-030",
+            "title": "FEAT-030 · Explicit target project",
+            "paragraphs": [
+              "Every command and every ork_* tool reads the requested project, never the gateway directory’s project, and the answer states which project it read and what it did not read. OpenClaw and Hermes declare ORK_PROJETO_EXPLICITO=1: without a project and with more than one known, they return the choice. In a host, --projeto accepts only a name; MCP stays pinned to its installation and refuses another project with projeto.fora-do-servidor. The catalog lists the page as proposed."
+            ]
+          },
+          {
+            "id": "feat-034",
+            "title": "FEAT-034 · Experience pack",
+            "paragraphs": [
+              "Language, timezone and depth preferences shape the orchestration conversation, with opt-out and restoration of instruction files. Claude Code and Codex receive project blocks, and Hermes receives references through its existing skill; OpenClaw still lacks this distribution. MCP reservation and factory queries neither reserve nor publish. Opting out does not disable policies or gates, and no preference changes HITL HMAC provenance. The catalog lists the page as in development."
+            ]
           }
         ]
       },
@@ -897,6 +980,20 @@ export default [
             "title": "FEAT-021 · Ingreso autenticado",
             "paragraphs": [
               "El ingreso Telegram valida el update autenticado y la prueba HMAC antes de registrar la respuesta. Acepta códigos, respuestas numeradas y texto libre inequívoco bajo las condiciones del núcleo. La ventana de escucha solo encamina palabras aisladas; no prueba identidad. La ambigüedad no aprueba solicitudes y los envelopes fabricados por agentes se rechazan."
+            ]
+          },
+          {
+            "id": "feat-030",
+            "title": "FEAT-030 · Proyecto objetivo explícito",
+            "paragraphs": [
+              "Cada comando y cada tool ork_* leen el proyecto pedido, nunca el del directorio del gateway, y la respuesta indica qué proyecto leyó y qué no leyó. OpenClaw y Hermes declaran ORK_PROJETO_EXPLICITO=1: sin proyecto y con más de uno conocido, devuelven la elección. En el host, --projeto solo acepta un nombre; MCP sigue fijado en la instalación y rechaza otro proyecto con projeto.fora-do-servidor. En el catálogo, la página figura como propuesta."
+            ]
+          },
+          {
+            "id": "feat-034",
+            "title": "FEAT-034 · Paquete de experiencia",
+            "paragraphs": [
+              "Las preferencias de idioma, zona horaria y profundidad orientan la conversación de orquestación, con desactivación y restauración de los archivos de instrucciones. Claude Code y Codex reciben bloques de proyecto, y Hermes, referencias mediante su skill existente; OpenClaw sigue sin esta distribución. Las consultas MCP de reservas y fábrica no reservan ni publican. La desactivación no apaga políticas ni gates, y ninguna preferencia cambia la procedencia HMAC del HITL. En el catálogo, la página figura en desarrollo."
             ]
           }
         ]

@@ -45,7 +45,9 @@ export default [
             "title": "Prepare uma mudança verificável",
             "paragraphs": [
               "O PR explica o problema, a mudança, a prova, a baseline e o risco. Cole a saída real dos comandos. Separe regressões de falhas que já existiam; mudança de comportamento pede teste que reproduza o defeito. Usar o ork é recomendado e opcional. O mantenedor integra com CI verde no commit exato e conduz a publicação.",
-              "Rode os comandos a partir da raiz do checkout. O guia de testes traz a lista completa de checks."
+              "Rode os comandos a partir da raiz do checkout. O guia de testes traz a lista completa de checks.",
+              "Com o ork, ci prepare grava .ork-ci/<thread>.json, só da sua thread; faça dele o último commit do PR, e o check ork-verify o acha pelo nome da branch.",
+              "Mexeu em skills, references, nos adaptadores do Claude Code ou do Codex ou na versão do core/package.json? Rode node core/scripts/gerar-marketplaces.cjs e comite o resultado; o CI confere com --verificar. Mudou o frontmatter de um item? Regere só as tabelas dele com docs sincronizar --escrever --so RM-NNN."
             ],
             "code": "npm --prefix core ci\nnpm --prefix core run build\nnpm --prefix core run test:ci\nnode core/dist/index.js eval"
           },
@@ -53,7 +55,7 @@ export default [
             "id": "guias",
             "title": "Um guia por tarefa",
             "paragraphs": [
-              "Os guias-fonte estão em português do Brasil. A versão em inglês está prevista antes do lançamento. Contribuições claras em inglês são bem-vindas."
+              "Os guias-fonte estão em português do Brasil, como o restante da pasta docs. Contribuições técnicas claras em inglês são bem-vindas e nunca são recusadas só pela língua."
             ],
             "links": [
               {
@@ -139,7 +141,9 @@ export default [
             "title": "Prepare a verifiable change",
             "paragraphs": [
               "A PR explains the problem, change, evidence, baseline and risk. Include actual command output. Separate regressions from existing failures; behavior changes need a test that reproduces the problem. Using ork is recommended and optional. The maintainer integrates with passing CI at the exact commit and handles publishing.",
-              "Run commands from the checkout root. The testing guide lists the complete checks."
+              "Run commands from the checkout root. The testing guide lists the complete checks.",
+              "With ork, ci prepare writes .ork-ci/<thread>.json for your thread only; make it the PR’s last commit, and the ork-verify check finds it by branch name.",
+              "Changed skills, references, the Claude Code or Codex adapters, or the version in core/package.json? Run node core/scripts/gerar-marketplaces.cjs and commit the result; CI checks it with --verificar. Changed an item’s frontmatter? Regenerate only its tables with docs sincronizar --escrever --so RM-NNN."
             ],
             "code": "npm --prefix core ci\nnpm --prefix core run build\nnpm --prefix core run test:ci\nnode core/dist/index.js eval"
           },
@@ -147,7 +151,7 @@ export default [
             "id": "guias",
             "title": "One guide per task",
             "paragraphs": [
-              "Source guides are currently in Brazilian Portuguese. English versions are planned before launch. Clear contributions in English are welcome."
+              "Source guides are in Brazilian Portuguese, like the rest of the docs folder. Clear technical contributions in English are welcome and are never turned away for language alone."
             ],
             "links": [
               {
@@ -233,7 +237,9 @@ export default [
             "title": "Prepare un cambio verificable",
             "paragraphs": [
               "El PR explica el problema, el cambio, las pruebas, la baseline y el riesgo. Incluya la salida real de los comandos. Separe las regresiones de los fallos previos; un cambio de comportamiento requiere una prueba que reproduzca el defecto. Usar ork es recomendable y opcional. El mantenedor integra con CI aprobado en el commit exacto y se encarga de publicar.",
-              "Ejecute los comandos desde la raíz del checkout. La guía de pruebas incluye la lista completa de comprobaciones."
+              "Ejecute los comandos desde la raíz del checkout. La guía de pruebas incluye la lista completa de comprobaciones.",
+              "Con ork, ci prepare escribe .ork-ci/<thread>.json, solo de su thread; conviértalo en el último commit del PR, y el check ork-verify lo encuentra por el nombre de la branch.",
+              "¿Cambió skills, references, los adaptadores de Claude Code o Codex o la versión de core/package.json? Ejecute node core/scripts/gerar-marketplaces.cjs y haga commit del resultado; el CI lo comprueba con --verificar. ¿Cambió el frontmatter de un elemento? Regenere solo sus tablas con docs sincronizar --escrever --so RM-NNN."
             ],
             "code": "npm --prefix core ci\nnpm --prefix core run build\nnpm --prefix core run test:ci\nnode core/dist/index.js eval"
           },
@@ -241,7 +247,7 @@ export default [
             "id": "guias",
             "title": "Una guía por tarea",
             "paragraphs": [
-              "Las guías fuente están en portugués de Brasil. La versión en inglés está prevista antes del lanzamiento. Las contribuciones claras en inglés son bienvenidas."
+              "Las guías fuente están en portugués de Brasil, como el resto de la carpeta docs. Las contribuciones técnicas claras en inglés son bienvenidas y nunca se rechazan solo por el idioma."
             ],
             "links": [
               {
