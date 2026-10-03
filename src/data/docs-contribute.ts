@@ -47,9 +47,11 @@ export default [
               "O PR explica o problema, a mudança, a prova, a baseline e o risco. Cole a saída real dos comandos. Separe regressões de falhas que já existiam; mudança de comportamento pede teste que reproduza o defeito. Usar o ork é recomendado e opcional. O mantenedor integra com CI verde no commit exato e conduz a publicação.",
               "Rode os comandos a partir da raiz do checkout. O guia de testes traz a lista completa de checks.",
               "Com o ork, ci prepare grava .ork-ci/<thread>.json, só da sua thread; faça dele o último commit do PR, e o check ork-verify o acha pelo nome da branch.",
-              "Mexeu em skills, references, nos adaptadores do Claude Code ou do Codex ou na versão do core/package.json? Rode node core/scripts/gerar-marketplaces.cjs e comite o resultado; o CI confere com --verificar. Mudou o frontmatter de um item? Regere só as tabelas dele com docs sincronizar --escrever --so RM-NNN."
+              "Mexeu em skills, references, nos adaptadores do Claude Code ou do Codex ou na versão do core/package.json? Rode node core/scripts/gerar-marketplaces.cjs e comite o resultado; o CI confere com --verificar. Mudou o frontmatter de um item? Regere só as tabelas dele com docs sincronizar --escrever --so RM-NNN.",
+              "Mudou comportamento em core/, adapters/ ou marketplaces/? Acrescente uma linha na seção \"Não publicado\" do CHANGELOG: o check documentacao reprova o PR sem ela com changelog.linha-ausente. PR só de testes ou só de CI fica de fora. Confira antes do PR com node core/scripts/checar-changelog.cjs --base origin/main.",
+              "Depois que o PR de uma thread entra na main, o item dela tem de dizer codigo: Mesclado e o índice gerado tem de bater com o frontmatter. No PR, o CI só avisa; o push da main reprova. Quem mesclou abre o PR de docs com ork docs sincronizar --escrever --so RM-NNN, numa branch nova sobre a origin/main atualizada."
             ],
-            "code": "npm --prefix core ci\nnpm --prefix core run build\nnpm --prefix core run test:ci\nnode core/dist/index.js eval"
+            "code": "npm --prefix core ci\nnpm --prefix core run build\nnpm --prefix core run test:ci\nnode core/dist/index.js eval\nnode core/scripts/checar-changelog.cjs --base origin/main"
           },
           {
             "id": "guias",
@@ -143,9 +145,11 @@ export default [
               "A PR explains the problem, change, evidence, baseline and risk. Include actual command output. Separate regressions from existing failures; behavior changes need a test that reproduces the problem. Using ork is recommended and optional. The maintainer integrates with passing CI at the exact commit and handles publishing.",
               "Run commands from the checkout root. The testing guide lists the complete checks.",
               "With ork, ci prepare writes .ork-ci/<thread>.json for your thread only; make it the PR’s last commit, and the ork-verify check finds it by branch name.",
-              "Changed skills, references, the Claude Code or Codex adapters, or the version in core/package.json? Run node core/scripts/gerar-marketplaces.cjs and commit the result; CI checks it with --verificar. Changed an item’s frontmatter? Regenerate only its tables with docs sincronizar --escrever --so RM-NNN."
+              "Changed skills, references, the Claude Code or Codex adapters, or the version in core/package.json? Run node core/scripts/gerar-marketplaces.cjs and commit the result; CI checks it with --verificar. Changed an item’s frontmatter? Regenerate only its tables with docs sincronizar --escrever --so RM-NNN.",
+              "Changed behavior in core/, adapters/ or marketplaces/? Add a line under \"Não publicado\" in the CHANGELOG: the documentacao check fails a PR without it with changelog.linha-ausente. Test-only and CI-only PRs are exempt. Check before opening the PR with node core/scripts/checar-changelog.cjs --base origin/main.",
+              "Once a thread’s PR reaches main, its item must say codigo: Mesclado and the generated index must match the frontmatter. On the PR, CI only warns; the push to main fails. Whoever merged opens the docs PR with ork docs sincronizar --escrever --so RM-NNN, on a new branch from the updated origin/main."
             ],
-            "code": "npm --prefix core ci\nnpm --prefix core run build\nnpm --prefix core run test:ci\nnode core/dist/index.js eval"
+            "code": "npm --prefix core ci\nnpm --prefix core run build\nnpm --prefix core run test:ci\nnode core/dist/index.js eval\nnode core/scripts/checar-changelog.cjs --base origin/main"
           },
           {
             "id": "guias",
@@ -239,9 +243,11 @@ export default [
               "El PR explica el problema, el cambio, las pruebas, la baseline y el riesgo. Incluya la salida real de los comandos. Separe las regresiones de los fallos previos; un cambio de comportamiento requiere una prueba que reproduzca el defecto. Usar ork es recomendable y opcional. El mantenedor integra con CI aprobado en el commit exacto y se encarga de publicar.",
               "Ejecute los comandos desde la raíz del checkout. La guía de pruebas incluye la lista completa de comprobaciones.",
               "Con ork, ci prepare escribe .ork-ci/<thread>.json, solo de su thread; conviértalo en el último commit del PR, y el check ork-verify lo encuentra por el nombre de la branch.",
-              "¿Cambió skills, references, los adaptadores de Claude Code o Codex o la versión de core/package.json? Ejecute node core/scripts/gerar-marketplaces.cjs y haga commit del resultado; el CI lo comprueba con --verificar. ¿Cambió el frontmatter de un elemento? Regenere solo sus tablas con docs sincronizar --escrever --so RM-NNN."
+              "¿Cambió skills, references, los adaptadores de Claude Code o Codex o la versión de core/package.json? Ejecute node core/scripts/gerar-marketplaces.cjs y haga commit del resultado; el CI lo comprueba con --verificar. ¿Cambió el frontmatter de un elemento? Regenere solo sus tablas con docs sincronizar --escrever --so RM-NNN.",
+              "¿Cambió el comportamiento en core/, adapters/ o marketplaces/? Añada una línea en la sección \"Não publicado\" del CHANGELOG: el check documentacao rechaza el PR sin ella con changelog.linha-ausente. Los PR solo de pruebas o solo de CI quedan exentos. Compruébelo antes del PR con node core/scripts/checar-changelog.cjs --base origin/main.",
+              "Cuando el PR de una thread entra en main, su elemento debe decir codigo: Mesclado y el índice generado debe coincidir con el frontmatter. En el PR, el CI solo avisa; el push a main falla. Quien fusionó abre el PR de documentación con ork docs sincronizar --escrever --so RM-NNN, en una branch nueva sobre la origin/main actualizada."
             ],
-            "code": "npm --prefix core ci\nnpm --prefix core run build\nnpm --prefix core run test:ci\nnode core/dist/index.js eval"
+            "code": "npm --prefix core ci\nnpm --prefix core run build\nnpm --prefix core run test:ci\nnode core/dist/index.js eval\nnode core/scripts/checar-changelog.cjs --base origin/main"
           },
           {
             "id": "guias",

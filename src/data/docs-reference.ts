@@ -14,7 +14,8 @@ export default [
             "id": "consultar",
             "title": "Consulte o estado",
             "paragraphs": [
-              "Comece pelo diagnóstico e pelo panorama. Consultas de thread, fases e claims explicam o que foi registrado; não concedem permissão de escrita. Use --help no comando específico antes de uma operação mutável."
+              "Comece pelo diagnóstico e pelo panorama. Consultas de thread, fases e claims explicam o que foi registrado; não concedem permissão de escrita. Use --help no comando específico antes de uma operação mutável.",
+              "O ork doctor reprova arquivo ou pasta do .git com dono diferente do dono do repositório, com a contagem, exemplos e o chown exato na correção; ele não roda nada."
             ],
             "code": "ork doctor\nork maestro --json\nork thread status <thread>\nork phase list <thread>\nork claims list <thread>"
           },
@@ -27,11 +28,29 @@ export default [
             "code": "ork --help\nork ship --help\nork master --help"
           },
           {
+            "id": "thread-e-worktree",
+            "title": "Thread e worktree",
+            "paragraphs": [
+              "Com worktree.por_thread: true, o que o ork init grava, ork thread new cria a worktree e a branch ork/<slug> sem flag; com a chave false ou ausente, só com --worktree auto. --worktree DIR reusa um diretório existente, --sem-worktree cria sem worktree e avisa que, na branch base, o ork ship sai barrado, e --dry-run mostra a worktree que seria criada. A mesma regra vale para --from-finding.",
+              "ork worktree sync recria a branch sem commit próprio no SHA da base. Com commits próprios e a base reescrita, por exemplo depois de um force-push, recusa com tree.blocked, causa base-reescrita, e mostra o git rebase --onto que reaplica só os commits da thread."
+            ],
+            "code": "ork thread new \"<nome>\" --modo auto --dry-run\nork thread new \"<nome>\" --modo auto --sem-worktree\nork worktree sync <thread> --dry-run"
+          },
+          {
             "id": "integracoes",
             "title": "Integrações e operação",
             "paragraphs": [
               "adapter e mcp conectam o host. accounts e setup descrevem runtimes e perfis. sessions, monitor e pulse observam execução e atenção humana. brain e portfolio consultam memória e catálogo. fabrica, roadmap e network coordenam trabalho entre máquinas, e projetos diz qual projeto cada comando lê. grafo consulta o índice local do grafo de código. A referência canônica no repositório detalha as opções de cada família."
             ]
+          },
+          {
+            "id": "contas-e-sessoes",
+            "title": "Contas, perfis e sessões",
+            "paragraphs": [
+              "phase run --perfil <id> despacha pela conta pedida, ou recusa com runtime.profile-invalid, runtime.quota-exhausted ou runtime.auth-missing, sem trocar de perfil sozinho. runtime_profiles.distribuir escolhe entre os perfis: ordem, o padrão, é o primeiro do store; carga é o de menos sessões vivas nesta máquina. Valor desconhecido vale ordem, com aviso.",
+              "sessions lista as sessões de todas as contas, com a coluna PERFIL e as fantasmas; sessions limpar-fantasmas solta cada fantasma do ork com registro no ledger, sem chamar stop nem rm no runtime. Quando o runtime recusa o diretório da worktree ou espera o aceite de termos novos, a fase espera o dono rodar o comando da pausa, e retry run re-despacha o mesmo prompt depois."
+            ],
+            "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions --all\nork sessions limpar-fantasmas --dry-run --json"
           },
           {
             "id": "contexto-e-atencao",
@@ -64,7 +83,8 @@ export default [
             "title": "Entrega, CI e concorrência",
             "paragraphs": [
               "ci prepare grava .ork-ci/<thread>.json na worktree da thread, com a branch dela; ci run --branch acha esse bundle pelo nome da branch, reprova branch ork/* sem bundle e, fora de thread, roda só os comandos do manifesto. ship registrar-pr --repo --pr registra PR mesclado num repositório externo declarado em ci.external_repositories, com o merge conferido pela API do GitHub e o check declarado verde no head do PR.",
-              "phase run recusa com concurrency.limite, na saída 3, quando o projeto já tem max_parallel_threads sessões vivas em outras threads; --esperar espera a vaga. Na sessão sem acesso ao ledger, a ferramenta MCP ork_decision_record grava a decisão pelo mesmo contrato de decisao registrar."
+              "phase run recusa com concurrency.limite, na saída 3, quando o projeto já tem max_parallel_threads sessões vivas em outras threads; --esperar espera a vaga. Na sessão sem acesso ao ledger, a ferramenta MCP ork_decision_record grava a decisão pelo mesmo contrato de decisao registrar.",
+              "ship registrar-pr --dry-run, também com --repo --pr, faz as mesmas conferências e responde registraria, sem gravar ship_done, sem mudar a fase e sem publicar a fábrica."
             ],
             "code": "ork ci prepare <thread>\nork ci run --branch <branch>\nork ship registrar-pr <thread> --repo <dono/nome> --pr <n>\nork phase run <thread> GO --prompt \"<texto>\" --esperar"
           },
@@ -81,7 +101,8 @@ export default [
             "title": "Consulte o grafo de código",
             "paragraphs": [
               "grafo indexar constrói o índice do HEAD limpo, no estado do projeto e fora do git; --verificar extrai de novo e confere contrato, bytes e determinismo. vizinhos, chamadores, importadores e caminho respondem pelas arestas, em texto ou --json, com o extrator e a evidência de cada uma. status mostra o índice do HEAD, amostra serve à auditoria manual de arestas e limpar apaga os índices que não são do HEAD de nenhuma árvore.",
-              "A resposta é parcial por construção: só o que o extrator prova, e ela diz isso. Com a árvore modificada, a resposta é a do HEAD, com aviso. Todo o ork grafo precisa do typescript e do micromark instalados no próprio pacote do ork; sem eles, a recusa é grafo.parser.indisponivel."
+              "A resposta é parcial por construção: só o que o extrator prova, e ela diz isso. Com a árvore modificada, a resposta é a do HEAD, com aviso. Todo o ork grafo precisa do typescript e do micromark instalados no próprio pacote do ork; sem eles, a recusa é grafo.parser.indisponivel.",
+              "Com o índice de uma revisão ancestral, grafo indexar reextrai só o que a mudança alcança, com os mesmos bytes da extração completa, e diz quando foi completo e por quê. Com --json, --teto-bytes N limita a resposta a N bytes, tirando primeiro as arestas mais longe do alvo; o caminho não se corta e recusa com grafo.consulta.teto-excedido. Sem o índice do HEAD, a recusa diz o caso (grafo.indice.ausente, grafo.indice.outra-revisao ou grafo.indice.outro-extrator) e a correção. As mesmas consultas estão no MCP do projeto atrás da flag grafo.mcp, desligada por padrão."
             ],
             "code": "ork grafo indexar --verificar\nork grafo status\nork grafo chamadores <símbolo>\nork grafo importadores <arquivo> --json\nork grafo caminho <de> <para>"
           }
@@ -95,7 +116,8 @@ export default [
             "id": "consultar",
             "title": "Inspect state",
             "paragraphs": [
-              "Start with diagnostics and the overview. Thread, phase and claim queries explain recorded state; they do not grant write permission. Use --help on a specific command before performing a mutation."
+              "Start with diagnostics and the overview. Thread, phase and claim queries explain recorded state; they do not grant write permission. Use --help on a specific command before performing a mutation.",
+              "ork doctor fails when a file or folder in .git has a different owner from the repository owner, with the count, examples and the exact chown in the fix; it runs nothing itself."
             ],
             "code": "ork doctor\nork maestro --json\nork thread status <thread>\nork phase list <thread>\nork claims list <thread>"
           },
@@ -108,11 +130,29 @@ export default [
             "code": "ork --help\nork ship --help\nork master --help"
           },
           {
+            "id": "thread-e-worktree",
+            "title": "Thread and worktree",
+            "paragraphs": [
+              "With worktree.por_thread: true, which ork init writes, ork thread new creates the worktree and the ork/<slug> branch without a flag; with the key false or absent, only with --worktree auto. --worktree DIR reuses an existing directory, --sem-worktree creates no worktree and warns that on the base branch ork ship will be blocked, and --dry-run shows the worktree that would be created. The same rule applies to --from-finding.",
+              "ork worktree sync recreates a branch with no commits of its own at the base SHA. With its own commits and a rewritten base, for example after a force-push, it refuses with tree.blocked, cause base-reescrita, and shows the git rebase --onto that replays only the thread’s commits."
+            ],
+            "code": "ork thread new \"<nome>\" --modo auto --dry-run\nork thread new \"<nome>\" --modo auto --sem-worktree\nork worktree sync <thread> --dry-run"
+          },
+          {
             "id": "integracoes",
             "title": "Integrations and operations",
             "paragraphs": [
               "adapter and mcp connect the host. accounts and setup describe runtimes and profiles. sessions, monitor and pulse observe execution and human attention. brain and portfolio access memory and the catalog. fabrica, roadmap and network coordinate work across machines, and projetos shows which project each command reads. grafo queries the local code graph index. The canonical repository reference details each family’s options."
             ]
+          },
+          {
+            "id": "contas-e-sessoes",
+            "title": "Accounts, profiles and sessions",
+            "paragraphs": [
+              "phase run --perfil <id> dispatches through the requested account, or refuses with runtime.profile-invalid, runtime.quota-exhausted or runtime.auth-missing, without switching profiles on its own. runtime_profiles.distribuir chooses among profiles: ordem, the default, is the first in the store; carga is the one with the fewest live sessions on this machine. An unknown value falls back to ordem, with a warning.",
+              "sessions lists the sessions of every account, with the PERFIL column and the ghosts; sessions limpar-fantasmas releases each ghost from ork with a ledger record, without calling stop or rm in the runtime. When the runtime refuses the worktree directory or waits for new terms to be accepted, the phase waits for the owner to run the pause command, and retry run then re-dispatches the same prompt."
+            ],
+            "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions --all\nork sessions limpar-fantasmas --dry-run --json"
           },
           {
             "id": "contexto-e-atencao",
@@ -145,7 +185,8 @@ export default [
             "title": "Delivery, CI and concurrency",
             "paragraphs": [
               "ci prepare writes .ork-ci/<thread>.json in the thread’s worktree, with its branch; ci run --branch finds that bundle by branch name, fails an ork/* branch without a bundle and, outside a thread, runs only the manifest commands. ship registrar-pr --repo --pr records a PR merged into an external repository declared in ci.external_repositories, with the merge confirmed through the GitHub API and the declared check green on the PR head.",
-              "phase run refuses with concurrency.limite, exit code 3, when the project already has max_parallel_threads live sessions in other threads; --esperar waits for a slot. In a session without ledger access, the ork_decision_record MCP tool records the decision through the same contract as decisao registrar."
+              "phase run refuses with concurrency.limite, exit code 3, when the project already has max_parallel_threads live sessions in other threads; --esperar waits for a slot. In a session without ledger access, the ork_decision_record MCP tool records the decision through the same contract as decisao registrar.",
+              "ship registrar-pr --dry-run, also with --repo --pr, runs the same checks and answers registraria, without writing ship_done, changing the phase or publishing the factory."
             ],
             "code": "ork ci prepare <thread>\nork ci run --branch <branch>\nork ship registrar-pr <thread> --repo <owner/name> --pr <n>\nork phase run <thread> GO --prompt \"<text>\" --esperar"
           },
@@ -162,7 +203,8 @@ export default [
             "title": "Query the code graph",
             "paragraphs": [
               "grafo indexar builds the index for a clean HEAD, in project state and outside git; --verificar extracts again and checks contract, bytes and determinism. vizinhos, chamadores, importadores and caminho answer from the edges, as text or --json, with each edge’s extractor and evidence. status shows the HEAD index, amostra supports manual edge audits and limpar deletes indexes that are not the HEAD of any tree.",
-              "Answers are partial by construction: they contain only what the extractor proves, and they say so. With a modified tree, the answer reflects HEAD and warns about it. All of ork grafo needs typescript and micromark installed inside the ork package itself; without them, it refuses with grafo.parser.indisponivel."
+              "Answers are partial by construction: they contain only what the extractor proves, and they say so. With a modified tree, the answer reflects HEAD and warns about it. All of ork grafo needs typescript and micromark installed inside the ork package itself; without them, it refuses with grafo.parser.indisponivel.",
+              "With the index of an ancestor revision, grafo indexar re-extracts only what the change reaches, with the same bytes as a full extraction, and says when it ran in full and why. With --json, --teto-bytes N caps the answer at N bytes, dropping the edges farthest from the target first; a path is never cut and refuses with grafo.consulta.teto-excedido. Without a HEAD index, the refusal names the case (grafo.indice.ausente, grafo.indice.outra-revisao or grafo.indice.outro-extrator) and the fix. The same queries are in the project MCP server behind the grafo.mcp flag, off by default."
             ],
             "code": "ork grafo indexar --verificar\nork grafo status\nork grafo chamadores <symbol>\nork grafo importadores <file> --json\nork grafo caminho <from> <to>"
           }
@@ -176,7 +218,8 @@ export default [
             "id": "consultar",
             "title": "Consulte el estado",
             "paragraphs": [
-              "Empiece por el diagnóstico y el panorama. Las consultas de thread, fases y claims explican el estado registrado; no conceden permiso de escritura. Use --help en el comando concreto antes de modificar datos."
+              "Empiece por el diagnóstico y el panorama. Las consultas de thread, fases y claims explican el estado registrado; no conceden permiso de escritura. Use --help en el comando concreto antes de modificar datos.",
+              "ork doctor reprueba un archivo o carpeta de .git con un dueño distinto del dueño del repositorio, con el recuento, ejemplos y el chown exacto en la corrección; no ejecuta nada."
             ],
             "code": "ork doctor\nork maestro --json\nork thread status <thread>\nork phase list <thread>\nork claims list <thread>"
           },
@@ -189,11 +232,29 @@ export default [
             "code": "ork --help\nork ship --help\nork master --help"
           },
           {
+            "id": "thread-e-worktree",
+            "title": "Thread y worktree",
+            "paragraphs": [
+              "Con worktree.por_thread: true, lo que graba ork init, ork thread new crea la worktree y la rama ork/<slug> sin flag; con la clave en false o ausente, solo con --worktree auto. --worktree DIR reutiliza un directorio existente, --sem-worktree crea sin worktree y avisa que, en la rama base, ork ship queda bloqueado, y --dry-run muestra la worktree que se crearía. La misma regla vale para --from-finding.",
+              "ork worktree sync recrea en el SHA de la base la rama sin commits propios. Con commits propios y la base reescrita, por ejemplo después de un force-push, rechaza con tree.blocked, causa base-reescrita, y muestra el git rebase --onto que reaplica solo los commits de la thread."
+            ],
+            "code": "ork thread new \"<nome>\" --modo auto --dry-run\nork thread new \"<nome>\" --modo auto --sem-worktree\nork worktree sync <thread> --dry-run"
+          },
+          {
             "id": "integracoes",
             "title": "Integraciones y operación",
             "paragraphs": [
               "adapter y mcp conectan el host. accounts y setup describen runtimes y perfiles. sessions, monitor y pulse observan la ejecución y la atención humana. brain y portfolio consultan memoria y catálogo. fabrica, roadmap y network coordinan el trabajo entre máquinas, y projetos indica qué proyecto lee cada comando. grafo consulta el índice local del grafo de código. La referencia canónica del repositorio detalla las opciones de cada familia."
             ]
+          },
+          {
+            "id": "contas-e-sessoes",
+            "title": "Cuentas, perfiles y sesiones",
+            "paragraphs": [
+              "phase run --perfil <id> despacha por la cuenta pedida, o rechaza con runtime.profile-invalid, runtime.quota-exhausted o runtime.auth-missing, sin cambiar de perfil por su cuenta. runtime_profiles.distribuir elige entre los perfiles: ordem, el valor por defecto, es el primero del store; carga es el de menos sesiones vivas en esta máquina. Un valor desconocido vale ordem, con aviso.",
+              "sessions lista las sesiones de todas las cuentas, con la columna PERFIL y las fantasmas; sessions limpar-fantasmas suelta cada fantasma de ork con registro en el ledger, sin llamar a stop ni rm en el runtime. Cuando el runtime rechaza el directorio de la worktree o espera la aceptación de términos nuevos, la fase espera a que el dueño ejecute el comando de la pausa, y retry run después vuelve a despachar el mismo prompt."
+            ],
+            "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions --all\nork sessions limpar-fantasmas --dry-run --json"
           },
           {
             "id": "contexto-e-atencao",
@@ -226,7 +287,8 @@ export default [
             "title": "Entrega, CI y concurrencia",
             "paragraphs": [
               "ci prepare escribe .ork-ci/<thread>.json en la worktree de la thread, con su branch; ci run --branch encuentra ese bundle por el nombre de la branch, rechaza una branch ork/* sin bundle y, fuera de una thread, ejecuta solo los comandos del manifiesto. ship registrar-pr --repo --pr registra un PR fusionado en un repositorio externo declarado en ci.external_repositories, con el merge comprobado mediante la API de GitHub y el check declarado en verde en el head del PR.",
-              "phase run rechaza con concurrency.limite, código de salida 3, cuando el proyecto ya tiene max_parallel_threads sesiones vivas en otras threads; --esperar espera un hueco. En una sesión sin acceso al ledger, la herramienta MCP ork_decision_record registra la decisión con el mismo contrato que decisao registrar."
+              "phase run rechaza con concurrency.limite, código de salida 3, cuando el proyecto ya tiene max_parallel_threads sesiones vivas en otras threads; --esperar espera un hueco. En una sesión sin acceso al ledger, la herramienta MCP ork_decision_record registra la decisión con el mismo contrato que decisao registrar.",
+              "ship registrar-pr --dry-run, también con --repo --pr, hace las mismas comprobaciones y responde registraria, sin grabar ship_done, sin cambiar la fase y sin publicar la fábrica."
             ],
             "code": "ork ci prepare <thread>\nork ci run --branch <branch>\nork ship registrar-pr <thread> --repo <dueño/nombre> --pr <n>\nork phase run <thread> GO --prompt \"<texto>\" --esperar"
           },
@@ -243,7 +305,8 @@ export default [
             "title": "Consulte el grafo de código",
             "paragraphs": [
               "grafo indexar construye el índice del HEAD limpio, en el estado del proyecto y fuera de git; --verificar vuelve a extraer y comprueba contrato, bytes y determinismo. vizinhos, chamadores, importadores y caminho responden a partir de las aristas, en texto o --json, con el extractor y la prueba de cada una. status muestra el índice del HEAD, amostra sirve para auditar aristas a mano y limpar borra los índices que no son del HEAD de ningún árbol.",
-              "La respuesta es parcial por construcción: solo contiene lo que el extractor demuestra, y lo indica. Con el árbol modificado, la respuesta corresponde al HEAD, con aviso. Todo ork grafo necesita typescript y micromark instalados dentro del propio paquete de ork; sin ellos, el rechazo es grafo.parser.indisponivel."
+              "La respuesta es parcial por construcción: solo contiene lo que el extractor demuestra, y lo indica. Con el árbol modificado, la respuesta corresponde al HEAD, con aviso. Todo ork grafo necesita typescript y micromark instalados dentro del propio paquete de ork; sin ellos, el rechazo es grafo.parser.indisponivel.",
+              "Con el índice de una revisión ancestro, grafo indexar reextrae solo lo que el cambio alcanza, con los mismos bytes de la extracción completa, y dice cuándo fue completa y por qué. Con --json, --teto-bytes N limita la respuesta a N bytes, quitando primero las aristas más lejanas del objetivo; el camino no se corta y rechaza con grafo.consulta.teto-excedido. Sin el índice del HEAD, el rechazo indica el caso (grafo.indice.ausente, grafo.indice.outra-revisao o grafo.indice.outro-extrator) y la corrección. Las mismas consultas están en el MCP del proyecto detrás del flag grafo.mcp, apagado por defecto."
             ],
             "code": "ork grafo indexar --verificar\nork grafo status\nork grafo chamadores <símbolo>\nork grafo importadores <archivo> --json\nork grafo caminho <de> <a>"
           }
@@ -275,6 +338,15 @@ export default [
             "code": "ork maestro --json\nork maestro --json --thread <thread>"
           },
           {
+            "id": "prova-ativacao",
+            "title": "Prova de ativação por host",
+            "paragraphs": [
+              "prova-ativacao.cjs abre uma sessão nova e não interativa no host instalado, numa cópia descartável do projeto, e pede orkastery maestro. A conferência julga só o determinístico: a entrada contratada foi exposta e chamada, e o resultado cumpre o contrato dela, com o projeto esperado e o que não foi consultado. A resposta tem de nomear o projeto e não pode concluir roadmap vazio.",
+              "O roteiro também confere que a consulta não escreveu no estado do projeto e que a configuração global do host não mudou. O recibo ork.prova-ativacao/v1 sai redigido. Saídas: 0 aprovada, 1 reprovada, 2 host ausente ou fora da prova, 3 pendente de ação humana. A prova não consente MCP nem reinicia gateway por ninguém."
+            ],
+            "code": "node core/scripts/prova-ativacao.cjs claude-code"
+          },
+          {
             "id": "projetos",
             "title": "Registro de projetos e cabeçalho da consulta",
             "paragraphs": [
@@ -294,7 +366,8 @@ export default [
             "id": "telemetria",
             "title": "Métrica com cobertura e origem",
             "paragraphs": [
-              "ork.ledger-stats/v1 agrega fatos registrados em um intervalo semiaberto UTC. Tokens e duração têm cobertura explícita; ausência continua ausente. custoReferencia é uma estimativa para comparar cenários, não uma fatura. Throughput depende de ship_done; não conte um commit local como entrega remota."
+              "ork.ledger-stats/v1 agrega fatos registrados em um intervalo semiaberto UTC. Tokens e duração têm cobertura explícita; ausência continua ausente. custoReferencia é uma estimativa para comparar cenários, não uma fatura. Throughput depende de ship_done; não conte um commit local como entrega remota.",
+              "hitlDeConducao mede o tempo parado pelas perguntas que o próprio ork abriu ao dono: pedidos, respondidos, sem resposta e abertos, o tempo parado no período, a mediana e a maior espera das respondidas, e a meta de 5 minutos, com null quando não há amostra. A decisão informada não para nada e fica fora."
             ],
             "code": "ork ledger stats --desde 7d --json"
           }
@@ -311,6 +384,15 @@ export default [
               "ork.maestro-snapshot/v1 is a read projection. Its sections declare source, timestamp, fingerprint, state and coverage. empty means observed emptiness; unavailable means an inaccessible source. Pagination and omissions are part of the contract. The snapshot does not create a cycle, approve a gate or prove SHIP. The snapshot also carries project.root, shown with ~, project.remote, without credentials, and notConsulted, listing what the overview did not read. Zero threads in the overview never means an empty roadmap."
             ],
             "code": "ork maestro --json\nork maestro --json --thread <thread>"
+          },
+          {
+            "id": "prova-ativacao",
+            "title": "Activation proof per host",
+            "paragraphs": [
+              "prova-ativacao.cjs opens a new non-interactive session in the installed host, on a disposable copy of the project, and asks for orkastery maestro. The check judges only what is deterministic: the contracted entry point was exposed and called, and the result meets its contract, with the expected project and what was not consulted. The answer must name the project and must not conclude that the roadmap is empty.",
+              "The script also checks that the query did not write to the project state and that the host’s global configuration did not change. The ork.prova-ativacao/v1 receipt is redacted. Exit codes: 0 passed, 1 failed, 2 host missing or outside the proof, 3 pending human action. The proof neither consents to MCP nor restarts a gateway for anyone."
+            ],
+            "code": "node core/scripts/prova-ativacao.cjs claude-code"
           },
           {
             "id": "projetos",
@@ -332,7 +414,8 @@ export default [
             "id": "telemetria",
             "title": "Metrics with coverage and provenance",
             "paragraphs": [
-              "ork.ledger-stats/v1 aggregates recorded facts over a half-open UTC interval. Tokens and duration have explicit coverage; missing values remain missing. custoReferencia is a scenario estimate, not an invoice. Throughput depends on ship_done; do not count a local commit as remote delivery."
+              "ork.ledger-stats/v1 aggregates recorded facts over a half-open UTC interval. Tokens and duration have explicit coverage; missing values remain missing. custoReferencia is a scenario estimate, not an invoice. Throughput depends on ship_done; do not count a local commit as remote delivery.",
+              "hitlDeConducao measures the time stalled by questions that ork itself opened to the owner: requests, answered, unanswered and open, stalled time in the period, the median and longest wait among answered ones, and the 5-minute target, null when there is no sample. An informed decision stops nothing and is excluded."
             ],
             "code": "ork ledger stats --desde 7d --json"
           }
@@ -349,6 +432,15 @@ export default [
               "ork.maestro-snapshot/v1 es una proyección de lectura. Sus secciones declaran fuente, instante, fingerprint, estado y cobertura. empty significa vacío observado; unavailable significa fuente inaccesible. La paginación y las omisiones forman parte del contrato. La instantánea no crea un ciclo, aprueba un gate ni demuestra SHIP. La instantánea también incluye project.root, con ~, project.remote, sin credenciales, y notConsulted, con lo que el panorama no leyó. Cero threads en el panorama nunca significa un roadmap vacío."
             ],
             "code": "ork maestro --json\nork maestro --json --thread <thread>"
+          },
+          {
+            "id": "prova-ativacao",
+            "title": "Prueba de activación por host",
+            "paragraphs": [
+              "prova-ativacao.cjs abre una sesión nueva y no interactiva en el host instalado, en una copia descartable del proyecto, y pide orkastery maestro. La comprobación juzga solo lo determinista: la entrada contratada se expuso y se llamó, y el resultado cumple su contrato, con el proyecto esperado y lo que no se consultó. La respuesta debe nombrar el proyecto y no puede concluir que el roadmap está vacío.",
+              "El guion también comprueba que la consulta no escribió en el estado del proyecto y que la configuración global del host no cambió. El recibo ork.prova-ativacao/v1 sale redactado. Salidas: 0 aprobada, 1 reprobada, 2 host ausente o fuera de la prueba, 3 pendiente de acción humana. La prueba no consiente MCP ni reinicia un gateway por nadie."
+            ],
+            "code": "node core/scripts/prova-ativacao.cjs claude-code"
           },
           {
             "id": "projetos",
@@ -370,7 +462,8 @@ export default [
             "id": "telemetria",
             "title": "Métricas con cobertura y procedencia",
             "paragraphs": [
-              "ork.ledger-stats/v1 agrega hechos registrados en un intervalo UTC semiabierto. Los tokens y la duración tienen cobertura explícita; los valores ausentes siguen ausentes. custoReferencia es una estimación para comparar escenarios, no una factura. El throughput depende de ship_done; no cuente un commit local como entrega remota."
+              "ork.ledger-stats/v1 agrega hechos registrados en un intervalo UTC semiabierto. Los tokens y la duración tienen cobertura explícita; los valores ausentes siguen ausentes. custoReferencia es una estimación para comparar escenarios, no una factura. El throughput depende de ship_done; no cuente un commit local como entrega remota.",
+              "hitlDeConducao mide el tiempo detenido por las preguntas que el propio ork abrió al dueño: pedidos, respondidos, sin respuesta y abiertos, el tiempo detenido en el período, la mediana y la mayor espera de los respondidos, y la meta de 5 minutos, con null cuando no hay muestra. La decisión informada no detiene nada y queda fuera."
             ],
             "code": "ork ledger stats --desde 7d --json"
           }
