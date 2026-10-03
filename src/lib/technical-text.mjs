@@ -26,6 +26,8 @@ const patterns = [
   /(?<![\w-])-[gvCh](?![\w-])/g,
   /\b(?:true|false|null|undefined|rotate_above|Dockerfile|Makefile|Bash|ToolSearch)\b/g,
   /\b(?:mcp__[\w]+|ork_[\w]+|sha256|claude-bg)\b/g,
+  // Identificadores hifenizados conhecidos (check do CI e packs de regras); hifen comum segue prosa.
+  /\b(?:ork-verify|security-privacy|clean-code|data-model)\b/g,
 ];
 
 export function technicalParts(text) {

@@ -121,6 +121,9 @@ try{
    if(path==='/'){
     await page.emulateMedia({reducedMotion:'no-preference'});
     await page.reload({waitUntil:'networkidle'});
+    // O reload restaura a rolagem do print de pagina inteira; a cena precisa comecar fora da tela.
+    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+    await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
     const viewTimeline=await page.evaluate(()=>CSS.supports('animation-timeline','view()'));
     if(viewTimeline){
      const offset=await page.locator('.collision-scene .track path').first().evaluate(el=>parseFloat(getComputedStyle(el).strokeDashoffset));

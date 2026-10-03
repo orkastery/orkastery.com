@@ -4,8 +4,8 @@ const {locale}=Astro.props;
 const command='npm install -g @orkastery/cli';
 const text={
  pt:{install:'Instale o CLI',copy:'Copiar comando',copied:'Comando copiado.',failed:'Não foi possível copiar. Selecione o comando para copiar manualmente.',example:'Recibo ilustrativo',note:'Exemplo de saída e SHA fictício. Nenhuma verificação é executada nesta página.',sha:'SHA de exemplo',claim:'Alegação → comando → evidência',result:'VERDADE SUSTENTADA'},
- en:{install:'Install the CLI',copy:'Copy command',copied:'Command copied.',failed:'Could not copy. Select the command to copy it manually.',example:'Illustrative receipt',note:'Example output and fictional SHA. No verification runs on this page.',sha:'Example SHA',claim:'Claim → command → evidence',result:'SUPPORTED TRUTH'},
- es:{install:'Instale el CLI',copy:'Copiar comando',copied:'Comando copiado.',failed:'No se pudo copiar. Seleccione el comando para copiarlo manualmente.',example:'Comprobante ilustrativo',note:'Salida de ejemplo y SHA ficticio. Esta página no ejecuta ninguna verificación.',sha:'SHA de ejemplo',claim:'Alegación → comando → evidencia',result:'VERDAD SOSTENIDA'},
+ en:{install:'Install the CLI',copy:'Copy command',copied:'Command copied.',failed:'Could not copy. Select the command to copy it manually.',example:'Illustrative receipt',note:'Example output and fictional SHA. The CLI prints its verdict as shown ("supported truth"). No verification runs on this page.',sha:'Example SHA',claim:'Claim → command → evidence',result:'VERDADE SUSTENTADA'},
+ es:{install:'Instale el CLI',copy:'Copiar comando',copied:'Comando copiado.',failed:'No se pudo copiar. Seleccione el comando para copiarlo manualmente.',example:'Comprobante ilustrativo',note:'Salida de ejemplo y SHA ficticio. El CLI imprime su veredicto tal como se ve («verdad sostenida»). Esta página no ejecuta ninguna verificación.',sha:'SHA de ejemplo',claim:'Alegación → comando → evidencia',result:'VERDADE SUSTENTADA'},
 }[locale];
 const verifyCommand='$ ork verify <thread>\n';
 const evidenceLines=text.claim+'\n'+text.sha+': a1b2c3d\n';
