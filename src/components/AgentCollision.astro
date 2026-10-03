@@ -1,0 +1,55 @@
+---
+interface Props {lines: string[]; locale: 'pt'|'en'|'es';}
+const {lines,locale}=Astro.props;
+const text={
+ pt:{scene:'Sem coordenação',example:'Cena ilustrativa',report:'Relatório',ok:'Tudo certo',conflict:'Colisão no repositório',note:'O relatório diz uma coisa. As trilhas mostram outra.'},
+ en:{scene:'Without coordination',example:'Illustrative example',report:'Report',ok:'Everything passed',conflict:'Repository collision',note:'The report says one thing. The tracks show another.'},
+ es:{scene:'Sin coordinación',example:'Ejemplo ilustrativo',report:'Informe',ok:'Todo correcto',conflict:'Colisión en el repositorio',note:'El informe dice una cosa. Las rutas muestran otra.'},
+}[locale];
+---
+<div class="collision">
+ <div class="collision-copy"><p class="micro-rotulo">{text.scene}</p><h2 id="manifesto-titulo">{lines.map((line,i)=><span class:list={{'collision-last':i===2}}>{line}{' '}</span>)}</h2></div>
+ <figure class="collision-scene">
+  <div class="scene-top"><span>{text.example}</span><span aria-hidden="true">A1 / A2 / A3</span></div>
+  <svg viewBox="0 0 400 210" aria-hidden="true" focusable="false">
+   <g class="track"><path d="M35 35H130L275 105H350"/><path d="M35 105H350"/><path d="M35 175H130L275 105"/></g>
+   <g class="agents"><circle cx="35" cy="35" r="15"/><circle cx="35" cy="105" r="15"/><circle cx="35" cy="175" r="15"/></g>
+   <g class="agent-labels"><text x="35" y="39">1</text><text x="35" y="109">2</text><text x="35" y="179">3</text></g>
+   <g class="packets"><circle cx="130" cy="35" r="4"/><circle cx="195" cy="105" r="4"/><circle cx="130" cy="175" r="4"/></g>
+   <g class="collision-node"><circle cx="275" cy="105" r="23"/><path d="m267 97 16 16m0-16-16 16"/></g>
+   <rect class="repo" x="338" y="89" width="32" height="32" rx="5"/>
+  </svg>
+  <div class="false-report"><span class="report-label">{text.report}</span><s><span aria-hidden="true">✓ </span>{text.ok}<span class="visualmente-oculto"> {locale==='en'?'(false)':'(falso)'}</span></s><strong><span aria-hidden="true">× </span>{text.conflict}</strong></div>
+  <figcaption>{text.note}</figcaption>
+ </figure>
+</div>
+<style>
+.collision{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(2rem,5vw,5rem);align-items:center;}
+.collision-copy{min-width:0;}.collision-copy>p{margin-bottom:1.5rem;}
+h2{font:600 clamp(1.75rem,3.1vw,2.8rem)/1.17 var(--f-display);letter-spacing:-.035em;text-wrap:balance;}
+h2 span{display:block;margin-top:.55em;}.collision-last{color:var(--tinta-2);}
+.collision-scene{border:1px solid var(--linha-forte);border-radius:var(--raio-superficie);background:linear-gradient(var(--grade) 1px,transparent 1px),linear-gradient(90deg,var(--grade) 1px,transparent 1px),var(--palco);background-size:24px 24px;box-shadow:var(--sombra-2);overflow:hidden;min-width:0;}
+.scene-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.75rem;padding:1rem 1.25rem;border-bottom:1px solid var(--linha);font:.75rem/1.5 var(--f-mono);color:var(--tinta-3);background:var(--painel);}
+svg{width:100%;padding:.75rem;}.track{fill:none;stroke:var(--acento);stroke-width:1.5;}.agents{fill:var(--painel);stroke:var(--acento);stroke-width:1.5;}
+.agent-labels{font:12px var(--f-mono);text-anchor:middle;fill:var(--tinta);}.packets{fill:var(--acento-forte);}
+.collision-node{fill:var(--painel);stroke:var(--alerta);stroke-width:2;}.repo{fill:var(--relevo);stroke:var(--tinta-3);}
+.false-report{margin:0 1.25rem;padding:1rem 1.25rem;display:grid;gap:.45rem;background:var(--painel);border:1px solid var(--linha-forte);border-left:3px solid var(--alerta);border-radius:var(--raio-campo);}
+.report-label{font:.75rem/1.5 var(--f-mono);color:var(--tinta-3);}.false-report s{color:var(--tinta-2);text-decoration-thickness:2px;}.false-report strong{font-size:.95rem;color:var(--alerta);font-weight:600;}
+figcaption{padding:1.25rem;font-size:.85rem;line-height:1.6;color:var(--tinta-2);}
+/* Static final state is the fallback, including reduced motion. The figure's
+   entry into the viewport drives every track, rather than page-load time. */
+@supports(animation-timeline:view()){
+ @media(prefers-reduced-motion:no-preference){
+  .collision-scene{view-timeline:--collision block;animation:arrive linear both;animation-timeline:view();animation-range:entry 0% entry 30%;}
+  .track path{stroke-dasharray:500;animation:trace linear both;animation-timeline:--collision;animation-range:entry 10% entry 65%;}
+  .track path:nth-child(2){animation-range:entry 15% entry 70%;}
+  .track path:nth-child(3){animation-range:entry 20% entry 75%;}
+  .collision-node{animation:arrive linear both;animation-timeline:--collision;animation-range:entry 50% entry 80%;}
+  .false-report{animation:arrive linear both;animation-timeline:--collision;animation-range:entry 65% entry 100%;}
+  .collision-scene,.track path,.collision-node,.false-report{animation-duration:auto;}
+ }
+}
+@keyframes trace{from{stroke-dashoffset:500;}to{stroke-dashoffset:0;}}
+@keyframes arrive{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+@media(max-width:900px){.collision{grid-template-columns:minmax(0,1fr);}.collision-scene{max-width:36rem;width:100%;}.collision-copy h2{max-width:30ch;}}
+</style>

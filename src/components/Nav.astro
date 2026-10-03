@@ -1,4 +1,5 @@
 ---
+import ThemeToggle from './ThemeToggle.astro';
 import LanguageSelector from './LanguageSelector.astro';
 import {localeFor,localize,ui} from '../data/i18n';
 const locale=localeFor(Astro.url.pathname),text=ui(locale);
@@ -16,15 +17,16 @@ const links=[{href:'/',label:text.organization},{href:'/ork/',label:text.ork},{h
           <circle class="selo-naipe" cx="5.3" cy="9.8" r="2.1" />
         </svg></span><span>Orkastery</span></a>
  <nav class="site-links" aria-label={text.navigation}>{links.map(link=><a href={localize(link.href,locale)} aria-current={Astro.url.pathname===localize(link.href,locale)?'page':undefined}>{link.label}</a>)}</nav>
- <LanguageSelector/>
+ <div class="site-preferences"><LanguageSelector/><ThemeToggle/></div>
  </div>
 </header>
 <style>
+.site-preferences{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;}
 .site-header{position:relative;z-index:50;border-bottom:1px solid var(--linha-forte);background:var(--poco,var(--fundo));color:var(--tinta,var(--texto));}
 .site-header-inner{max-width:1280px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:1.25rem;padding:1.2rem 1.5rem;flex-wrap:wrap;}
-.site-brand{display:inline-flex;align-items:center;gap:.65rem;font:500 1.3rem var(--f-display,var(--fonte-display));text-decoration:none;color:inherit;}
+.site-brand{display:inline-flex;align-items:center;gap:.65rem;font:500 1.3rem var(--f-marca);text-decoration:none;color:inherit;}
 .site-brand>span{display:inline-flex;}
-.site-brand svg{color:var(--latao);}
+.site-brand svg{color:var(--marca);}
 .selo-orbita{fill:none;stroke:currentColor;stroke-width:1.1;opacity:.55;}
 .selo-batuta,.selo-naipe{fill:currentColor;}
 .brand-dot{width:10px;height:10px;border-radius:50%;background:var(--verde);box-shadow:0 0 0 4px var(--verde-tinta);}

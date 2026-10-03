@@ -1,8 +1,8 @@
 {
   "name": "Orkastery",
   "short_name": "Orkastery",
-  "theme_color": "#0a0908",
-  "background_color": "#0a0908",
+  "theme_color": "#090f18",
+  "background_color": "#090f18",
   "display": "standalone",
   "icons": [
     {

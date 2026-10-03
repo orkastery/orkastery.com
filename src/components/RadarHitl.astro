@@ -106,10 +106,10 @@ const sessoes = [
     margin-inline: auto;
     border-radius: 50%;
     background:
-      radial-gradient(circle at 50% 50%, rgba(111, 185, 168, 0.05), transparent 68%),
+      radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--prova) 5%, transparent), transparent 68%),
       var(--palco);
     border: 1px solid var(--linha-forte);
-    box-shadow: var(--lustro), inset 0 0 60px rgba(6, 4, 2, 0.7), var(--sombra-2);
+    box-shadow: var(--lustro), inset 0 0 60px color-mix(in srgb, var(--sombra-cor) 70%, transparent), var(--sombra-2);
     overflow: hidden;
   }
 
@@ -145,7 +145,7 @@ const sessoes = [
     border-radius: 50%;
     transform: translate(-50%, -50%);
     background: var(--patina);
-    box-shadow: 0 0 12px rgba(111, 185, 168, 0.8);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--prova) 80%, transparent);
   }
 
   .radar-varredura {
@@ -154,8 +154,8 @@ const sessoes = [
     border-radius: 50%;
     background: conic-gradient(
       from 0deg,
-      rgba(111, 185, 168, 0.3),
-      rgba(111, 185, 168, 0.08) 26deg,
+      color-mix(in srgb, var(--prova) 30%, transparent),
+      color-mix(in srgb, var(--prova) 8%, transparent) 26deg,
       transparent 74deg
     );
     animation: varrer 5s linear infinite;
@@ -216,13 +216,13 @@ const sessoes = [
   .ponto-hitl {
     color: var(--brasa-clara);
     background: var(--brasa-clara);
-    box-shadow: 0 0 0 0 rgba(255, 138, 99, 0.5);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--alerta-forte) 50%, transparent);
     animation: chamar 1.9s ease-out infinite;
   }
 
   @keyframes chamar {
     to {
-      box-shadow: 0 0 0 15px rgba(255, 138, 99, 0);
+      box-shadow: 0 0 0 15px color-mix(in srgb, var(--alerta-forte) 0%, transparent);
     }
   }
 
@@ -244,7 +244,7 @@ const sessoes = [
     gap: 0.5rem 1.3rem;
     font-size: var(--t-nano);
     color: var(--tinta-3);
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-label);
   }
 
   .legenda li {
@@ -267,7 +267,7 @@ const sessoes = [
 
   .chave-hitl {
     background: var(--brasa-clara);
-    box-shadow: 0 0 8px rgba(255, 138, 99, 0.6);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--alerta-forte) 60%, transparent);
   }
 
   .chave-morta {
@@ -315,8 +315,8 @@ const sessoes = [
   .medida-rotulo {
     font-size: var(--t-nano);
     color: var(--tinta-3);
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
+    text-transform: none;
+    letter-spacing: var(--tracking-label);
   }
 
   .radar-terminal {
@@ -346,8 +346,8 @@ const sessoes = [
     .radar-varredura {
       background: conic-gradient(
         from 40deg,
-        rgba(111, 185, 168, 0.3),
-        rgba(111, 185, 168, 0.08) 26deg,
+        color-mix(in srgb, var(--prova) 30%, transparent),
+        color-mix(in srgb, var(--prova) 8%, transparent) 26deg,
         transparent 74deg
       );
     }

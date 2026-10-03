@@ -1,0 +1,61 @@
+---
+interface Props {locale: 'pt'|'en'|'es';}
+const {locale}=Astro.props;
+const command='npm install -g @orkastery/cli';
+const text={
+ pt:{install:'Instale o CLI',copy:'Copiar comando',copied:'Comando copiado.',failed:'Não foi possível copiar. Selecione o comando para copiar manualmente.',example:'Recibo ilustrativo',note:'Exemplo de saída e SHA fictício. Nenhuma verificação é executada nesta página.',sha:'SHA de exemplo',claim:'Alegação → comando → evidência',result:'VERDADE SUSTENTADA'},
+ en:{install:'Install the CLI',copy:'Copy command',copied:'Command copied.',failed:'Could not copy. Select the command to copy it manually.',example:'Illustrative receipt',note:'Example output and fictional SHA. The CLI prints its verdict as shown ("supported truth"). No verification runs on this page.',sha:'Example SHA',claim:'Claim → command → evidence',result:'VERDADE SUSTENTADA'},
+ es:{install:'Instale el CLI',copy:'Copiar comando',copied:'Comando copiado.',failed:'No se pudo copiar. Seleccione el comando para copiarlo manualmente.',example:'Comprobante ilustrativo',note:'Salida de ejemplo y SHA ficticio. El CLI imprime su veredicto tal como se ve («verdad sostenida»). Esta página no ejecuta ninguna verificación.',sha:'SHA de ejemplo',claim:'Alegación → comando → evidencia',result:'VERDADE SUSTENTADA'},
+}[locale];
+const verifyCommand='$ ork verify <thread>\n';
+const evidenceLines=text.claim+'\n'+text.sha+': a1b2c3d\n';
+---
+<aside class="verification-receipt" aria-label={text.example}>
+ <div class="receipt-install">
+  <div class="receipt-heading"><span class="micro-rotulo">{text.install}</span><button type="button" data-copy-install data-command={command} data-success={text.copied} data-failure={text.failed} hidden>{text.copy}</button></div>
+  <code class="install-command">{command}</code>
+  <p class="copy-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+ </div>
+ <figure class="receipt-example">
+  <div class="receipt-top"><span>{text.example}</span><span class="receipt-nodes" aria-hidden="true"><i></i><i></i><i></i></span></div>
+  <pre tabindex="0"><code><span class="receipt-command">{verifyCommand}</span><span class="receipt-line">{evidenceLines}</span><span class="receipt-result">{'✓ '+text.result}</span></code></pre>
+  <figcaption>{text.note}</figcaption>
+ </figure>
+</aside>
+<script>
+ for(const button of document.querySelectorAll<HTMLButtonElement>('[data-copy-install]')){
+  button.hidden=false;
+  button.addEventListener('click',async()=>{
+   const status=button.closest('.receipt-install')?.querySelector<HTMLElement>('[role="status"]');
+   if(!status)return;
+   status.textContent='';
+   try{
+    await navigator.clipboard.writeText(button.dataset.command||'');
+    status.textContent=button.dataset.success||'';
+   }catch{
+    status.textContent=button.dataset.failure||'';
+   }
+  });
+ }
+</script>
+<style>
+.verification-receipt{min-width:0;width:100%;border:1px solid var(--linha-forte);border-radius:var(--raio-superficie);background:var(--palco);box-shadow:var(--sombra-2);overflow:hidden;}
+.receipt-install{padding:1.25rem;background:var(--painel);}
+.receipt-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem;}
+.receipt-heading .micro-rotulo{margin:0;}
+button{min-height:44px;padding:.5rem .75rem;border:1px solid var(--linha-forte);border-radius:var(--raio-campo);background:var(--palco);font-size:.8rem;color:var(--tinta);}
+button[hidden]{display:none;}button:hover{border-color:var(--acento);}button:focus-visible{outline:2px solid var(--acento);outline-offset:3px;}
+.install-command{display:block;padding:.75rem;font:.85rem/1.7 var(--f-mono);white-space:pre-wrap;overflow-wrap:anywhere;user-select:all;}
+.copy-feedback{min-height:1.5em;margin:.5rem 0 0;font-size:.8rem;line-height:1.5;color:var(--tinta-2);}
+.receipt-example{margin:0;background:linear-gradient(var(--grade) 1px,transparent 1px),linear-gradient(90deg,var(--grade) 1px,transparent 1px);background-size:24px 24px;}
+.receipt-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;border-block:1px solid var(--linha);font:.75rem/1.5 var(--f-mono);color:var(--tinta-3);}
+.receipt-nodes{display:flex;gap:.4rem;}.receipt-nodes i{width:6px;height:6px;border-radius:50%;background:var(--acento);}
+pre{padding:1.25rem;margin:0;font:.85rem/2 var(--f-mono);overflow-x:auto;}
+.receipt-command{color:var(--tinta);}.receipt-line{color:var(--tinta-2);}.receipt-result{display:inline-block;margin-top:.5rem;color:var(--prova);font-weight:600;}
+figcaption{padding:0 1.25rem 1.25rem;font-size:.8rem;line-height:1.6;color:var(--tinta-2);}
+@media(prefers-reduced-motion:no-preference){
+ .receipt-result{animation:receipt-confirm .7s .35s ease-out both;}
+ .receipt-nodes i{animation:receipt-confirm .7s ease-out both;}.receipt-nodes i:nth-child(2){animation-delay:.15s;}.receipt-nodes i:nth-child(3){animation-delay:.3s;}
+}
+@keyframes receipt-confirm{from{opacity:.4;transform:translateY(3px);}to{opacity:1;transform:none;}}
+</style>

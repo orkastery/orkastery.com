@@ -1,8 +1,5 @@
 ---
-import '@fontsource-variable/fraunces/opsz.css';
-import '@fontsource-variable/fraunces/opsz-italic.css';
-import '@fontsource-variable/instrument-sans/wght.css';
-import '@fontsource-variable/geist-mono/wght.css';
+import '../styles/fonts.css';
 import '../styles/tokens.css';
 import '../styles/base.css';
 import frauncesLatino from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
@@ -16,7 +13,7 @@ const {titulo='Orkastery',descricao=text.indexDescription}=Astro.props;
 const origin='https://orkastery.com';
 ---
 <!doctype html>
-<html lang={languageTag[locale]}>
+<html lang={languageTag[locale]} data-theme="dark">
 <head>
  <meta charset="utf-8" />
  <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,7 +29,8 @@ const origin='https://orkastery.com';
  <meta property="og:locale" content={{pt:'pt_BR',en:'en_US',es:'es_ES'}[locale]} />
  <meta property="og:image" content={origin+'/og.png'} />
  <meta name="twitter:card" content="summary_large_image" />
- <meta name="theme-color" content="#0a0908" />
+ <meta name="theme-color" content="#090f18" />
+ <script is:inline>try{if(localStorage.getItem("ork-theme")==="light")document.documentElement.dataset.theme="light";}catch{}</script>
  <link rel="icon" href="/favicon.ico" sizes="32x32" />
  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

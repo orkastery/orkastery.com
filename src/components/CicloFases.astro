@@ -1,4 +1,6 @@
 ---
+import {richTechnicalHtml} from '../lib/technical-text.mjs';
+import TechnicalText from './TechnicalText.astro';
 import {localeFor, localize} from '../data/i18n';
 const locale=localeFor(Astro.url.pathname);
 const translations={
@@ -119,7 +121,7 @@ const translations={
   }
 };
 const t=(key:keyof typeof translations)=>translations[key][locale];
-import Partitura from './Partitura.astro';
+import FactoryTracks from './FactoryTracks.astro';
 // A looping thread: as seis fases que nenhum agente pula.
 // Trilha interativa: cada fase abre o contrato dela e o que o ork exige antes de
 // deixar passar. A trilha anda sozinha ate a primeira interacao do humano; a partir
@@ -179,7 +181,7 @@ const fases = [
 
 <div class="ciclo" data-ciclo data-anima>
   <div class="trilha-envelope">
-    <Partitura />
+    <FactoryTracks />
     <svg class="lacos" viewBox="0 0 1200 130" preserveAspectRatio="none" aria-hidden="true">
       <path class="laco laco-fix" d="M 700 6 C 700 62, 500 62, 500 6" />
       <path class="laco laco-score" d="M 1108 6 C 1108 124, 92 124, 92 6" />
@@ -232,17 +234,17 @@ const fases = [
           <p class="micro-rotulo sem-ponto">{fase.digito} · {fase.nome}</p>
           <p class="detalhe-resumo mono">{fase.resumo}</p>
         </div>
-        <p class="detalhe-entrega">{fase.entrega}</p>
+        <p class="detalhe-entrega"><TechnicalText text={fase.entrega}/></p>
         <p class="detalhe-exige">
           <span class="exige-selo mono">{t("t21")}</span>
-          <span class="exige-texto mono">{fase.exige}</span>
+          <span class="exige-texto mono"><TechnicalText text={fase.exige}/></span>
         </p>
       </div>
     ))}
   </div>
 
   <p class="ciclo-nota paragrafo">
-    <Fragment set:html={t("t22")} />
+    <Fragment set:html={richTechnicalHtml(t("t22"))} />
   </p>
 </div>
 
@@ -345,7 +347,7 @@ const fases = [
     transform-origin: left;
     transform: scaleX(calc(var(--selecionada) / (var(--fases) - 1)));
     transition: transform 0.65s var(--curva);
-    box-shadow: 0 0 12px rgba(224, 178, 100, 0.35);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--acento) 35%, transparent);
   }
 
   /* ---------- no de fase ---------- */
@@ -368,7 +370,7 @@ const fases = [
   .fase-digito {
     font-size: var(--t-nano);
     color: var(--tinta-3);
-    letter-spacing: 0.12em;
+    letter-spacing: var(--tracking-label);
     transition: color var(--dur-2) var(--curva);
   }
 
@@ -435,7 +437,7 @@ const fases = [
 
   .fase-nome {
     font-size: clamp(0.66rem, 1.5vw, 0.78rem);
-    letter-spacing: 0.13em;
+    letter-spacing: var(--tracking-label);
     font-variation-settings: 'wght' 500;
     transition: color var(--dur-2) var(--curva);
   }
@@ -467,7 +469,7 @@ const fases = [
   .fase[aria-selected='true'] .fase-nucleo {
     border-color: var(--latao);
     background: var(--latao);
-    box-shadow: 0 0 0 4px var(--latao-fraco), 0 0 24px rgba(224, 178, 100, 0.55);
+    box-shadow: 0 0 0 4px var(--latao-fraco), 0 0 24px color-mix(in srgb, var(--acento) 55%, transparent);
     transform: scale(1.1);
   }
 
@@ -493,12 +495,12 @@ const fases = [
 
   .legenda-fix {
     color: var(--brasa);
-    opacity: 0.75;
+    opacity: 1;
   }
 
   .legenda-score {
     color: var(--patina);
-    opacity: 0.7;
+    opacity: 1;
   }
 
   /* ---------- detalhe ---------- */
@@ -565,8 +567,8 @@ const fases = [
     border-radius: var(--raio-pilula);
     padding: 0.12rem 0.7rem;
     font-size: var(--t-nano);
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
+    text-transform: none;
+    letter-spacing: var(--tracking-label);
   }
 
   .exige-texto {

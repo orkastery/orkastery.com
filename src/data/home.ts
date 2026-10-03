@@ -6,7 +6,7 @@ export default {
     "mechanism": "Como as peças se conectam",
     "mechanismText": "O host apresenta, o núcleo verifica e o runtime implementa. Conheça as fronteiras antes de conduzir o primeiro ciclo.",
     "install": "Comece pelo ambiente",
-    "installText": "Instale o CLI e confira os requisitos do seu projeto. A documentação acompanha configuração, fases e verificações. @orkastery/cli 0.5.0.",
+    "installText": "Instale o CLI e confira os requisitos do seu projeto. A documentação acompanha configuração, fases e verificações. @orkastery/cli 0.5.3.",
     "command": "npm install -g @orkastery/cli\nork doctor",
     "sections": [
       {
@@ -42,7 +42,7 @@ export default {
     "mechanism": "How the pieces connect",
     "mechanismText": "The host presents, the core verifies and the runtime implements. Learn the boundaries before conducting your first cycle.",
     "install": "Start with the environment",
-    "installText": "Install the CLI and check your project’s requirements. The documentation covers setup, phases and verification. @orkastery/cli 0.5.0.",
+    "installText": "Install the CLI and check your project’s requirements. The documentation covers setup, phases and verification. @orkastery/cli 0.5.3.",
     "command": "npm install -g @orkastery/cli\nork doctor",
     "sections": [
       {
@@ -78,7 +78,7 @@ export default {
     "mechanism": "Cómo se conectan las piezas",
     "mechanismText": "El host presenta, el núcleo verifica y el runtime implementa. Conozca los límites antes de conducir el primer ciclo.",
     "install": "Empiece por el entorno",
-    "installText": "Instale el CLI y compruebe los requisitos del proyecto. La documentación cubre configuración, fases y verificación. @orkastery/cli 0.5.0.",
+    "installText": "Instale el CLI y compruebe los requisitos del proyecto. La documentación cubre configuración, fases y verificación. @orkastery/cli 0.5.3.",
     "command": "npm install -g @orkastery/cli\nork doctor",
     "sections": [
       {

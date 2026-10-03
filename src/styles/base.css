@@ -1,5 +1,4 @@
-/* Base do portal Orkastery: reset, sistema tipografico, superficies usinadas,
-   movimento e acessibilidade. Tudo aqui vale para as tres paginas. */
+/* Shared typography, surfaces, controls and accessibility. */
 
 *,
 *::before,
@@ -24,7 +23,7 @@ body {
   font-size: var(--t-body);
   line-height: 1.62;
   letter-spacing: -0.006em;
-  font-variation-settings: 'wght' 400;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -89,16 +88,11 @@ samp {
   background: var(--latao-fundo);
 }
 
-/* ============================================================
-   TIPOGRAFIA
-   Um so display em toda a superficie: Fraunces, com tamanho optico
-   variavel. Titulo grande ganha alto contraste; rotulo pequeno ganha
-   forma robusta. Esse e o mesmo tipo, calibrado, nao dois tipos.
-   ============================================================ */
+/* Typography: variable grotesque for headings and body, mono for code. */
 
 .display {
   font-family: var(--f-display);
-  font-variation-settings: 'opsz' 144, 'wght' 620, 'SOFT' 0, 'WONK' 0;
+  font-variation-settings: 'wght' 600;
   font-weight: 620;
   line-height: 1.02;
   letter-spacing: -0.028em;
@@ -109,7 +103,7 @@ samp {
 .display em,
 .display i {
   font-style: italic;
-  font-variation-settings: 'opsz' 144, 'wght' 560, 'SOFT' 0, 'WONK' 1;
+  font-variation-settings: 'wght' 600;
   letter-spacing: -0.012em;
 }
 
@@ -125,7 +119,7 @@ h2.display {
 h3,
 .titulo-3 {
   font-family: var(--f-display);
-  font-variation-settings: 'opsz' 28, 'wght' 600, 'SOFT' 0, 'WONK' 0;
+  font-variation-settings: 'wght' 600;
   font-weight: 600;
   font-size: var(--t-h3);
   line-height: 1.22;
@@ -136,7 +130,7 @@ h3,
 /* Numerais de display: alinhados, com o tamanho optico do titulo */
 .numeral {
   font-family: var(--f-display);
-  font-variation-settings: 'opsz' 144, 'wght' 560, 'SOFT' 0, 'WONK' 0;
+  font-variation-settings: 'wght' 600;
   font-variant-numeric: tabular-nums lining-nums;
   letter-spacing: -0.04em;
   line-height: 0.92;
@@ -168,7 +162,7 @@ h3,
   font-size: var(--t-micro);
   font-variation-settings: 'wght' 500;
   text-transform: none;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--tracking-label);
   color: var(--latao);
 }
 
@@ -206,10 +200,7 @@ h3,
 }
 
 /* Codigo inline, em qualquer lugar do site */
-.paragrafo code,
-p code,
-li code,
-dd code {
+:not(pre) > code {
   font-family: var(--f-mono);
   font-size: 0.86em;
   color: var(--latao-claro);
@@ -217,7 +208,8 @@ dd code {
   border: 1px solid var(--latao-linha);
   border-radius: 5px;
   padding: 0.08em 0.38em;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 /* ============================================================
@@ -276,11 +268,11 @@ html.js .regua.revela.visivel {
    ============================================================ */
 
 .painel {
-  --spot: rgba(224, 178, 100, 0.1);
+  --spot: color-mix(in srgb, var(--acento) 10%, transparent);
   position: relative;
   isolation: isolate;
   background:
-    linear-gradient(180deg, rgba(245, 241, 234, 0.024), transparent 42%),
+    linear-gradient(180deg, color-mix(in srgb, var(--tinta) 2.4%, transparent), transparent 42%),
     var(--painel);
   border: 1px solid var(--linha);
   border-radius: var(--raio-superficie);
@@ -320,10 +312,10 @@ html.js .regua.revela.visivel {
 /* Superficie de destaque: fio de latao no topo, aura quente */
 .painel-latao {
   background:
-    linear-gradient(165deg, rgba(224, 178, 100, 0.085), rgba(226, 96, 60, 0.03) 52%, transparent 78%),
+    linear-gradient(165deg, color-mix(in srgb, var(--acento) 8.5%, transparent), color-mix(in srgb, var(--alerta) 3%, transparent) 52%, transparent 78%),
     var(--painel);
   border-color: var(--latao-linha);
-  box-shadow: var(--lustro-forte), var(--sombra-2), 0 0 60px -30px rgba(224, 178, 100, 0.5);
+  box-shadow: var(--lustro-forte), var(--sombra-2), 0 0 60px -30px color-mix(in srgb, var(--acento) 50%, transparent);
 }
 
 .painel-latao::after {
@@ -337,9 +329,9 @@ html.js .regua.revela.visivel {
 }
 
 .painel-patina {
-  --spot: rgba(111, 185, 168, 0.09);
+  --spot: color-mix(in srgb, var(--prova) 9%, transparent);
   background:
-    linear-gradient(165deg, rgba(111, 185, 168, 0.07), transparent 62%),
+    linear-gradient(165deg, color-mix(in srgb, var(--prova) 7%, transparent), transparent 62%),
     var(--painel);
   border-color: var(--patina-linha);
 }
@@ -411,27 +403,27 @@ html.js .regua.revela.visivel {
 }
 
 .botao-latao {
-  background: linear-gradient(135deg, var(--latao-claro), var(--latao) 46%, #c9954a);
+  background: linear-gradient(135deg, var(--latao-claro), var(--latao) 46%, var(--acento));
   color: var(--sobre-latao);
-  box-shadow: var(--lustro-forte), 0 8px 28px -10px rgba(224, 178, 100, 0.55);
+  box-shadow: var(--lustro-forte), 0 8px 28px -10px color-mix(in srgb, var(--acento) 55%, transparent);
 }
 
 .botao-latao:hover {
   transform: translateY(-2px);
-  box-shadow: var(--lustro-forte), 0 14px 40px -12px rgba(224, 178, 100, 0.7);
+  box-shadow: var(--lustro-forte), 0 14px 40px -12px color-mix(in srgb, var(--acento) 70%, transparent);
 }
 
 .botao-fantasma {
   border-color: var(--linha-forte);
   color: var(--tinta);
-  background: linear-gradient(180deg, rgba(245, 241, 234, 0.045), transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tinta) 4.5%, transparent), transparent);
   box-shadow: var(--lustro);
 }
 
 .botao-fantasma:hover {
   border-color: var(--latao-linha);
   color: var(--latao-claro);
-  background: linear-gradient(180deg, rgba(224, 178, 100, 0.09), transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--acento) 9%, transparent), transparent);
   transform: translateY(-2px);
 }
 
@@ -439,7 +431,7 @@ html.js .regua.revela.visivel {
   background: linear-gradient(
     100deg,
     transparent 20%,
-    rgba(224, 178, 100, 0.16) 48%,
+    color-mix(in srgb, var(--acento) 16%, transparent) 48%,
     transparent 74%
   );
 }
@@ -508,7 +500,7 @@ html.js .regua.revela.visivel {
    min-width: 0 e o que permite que ele encolha dentro de uma grade. */
 .terminal {
   position: relative;
-  background: linear-gradient(180deg, #0d0c0a, #070605);
+  background: var(--palco);
   border: 1px solid var(--linha-forte);
   border-radius: var(--raio-superficie);
   overflow: hidden;
@@ -534,7 +526,7 @@ html.js .regua.revela.visivel {
   gap: 1rem;
   padding: 0.7rem 1.15rem;
   border-bottom: 1px solid var(--linha);
-  background: rgba(245, 241, 234, 0.018);
+  background: color-mix(in srgb, var(--tinta) 1.8%, transparent);
   color: var(--tinta-3);
   font-family: var(--f-mono);
   font-size: var(--t-micro);
@@ -742,7 +734,7 @@ html.js .escalona.visivel > *:nth-child(n + 10) { transition-delay: 0.58s; }
   background: linear-gradient(
     100deg,
     transparent 20%,
-    rgba(245, 241, 234, 0.055) 48%,
+    color-mix(in srgb, var(--tinta) 5.5%, transparent) 48%,
     transparent 76%
   );
   transform: translateX(-100%);
@@ -798,9 +790,11 @@ html.js .escalona.visivel > *:nth-child(n + 10) { transition-delay: 0.58s; }
   *,
   *::before,
   *::after {
+    animation-delay: 0s !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    transition-duration: 0s !important;
     scroll-behavior: auto !important;
   }
 }
@@ -850,7 +844,7 @@ html.js .escalona.visivel > *:nth-child(n + 10) { transition-delay: 0.58s; }
   font-family: var(--f-mono);
   font-size: var(--t-micro);
   font-variation-settings: 'wght' 500;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--tracking-label);
   text-transform: none;
   color: var(--tinta-2);
   white-space: nowrap;
@@ -860,3 +854,9 @@ html.js .escalona.visivel > *:nth-child(n + 10) { transition-delay: 0.58s; }
 .botao .selo-em-breve {
   margin-inline-start: 0;
 }
+
+/* Code blocks keep their own scrolling; inline code wraps on small screens. */
+pre code{background:none;border:0;padding:0;color:inherit;font-size:inherit;white-space:pre;overflow-wrap:normal;}
+code{box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+::marker{color:var(--acento);}
+button:disabled{cursor:default;}
