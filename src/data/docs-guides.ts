@@ -464,7 +464,7 @@ export default [
             "id": "prova-local",
             "title": "Prova local no registro da claim",
             "paragraphs": [
-              "A policy claim_sem_prova_local (alias claims_failed) vem desligada e só vale se o manifesto a declarar. Com ela, ork claims add roda os comandos da claim uma vez, na worktree da thread e no prazo de verify.timeout_ms. A claim entra de qualquer jeito: comando reprovado grava policy_warn com claims.failed, e estouro de prazo, com verify.timeout. Ela nunca para o registro, nem declarada em block. Como o add fica tão lento quanto o comando, quem decide ligá-la é o dono do projeto.",
+              "A policy claim_sem_prova_local (alias claims_failed) vem desligada e só vale se o manifesto a declarar. Com ela, ork claims add roda os comandos da claim uma vez, na worktree da thread e no prazo de verify.timeout_ms. A claim entra de qualquer jeito: comando reprovado grava policy_warn com claims.failed, e estouro de prazo, com verify.timeout. Ela nunca para o registro, nem declarada em block. Como o add fica tão lento quanto o comando, quem decide ligá-la é o dono do projeto. Sem a worktree da thread (apagada), nada roda e o aviso diz isso. Pelo MCP (ork_claim_add), o registro nunca roda o texto da claim, com ou sem a policy: lá a prova é o ork_verify, no sandbox.",
               "O canário fx-pedido-colado prova que um pedido do dono colado em #Auto, com push e merge autorizados, segue sem parar: a dúvida vira decisão informada e um confirmo em texto livre é recusado sem gravar nada."
             ],
             "code": "policies:\n  claim_sem_prova_local: warn\n\nork eval --so-canarios"
@@ -529,7 +529,7 @@ export default [
             "id": "prova-local",
             "title": "Local proof when a claim is registered",
             "paragraphs": [
-              "The claim_sem_prova_local policy (alias claims_failed) is off by default and applies only when the manifest declares it. With it, ork claims add runs the claim’s commands once, in the thread worktree and within verify.timeout_ms. The claim is recorded either way: a failing command records policy_warn with claims.failed, and a timeout records it with verify.timeout. It never stops registration, even when declared as block. Because add becomes as slow as the command, the project owner decides whether to turn it on.",
+              "The claim_sem_prova_local policy (alias claims_failed) is off by default and applies only when the manifest declares it. With it, ork claims add runs the claim’s commands once, in the thread worktree and within verify.timeout_ms. The claim is recorded either way: a failing command records policy_warn with claims.failed, and a timeout records it with verify.timeout. It never stops registration, even when declared as block. Because add becomes as slow as the command, the project owner decides whether to turn it on. Without the thread worktree (deleted), nothing runs and the warning says so. Through MCP (ork_claim_add), registration never runs the claim text, with or without the policy: there the evidence is ork_verify, in the sandbox.",
               "The fx-pedido-colado canary proves that an owner request pasted in #Auto, with push and merge authorized, proceeds without stopping: doubt becomes an informed decision, and a free-text confirmation is refused without recording anything."
             ],
             "code": "policies:\n  claim_sem_prova_local: warn\n\nork eval --so-canarios"
@@ -594,7 +594,7 @@ export default [
             "id": "prova-local",
             "title": "Prueba local al registrar la claim",
             "paragraphs": [
-              "La policy claim_sem_prova_local (alias claims_failed) viene desactivada y solo vale si el manifiesto la declara. Con ella, ork claims add ejecuta los comandos de la claim una vez, en la worktree de la thread y dentro de verify.timeout_ms. La claim se registra de todos modos: un comando que falla graba policy_warn con claims.failed, y un plazo agotado, con verify.timeout. Nunca detiene el registro, ni siquiera declarada como block. Como add se vuelve tan lento como el comando, quien decide activarla es el dueño del proyecto.",
+              "La policy claim_sem_prova_local (alias claims_failed) viene desactivada y solo vale si el manifiesto la declara. Con ella, ork claims add ejecuta los comandos de la claim una vez, en la worktree de la thread y dentro de verify.timeout_ms. La claim se registra de todos modos: un comando que falla graba policy_warn con claims.failed, y un plazo agotado, con verify.timeout. Nunca detiene el registro, ni siquiera declarada como block. Como add se vuelve tan lento como el comando, quien decide activarla es el dueño del proyecto. Sin la worktree de la thread (borrada), no se ejecuta nada y el aviso lo dice. Por MCP (ork_claim_add), el registro nunca ejecuta el texto de la claim, con o sin la policy: allí la prueba es ork_verify, en el sandbox.",
               "El canario fx-pedido-colado demuestra que un pedido del dueño pegado en #Auto, con push y merge autorizados, sigue sin detenerse: la duda se convierte en decisión informada y una confirmación en texto libre se rechaza sin grabar nada."
             ],
             "code": "policies:\n  claim_sem_prova_local: warn\n\nork eval --so-canarios"

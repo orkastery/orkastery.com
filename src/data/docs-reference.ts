@@ -48,15 +48,17 @@ export default [
             "title": "Contas, perfis e sessões",
             "paragraphs": [
               "phase run --perfil <id> despacha pela conta pedida, ou recusa com runtime.profile-invalid, runtime.quota-exhausted ou runtime.auth-missing, sem trocar de perfil sozinho. runtime_profiles.distribuir escolhe entre os perfis: ordem, o padrão, é o primeiro do store; carga é o de menos sessões vivas nesta máquina. Valor desconhecido vale ordem, com aviso.",
-              "sessions lista as sessões de todas as contas, com a coluna PERFIL e as fantasmas; sessions limpar-fantasmas solta cada fantasma do ork com registro no ledger, sem chamar stop nem rm no runtime. Quando o runtime recusa o diretório da worktree ou espera o aceite de termos novos, a fase espera o dono rodar o comando da pausa, e retry run re-despacha o mesmo prompt depois."
+              "sessions lista as sessões de todas as contas, com a coluna PERFIL e as fantasmas; sessions limpar-fantasmas solta cada fantasma do ork com registro no ledger, sem chamar stop nem rm no runtime. Quando o runtime recusa o diretório da worktree ou espera o aceite de termos novos, a fase espera o dono rodar o comando da pausa, e retry run re-despacha o mesmo prompt depois.",
+              "accounts esgotamentos mede, sem gravar nada, os despachos que caíram numa conta marcada como esgotada por outro projeto dentro do prazo da marca; a conta sai como id opaco, e o total é um piso."
             ],
-            "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions --all\nork sessions limpar-fantasmas --dry-run --json"
+            "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions --all\nork sessions limpar-fantasmas --dry-run --json\nork accounts esgotamentos --desde 7d --json"
           },
           {
             "id": "contexto-e-atencao",
             "title": "Contexto citável e atenção humana",
             "paragraphs": [
-              "brain context devolve entidades, pais, citações, frescor e lacunas sem conceder permissão de escrita. roadmap status monta um relatório de leitura com a atenção que cabe ao dono. master pedir gera o pedido de nota para resposta pelo canal autenticado; não é uma nota dada pelo agente. master <thread> --score exige --por com o nome de quem dá a nota. master <thread> --aceitar-omissao aceita por omissão só a thread indicada, com --dry-run para ver antes; sem a thread, aceita todas as entregues do projeto."
+              "brain context devolve entidades, pais, citações, frescor e lacunas sem conceder permissão de escrita. roadmap status monta um relatório de leitura com a atenção que cabe ao dono. master pedir gera o pedido de nota para resposta pelo canal autenticado; não é uma nota dada pelo agente. master <thread> --score exige --por com o nome de quem dá a nota. master <thread> --aceitar-omissao aceita por omissão só a thread indicada, com --dry-run para ver antes; sem a thread, aceita todas as entregues do projeto.",
+              "Sem --classe, a classe da falha sai do motivo de cada gate reprovado, e base-avancou entra quando a branch trouxe a base antes da entrega; vale também no --aceitar-omissao."
             ],
             "code": "ork brain context --thread <thread> --ids <ids>\nork roadmap status --json\nork master pedir <thread> --formato telegram\nork master <thread> --aceitar-omissao --dry-run"
           },
@@ -94,7 +96,8 @@ export default [
             "id": "memoria",
             "title": "Busca por significado na memória",
             "paragraphs": [
-              "memory search --texto busca por significado no tenant, com vetor e FTS combinados, e não é determinística; não combina com --tags nem --thread. memory index mantém o índice vetorial local, idempotente, e --dry-run estima tokens e custo sem chamar o provider. memory status --sondar faz uma chamada real e mede a latência. Status, index e search usam o mesmo universo da busca do tenant; status e index o mostram por coleção, contam o que fica fora da busca e avisam quando o índice cobre menos do que a busca enxerga."
+              "memory search --texto busca por significado no tenant, com vetor e FTS combinados, e não é determinística; não combina com --tags nem --thread. memory index mantém o índice vetorial local, idempotente, e --dry-run estima tokens e custo sem chamar o provider. memory status --sondar faz uma chamada real e mede a latência. Status, index e search usam o mesmo universo da busca do tenant; status e index o mostram por coleção, contam o que fica fora da busca e avisam quando o índice cobre menos do que a busca enxerga.",
+              "Sem o universo lido inteiro, ou com a memória desligada ou indisponível, memory search --texto sai 1 com motivo tipado e sem resultados, também em --json; universo vazio lido com sucesso sai 0. A leitura do universo tem prazo próprio, memory.universo_timeout_ms, 90.000 ms por padrão."
             ],
             "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory search --texto \"<frase>\" --json"
           },
@@ -104,9 +107,10 @@ export default [
             "paragraphs": [
               "grafo indexar constrói o índice do HEAD limpo, no estado do projeto e fora do git; --verificar extrai de novo e confere contrato, bytes e determinismo. vizinhos, chamadores, importadores e caminho respondem pelas arestas, em texto ou --json, com o extrator e a evidência de cada uma. status mostra o índice do HEAD, amostra serve à auditoria manual de arestas e limpar apaga os índices que não são do HEAD de nenhuma árvore.",
               "A resposta é parcial por construção: só o que o extrator prova, e ela diz isso. Com a árvore modificada, a resposta é a do HEAD, com aviso. Todo o ork grafo precisa do typescript e do micromark no node_modules do próprio pacote do ork: são dependências do pacote, com versão exata, e o npm install -g os traz. Instalado dentro de um projeto ou pelo npx, o npm os iça para fora do pacote, e a recusa é grafo.parser.indisponivel, com a correção no grafo status e no doctor. O grafo pede Node 20.19, 22.12 ou mais novo.",
-              "Com o índice de uma revisão ancestral, grafo indexar reextrai só o que a mudança alcança, com os mesmos bytes da extração completa, e diz quando foi completo e por quê. Com --json, --teto-bytes N limita a resposta a N bytes, tirando primeiro as arestas mais longe do alvo; o caminho não se corta e recusa com grafo.consulta.teto-excedido. Sem o índice do HEAD, a recusa diz o caso (grafo.indice.ausente, grafo.indice.outra-revisao ou grafo.indice.outro-extrator) e a correção. As mesmas consultas estão no MCP do projeto atrás da flag grafo.mcp, desligada por padrão."
+              "Com o índice de uma revisão ancestral, grafo indexar reextrai só o que a mudança alcança, com os mesmos bytes da extração completa, e diz quando foi completo e por quê. Com --json, --teto-bytes N limita a resposta a N bytes, tirando primeiro as arestas mais longe do alvo; o caminho não se corta e recusa com grafo.consulta.teto-excedido. Sem o índice do HEAD, a recusa diz o caso (grafo.indice.ausente, grafo.indice.outra-revisao ou grafo.indice.outro-extrator) e a correção. As mesmas consultas estão no MCP do projeto atrás da flag grafo.mcp, desligada por padrão.",
+              "grafo contexto <thread> monta o pacote compacto da thread, com o diff da worktree, GOAL, PLAN e claims, as ligações mais próximas do diff primeiro e evidência em tupla; o JSON ork.thread-graph-context/v2 tem teto de 32.768 bytes por padrão, de 4.096 a 65.536. Sem worktree, o diff é ignorado e declarado; com a flag ligada, ork_grafo_contexto entrega o mesmo JSON no MCP."
             ],
-            "code": "ork grafo indexar --verificar\nork grafo status\nork grafo chamadores <símbolo>\nork grafo importadores <arquivo> --json\nork grafo caminho <de> <para>"
+            "code": "ork grafo indexar --verificar\nork grafo status\nork grafo chamadores <símbolo>\nork grafo importadores <arquivo> --json\nork grafo caminho <de> <para>\nork grafo contexto <thread> --json"
           }
         ]
       },
@@ -152,15 +156,17 @@ export default [
             "title": "Accounts, profiles and sessions",
             "paragraphs": [
               "phase run --perfil <id> dispatches through the requested account, or refuses with runtime.profile-invalid, runtime.quota-exhausted or runtime.auth-missing, without switching profiles on its own. runtime_profiles.distribuir chooses among profiles: ordem, the default, is the first in the store; carga is the one with the fewest live sessions on this machine. An unknown value falls back to ordem, with a warning.",
-              "sessions lists the sessions of every account, with the PERFIL column and the ghosts; sessions limpar-fantasmas releases each ghost from ork with a ledger record, without calling stop or rm in the runtime. When the runtime refuses the worktree directory or waits for new terms to be accepted, the phase waits for the owner to run the pause command, and retry run then re-dispatches the same prompt."
+              "sessions lists the sessions of every account, with the PERFIL column and the ghosts; sessions limpar-fantasmas releases each ghost from ork with a ledger record, without calling stop or rm in the runtime. When the runtime refuses the worktree directory or waits for new terms to be accepted, the phase waits for the owner to run the pause command, and retry run then re-dispatches the same prompt.",
+              "accounts esgotamentos measures, without writing anything, the dispatches that landed on an account another project had marked as exhausted while the mark was still valid; the account appears as an opaque id, and the total is a floor."
             ],
-            "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions --all\nork sessions limpar-fantasmas --dry-run --json"
+            "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions --all\nork sessions limpar-fantasmas --dry-run --json\nork accounts esgotamentos --desde 7d --json"
           },
           {
             "id": "contexto-e-atencao",
             "title": "Citable context and human attention",
             "paragraphs": [
-              "brain context returns entities, parents, citations, freshness and gaps without granting write access. roadmap status builds a read-only report showing where the owner’s attention is needed. master pedir creates a score request for an authenticated human response; it is not an agent-supplied score. master <thread> --score requires --por with the name of the person giving the score. master <thread> --aceitar-omissao accepts by default only the given thread, with --dry-run to preview; without a thread, it accepts every delivered thread in the project."
+              "brain context returns entities, parents, citations, freshness and gaps without granting write access. roadmap status builds a read-only report showing where the owner’s attention is needed. master pedir creates a score request for an authenticated human response; it is not an agent-supplied score. master <thread> --score requires --por with the name of the person giving the score. master <thread> --aceitar-omissao accepts by default only the given thread, with --dry-run to preview; without a thread, it accepts every delivered thread in the project.",
+              "Without --classe, the failure class comes from the reason of each failed gate, and base-avancou is added when the branch pulled in the base before delivery; this also applies to --aceitar-omissao."
             ],
             "code": "ork brain context --thread <thread> --ids <ids>\nork roadmap status --json\nork master pedir <thread> --formato telegram\nork master <thread> --aceitar-omissao --dry-run"
           },
@@ -198,7 +204,8 @@ export default [
             "id": "memoria",
             "title": "Search memory by meaning",
             "paragraphs": [
-              "memory search --texto searches the tenant by meaning, combining vector and FTS, and is not deterministic; it cannot be combined with --tags or --thread. memory index maintains the local, idempotent vector index, and --dry-run estimates tokens and cost without calling the provider. memory status --sondar makes one real call and measures its latency. status, index and search use the same tenant search universe; status and index show it per collection, count what stays out of search and warn when the index covers less than search can see."
+              "memory search --texto searches the tenant by meaning, combining vector and FTS, and is not deterministic; it cannot be combined with --tags or --thread. memory index maintains the local, idempotent vector index, and --dry-run estimates tokens and cost without calling the provider. memory status --sondar makes one real call and measures its latency. status, index and search use the same tenant search universe; status and index show it per collection, count what stays out of search and warn when the index covers less than search can see.",
+              "When the universe was not read in full, or memory is off or unavailable, memory search --texto exits 1 with a typed reason and no results, also with --json; an empty universe read successfully exits 0. Reading the universe has its own deadline, memory.universo_timeout_ms, 90,000 ms by default."
             ],
             "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory search --texto \"<phrase>\" --json"
           },
@@ -208,9 +215,10 @@ export default [
             "paragraphs": [
               "grafo indexar builds the index for a clean HEAD, in project state and outside git; --verificar extracts again and checks contract, bytes and determinism. vizinhos, chamadores, importadores and caminho answer from the edges, as text or --json, with each edge’s extractor and evidence. status shows the HEAD index, amostra supports manual edge audits and limpar deletes indexes that are not the HEAD of any tree.",
               "Answers are partial by construction: they contain only what the extractor proves, and they say so. With a modified tree, the answer reflects HEAD and warns about it. All of ork grafo needs typescript and micromark in the node_modules of the ork package itself: they are package dependencies with exact versions, and npm install -g brings them. Installed inside a project or through npx, npm hoists them out of the package, and the refusal is grafo.parser.indisponivel, with the fix in grafo status and doctor. The graph needs Node 20.19, 22.12 or later.",
-              "With the index of an ancestor revision, grafo indexar re-extracts only what the change reaches, with the same bytes as a full extraction, and says when it ran in full and why. With --json, --teto-bytes N caps the answer at N bytes, dropping the edges farthest from the target first; a path is never cut and refuses with grafo.consulta.teto-excedido. Without a HEAD index, the refusal names the case (grafo.indice.ausente, grafo.indice.outra-revisao or grafo.indice.outro-extrator) and the fix. The same queries are in the project MCP server behind the grafo.mcp flag, off by default."
+              "With the index of an ancestor revision, grafo indexar re-extracts only what the change reaches, with the same bytes as a full extraction, and says when it ran in full and why. With --json, --teto-bytes N caps the answer at N bytes, dropping the edges farthest from the target first; a path is never cut and refuses with grafo.consulta.teto-excedido. Without a HEAD index, the refusal names the case (grafo.indice.ausente, grafo.indice.outra-revisao or grafo.indice.outro-extrator) and the fix. The same queries are in the project MCP server behind the grafo.mcp flag, off by default.",
+              "grafo contexto <thread> builds the thread’s compact package from the worktree diff, GOAL, PLAN and claims, with the links closest to the diff first and evidence as tuples; the ork.thread-graph-context/v2 JSON is capped at 32,768 bytes by default, from 4,096 to 65,536. Without a worktree, the diff is ignored and the answer says so; with the flag on, ork_grafo_contexto returns the same JSON over MCP."
             ],
-            "code": "ork grafo indexar --verificar\nork grafo status\nork grafo chamadores <symbol>\nork grafo importadores <file> --json\nork grafo caminho <from> <to>"
+            "code": "ork grafo indexar --verificar\nork grafo status\nork grafo chamadores <symbol>\nork grafo importadores <file> --json\nork grafo caminho <from> <to>\nork grafo contexto <thread> --json"
           }
         ]
       },
@@ -256,15 +264,17 @@ export default [
             "title": "Cuentas, perfiles y sesiones",
             "paragraphs": [
               "phase run --perfil <id> despacha por la cuenta pedida, o rechaza con runtime.profile-invalid, runtime.quota-exhausted o runtime.auth-missing, sin cambiar de perfil por su cuenta. runtime_profiles.distribuir elige entre los perfiles: ordem, el valor por defecto, es el primero del store; carga es el de menos sesiones vivas en esta máquina. Un valor desconocido vale ordem, con aviso.",
-              "sessions lista las sesiones de todas las cuentas, con la columna PERFIL y las fantasmas; sessions limpar-fantasmas suelta cada fantasma de ork con registro en el ledger, sin llamar a stop ni rm en el runtime. Cuando el runtime rechaza el directorio de la worktree o espera la aceptación de términos nuevos, la fase espera a que el dueño ejecute el comando de la pausa, y retry run después vuelve a despachar el mismo prompt."
+              "sessions lista las sesiones de todas las cuentas, con la columna PERFIL y las fantasmas; sessions limpar-fantasmas suelta cada fantasma de ork con registro en el ledger, sin llamar a stop ni rm en el runtime. Cuando el runtime rechaza el directorio de la worktree o espera la aceptación de términos nuevos, la fase espera a que el dueño ejecute el comando de la pausa, y retry run después vuelve a despachar el mismo prompt.",
+              "accounts esgotamentos mide, sin escribir nada, los despachos que cayeron en una cuenta marcada como agotada por otro proyecto dentro del plazo de la marca; la cuenta aparece como id opaco, y el total es un mínimo."
             ],
-            "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions --all\nork sessions limpar-fantasmas --dry-run --json"
+            "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions --all\nork sessions limpar-fantasmas --dry-run --json\nork accounts esgotamentos --desde 7d --json"
           },
           {
             "id": "contexto-e-atencao",
             "title": "Contexto citable y atención humana",
             "paragraphs": [
-              "brain context devuelve entidades, padres, citas, vigencia y lagunas sin conceder escritura. roadmap status crea un informe de lectura con lo que requiere atención del dueño. master pedir genera la solicitud de nota para una respuesta humana autenticada; no es una nota dada por el agente. master <thread> --score exige --por con el nombre de quien da la nota. master <thread> --aceitar-omissao acepta por omisión solo la thread indicada, con --dry-run para verlo antes; sin la thread, acepta todas las entregadas del proyecto."
+              "brain context devuelve entidades, padres, citas, vigencia y lagunas sin conceder escritura. roadmap status crea un informe de lectura con lo que requiere atención del dueño. master pedir genera la solicitud de nota para una respuesta humana autenticada; no es una nota dada por el agente. master <thread> --score exige --por con el nombre de quien da la nota. master <thread> --aceitar-omissao acepta por omisión solo la thread indicada, con --dry-run para verlo antes; sin la thread, acepta todas las entregadas del proyecto.",
+              "Sin --classe, la clase del fallo sale del motivo de cada gate rechazado, y base-avancou se añade cuando la rama trajo la base antes de la entrega; también vale en --aceitar-omissao."
             ],
             "code": "ork brain context --thread <thread> --ids <ids>\nork roadmap status --json\nork master pedir <thread> --formato telegram\nork master <thread> --aceitar-omissao --dry-run"
           },
@@ -302,7 +312,8 @@ export default [
             "id": "memoria",
             "title": "Búsqueda por significado en la memoria",
             "paragraphs": [
-              "memory search --texto busca por significado en el tenant, combinando vector y FTS, y no es determinista; no se combina con --tags ni --thread. memory index mantiene el índice vectorial local e idempotente, y --dry-run estima tokens y coste sin llamar al provider. memory status --sondar hace una llamada real y mide la latencia. status, index y search usan el mismo universo de búsqueda del tenant; status e index lo muestran por colección, cuentan lo que queda fuera de la búsqueda y avisan cuando el índice cubre menos de lo que ve la búsqueda."
+              "memory search --texto busca por significado en el tenant, combinando vector y FTS, y no es determinista; no se combina con --tags ni --thread. memory index mantiene el índice vectorial local e idempotente, y --dry-run estima tokens y coste sin llamar al provider. memory status --sondar hace una llamada real y mide la latencia. status, index y search usan el mismo universo de búsqueda del tenant; status e index lo muestran por colección, cuentan lo que queda fuera de la búsqueda y avisan cuando el índice cubre menos de lo que ve la búsqueda.",
+              "Sin el universo leído entero, o con la memoria apagada o no disponible, memory search --texto sale con 1, motivo tipado y sin resultados, también en --json; un universo vacío leído con éxito sale con 0. La lectura del universo tiene su propio plazo, memory.universo_timeout_ms, 90.000 ms por defecto."
             ],
             "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory search --texto \"<frase>\" --json"
           },
@@ -312,9 +323,10 @@ export default [
             "paragraphs": [
               "grafo indexar construye el índice del HEAD limpio, en el estado del proyecto y fuera de git; --verificar vuelve a extraer y comprueba contrato, bytes y determinismo. vizinhos, chamadores, importadores y caminho responden a partir de las aristas, en texto o --json, con el extractor y la prueba de cada una. status muestra el índice del HEAD, amostra sirve para auditar aristas a mano y limpar borra los índices que no son del HEAD de ningún árbol.",
               "La respuesta es parcial por construcción: solo contiene lo que el extractor demuestra, y lo indica. Con el árbol modificado, la respuesta corresponde al HEAD, con aviso. Todo ork grafo necesita typescript y micromark en el node_modules del propio paquete de ork: son dependencias del paquete, con versión exacta, y npm install -g los trae. Instalado dentro de un proyecto o mediante npx, npm los eleva fuera del paquete, y el rechazo es grafo.parser.indisponivel, con la corrección en grafo status y en doctor. El grafo pide Node 20.19, 22.12 o posterior.",
-              "Con el índice de una revisión ancestro, grafo indexar reextrae solo lo que el cambio alcanza, con los mismos bytes de la extracción completa, y dice cuándo fue completa y por qué. Con --json, --teto-bytes N limita la respuesta a N bytes, quitando primero las aristas más lejanas del objetivo; el camino no se corta y rechaza con grafo.consulta.teto-excedido. Sin el índice del HEAD, el rechazo indica el caso (grafo.indice.ausente, grafo.indice.outra-revisao o grafo.indice.outro-extrator) y la corrección. Las mismas consultas están en el MCP del proyecto detrás del flag grafo.mcp, apagado por defecto."
+              "Con el índice de una revisión ancestro, grafo indexar reextrae solo lo que el cambio alcanza, con los mismos bytes de la extracción completa, y dice cuándo fue completa y por qué. Con --json, --teto-bytes N limita la respuesta a N bytes, quitando primero las aristas más lejanas del objetivo; el camino no se corta y rechaza con grafo.consulta.teto-excedido. Sin el índice del HEAD, el rechazo indica el caso (grafo.indice.ausente, grafo.indice.outra-revisao o grafo.indice.outro-extrator) y la corrección. Las mismas consultas están en el MCP del proyecto detrás del flag grafo.mcp, apagado por defecto.",
+              "grafo contexto <thread> arma el paquete compacto de la thread con el diff de la worktree, GOAL, PLAN y claims, con los vínculos más cercanos al diff primero y la evidencia en tuplas; el JSON ork.thread-graph-context/v2 tiene un tope de 32.768 bytes por defecto, de 4.096 a 65.536. Sin worktree, el diff se ignora y se declara; con el flag activado, ork_grafo_contexto entrega el mismo JSON por MCP."
             ],
-            "code": "ork grafo indexar --verificar\nork grafo status\nork grafo chamadores <símbolo>\nork grafo importadores <archivo> --json\nork grafo caminho <de> <a>"
+            "code": "ork grafo indexar --verificar\nork grafo status\nork grafo chamadores <símbolo>\nork grafo importadores <archivo> --json\nork grafo caminho <de> <a>\nork grafo contexto <thread> --json"
           }
         ]
       }
