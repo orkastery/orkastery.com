@@ -16,7 +16,7 @@ export default [
             "id": "instalar",
             "title": "Instale e confira",
             "paragraphs": [
-              "Use Node.js 20 ou superior, Git e um repositório com pelo menos um commit: a thread parte do commit da base. O pacote se chama @orkastery/cli; o executável é ork. O núcleo não contém um modelo de IA. O runtime de agente configurado executa as fases: o claude-bg (o binário claude), que é o padrão, ou o Codex CLI. Esta documentação descreve a versão 0.5.2; confira a versão publicada com npm view @orkastery/cli version.",
+              "Use Node.js 20 ou superior, Git e um repositório com pelo menos um commit: a thread parte do commit da base. O pacote se chama @orkastery/cli; o executável é ork. O núcleo não contém um modelo de IA. O runtime de agente configurado executa as fases: o claude-bg (o binário claude), que é o padrão, ou o Codex CLI. Esta documentação descreve a versão 0.5.2; confira a versão publicada com npm view @orkastery/cli version. O pacote traz nove dependências de runtime com versão fixa, entre elas os analisadores do grafo de código, que pede Node 20.19, 22.12 ou mais novo.",
               "Só com o Codex, passe cada bloco dos modos permitidos para ele com ork setup <modo> --bloco N --runtime codex --model <modelo>. Depois disso, a falta do claude vira aviso no doctor."
             ],
             "code": "npm install -g @orkastery/cli\nork doctor\nork demo"
@@ -25,10 +25,10 @@ export default [
             "id": "projeto",
             "title": "Prepare o projeto",
             "paragraphs": [
-              "Execute init na raiz do seu repositório. Ele gera o manifesto, que define verificações, modo e integração com runtimes, e um bloco do Orkastery no AGENTS.md. O estado do ork (.orkastery/) e as worktrees das threads são da máquina, não do repositório: ficam fora do git sem mudar o seu .gitignore. Faça o commit do manifesto antes da primeira thread.",
-              "Em seguida, responda à pauta de onboarding. Registre apenas nomes de variáveis de credenciais; os valores ficam no ambiente do processo ou no cofre do host. A etapa maestro também oferece as preferências da conversa: idioma, fuso e profundidade, ou o opt-out. Confira os valores efetivos com ork experiencia show --json; o guia de experiência de orquestração explica a instalação em cada host."
+              "Execute init na raiz do seu repositório. Ele gera o manifesto, que define verificações, modo e integração com runtimes, e um bloco do Orkastery no AGENTS.md. O estado do ork (.orkastery/) e as worktrees das threads são da máquina, não do repositório: ficam fora do git sem mudar o seu .gitignore. Faça o commit do manifesto antes da primeira thread. Fora de um repositório git, o init recusa sem criar nada (init.fora-do-repositorio), e o doctor avisa quando o orkastery.yaml que leu fica fora do repositório, como o de um init antigo numa pasta acima.",
+              "Em seguida, responda à pauta de onboarding. Registre apenas nomes de variáveis de credenciais; os valores ficam no ambiente do processo ou no cofre do host. A etapa maestro também oferece as preferências da conversa: idioma, fuso e profundidade, ou o opt-out. Confira os valores efetivos com ork experiencia show --json; o guia de experiência de orquestração explica a instalação em cada host. Respondida, a etapa maestro grava o bloco owner no orkastery.yaml: faça o commit do manifesto de novo antes do primeiro ork ship, porque a árvore principal suja barra o merge com tree.blocked."
             ],
-            "code": "ork init --name \"meu-produto\" --abbrev prd\ngit add orkastery.yaml AGENTS.md\ngit commit -m \"ork init\"\nork onboarding\nork experiencia show --json\nork doctor"
+            "code": "ork init --name \"meu-produto\" --abbrev prd\ngit add orkastery.yaml AGENTS.md\ngit commit -m \"ork init\"\nork onboarding\ngit commit -m \"ork onboarding\" orkastery.yaml\nork experiencia show --json\nork doctor"
           },
           {
             "id": "primeira-thread",
@@ -43,7 +43,7 @@ export default [
             "id": "confirmar",
             "title": "Confirme antes de avançar",
             "paragraphs": [
-              "Um doctor bloqueado impede novo despacho; um aviso nunca bloqueia. Cada falha traz a correção: antes do init, por exemplo, o manifesto ausente aponta ork init. Resolva a causa indicada e execute-o novamente. A demo é um exercício local de uma alegação que falha e depois passa; não comprova que seu projeto está pronto para publicação."
+              "Um doctor bloqueado impede novo despacho; um aviso nunca bloqueia. Cada falha traz a correção: antes do init, por exemplo, o manifesto ausente aponta ork init. Resolva a causa indicada e execute-o novamente. A demo é um exercício local de uma alegação que falha e depois passa; não comprova que seu projeto está pronto para publicação. A linha analisadores do grafo mostra as versões do typescript e do micromark que o ork grafo usa e, quando faltam, avisa com a correção."
             ]
           },
           {
@@ -73,7 +73,7 @@ export default [
             "id": "instalar",
             "title": "Install and check",
             "paragraphs": [
-              "Use Node.js 20 or later, Git and a repository with at least one commit: a thread starts from the base commit. The package is @orkastery/cli; its executable is ork. The core contains no AI model. Your configured agent runtime executes the phases: claude-bg (the claude binary), the default, or the Codex CLI. This documentation describes version 0.5.2; check the published version with npm view @orkastery/cli version.",
+              "Use Node.js 20 or later, Git and a repository with at least one commit: a thread starts from the base commit. The package is @orkastery/cli; its executable is ork. The core contains no AI model. Your configured agent runtime executes the phases: claude-bg (the claude binary), the default, or the Codex CLI. This documentation describes version 0.5.2; check the published version with npm view @orkastery/cli version. The package ships nine pinned runtime dependencies, including the code graph analyzers; the code graph needs Node 20.19, 22.12 or later.",
               "To use Codex only, move each block of the allowed modes to it with ork setup <modo> --bloco N --runtime codex --model <model>. After that, a missing claude is only a doctor warning."
             ],
             "code": "npm install -g @orkastery/cli\nork doctor\nork demo"
@@ -82,10 +82,10 @@ export default [
             "id": "projeto",
             "title": "Prepare the project",
             "paragraphs": [
-              "Run init at the root of your repository. It generates the manifest, which defines checks, conduction mode and runtime integration, plus an Orkastery block in AGENTS.md. The ork state (.orkastery/) and the thread worktrees belong to the machine, not to the repository: they stay out of git without changing your .gitignore. Commit the manifest before your first thread.",
-              "Then complete onboarding. Record credential variable names only; values stay in the process environment or the host vault. The maestro stage also offers conversation preferences: language, timezone and depth, or opt-out. Check the effective values with ork experiencia show --json; the orchestration experience guide explains installation in each host."
+              "Run init at the root of your repository. It generates the manifest, which defines checks, conduction mode and runtime integration, plus an Orkastery block in AGENTS.md. The ork state (.orkastery/) and the thread worktrees belong to the machine, not to the repository: they stay out of git without changing your .gitignore. Commit the manifest before your first thread. Outside a git repository, init refuses without creating anything (init.fora-do-repositorio), and doctor warns when the orkastery.yaml it read lies outside the repository, such as one left by an old init in a parent folder.",
+              "Then complete onboarding. Record credential variable names only; values stay in the process environment or the host vault. The maestro stage also offers conversation preferences: language, timezone and depth, or opt-out. Check the effective values with ork experiencia show --json; the orchestration experience guide explains installation in each host. Once answered, the maestro step writes the owner block into orkastery.yaml: commit the manifest again before the first ork ship, because a dirty main tree blocks the merge with tree.blocked."
             ],
-            "code": "ork init --name \"meu-produto\" --abbrev prd\ngit add orkastery.yaml AGENTS.md\ngit commit -m \"ork init\"\nork onboarding\nork experiencia show --json\nork doctor"
+            "code": "ork init --name \"meu-produto\" --abbrev prd\ngit add orkastery.yaml AGENTS.md\ngit commit -m \"ork init\"\nork onboarding\ngit commit -m \"ork onboarding\" orkastery.yaml\nork experiencia show --json\nork doctor"
           },
           {
             "id": "primeira-thread",
@@ -100,7 +100,7 @@ export default [
             "id": "confirmar",
             "title": "Confirm before proceeding",
             "paragraphs": [
-              "A blocked doctor prevents a new dispatch; a warning never blocks. Each failure carries its fix: before init, for example, the missing manifest points to ork init. Resolve the reported cause and rerun it. The demo is a local exercise in a claim that fails and then passes; it does not establish that your project is ready for publication."
+              "A blocked doctor prevents a new dispatch; a warning never blocks. Each failure carries its fix: before init, for example, the missing manifest points to ork init. Resolve the reported cause and rerun it. The demo is a local exercise in a claim that fails and then passes; it does not establish that your project is ready for publication. The graph analyzers line shows the typescript and micromark versions that ork grafo uses and, when they are missing, warns with the fix."
             ]
           },
           {
@@ -130,7 +130,7 @@ export default [
             "id": "instalar",
             "title": "Instale y compruebe",
             "paragraphs": [
-              "Utilice Node.js 20 o posterior, Git y un repositorio con al menos un commit: la thread parte del commit de la base. El paquete se llama @orkastery/cli; su ejecutable es ork. El núcleo no contiene un modelo de IA. El runtime de agente configurado ejecuta las fases: claude-bg (el binario claude), que es el predeterminado, o el Codex CLI. Esta documentación describe la versión 0.5.2; compruebe la versión publicada con npm view @orkastery/cli version.",
+              "Utilice Node.js 20 o posterior, Git y un repositorio con al menos un commit: la thread parte del commit de la base. El paquete se llama @orkastery/cli; su ejecutable es ork. El núcleo no contiene un modelo de IA. El runtime de agente configurado ejecuta las fases: claude-bg (el binario claude), que es el predeterminado, o el Codex CLI. Esta documentación describe la versión 0.5.2; compruebe la versión publicada con npm view @orkastery/cli version. El paquete trae nueve dependencias de runtime con versión fija, entre ellas los analizadores del grafo de código, que pide Node 20.19, 22.12 o posterior.",
               "Para usar solo Codex, pase cada bloque de los modos permitidos a él con ork setup <modo> --bloco N --runtime codex --model <modelo>. A partir de entonces, la falta de claude es solo un aviso del doctor."
             ],
             "code": "npm install -g @orkastery/cli\nork doctor\nork demo"
@@ -139,10 +139,10 @@ export default [
             "id": "projeto",
             "title": "Prepare el proyecto",
             "paragraphs": [
-              "Ejecute init en la raíz del repositorio. Genera el manifiesto, que define las verificaciones, el modo de conducción y la integración con runtimes, y un bloque de Orkastery en AGENTS.md. El estado de ork (.orkastery/) y las worktrees de las threads pertenecen a la máquina, no al repositorio: quedan fuera de git sin cambiar su .gitignore. Haga commit del manifiesto antes de la primera thread.",
-              "Después complete el onboarding. Registre solo los nombres de las variables de credenciales; los valores quedan en el entorno del proceso o en el almacén del host. La etapa maestro también ofrece las preferencias de la conversación: idioma, zona horaria y profundidad, o la desactivación. Compruebe los valores efectivos con ork experiencia show --json; la guía de experiencia de orquestación explica la instalación en cada host."
+              "Ejecute init en la raíz del repositorio. Genera el manifiesto, que define las verificaciones, el modo de conducción y la integración con runtimes, y un bloque de Orkastery en AGENTS.md. El estado de ork (.orkastery/) y las worktrees de las threads pertenecen a la máquina, no al repositorio: quedan fuera de git sin cambiar su .gitignore. Haga commit del manifiesto antes de la primera thread. Fuera de un repositorio git, init se niega sin crear nada (init.fora-do-repositorio), y doctor avisa cuando el orkastery.yaml que leyó queda fuera del repositorio, como el de un init antiguo en una carpeta superior.",
+              "Después complete el onboarding. Registre solo los nombres de las variables de credenciales; los valores quedan en el entorno del proceso o en el almacén del host. La etapa maestro también ofrece las preferencias de la conversación: idioma, zona horaria y profundidad, o la desactivación. Compruebe los valores efectivos con ork experiencia show --json; la guía de experiencia de orquestación explica la instalación en cada host. Una vez respondida, la etapa maestro escribe el bloque owner en orkastery.yaml: haga de nuevo el commit del manifiesto antes del primer ork ship, porque el árbol principal sucio bloquea el merge con tree.blocked."
             ],
-            "code": "ork init --name \"meu-produto\" --abbrev prd\ngit add orkastery.yaml AGENTS.md\ngit commit -m \"ork init\"\nork onboarding\nork experiencia show --json\nork doctor"
+            "code": "ork init --name \"meu-produto\" --abbrev prd\ngit add orkastery.yaml AGENTS.md\ngit commit -m \"ork init\"\nork onboarding\ngit commit -m \"ork onboarding\" orkastery.yaml\nork experiencia show --json\nork doctor"
           },
           {
             "id": "primeira-thread",
@@ -157,7 +157,7 @@ export default [
             "id": "confirmar",
             "title": "Confirme antes de avanzar",
             "paragraphs": [
-              "Un doctor bloqueado impide un nuevo despacho; un aviso nunca bloquea. Cada fallo trae su corrección: antes de init, por ejemplo, el manifiesto ausente indica ork init. Resuelva la causa indicada y vuelva a ejecutarlo. La demo muestra una alegación que falla y después pasa; no demuestra que su proyecto esté listo para publicarse."
+              "Un doctor bloqueado impide un nuevo despacho; un aviso nunca bloquea. Cada fallo trae su corrección: antes de init, por ejemplo, el manifiesto ausente indica ork init. Resuelva la causa indicada y vuelva a ejecutarlo. La demo muestra una alegación que falla y después pasa; no demuestra que su proyecto esté listo para publicarse. La línea de analizadores del grafo muestra las versiones de typescript y micromark que usa ork grafo y, cuando faltan, avisa con la corrección."
             ]
           },
           {
