@@ -15,7 +15,7 @@ try{
  browser=await chromium.launch({executablePath:process.env.CHROMIUM_EXECUTABLE});
  for(const locale of ['pt','en','es'])for(const width of widths)for(const scheme of ['dark','light']){
   const context=await browser.newContext({viewport:{width,height:1000},colorScheme:scheme,locale:locale==='pt'?'pt-BR':locale,reducedMotion:'reduce',serviceWorkers:'block'});
-  await context.addInitScript(theme=>{if(!localStorage.getItem('ork-theme'))localStorage.setItem('ork-theme',theme);},scheme);
+  await context.addInitScript(theme=>{try{if(!localStorage.getItem('ork-theme'))localStorage.setItem('ork-theme',theme);}catch{}},scheme);
  // All responses come from dist; no request is allowed to reach a network.
   await context.route('**/*',async route=>{
    const url=new URL(route.request().url());if(url.origin!=='http://docs.local')return route.abort('blockedbyclient');

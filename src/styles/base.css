@@ -790,9 +790,11 @@ html.js .escalona.visivel > *:nth-child(n + 10) { transition-delay: 0.58s; }
   *,
   *::before,
   *::after {
+    animation-delay: 0s !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    transition-duration: 0s !important;
     scroll-behavior: auto !important;
   }
 }
