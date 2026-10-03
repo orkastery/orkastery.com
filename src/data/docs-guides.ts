@@ -31,6 +31,23 @@ export default [
             "paragraphs": [
               "Sem tag, vale conduction.default_mode. O núcleo valida a escolha contra conduction.allowed_modes. Tags não são autorização para ignorar o escopo explícito do dono."
             ]
+          },
+          {
+            "id": "so-codex",
+            "title": "Só com o Codex",
+            "paragraphs": [
+              "O setup padrão despacha os blocos pelo claude-bg. Para usar só o Codex, passe cada bloco dos modos permitidos para ele; ork setup <modo> lista os blocos. ork doctor reprova a falta do claude só enquanto algum bloco de modo permitido despachar pelo claude-bg; um fallback que cai nele só gera aviso."
+            ],
+            "code": "ork setup classic\nork setup classic --bloco 1 --runtime codex --model <modelo>"
+          },
+          {
+            "id": "worktree",
+            "title": "A worktree da thread",
+            "paragraphs": [
+              "O modo diz quantas pausas a thread tem; a worktree diz onde ela escreve. Com worktree.por_thread: true, o valor que o ork init grava, ork thread new cria a worktree e a branch ork/<slug> em qualquer modo, sem flag, e ork ship entrega essa branch. Com a chave false ou ausente, a worktree só nasce com --worktree auto ou com um ciclo que a exige.",
+              "--worktree <DIR> reusa um diretório existente. --sem-worktree cria a thread na raiz do projeto: na branch base, ork ship é barrado por push_direto_na_base: block, o padrão do ork init, e antes do GO ork worktree ensure <thread> ainda cria a worktree. --dry-run mostra a worktree e a branch que seriam criadas, ou por que a criação seria recusada. Os ciclos greenfield, merge-branch e feature-xl-faseada exigem worktree e recusam --sem-worktree. Num repositório sem commit, a thread nasce na raiz, com aviso."
+            ],
+            "code": "ork thread new \"corrigir o filtro\" --modo classic --dry-run\nork thread new \"corrigir o filtro\" --modo classic --sem-worktree\nork worktree ensure <thread>"
           }
         ]
       },
@@ -59,6 +76,23 @@ export default [
             "paragraphs": [
               "Without a tag, conduction.default_mode applies. The core checks the choice against conduction.allowed_modes. A tag does not authorize ignoring the owner’s explicit scope."
             ]
+          },
+          {
+            "id": "so-codex",
+            "title": "Codex only",
+            "paragraphs": [
+              "The default setup dispatches blocks through claude-bg. To use only Codex, move every block of the allowed modes to it; ork setup <mode> lists the blocks. ork doctor fails on a missing claude binary only while a block of an allowed mode still dispatches through claude-bg; a fallback that lands on it only produces a warning."
+            ],
+            "code": "ork setup classic\nork setup classic --bloco 1 --runtime codex --model <modelo>"
+          },
+          {
+            "id": "worktree",
+            "title": "The thread worktree",
+            "paragraphs": [
+              "The mode decides how many pauses a thread has; the worktree decides where it writes. With worktree.por_thread: true, the value written by ork init, ork thread new creates the worktree and the ork/<slug> branch in any mode, without a flag, and ork ship delivers that branch. With the key set to false or missing, the worktree is only created with --worktree auto or by a cycle that requires it.",
+              "--worktree <DIR> reuses an existing directory. --sem-worktree creates the thread at the project root: on the base branch, ork ship is blocked by push_direto_na_base: block, the ork init default, and before GO ork worktree ensure <thread> can still create the worktree. --dry-run shows the worktree and branch that would be created, or why creation would be refused. The greenfield, merge-branch and feature-xl-faseada cycles require a worktree and refuse --sem-worktree. In a repository without commits, the thread starts at the root with a warning."
+            ],
+            "code": "ork thread new \"corrigir o filtro\" --modo classic --dry-run\nork thread new \"corrigir o filtro\" --modo classic --sem-worktree\nork worktree ensure <thread>"
           }
         ]
       },
@@ -87,6 +121,23 @@ export default [
             "paragraphs": [
               "Sin etiqueta se aplica conduction.default_mode. El núcleo comprueba la elección con conduction.allowed_modes. Una etiqueta no autoriza a ignorar el alcance explícito del dueño."
             ]
+          },
+          {
+            "id": "so-codex",
+            "title": "Solo con Codex",
+            "paragraphs": [
+              "La configuración predeterminada despacha los bloques por claude-bg. Para usar solo Codex, pase cada bloque de los modos permitidos a él; ork setup <modo> lista los bloques. ork doctor falla por la ausencia de claude solo mientras algún bloque de un modo permitido despache por claude-bg; un fallback que caiga en él solo genera un aviso."
+            ],
+            "code": "ork setup classic\nork setup classic --bloco 1 --runtime codex --model <modelo>"
+          },
+          {
+            "id": "worktree",
+            "title": "La worktree de la thread",
+            "paragraphs": [
+              "El modo define cuántas pausas tiene la thread; la worktree define dónde escribe. Con worktree.por_thread: true, el valor que graba ork init, ork thread new crea la worktree y la rama ork/<slug> en cualquier modo, sin flag, y ork ship entrega esa rama. Con la clave en false o ausente, la worktree solo se crea con --worktree auto o con un ciclo que la exige.",
+              "--worktree <DIR> reutiliza un directorio existente. --sem-worktree crea la thread en la raíz del proyecto: en la rama base, ork ship queda bloqueado por push_direto_na_base: block, el valor por defecto de ork init, y antes del GO ork worktree ensure <thread> todavía puede crear la worktree. --dry-run muestra la worktree y la rama que se crearían, o por qué se rechazaría la creación. Los ciclos greenfield, merge-branch y feature-xl-faseada exigen worktree y rechazan --sem-worktree. En un repositorio sin commits, la thread nace en la raíz, con aviso."
+            ],
+            "code": "ork thread new \"corrigir o filtro\" --modo classic --dry-run\nork thread new \"corrigir o filtro\" --modo classic --sem-worktree\nork worktree ensure <thread>"
           }
         ]
       }
@@ -115,7 +166,7 @@ export default [
             "id": "respostas",
             "title": "Registre informação pública",
             "paragraphs": [
-              "Use ork onboarding set para registrar uma etapa com autoria. Revise a saída antes de publicar a entrevista na memória. DSNs, tokens e senhas não pertencem às respostas públicas; a configuração aponta para variáveis protegidas. Sem --por, a autoria registrada é owner, o que não comprova a resposta de uma pessoa."
+              "Use ork onboarding set para registrar uma etapa com autoria. Revise a saída antes de publicar a entrevista na memória. DSNs, tokens e senhas não pertencem às respostas públicas; a configuração aponta para variáveis protegidas. Sem --por, a autoria registrada é owner, o que não comprova a resposta de uma pessoa. Os valores secretos ficam no ambiente do processo ou no cofre do host (no Hermes, ~/.hermes/.env); o onboarding guarda só o nome da variável e nunca lê o valor."
             ],
             "code": "ork onboarding set produtos --conteudo '{\"produtos\":[\"meu-produto\"]}' --por operador"
           },
@@ -123,7 +174,7 @@ export default [
             "id": "experiencia",
             "title": "Preferências da conversa",
             "paragraphs": [
-              "A etapa maestro também oferece ativar o pacote de experiência com os valores detectados, configurá-lo ou desativá-lo. Uma resposta com o objeto owner grava idioma, fuso, profundidade e ativação no manifesto, preservando as outras seções e respostas. Consultar as preferências não cria resposta, autoria nem aprovação."
+              "A etapa maestro também oferece ativar o pacote de experiência com os valores detectados, configurá-lo ou desativá-lo. Uma resposta com o objeto owner grava idioma, fuso, profundidade e ativação no manifesto, preservando as outras seções e respostas. Consultar as preferências não cria resposta, autoria nem aprovação. ork doctor avisa quando o fuso da entrevista diverge do manifesto; com owner.timezone na mesma resposta maestro, o aviso compara esse valor, e o campo fuso legado só vale sem ele."
             ],
             "code": "ork experiencia show --json\nork onboarding set maestro --conteudo '{\"owner\":{\"language\":\"pt-BR\",\"timezone\":\"UTC\",\"depth\":\"curta\",\"experience\":true}}' --por equipe"
           }
@@ -145,7 +196,7 @@ export default [
             "id": "respostas",
             "title": "Record public information",
             "paragraphs": [
-              "Use ork onboarding set to record a stage with attribution. Review the output before publishing the interview to memory. DSNs, tokens and passwords do not belong in public answers; configuration refers to protected variables. Without --por, the recorded author is owner, which does not prove that a person answered."
+              "Use ork onboarding set to record a stage with attribution. Review the output before publishing the interview to memory. DSNs, tokens and passwords do not belong in public answers; configuration refers to protected variables. Without --por, the recorded author is owner, which does not prove that a person answered. Secret values live in the process environment or in the host vault (in Hermes, ~/.hermes/.env); onboarding stores only the variable name and never reads the value."
             ],
             "code": "ork onboarding set produtos --conteudo '{\"produtos\":[\"meu-produto\"]}' --por operador"
           },
@@ -153,7 +204,7 @@ export default [
             "id": "experiencia",
             "title": "Conversation preferences",
             "paragraphs": [
-              "The maestro stage also offers to activate the experience pack with detected values, configure it or turn it off. An answer with the owner object stores language, timezone, depth and activation in the manifest, preserving other sections and answers. Reading preferences creates no answer, authorship or approval."
+              "The maestro stage also offers to activate the experience pack with detected values, configure it or turn it off. An answer with the owner object stores language, timezone, depth and activation in the manifest, preserving other sections and answers. Reading preferences creates no answer, authorship or approval. ork doctor warns when the interview time zone differs from the manifest; with owner.timezone in the same maestro answer, the warning compares that value, and the legacy fuso field applies only without it."
             ],
             "code": "ork experiencia show --json\nork onboarding set maestro --conteudo '{\"owner\":{\"language\":\"en-US\",\"timezone\":\"UTC\",\"depth\":\"curta\",\"experience\":true}}' --por equipe"
           }
@@ -175,7 +226,7 @@ export default [
             "id": "respostas",
             "title": "Registre información pública",
             "paragraphs": [
-              "Use ork onboarding set para registrar una etapa con autoría. Revise la salida antes de publicar la entrevista en la memoria. Los DSN, tokens y contraseñas no pertenecen a las respuestas públicas; la configuración referencia variables protegidas. Sin --por, la autoría registrada es owner, lo que no demuestra la respuesta de una persona."
+              "Use ork onboarding set para registrar una etapa con autoría. Revise la salida antes de publicar la entrevista en la memoria. Los DSN, tokens y contraseñas no pertenecen a las respuestas públicas; la configuración referencia variables protegidas. Sin --por, la autoría registrada es owner, lo que no demuestra la respuesta de una persona. Los valores secretos quedan en el entorno del proceso o en el almacén del host (en Hermes, ~/.hermes/.env); el onboarding guarda solo el nombre de la variable y nunca lee el valor."
             ],
             "code": "ork onboarding set produtos --conteudo '{\"produtos\":[\"meu-produto\"]}' --por operador"
           },
@@ -183,7 +234,7 @@ export default [
             "id": "experiencia",
             "title": "Preferencias de la conversación",
             "paragraphs": [
-              "La etapa maestro también ofrece activar el paquete de experiencia con los valores detectados, configurarlo o desactivarlo. Una respuesta con el objeto owner guarda idioma, zona horaria, profundidad y activación en el manifiesto, conservando las demás secciones y respuestas. Consultar las preferencias no crea respuesta, autoría ni aprobación."
+              "La etapa maestro también ofrece activar el paquete de experiencia con los valores detectados, configurarlo o desactivarlo. Una respuesta con el objeto owner guarda idioma, zona horaria, profundidad y activación en el manifiesto, conservando las demás secciones y respuestas. Consultar las preferencias no crea respuesta, autoría ni aprobación. ork doctor avisa cuando la zona horaria de la entrevista difiere del manifiesto; con owner.timezone en la misma respuesta maestro, el aviso compara ese valor, y el campo fuso heredado solo vale sin él."
             ],
             "code": "ork experiencia show --json\nork onboarding set maestro --conteudo '{\"owner\":{\"language\":\"es-ES\",\"timezone\":\"UTC\",\"depth\":\"curta\",\"experience\":true}}' --por equipe"
           }
@@ -216,7 +267,7 @@ export default [
             "id": "instalar",
             "title": "Instale em cada host",
             "paragraphs": [
-              "adapter install grava o catálogo e um bloco próprio em CLAUDE.md, no Claude Code, ou em AGENTS.md, no Codex; o Hermes recebe as duas variantes ao lado da skill existente. O bloco aponta o catálogo por caminho relativo ao projeto, para valer em outro clone, e preserva o bloco do ork init e o conteúdo externo. Num clone sem recibo, um bloco igual ao gerado é adotado sem duplicar.",
+              "adapter install grava o catálogo e um bloco próprio em CLAUDE.md, no Claude Code, ou em AGENTS.md, no Codex; o Hermes recebe as duas variantes ao lado da skill existente. O bloco aponta o catálogo por caminho relativo ao projeto, para valer em outro clone, e preserva o bloco do ork init e o conteúdo externo. Num clone sem recibo, um bloco igual ao gerado é adotado sem duplicar. --dir troca a pasta-base do host (.claude no Claude Code, .agents no Codex): o catálogo vai para <dir>/plugins/orkastery ou <dir>/skills/orkastery, e o bloco continua na raiz do projeto. Catálogo fora do projeto pula o bloco com aviso.",
               "Copiar arquivos não comprova descoberta nativa nem uso pelo modelo: confira a preferência efetiva no chat do host. O Claude Code também exige a ativação do plugin indicada pelo instalador, e outra worktree precisa da própria instalação. O OpenClaw ainda não distribui essas skills."
             ],
             "code": "ork adapter install codex --dry-run\nork adapter install codex"
@@ -243,7 +294,7 @@ export default [
             "id": "limites",
             "title": "Evidência e limites",
             "paragraphs": [
-              "Testes focados cobrem preferências, blocos, clone sem recibo, conflitos, adaptadores e contratos MCP. Os evals das skills são estáticos e não comprovam o comportamento real de um modelo. Um ensaio do repositório do produto instala o pacote local em prefixo e HOME temporários e confere instalação, reinstalação, opt-out, remoção e restauração."
+              "Testes focados cobrem preferências, blocos, clone sem recibo, conflitos, adaptadores e contratos MCP. Os evals das skills são estáticos e não comprovam o comportamento real de um modelo. Um ensaio do repositório do produto instala o pacote local em prefixo e HOME temporários e confere instalação, reinstalação, opt-out, remoção e restauração. O pacote foi publicado no @orkastery/cli 0.5.0. Commit local e teste local não são entrega."
             ]
           }
         ]
@@ -265,7 +316,7 @@ export default [
             "id": "instalar",
             "title": "Install in each host",
             "paragraphs": [
-              "adapter install writes the catalog and a dedicated block to CLAUDE.md for Claude Code, or to AGENTS.md for Codex; Hermes receives both variants next to its existing skill. The block points to the catalog by a path relative to the project, so it works in another clone, and keeps the ork init block and outside content intact. In a clone without a receipt, a block identical to the generated one is adopted without duplication.",
+              "adapter install writes the catalog and a dedicated block to CLAUDE.md for Claude Code, or to AGENTS.md for Codex; Hermes receives both variants next to its existing skill. The block points to the catalog by a path relative to the project, so it works in another clone, and keeps the ork init block and outside content intact. In a clone without a receipt, a block identical to the generated one is adopted without duplication. --dir replaces the host base folder (.claude for Claude Code, .agents for Codex): the catalog goes to <dir>/plugins/orkastery or <dir>/skills/orkastery, and the block stays in the project root. A catalog outside the project skips the block with a warning.",
               "File copies do not prove native discovery or model behavior: check the effective preferences in the host chat. Claude Code also needs the plugin activation reported by the installer, and another worktree needs its own installation. OpenClaw does not distribute these skills yet."
             ],
             "code": "ork adapter install codex --dry-run\nork adapter install codex"
@@ -292,7 +343,7 @@ export default [
             "id": "limites",
             "title": "Evidence and limits",
             "paragraphs": [
-              "Focused tests cover preferences, blocks, fresh clones without a receipt, conflicts, adapters and MCP contracts. Skill evals are static and do not prove real model behavior. A rehearsal from the product repository installs the local package into a temporary prefix and HOME and checks installation, reinstallation, opt-out, removal and restoration."
+              "Focused tests cover preferences, blocks, fresh clones without a receipt, conflicts, adapters and MCP contracts. Skill evals are static and do not prove real model behavior. A rehearsal from the product repository installs the local package into a temporary prefix and HOME and checks installation, reinstallation, opt-out, removal and restoration. The pack was released in @orkastery/cli 0.5.0. A local commit or local test is not a delivery."
             ]
           }
         ]
@@ -314,7 +365,7 @@ export default [
             "id": "instalar",
             "title": "Instale en cada host",
             "paragraphs": [
-              "adapter install escribe el catálogo y un bloque propio en CLAUDE.md, para Claude Code, o en AGENTS.md, para Codex; Hermes recibe las dos variantes junto a la skill existente. El bloque apunta al catálogo con una ruta relativa al proyecto, para que funcione en otro clon, y conserva el bloque de ork init y el contenido externo. En un clon sin comprobante, un bloque idéntico al generado se adopta sin duplicarse.",
+              "adapter install escribe el catálogo y un bloque propio en CLAUDE.md, para Claude Code, o en AGENTS.md, para Codex; Hermes recibe las dos variantes junto a la skill existente. El bloque apunta al catálogo con una ruta relativa al proyecto, para que funcione en otro clon, y conserva el bloque de ork init y el contenido externo. En un clon sin comprobante, un bloque idéntico al generado se adopta sin duplicarse. --dir cambia la carpeta base del host (.claude en Claude Code, .agents en Codex): el catálogo va a <dir>/plugins/orkastery o <dir>/skills/orkastery, y el bloque sigue en la raíz del proyecto. Un catálogo fuera del proyecto omite el bloque con aviso.",
               "Copiar archivos no demuestra el descubrimiento nativo ni el uso por el modelo: compruebe la preferencia efectiva en el chat del host. Claude Code también exige la activación del plugin que indica el instalador, y otra worktree necesita su propia instalación. OpenClaw todavía no distribuye estas skills."
             ],
             "code": "ork adapter install codex --dry-run\nork adapter install codex"
@@ -341,7 +392,7 @@ export default [
             "id": "limites",
             "title": "Pruebas y límites",
             "paragraphs": [
-              "Las pruebas específicas cubren preferencias, bloques, clones sin comprobante, conflictos, adaptadores y contratos MCP. Los evals de las skills son estáticos y no demuestran el comportamiento real de un modelo. Un ensayo desde el repositorio del producto instala el paquete local en un prefijo y un HOME temporales y comprueba instalación, reinstalación, desactivación, retirada y restauración."
+              "Las pruebas específicas cubren preferencias, bloques, clones sin comprobante, conflictos, adaptadores y contratos MCP. Los evals de las skills son estáticos y no demuestran el comportamiento real de un modelo. Un ensayo desde el repositorio del producto instala el paquete local en un prefijo y un HOME temporales y comprueba instalación, reinstalación, desactivación, retirada y restauración. El paquete se publicó en @orkastery/cli 0.5.0. Un commit local o una prueba local no son una entrega."
             ]
           }
         ]
@@ -365,7 +416,7 @@ export default [
             "paragraphs": [
               "Grave a baseline antes de implementar. Ela permite distinguir uma regressão de uma falha anterior. Uma claim associa arquivo, alegação e comando; cadastrá-la não executa o comando nem comprova a alegação."
             ],
-            "code": "ork verify <thread> --baseline\nork claims add <thread> src/filtro.ts --claim \"o filtro respeita o fuso\" --verificar \"npm test -- filtro\""
+            "code": "ork verify <thread> --baseline\nork claims add <thread> src/filtro.ts --claim \"o filtro respeita o fuso\" --verificar \"node --test test/filtro.test.js\""
           },
           {
             "id": "reexecutar",
@@ -387,18 +438,27 @@ export default [
             "id": "verificacao-confiavel",
             "title": "Falha, prazo e comando específico",
             "paragraphs": [
-              "O verify registra causa, prazo e duração. Timeout é tipado e o prazo vem do manifesto; não deve virar falha genérica. Claims devem rodar o menor comando que prova a mudança. O lint avisa em claims add e ci prepare recusa a suíte local inteira: npm --prefix core test pode depender de recursos ausentes no CI.",
+              "O verify registra causa, prazo e duração. Timeout é tipado e o prazo vem do manifesto; não deve virar falha genérica. Claims devem rodar o menor comando que prova a mudança. O lint avisa em claims add e ci prepare recusa a suíte local inteira: npm --prefix core test pode depender de recursos ausentes no CI. No lugar da suíte inteira, use só o teste da claim (node --test no arquivo do teste) ou um script hermético do projeto.",
               "O preparo do CI compila uma vez, vincula a identidade do produto e registra executado para distinguir resultado real de comando não executado. Em máquina sob contenção, a saída local pode expirar; isso não dispensa o CI no commit exato nem converte falha em aprovação."
             ],
-            "code": "npm --prefix core run test:ci\nork ci prepare <thread>"
+            "code": "node --test test/filtro.test.js\nork ci prepare <thread>"
           },
           {
             "id": "runtime-e-sessoes",
             "title": "Modelo indisponível e conta da sessão",
             "paragraphs": [
-              "model_not_found produz runtime.model-unavailable. O retry tenta destinos autorizados com o mesmo prompt, preserva o perfil para outros modelos e registra a troca. Sem destino, escala com a correção de setup; rate limit comum espera sua janela. sessions stop, logs e attach procuram a conta correta nos perfis Claude configurados. Inventário global, doctor, pulse e controle nativo de HITL ainda podem ter cobertura restrita à conta do processo."
+              "model_not_found produz runtime.model-unavailable. O retry tenta destinos autorizados com o mesmo prompt, preserva o perfil para outros modelos e registra a troca. Sem destino, escala com a correção de setup; rate limit comum espera sua janela. sessions stop, logs e attach procuram a conta correta nos perfis Claude configurados. Inventário global, doctor, pulse e controle nativo de HITL ainda podem ter cobertura restrita à conta do processo. Um perfil pedido com --perfil que não existe ou é de outro runtime recusa com runtime.profile-invalid e escala ao humano, sem trocar de perfil sozinho. runtime.workspace-untrusted (o runtime recusou o diretório da worktree) e runtime.consent-pending (o CLI espera o aceite de termos novos) viram espera do dono, com o comando exato; depois do aceite, ork retry run re-despacha a mesma fase com o mesmo prompt."
             ],
             "code": "ork retry plan <thread>\nork retry run <thread> --dry-run"
+          },
+          {
+            "id": "prova-local",
+            "title": "Prova local no registro da claim",
+            "paragraphs": [
+              "A policy claim_sem_prova_local (alias claims_failed) vem desligada e só vale se o manifesto a declarar. Com ela, ork claims add roda os comandos da claim uma vez, na worktree da thread e no prazo de verify.timeout_ms. A claim entra de qualquer jeito: comando reprovado grava policy_warn com claims.failed, e estouro de prazo, com verify.timeout. Ela nunca para o registro, nem declarada em block. Como o add fica tão lento quanto o comando, quem decide ligá-la é o dono do projeto.",
+              "O canário fx-pedido-colado prova que um pedido do dono colado em #Auto, com push e merge autorizados, segue sem parar: a dúvida vira decisão informada e um confirmo em texto livre é recusado sem gravar nada."
+            ],
+            "code": "policies:\n  claim_sem_prova_local: warn\n\nork eval --so-canarios"
           }
         ]
       },
@@ -412,7 +472,7 @@ export default [
             "paragraphs": [
               "Record the baseline before implementation. It distinguishes a regression from an existing failure. A claim links a file, an assertion and a command; registering it neither runs the command nor proves the assertion."
             ],
-            "code": "ork verify <thread> --baseline\nork claims add <thread> src/filtro.ts --claim \"o filtro respeita o fuso\" --verificar \"npm test -- filtro\""
+            "code": "ork verify <thread> --baseline\nork claims add <thread> src/filtro.ts --claim \"o filtro respeita o fuso\" --verificar \"node --test test/filtro.test.js\""
           },
           {
             "id": "reexecutar",
@@ -434,18 +494,27 @@ export default [
             "id": "verificacao-confiavel",
             "title": "Failures, deadlines and focused commands",
             "paragraphs": [
-              "Verify records cause, deadline and duration. Timeout has a typed reason and uses the manifest deadline. Claims should run the smallest command that proves the change. Lint warns during claims add, and ci prepare rejects the full local suite: npm --prefix core test may need resources unavailable in CI.",
+              "Verify records cause, deadline and duration. Timeout has a typed reason and uses the manifest deadline. Claims should run the smallest command that proves the change. Lint warns during claims add, and ci prepare rejects the full local suite: npm --prefix core test may need resources unavailable in CI. Instead of the full suite, run only the claim’s test (node --test on the test file) or a hermetic project script.",
               "CI preparation compiles once, binds product identity and records executado to distinguish actual results from commands that never ran. Resource contention may cause a local timeout; it does not waive CI at the exact commit or turn failure into success."
             ],
-            "code": "npm --prefix core run test:ci\nork ci prepare <thread>"
+            "code": "node --test test/filtro.test.js\nork ci prepare <thread>"
           },
           {
             "id": "runtime-e-sessoes",
             "title": "Unavailable models and session accounts",
             "paragraphs": [
-              "model_not_found produces runtime.model-unavailable. Retry tries authorized destinations with the same prompt, retains the profile for other models and records the change. Without a destination it escalates with a setup correction; ordinary rate limits wait for their window. sessions stop, logs and attach find the correct account among configured Claude profiles. Global inventory, doctor, pulse and native HITL control may still be limited to the process account."
+              "model_not_found produces runtime.model-unavailable. Retry tries authorized destinations with the same prompt, retains the profile for other models and records the change. Without a destination it escalates with a setup correction; ordinary rate limits wait for their window. sessions stop, logs and attach find the correct account among configured Claude profiles. Global inventory, doctor, pulse and native HITL control may still be limited to the process account. A profile requested with --perfil that does not exist or belongs to another runtime is refused with runtime.profile-invalid and escalated to a human, without switching profiles automatically. runtime.workspace-untrusted (the runtime refused the worktree directory) and runtime.consent-pending (the CLI awaits acceptance of new terms) become a wait for the owner, with the exact command; after acceptance, ork retry run dispatches the same phase again with the same prompt."
             ],
             "code": "ork retry plan <thread>\nork retry run <thread> --dry-run"
+          },
+          {
+            "id": "prova-local",
+            "title": "Local proof when a claim is registered",
+            "paragraphs": [
+              "The claim_sem_prova_local policy (alias claims_failed) is off by default and applies only when the manifest declares it. With it, ork claims add runs the claim’s commands once, in the thread worktree and within verify.timeout_ms. The claim is recorded either way: a failing command records policy_warn with claims.failed, and a timeout records it with verify.timeout. It never stops registration, even when declared as block. Because add becomes as slow as the command, the project owner decides whether to turn it on.",
+              "The fx-pedido-colado canary proves that an owner request pasted in #Auto, with push and merge authorized, proceeds without stopping: doubt becomes an informed decision, and a free-text confirmation is refused without recording anything."
+            ],
+            "code": "policies:\n  claim_sem_prova_local: warn\n\nork eval --so-canarios"
           }
         ]
       },
@@ -459,7 +528,7 @@ export default [
             "paragraphs": [
               "Registre la baseline antes de implementar. Permite distinguir una regresión de un fallo previo. Una claim vincula un archivo, una alegación y un comando; registrarla no ejecuta el comando ni demuestra la alegación."
             ],
-            "code": "ork verify <thread> --baseline\nork claims add <thread> src/filtro.ts --claim \"o filtro respeita o fuso\" --verificar \"npm test -- filtro\""
+            "code": "ork verify <thread> --baseline\nork claims add <thread> src/filtro.ts --claim \"o filtro respeita o fuso\" --verificar \"node --test test/filtro.test.js\""
           },
           {
             "id": "reexecutar",
@@ -481,18 +550,27 @@ export default [
             "id": "verificacao-confiavel",
             "title": "Fallos, plazos y comandos específicos",
             "paragraphs": [
-              "Verify registra causa, plazo y duración. El timeout tiene un motivo tipado y usa el plazo del manifiesto. Las claims deben ejecutar el comando más pequeño que demuestre el cambio. El lint avisa en claims add y ci prepare rechaza la suite local completa: npm --prefix core test puede necesitar recursos ausentes en CI.",
+              "Verify registra causa, plazo y duración. El timeout tiene un motivo tipado y usa el plazo del manifiesto. Las claims deben ejecutar el comando más pequeño que demuestre el cambio. El lint avisa en claims add y ci prepare rechaza la suite local completa: npm --prefix core test puede necesitar recursos ausentes en CI. En lugar de la suite completa, ejecute solo la prueba de la claim (node --test en el archivo de prueba) o un script hermético del proyecto.",
               "La preparación del CI compila una vez, vincula la identidad del producto y registra executado para distinguir resultados reales de comandos no ejecutados. La contención puede agotar el plazo local; eso no exime del CI en el commit exacto ni convierte un fallo en aprobación."
             ],
-            "code": "npm --prefix core run test:ci\nork ci prepare <thread>"
+            "code": "node --test test/filtro.test.js\nork ci prepare <thread>"
           },
           {
             "id": "runtime-e-sessoes",
             "title": "Modelo no disponible y cuenta de sesión",
             "paragraphs": [
-              "model_not_found produce runtime.model-unavailable. El retry prueba destinos autorizados con el mismo prompt, conserva el perfil para otros modelos y registra el cambio. Sin destino, escala con la corrección de setup; el rate limit habitual espera su ventana. sessions stop, logs y attach buscan la cuenta correcta entre los perfiles Claude configurados. El inventario global, doctor, pulse y el control nativo de HITL aún pueden limitarse a la cuenta del proceso."
+              "model_not_found produce runtime.model-unavailable. El retry prueba destinos autorizados con el mismo prompt, conserva el perfil para otros modelos y registra el cambio. Sin destino, escala con la corrección de setup; el rate limit habitual espera su ventana. sessions stop, logs y attach buscan la cuenta correcta entre los perfiles Claude configurados. El inventario global, doctor, pulse y el control nativo de HITL aún pueden limitarse a la cuenta del proceso. Un perfil pedido con --perfil que no existe o es de otro runtime se rechaza con runtime.profile-invalid y se escala a una persona, sin cambiar de perfil por su cuenta. runtime.workspace-untrusted (el runtime rechazó el directorio de la worktree) y runtime.consent-pending (el CLI espera la aceptación de términos nuevos) pasan a esperar al dueño, con el comando exacto; tras la aceptación, ork retry run vuelve a despachar la misma fase con el mismo prompt."
             ],
             "code": "ork retry plan <thread>\nork retry run <thread> --dry-run"
+          },
+          {
+            "id": "prova-local",
+            "title": "Prueba local al registrar la claim",
+            "paragraphs": [
+              "La policy claim_sem_prova_local (alias claims_failed) viene desactivada y solo vale si el manifiesto la declara. Con ella, ork claims add ejecuta los comandos de la claim una vez, en la worktree de la thread y dentro de verify.timeout_ms. La claim se registra de todos modos: un comando que falla graba policy_warn con claims.failed, y un plazo agotado, con verify.timeout. Nunca detiene el registro, ni siquiera declarada como block. Como add se vuelve tan lento como el comando, quien decide activarla es el dueño del proyecto.",
+              "El canario fx-pedido-colado demuestra que un pedido del dueño pegado en #Auto, con push y merge autorizados, sigue sin detenerse: la duda se convierte en decisión informada y una confirmación en texto libre se rechaza sin grabar nada."
+            ],
+            "code": "policies:\n  claim_sem_prova_local: warn\n\nork eval --so-canarios"
           }
         ]
       }
@@ -828,15 +906,24 @@ export default [
             "id": "pedido-curto",
             "title": "Uma pergunta curta, com contexto",
             "paragraphs": [
-              "O contrato ork.hitl-curto/v1 organiza título, pergunta em uma frase, o que trava e desde quando, alternativas de uma linha com consequência, recomendação com motivo e uma última linha dizendo como responder. Evidências, claims, riscos e diff ficam acessíveis pelo código seguido de detalhes. O ingresso autenticado e sua prova HMAC continuam obrigatórios."
+              "O contrato ork.hitl-curto/v1 organiza título, pergunta em uma frase, o que trava e desde quando, alternativas de uma linha com consequência, recomendação com motivo e uma última linha dizendo como responder. Evidências, claims, riscos e diff ficam acessíveis pelo código seguido de detalhes. O ingresso autenticado e sua prova HMAC continuam obrigatórios. São até cinco alternativas, uma com o selo Recomendação, em no máximo 15 linhas."
             ],
             "code": "ork gate request <thread> --formato telegram"
+          },
+          {
+            "id": "alternativas",
+            "title": "Pedidos do ork por alternativas",
+            "paragraphs": [
+              "Todo pedido que o próprio ork abre ao dono é uma seleção de 3 a 5 alternativas, com exatamente uma marcada como Recomendação. O registro recusa, sem gravar nada, o pedido fora disso: hitl.selecao.fora-da-faixa, hitl.selecao.recomendada ou hitl.selecao.texto-livre. Resposta em texto só passa com uma dependência técnica: o comando exato que o dono roda no terminal e o motivo.",
+              "ork prompt lint reprova o template que peça um confirmo em texto livre ou que o dono cole texto (regra hitl-texto-livre). O tempo parado por essas perguntas aparece em ork ledger stats, no campo hitlDeConducao, com a mediana comparada à meta de 5 minutos. A pergunta nativa de uma sessão do host continua com as opções do próprio host."
+            ],
+            "code": "ork prompt lint\nork ledger stats"
           },
           {
             "id": "texto-e-linha",
             "title": "Texto livre e linha estável",
             "paragraphs": [
-              "Texto livre inequívoco pode ser associado à ação de uma alternativa. Ambiguidade volta como pergunta. Uma palavra solta só vale na janela de escuta aberta pelo núcleo, com um único pedido para o dono em todas as threads, e nunca para ato irreversível. O agente não responde pelo dono.",
+              "Texto livre inequívoco (o vocabulário fechado, a letra a a e ou o dígito 1 a 5) pode ser associado à ação de uma alternativa. Ambiguidade volta como pergunta. Uma palavra solta só vale na janela de escuta aberta pelo núcleo, com um único pedido para o dono em todas as threads, e nunca para ato irreversível. O agente não responde pelo dono.",
               "Reabrir o mesmo gate no mesmo contexto mantém o código. Resposta vencida só passa ao pedido renovado quando conteúdo e contexto são idênticos; mudança recusa a resposta. Lotes reconferem cada gate antes de registrar."
             ]
           },
@@ -873,15 +960,24 @@ export default [
             "id": "pedido-curto",
             "title": "A short question with context",
             "paragraphs": [
-              "ork.hitl-curto/v1 organizes a title, one-sentence question, what is blocked and since when, one-line options with consequences, a reasoned recommendation and a final response instruction. Evidence, claims, risks and diff are available using the short code followed by detalhes. Authenticated ingress and its HMAC proof remain required."
+              "ork.hitl-curto/v1 organizes a title, one-sentence question, what is blocked and since when, one-line options with consequences, a reasoned recommendation and a final response instruction. Evidence, claims, risks and diff are available using the short code followed by detalhes. Authenticated ingress and its HMAC proof remain required. There are up to five options, one marked Recommendation, in at most 15 lines."
             ],
             "code": "ork gate request <thread> --formato telegram"
+          },
+          {
+            "id": "alternativas",
+            "title": "Requests from ork as options",
+            "paragraphs": [
+              "Every request that ork itself opens to the owner is a selection of 3 to 5 options, with exactly one marked Recommendation. Registration refuses anything else without recording it: hitl.selecao.fora-da-faixa, hitl.selecao.recomendada or hitl.selecao.texto-livre. A text answer is accepted only with a technical dependency: the exact command the owner runs in the terminal and the reason.",
+              "ork prompt lint fails a template that asks for a free-text confirmation or for the owner to paste text (rule hitl-texto-livre). Time blocked by these questions appears in ork ledger stats, in the hitlDeConducao field, with the median compared to the 5-minute target. A native question from a host session keeps the host’s own options."
+            ],
+            "code": "ork prompt lint\nork ledger stats"
           },
           {
             "id": "texto-e-linha",
             "title": "Free text and stable codes",
             "paragraphs": [
-              "Unambiguous free text can map to an option’s action. Ambiguity produces a clarification. A standalone word is accepted only within the core’s open listening window, with one request for the owner across all threads, and never for an irreversible action. The agent cannot answer for the owner.",
+              "Unambiguous free text (the closed vocabulary, a letter from a to e or a digit from 1 to 5) can map to an option’s action. Ambiguity produces a clarification. A standalone word is accepted only within the core’s open listening window, with one request for the owner across all threads, and never for an irreversible action. The agent cannot answer for the owner.",
               "Reopening the same gate in the same context retains its code. An expired response transfers to a renewed request only when content and context are identical; changes cause rejection. Batches revalidate every gate before recording."
             ]
           },
@@ -918,15 +1014,24 @@ export default [
             "id": "pedido-curto",
             "title": "Una pregunta breve con contexto",
             "paragraphs": [
-              "ork.hitl-curto/v1 organiza título, pregunta en una frase, qué bloquea y desde cuándo, alternativas de una línea con consecuencia, recomendación justificada y una última línea que indica cómo responder. Las pruebas, claims, riesgos y diff se consultan con el código seguido de detalhes. El ingreso autenticado y su prueba HMAC siguen siendo obligatorios."
+              "ork.hitl-curto/v1 organiza título, pregunta en una frase, qué bloquea y desde cuándo, alternativas de una línea con consecuencia, recomendación justificada y una última línea que indica cómo responder. Las pruebas, claims, riesgos y diff se consultan con el código seguido de detalhes. El ingreso autenticado y su prueba HMAC siguen siendo obligatorios. Son hasta cinco alternativas, una con el sello Recomendación, en un máximo de 15 líneas."
             ],
             "code": "ork gate request <thread> --formato telegram"
+          },
+          {
+            "id": "alternativas",
+            "title": "Pedidos de ork por alternativas",
+            "paragraphs": [
+              "Todo pedido que ork abre al dueño es una selección de 3 a 5 alternativas, con exactamente una marcada como Recomendación. El registro rechaza, sin grabar nada, lo que no cumpla eso: hitl.selecao.fora-da-faixa, hitl.selecao.recomendada o hitl.selecao.texto-livre. Una respuesta en texto solo se acepta con una dependencia técnica: el comando exacto que el dueño ejecuta en la terminal y el motivo.",
+              "ork prompt lint rechaza la plantilla que pida una confirmación en texto libre o que el dueño pegue texto (regla hitl-texto-livre). El tiempo detenido por estas preguntas aparece en ork ledger stats, en el campo hitlDeConducao, con la mediana frente a la meta de 5 minutos. La pregunta nativa de una sesión del host conserva las opciones del propio host."
+            ],
+            "code": "ork prompt lint\nork ledger stats"
           },
           {
             "id": "texto-e-linha",
             "title": "Texto libre y códigos estables",
             "paragraphs": [
-              "El texto libre inequívoco puede corresponder a la acción de una alternativa. La ambigüedad devuelve una pregunta. Una palabra aislada solo se acepta en la ventana de escucha abierta por el núcleo, con una única solicitud para el dueño en todas las threads, y nunca para un acto irreversible. El agente no responde por el dueño.",
+              "El texto libre inequívoco (el vocabulario cerrado, una letra de la a a la e o un dígito del 1 al 5) puede corresponder a la acción de una alternativa. La ambigüedad devuelve una pregunta. Una palabra aislada solo se acepta en la ventana de escucha abierta por el núcleo, con una única solicitud para el dueño en todas las threads, y nunca para un acto irreversible. El agente no responde por el dueño.",
               "Reabrir el mismo gate en el mismo contexto conserva el código. Una respuesta vencida pasa a la solicitud renovada solo cuando contenido y contexto son idénticos; los cambios provocan rechazo. Los lotes vuelven a validar cada gate antes de registrar."
             ]
           },
