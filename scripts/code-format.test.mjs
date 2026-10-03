@@ -15,7 +15,15 @@ test('inline tags, entities, flags, filenames, tools and contracts are audited',
 });
 test('only code/pre and non-rendered metadata are exempt; no crossing block boundaries',()=>{
  assert.deepEqual(violations('<head><title>ork doctor</title></head><body><script>npm test</script><style>git status</style><code><em>ork doctor</em></code><pre>npm test</pre><template>pip install x</template><p>ork</p><p>doctor</p>'),[]);
- assert.deepEqual(violations('<p>ork <code>doctor</code> npm <code>test</code></p>'),[]);
+});
+test('bare executables immediately before inline code are rejected',()=>{
+ for(const executable of ['ork','npm','npx','git','pip','pip3']){
+  for(const suffix of [' <code>doctor</code>',' <strong><code>doctor</code></strong>','&#32;<code>doctor</code>','<code>doctor</code>']){
+   assert.deepEqual(violations(`<p><em>${executable}</em>${suffix}</p>`),[executable]);
+  }
+  assert.deepEqual(violations(`<p><code>${executable} doctor</code></p>`),[]);
+  assert.deepEqual(violations(`<p>${executable}</p><p><code>doctor</code></p>`),[]);
+ }
 });
 test('every prose exception is exact and cannot hide the following command',()=>{
  assert.equal(new Set(proseExceptions).size,proseExceptions.length);
@@ -29,6 +37,15 @@ test('technical rendering preserves prose and escapes markup',()=>{
 });
 test('existing rich content keeps code semantic without double wrapping',()=>{
  assert.equal(richTechnicalHtml('<strong>Run ork doctor.</strong> <code>npm test</code>'),'<strong>Run <code>ork doctor</code>.</strong> <code>npm test</code>');
+});
+test('ordinary prose and product names are not technical syntax',()=>{
+ for(const text of ['resources unavailable in CI','projeto-alvo','Node.js']){
+  assert.equal(technicalHtml(text),text);
+  assert.deepEqual(violations(`<p>${text}</p>`),[]);
+ }
+ for(const token of ['check-code.mjs','index.js','Component.js','ork.rede-maquina/v1','roadmap.remoto-invalido','--dry-run','src/Node.js']){
+  assert.equal(technicalHtml(token),`<code>${token}</code>`);
+ }
 });
 
 test('paths, field names and public domains are distinguished',()=>{

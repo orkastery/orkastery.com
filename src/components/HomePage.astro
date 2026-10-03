@@ -1,5 +1,6 @@
 ---
 import TechnicalText from './TechnicalText.astro';
+import VerificationReceipt from './VerificationReceipt.astro';
 import Base from '../layouts/Base.astro';
 import HomeSections from './HomeSections.astro';
 import Contato from './Contato.astro';
@@ -16,10 +17,13 @@ const aliasesFor=(id:string)=>(legacy[id]||[]).filter(alias=>!restored||!restore
 const diagram=Astro.props.diagram===false?null:'layers';
 ---
 <Base titulo={(Astro.props.product||'Orkastery')+' · '+copy.description} descricao={copy.description}>
- <section class="editorial-hero" id="topo"><div class="home-container">
+ <section class:list={['editorial-hero',{'hero-with-receipt':restored}]} id="topo"><div class:list={['home-container',{'hero-grid':restored}]}>
+ <div class="hero-copy">
  <p class="home-kicker">{text.openSource} · {text.license}</p>
  {aliasesFor('topo').map(id=><span {id} aria-hidden="true"/>)}<h1><TechnicalText text={copy.title}/></h1><p class="home-lead"><TechnicalText text={copy.lead}/></p>
  <div class="home-actions"><a class="home-primary" href={docsHref('/docs/comecar/')}>{text.start} →</a><a href={Astro.props.repository||catalog.repository}>GitHub ↗</a></div>
+ </div>
+ {restored&&<VerificationReceipt {locale}/>}
  </div></section>
  <div class="home-container home-main">
  <div class="home-grid">{copy.sections.map(s=><section class="home-card" id={s.id}>{aliasesFor(s.id).map(id=><span {id} aria-hidden="true"/>)}<h2><TechnicalText text={s.title}/></h2><p><TechnicalText text={s.text}/></p><a href={s.href.startsWith('https:')?s.href:docsHref(s.href)}>{text.read} →</a></section>)}</div>
@@ -31,6 +35,10 @@ const diagram=Astro.props.diagram===false?null:'layers';
 </Base>
 <style>
 .home-container{max-width:1160px;margin:auto;padding-inline:1.5rem;}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:3rem;align-items:center;}
+.hero-copy{min-width:0;}
+.editorial-hero.hero-with-receipt{padding-block:clamp(3rem,6vw,5rem);}
+.hero-with-receipt h1{font-size:clamp(2.5rem,4.1vw,3.65rem);}
 .editorial-hero{padding:clamp(4rem,10vw,8rem) 0;background:linear-gradient(var(--grade) 1px,transparent 1px),linear-gradient(90deg,var(--grade) 1px,transparent 1px),radial-gradient(ellipse at 90% 20%,var(--latao-fraco),transparent 60%);background-size:48px 48px,48px 48px,auto;border-bottom:1px solid var(--linha-forte);}
 .home-kicker{color:var(--latao,var(--verde));font-size:.94rem;line-height:1.5;margin-bottom:1.5rem;}
 h1,h2{font-family:var(--f-display,var(--fonte-display));line-height:1.1;letter-spacing:-.035em;font-weight:600;text-transform:none;}
@@ -50,4 +58,5 @@ p{line-height:1.75;margin:1rem 0;color:var(--tinta-2,var(--texto-2));}
 .home-mechanism,.home-install{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;margin-top:5rem;}
 pre{padding:1.5rem;border:1px solid var(--linha-forte);border-radius:var(--raio-superficie);overflow:auto;max-width:100%;background:var(--painel,var(--fundo-3));font:.9rem/1.8 var(--f-mono,var(--fonte-mono));}
 @media(max-width:760px){.home-grid,.home-mechanism,.home-install{grid-template-columns:minmax(0,1fr);}.home-card{padding:1.5rem;}.home-mechanism,.home-install{gap:1rem;margin-top:3rem;}}
+@media(max-width:900px){.hero-grid{grid-template-columns:minmax(0,1fr);}.hero-with-receipt h1{font-size:clamp(2.5rem,6.5vw,3.65rem);}}
 </style>

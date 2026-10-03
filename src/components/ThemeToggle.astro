@@ -1,11 +1,11 @@
 ---
 import {localeFor} from '../data/i18n';
 const locale=localeFor(Astro.url.pathname);
-const labels={pt:{label:'Tema claro',dark:'Escuro',light:'Claro'},en:{label:'Light theme',dark:'Dark',light:'Light'},es:{label:'Tema claro',dark:'Oscuro',light:'Claro'}}[locale];
+const label={pt:'Tema claro',en:'Light theme',es:'Tema claro'}[locale];
 ---
-<button class="theme-toggle" type="button" data-theme-toggle aria-label={labels.label} aria-pressed="false" hidden>
+<button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" hidden>
  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
- <span data-theme-dark>{labels.dark}</span><span data-theme-light>{labels.light}</span>
+ <span>{label}</span>
 </button>
 <script>
  const buttons=document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
@@ -22,7 +22,5 @@ const labels={pt:{label:'Tema claro',dark:'Escuro',light:'Claro'},en:{label:'Lig
 .theme-toggle{display:inline-flex;align-items:center;gap:.5rem;min-height:44px;padding:.5rem .75rem;border:1px solid var(--linha-forte);border-radius:var(--raio-campo);background:var(--painel);font-size:.85rem;}
 .theme-toggle[hidden]{display:none;}.theme-toggle svg{fill:none;stroke:currentColor;stroke-width:1.5;}
 .theme-toggle:hover{border-color:var(--acento);}
-.theme-toggle [data-theme-light]{display:none;}
-:global([data-theme='light']) .theme-toggle [data-theme-dark]{display:none;}
-:global([data-theme='light']) .theme-toggle [data-theme-light]{display:inline;}
+.theme-toggle[aria-pressed='true']{border-color:var(--acento);background:var(--latao-fraco);}
 </style>

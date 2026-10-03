@@ -13,16 +13,18 @@ const patterns = [
   /\b(?:git\s+(?:ls-remote|rebase|remote(?:\s+-v)?|status|diff|log|clone|fetch|pull|push|commit|checkout|switch)|pip3?\s+install)(?:\s+<[^<>]+>)?/g,
   /(?<![\w-])--[a-z][\w-]*(?:[= ](?:<[^<>]+>|auto|block|true|false))?/g,
   /(?:~\/|\.{1,2}\/|\b(?:docs|core|src|scripts|maquinas|threads|skills|adapters|marketplaces|prompts)\/|\.orkastery\/|\bork\/)(?:[\w.@*{}-]+|<[^<>]+>|\/)+/g,
-  /\b[\w.-]+\.(?:jsonl?|ya?ml|md|ts|mjs|cjs|js|py|toml|sh|svg|woff2|html|css)\b/g,
+  // A product name is not a filename. Explicit paths/commands above still
+  // format a file named Node.js; the standalone product name stays prose.
+  /\b(?!Node\.js\b)[\w.-]+\.(?:jsonl?|ya?ml|md|ts|mjs|cjs|js|py|toml|sh|svg|woff2|html|css)\b/g,
   /\b(?:[A-Z][A-Z0-9]*_)+[A-Z0-9_]+\b/g,
   /\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/g,
   /\b[a-z][a-z0-9]*(?:[A-Z][a-z0-9]+)+\b/g,
-  /\b(?:ork|orkastery|claims|verify|artifact|tree|lease|runtime|policy|human|cost|project|projeto|conduction|worktree|memory|remoto|board|ship|retry|prompt|capabilities|snapshot|doc|docs|onboarding|network|fabrica|gate|maestro|ci|providers|skills|security|performance|browser|git)(?:[.-][a-z][\w-]*)+(?:\/v\d+)?\b/g,
+  /\b(?:ork|orkastery|claims|verify|artifact|tree|lease|runtime|policy|human|cost|project|projeto|conduction|worktree|memory|remoto|roadmap|board|ship|retry|prompt|capabilities|snapshot|doc|docs|onboarding|network|fabrica|gate|maestro|ci|providers|skills|security|performance|browser|git)(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b/g,
   /(?<![\w@])(?:orkmind|owner|grafo|hitl|init|rede|master|brain|alternativas|resposta|maquina|citacao|concurrency|changelog)(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b/g,
   /(?:<[^<>\n]+>\/|\/[a-z][\w-]*\/|\.[a-z][\w-]*\/|\b(?:origin|tools|plugins|pgvector)\/)(?:[\w@*-]+|<[^<>]+>|\/|\.[\w-]+)+(?:[:][\w.-]+)?/g,
   /@[a-z][\w-]*\/[\w.-]+(?:@[\w.-]+)?/g,
   /(?<![\w-])-[gvCh](?![\w-])/g,
-  /\b(?:true|false|null|undefined|unavailable|rotate_above|Dockerfile|Makefile|Bash|ToolSearch)\b/g,
+  /\b(?:true|false|null|undefined|rotate_above|Dockerfile|Makefile|Bash|ToolSearch)\b/g,
   /\b(?:mcp__[\w]+|ork_[\w]+|sha256|claude-bg)\b/g,
 ];
 

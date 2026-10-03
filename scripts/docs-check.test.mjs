@@ -64,6 +64,18 @@ test('missing selector fails',()=>outputFixture(dir=>{
  edit(dir,'es/index.html',s=>s.replace('data-language-selector','data-missing-selector'));
  assert.throws(()=>checkI18n(dir),/Missing language selector/);
 }));
+test('theme label mismatch fails the content audit',()=>outputFixture(dir=>{
+ edit(dir,'index.html',s=>s.replace('data-theme-toggle','aria-label="Escuro" data-theme-toggle'));
+ assert.throws(()=>checkContent(dir),/Theme label\/state mismatch/);
+}));
+test('removing the screen reader false label fails the content audit',()=>outputFixture(dir=>{
+ edit(dir,'en/index.html',s=>s.replace('(false)',''));
+ assert.throws(()=>checkContent(dir),/Missing false report label/);
+}));
+test('removing the illustrative receipt warning fails the content audit',()=>outputFixture(dir=>{
+ edit(dir,'es/index.html',s=>s.replace('SHA ficticio','SHA'));
+ assert.throws(()=>checkContent(dir),/Missing honest install receipt/);
+}));
 test('personal data canary is rejected without printing its value',()=>outputFixture(dir=>{
  edit(dir,'index.html',s=>s.replace('</main>','<p>sample.person@example.invalid</p></main>'));
  assert.throws(()=>checkPublic(dir),e=>/Unreviewed email/.test(e.message)&&!e.message.includes('sample.person'));

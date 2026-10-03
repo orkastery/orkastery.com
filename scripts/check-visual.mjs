@@ -32,8 +32,16 @@ try{
    await page.goto('http://docs.local'+localized,{waitUntil:'networkidle'});await page.evaluate(()=>document.fonts.ready);
    if(await page.locator('html').getAttribute('data-theme')!==scheme)throw Error('Theme was not applied');
    const toggle=page.locator('[data-theme-toggle]');
+   const themeLabel=locale==='en'?'Light theme':'Tema claro';
+   const checkThemeName=async(light)=>{
+    if(await page.getByRole('button',{name:themeLabel,exact:true}).count()!==1||
+       (await toggle.innerText()).trim()!==themeLabel||
+       await toggle.getAttribute('aria-pressed')!==String(light))throw Error('Theme visible/accessibility label or pressed state mismatch');
+   };
+   await checkThemeName(scheme==='light');
    await toggle.focus();await page.keyboard.press('Enter');
    if(await page.locator('html').getAttribute('data-theme')===scheme)throw Error('Theme toggle failed');
+   await checkThemeName(scheme!=='light');
    await page.reload({waitUntil:'networkidle'});
    if(await page.locator('html').getAttribute('data-theme')===scheme)throw Error('Theme preference was lost');
    await toggle.click();
@@ -47,6 +55,23 @@ try{
    let found=false;for(let i=0;i<30;i++){await page.keyboard.press('Tab');if(await page.locator('[data-language-selector] a:focus').count()){found=true;break;}}
    if(!found)throw Error('Language selector unreachable by keyboard');
    await page.evaluate(()=>document.fonts.ready);
+   if(path==='/'){
+    const copyBox=await page.locator('.hero-copy').boundingBox(),receiptBox=await page.locator('.verification-receipt').boundingBox();
+    if(!copyBox||!receiptBox)throw Error('Hero receipt missing');
+    if(width===1280 ? receiptBox.x<copyBox.x+copyBox.width-1 : receiptBox.y<copyBox.y+copyBox.height-1)throw Error('Hero receipt layout mismatch');
+    const falseLabel=await page.locator('.false-report s').innerText();
+    if(!falseLabel.includes(locale==='en'?'(false)':'(falso)'))throw Error('False report is not announced');
+    const copy=page.locator('[data-copy-install]'),status=page.locator('.receipt-install [role="status"]');
+    await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async(text)=>{window.__copiedInstall=text;}}}));
+    await copy.focus();await page.keyboard.press('Enter');
+    await page.waitForFunction(()=>window.__copiedInstall==='npm install -g @orkastery/cli');
+    if(await status.textContent()!==await copy.getAttribute('data-success'))throw Error('Copy confirmation missing');
+    await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async()=>{throw Error('Clipboard denied');}}}));
+    await copy.click();
+    await page.waitForFunction(()=>document.querySelector('.copy-feedback').textContent===document.querySelector('[data-copy-install]').dataset.failure);
+    // Restore the initial UI before capture; this also restores the real clipboard.
+    await page.reload({waitUntil:'networkidle'});await page.evaluate(()=>document.fonts.ready);
+   }
    await page.locator('details').evaluateAll(nodes=>nodes.forEach(n=>n.open=true));
    const auditLayout=async()=>{
    const motion=await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length);
@@ -96,13 +121,19 @@ try{
    if(path==='/'){
     await page.emulateMedia({reducedMotion:'no-preference'});
     await page.reload({waitUntil:'networkidle'});
-    await page.locator('.collision-scene').scrollIntoViewIfNeeded();
-    await page.waitForTimeout(2400);
+    const viewTimeline=await page.evaluate(()=>CSS.supports('animation-timeline','view()'));
+    if(viewTimeline){
+     const offset=await page.locator('.collision-scene .track path').first().evaluate(el=>parseFloat(getComputedStyle(el).strokeDashoffset));
+     if(offset<499)throw Error('Collision finished before entering viewport');
+    }
+    await page.locator('.collision-scene').evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
+    await page.waitForFunction(()=>Number(getComputedStyle(document.querySelector('.false-report')).opacity)>.99);
+    if(viewTimeline)await page.waitForFunction(()=>parseFloat(getComputedStyle(document.querySelector('.collision-scene .track path')).strokeDashoffset)<1);
     if(errors.length)throw Error(errors.join('; '));
     if(!await page.locator('.false-report strong').isVisible())throw Error('Collision final state missing');
     const movingShot=`${locale}-home-${width}-${scheme}-motion.png`;
     await page.screenshot({path:resolve(output,movingShot),fullPage:true});
-    results.push({path:localized,width,scheme,screenshot:movingShot,reducedMotion:'no-preference',finalCollisionVisible:true});
+    results.push({path:localized,width,scheme,screenshot:movingShot,reducedMotion:'no-preference',finalCollisionVisible:true,viewTimeline});
    }
    await page.close();
   }

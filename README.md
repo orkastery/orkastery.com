@@ -90,6 +90,10 @@ ou marque o trecho com `<code>` no componente. Não envolva a frase inteira.
 final, independentemente do reconhecedor. Reprova comandos soltos de `ork`, `npm`,
 `npx`, `git` e `pip`, flags e identificadores técnicos, inclusive em painéis ainda
 fechados, entidades HTML e comandos divididos por tags inline. Não há exceção por
+pedaço de comando: `ork <code>doctor</code>` também reprova; marque o comando inteiro.
+`Node.js`, `projeto-alvo` e “resources unavailable in CI” são prosa; arquivos como
+`index.js`, caminhos e contratos com ponto continuam distintos.
+Não há exceção por
 página ou idioma. `code`/`pre` e metadados não visíveis são os únicos elementos
 excluídos. A lista `proseExceptions` em `scripts/check-code.mjs` aceita pares exatos
 como “ork core” e “git repository”, descrições do programa em prosa; cada entrada
@@ -113,9 +117,16 @@ acompanham o bundle em `public/licenses/`. Não há fonte ou script de CDN.
 Nós, trilhas paralelas, terminais e uma grade técnica substituem a partitura e
 os ícones de instrumentos nos componentes ativos. A cena de colisão é uma
 ilustração, não telemetria: mantém o texto real e mostra o relatório contraditório
-com texto riscado e um aviso, além da cor. A animação CSS termina em poucos segundos;
-com `prefers-reduced-motion: reduce`, a cena final aparece estática. Os demais
+com texto riscado e “(falso)” para leitores de tela, além da cor. A animação CSS
+acompanha a entrada da cena na tela por `animation-timeline: view()`; sem suporte
+ou com `prefers-reduced-motion: reduce`, a cena final aparece estática. Os demais
 chamados de impacto seguem a mesma linguagem de trilhas e sinais de verificação.
+
+A primeira dobra da home combina texto e recibo ilustrativo: instalação real
+copiável, saída de exemplo e SHA fictício identificado. Nenhuma verificação roda
+no visitante. O botão de cópia informa sucesso ou falha; sem JavaScript, o comando
+continua selecionável. O recibo desce para baixo do texto em telas menores.
+Rótulos em caixa de frase usam `--tracking-label: .04em`.
 
 `check:design` mede os pares de texto e fundos dos dois temas (mínimo 4,5:1), código
 sobre fundo composto e bordas de controles (mínimo 3:1). Confere temas, licenças,
@@ -144,8 +155,10 @@ O verificador intercepta todas as requisições, serve somente `dist` em memóri
 bloqueia destinos externos. Exercita home, páginas de produto, índice, arquitetura,
 contribuição e rede nos três idiomas e em 1280, 700 e 390 px, com os dois temas
 selecionados de verdade. São 126 capturas com movimento reduzido e mais 18 da home
-com movimento normal, após a animação: 144 capturas previstas. Confere overflow,
-teclado, alternância e persistência do tema, painéis interativos e movimento reduzido.
+com movimento normal, após rolar até a cena: 144 capturas previstas. Confere overflow,
+teclado, nome acessível e persistência do tema, disposição do recibo, cópia (sucesso
+e recusa simulados), anúncio do relatório falso, entrada da animação, painéis
+interativos e movimento reduzido.
 Os PNGs e `report.json` ficam fora do repositório público. Se o navegador não puder
 iniciar, o comando falha e registra o impedimento; não muda sandbox nem permissões.
 A inspeção humana das imagens ainda é necessária para avaliar qualidade visual.

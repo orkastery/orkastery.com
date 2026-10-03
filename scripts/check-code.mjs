@@ -15,6 +15,7 @@ const excluded=new Set(['head','script','style','template','code','pre']);
 // Keep hidden panels/details: they can become visible on interaction. aria-hidden is
 // not a visual exemption. Entity decoding and inline tag joins come from the DOM.
 export function prose(node) {
+ if(node.tagName==='code')return '\u0001';
  if(excluded.has(node.tagName))return '\u0000';
  if(node.nodeName==='#text')return node.value;
  const value=(node.childNodes||[]).map(prose).join('');
@@ -22,6 +23,9 @@ export function prose(node) {
 }
 export function violations(html) {
  const text=prose(typeof html==='string'?parse(html):html),found=[];
+ // Preserve the inline-code boundary: an executable left in prose is still
+ // unformatted even when its subcommand is inside code (possibly nested).
+ for(const m of text.matchAll(/\b(?:ork|npm|npx|git|pip3?)\s*(?=\u0001)/g))found.push(m[0].trim());
  for(const m of text.matchAll(/\b(?:ork|npm|npx|git|pip3?)\s+(?:--?[a-z][\w-]*|[\p{L}][\p{L}\d_-]*)/gu)){
   const candidate=m[0].replace(/\s+/g,' ');
   if(!exceptions.has(candidate))found.push(candidate);
