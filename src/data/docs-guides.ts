@@ -259,7 +259,7 @@ export default [
             "title": "Configure as preferências",
             "paragraphs": [
               "O pacote orienta como o agente conversa ao conduzir o projeto. Doze regras guiam mensagens, decisões, evidências, documentação, coordenação e entrega. Gates, permissões e identidade humana continuam no núcleo.",
-              "owner.language recebe um locale BCP-47; owner.timezone, um fuso IANA; owner.depth, curta ou detalhada; owner.experience, true ou false. Sem valor, valem o locale do sistema, o fuso resolvido pelo núcleo, curta e true. Locales portugueses usam a variante pt-BR das skills; os demais usam a inglesa e mantêm o idioma de resposta configurado. Entrada inválida é recusada antes de gravar; valor inválido editado à mão gera aviso e vale o padrão."
+              "owner.language recebe um locale BCP-47; owner.timezone, um fuso IANA; owner.depth, curta ou detalhada; owner.experience, true ou false. Sem valor, valem o locale do sistema (com C, POSIX ou sem locale, pt-BR, a língua da CLI), o fuso resolvido pelo núcleo, curta e true. Locales portugueses usam a variante pt-BR das skills; os demais usam a inglesa e mantêm o idioma de resposta configurado. Entrada inválida é recusada antes de gravar; valor inválido editado à mão gera aviso e vale o padrão."
             ],
             "code": "ork onboarding\nork experiencia show --json"
           },
@@ -308,7 +308,7 @@ export default [
             "title": "Configure preferences",
             "paragraphs": [
               "The pack shapes how the agent talks while running your project. Twelve rules guide messages, decisions, evidence, documentation, coordination and delivery. Gates, permissions and human identity remain in the core.",
-              "owner.language takes a BCP-47 locale; owner.timezone, an IANA timezone; owner.depth, curta (short) or detalhada (detailed); owner.experience, true or false. When a value is absent, the system locale, the core’s timezone resolution, curta and true apply. Portuguese locales select the pt-BR skill variant; other locales select English while keeping the configured response language. Invalid input is rejected before anything is stored; an invalid value edited by hand raises a warning and falls back to the default."
+              "owner.language takes a BCP-47 locale; owner.timezone, an IANA timezone; owner.depth, curta (short) or detalhada (detailed); owner.experience, true or false. When a value is absent, the system locale (with C, POSIX or no locale, pt-BR, the CLI language), the core’s timezone resolution, curta and true apply. Portuguese locales select the pt-BR skill variant; other locales select English while keeping the configured response language. Invalid input is rejected before anything is stored; an invalid value edited by hand raises a warning and falls back to the default."
             ],
             "code": "ork onboarding\nork experiencia show --json"
           },
@@ -357,7 +357,7 @@ export default [
             "title": "Configure las preferencias",
             "paragraphs": [
               "El paquete orienta cómo conversa el agente al conducir el proyecto. Doce reglas guían mensajes, decisiones, pruebas, documentación, coordinación y entrega. Los gates, los permisos y la identidad humana siguen en el núcleo.",
-              "owner.language recibe un locale BCP-47; owner.timezone, una zona horaria IANA; owner.depth, curta (breve) o detalhada (detallada); owner.experience, true o false. Sin valor, se aplican el locale del sistema, la zona que resuelve el núcleo, curta y true. Los locales portugueses usan la variante pt-BR de las skills; los demás usan la inglesa y conservan el idioma de respuesta configurado. Una entrada inválida se rechaza antes de guardar; un valor inválido editado a mano genera un aviso y se aplica el valor predeterminado."
+              "owner.language recibe un locale BCP-47; owner.timezone, una zona horaria IANA; owner.depth, curta (breve) o detalhada (detallada); owner.experience, true o false. Sin valor, se aplican el locale del sistema (con C, POSIX o sin locale, pt-BR, el idioma de la CLI), la zona que resuelve el núcleo, curta y true. Los locales portugueses usan la variante pt-BR de las skills; los demás usan la inglesa y conservan el idioma de respuesta configurado. Una entrada inválida se rechaza antes de guardar; un valor inválido editado a mano genera un aviso y se aplica el valor predeterminado."
             ],
             "code": "ork onboarding\nork experiencia show --json"
           },
@@ -444,6 +444,15 @@ export default [
             "code": "node --test test/filtro.test.js\nork ci prepare <thread>"
           },
           {
+            "id": "skip-tipado",
+            "title": "Dependência opcional ausente é skip",
+            "paragraphs": [
+              "A suíte local inclui integrações que pedem o codex do sandbox em /usr/bin/codex, o interpretador do OrkMind no PATH ou PostgreSQL pelo Docker com pgvector/pgvector:pg16. Cada teste que depende de uma delas sonda antes e, se ela falta, sai como skip com o motivo, em vez de reprovar. A suíte inteira passa com 0 falhas numa máquina sem nenhuma delas, e o fim do relatório conta os skips; uma falha que sobra é de verdade.",
+              "ORK_TESTE_EXIGE_AMBIENTE=1 não pula nada: a dependência que faltar reprova. O test:ci liga a variável sozinho. node core/scripts/suite-local.cjs roda a suíte, sai 0 só com 0 falhas e lista cada skip com o motivo. Teste novo que depende de ferramenta externa usa os atalhos semCodexSandbox(), semOrkMind() e semPostgres()."
+            ],
+            "code": "npm --prefix core test\nORK_TESTE_EXIGE_AMBIENTE=1 npm --prefix core test\nnode core/scripts/suite-local.cjs"
+          },
+          {
             "id": "runtime-e-sessoes",
             "title": "Modelo indisponível e conta da sessão",
             "paragraphs": [
@@ -500,6 +509,15 @@ export default [
             "code": "node --test test/filtro.test.js\nork ci prepare <thread>"
           },
           {
+            "id": "skip-tipado",
+            "title": "A missing optional dependency is a skip",
+            "paragraphs": [
+              "The local suite includes integrations that need the sandbox codex at /usr/bin/codex, the OrkMind interpreter on PATH or PostgreSQL through Docker with pgvector/pgvector:pg16. Each test that depends on one of them probes first and, when it is missing, is skipped with the reason instead of failing. The full suite passes with 0 failures on a machine that has none of them, and the end of the report counts the skips; any failure left is real.",
+              "ORK_TESTE_EXIGE_AMBIENTE=1 skips nothing: a missing dependency fails. test:ci sets the variable on its own. node core/scripts/suite-local.cjs runs the suite, exits 0 only with 0 failures and lists each skip with its reason. A new test that depends on an external tool uses the helpers semCodexSandbox(), semOrkMind() and semPostgres()."
+            ],
+            "code": "npm --prefix core test\nORK_TESTE_EXIGE_AMBIENTE=1 npm --prefix core test\nnode core/scripts/suite-local.cjs"
+          },
+          {
             "id": "runtime-e-sessoes",
             "title": "Unavailable models and session accounts",
             "paragraphs": [
@@ -554,6 +572,15 @@ export default [
               "La preparación del CI compila una vez, vincula la identidad del producto y registra executado para distinguir resultados reales de comandos no ejecutados. La contención puede agotar el plazo local; eso no exime del CI en el commit exacto ni convierte un fallo en aprobación."
             ],
             "code": "node --test test/filtro.test.js\nork ci prepare <thread>"
+          },
+          {
+            "id": "skip-tipado",
+            "title": "Una dependencia opcional ausente es skip",
+            "paragraphs": [
+              "La suite local incluye integraciones que piden el codex del sandbox en /usr/bin/codex, el intérprete de OrkMind en el PATH o PostgreSQL mediante Docker con pgvector/pgvector:pg16. Cada prueba que depende de una de ellas sondea antes y, si falta, sale como skip con el motivo, en lugar de reprobar. La suite completa pasa con 0 fallos en una máquina sin ninguna de ellas, y el final del informe cuenta los skips; un fallo que queda es real.",
+              "ORK_TESTE_EXIGE_AMBIENTE=1 no omite nada: la dependencia que falte reprueba. test:ci activa la variable por sí solo. node core/scripts/suite-local.cjs corre la suite, sale con 0 solo con 0 fallos y lista cada skip con su motivo. Una prueba nueva que depende de una herramienta externa usa los atajos semCodexSandbox(), semOrkMind() y semPostgres()."
+            ],
+            "code": "npm --prefix core test\nORK_TESTE_EXIGE_AMBIENTE=1 npm --prefix core test\nnode core/scripts/suite-local.cjs"
           },
           {
             "id": "runtime-e-sessoes",
@@ -691,7 +718,9 @@ export default [
             "title": "Busca por significado",
             "paragraphs": [
               "A busca por tag continua sendo o caminho determinístico: é ela que monta o prompt, o recall e o handoff. A busca por significado é uma superfície separada, que acha por paráfrase o que a tag e a palavra exata não acham. Cada resultado sai marcado deterministico: false, e nada semântico entra no prompt sozinho.",
-              "Ela fica desligada até o manifesto declarar o bloco memory.embedding, com provider, modelo, dimensão e o nome da variável da chave, nunca o valor. O índice vetorial é local, derivado do tenant e fora do git; reindexar sem mudança não embeda nada. O texto indexado e cada consulta saem para o provider configurado: use uma chave dedicada, com limite de crédito. A estimativa de tokens e custo não é fatura. Sem embeddings, o motivo é embeddings.*, e o regime orkmind e o recall por tag seguem iguais."
+              "Ela fica desligada até o manifesto declarar o bloco memory.embedding, com provider, modelo, dimensão e o nome da variável da chave, nunca o valor. O índice vetorial é local, derivado do tenant e fora do git; reindexar sem mudança não embeda nada. O texto indexado e cada consulta saem para o provider configurado: use uma chave dedicada, com limite de crédito. A estimativa de tokens e custo não é fatura. Sem embeddings, o motivo é embeddings.*, e o regime orkmind e o recall por tag seguem iguais.",
+              "Índice, vetor, FTS e ork memory status usam o mesmo universo da busca: as entradas ativas do tenant nas coleções do ork, sem as que a biblioteca marca com injection_risk. Entrada de outro tenant ou de outra coleção é falha tipada (memory.query.scope-violation), nunca descarte silencioso, e não vai ao embed. Quando a janela de leitura enche, a resposta é memory.query.window-saturated em vez de cortar, e o ork memory index sai 1 sem embedar nada.",
+              "O status e o index mostram o universo por coleção e contam, só em número, o que fica fora da busca: entradas com injection_risk, expiradas e de outras coleções, como session e semantic_log. A cobertura é a dos vetores contra esse universo; o aviso de reindexar só aparece quando reindexar resolve, e a entrada fora do índice por desenho é contada à parte."
             ],
             "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory index\nork memory search --texto \"trocar de conta quando acaba a cota\" --json"
           }
@@ -730,7 +759,9 @@ export default [
             "title": "Search by meaning",
             "paragraphs": [
               "Tag search remains the deterministic path: it builds the prompt, recall and handoff. Search by meaning is a separate surface that finds paraphrases that tags and exact words miss. Every result is marked deterministico: false, and nothing semantic enters the prompt on its own.",
-              "It stays off until the manifest declares the memory.embedding block, with provider, model, dimension and the name of the key variable, never its value. The vector index is local, derived from the tenant and kept out of git; reindexing unchanged content embeds nothing. Indexed text and every query go to the configured provider: use a dedicated key with a credit limit. The token and cost estimate is not an invoice. Without embeddings, the reason is embeddings.*, and the orkmind regime and tag recall stay the same."
+              "It stays off until the manifest declares the memory.embedding block, with provider, model, dimension and the name of the key variable, never its value. The vector index is local, derived from the tenant and kept out of git; reindexing unchanged content embeds nothing. Indexed text and every query go to the configured provider: use a dedicated key with a credit limit. The token and cost estimate is not an invoice. Without embeddings, the reason is embeddings.*, and the orkmind regime and tag recall stay the same.",
+              "The index, the vectors, FTS and ork memory status use the same search universe: the tenant’s active entries in the ork collections, minus those the library flags with injection_risk. An entry from another tenant or collection is a typed failure (memory.query.scope-violation), never a silent drop, and is not embedded. When the read window fills up, the answer is memory.query.window-saturated instead of truncating, and ork memory index exits 1 without embedding anything.",
+              "status and index show the universe per collection and count, as numbers only, what stays out of search: entries flagged injection_risk, expired ones and those in other collections, such as session and semantic_log. Coverage compares the vectors with that universe; the reindex warning appears only when reindexing helps, and entries left out of the index by design are counted separately."
             ],
             "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory index\nork memory search --texto \"trocar de conta quando acaba a cota\" --json"
           }
@@ -769,7 +800,9 @@ export default [
             "title": "Búsqueda por significado",
             "paragraphs": [
               "La búsqueda por etiqueta sigue siendo el camino determinista: es la que construye el prompt, el recall y el handoff. La búsqueda por significado es una superficie separada que encuentra por paráfrasis lo que la etiqueta y la palabra exacta no encuentran. Cada resultado se marca deterministico: false, y nada semántico entra solo en el prompt.",
-              "Permanece desactivada hasta que el manifiesto declare el bloque memory.embedding, con provider, modelo, dimensión y el nombre de la variable de la clave, nunca su valor. El índice vectorial es local, derivado del tenant y fuera de git; reindexar sin cambios no genera embeddings. El texto indexado y cada consulta salen hacia el provider configurado: use una clave dedicada con límite de crédito. La estimación de tokens y coste no es una factura. Sin embeddings, el motivo es embeddings.*, y el régimen orkmind y el recall por etiqueta no cambian."
+              "Permanece desactivada hasta que el manifiesto declare el bloque memory.embedding, con provider, modelo, dimensión y el nombre de la variable de la clave, nunca su valor. El índice vectorial es local, derivado del tenant y fuera de git; reindexar sin cambios no genera embeddings. El texto indexado y cada consulta salen hacia el provider configurado: use una clave dedicada con límite de crédito. La estimación de tokens y coste no es una factura. Sin embeddings, el motivo es embeddings.*, y el régimen orkmind y el recall por etiqueta no cambian.",
+              "El índice, los vectores, FTS y ork memory status usan el mismo universo de búsqueda: las entradas activas del tenant en las colecciones de ork, sin las que la biblioteca marca con injection_risk. Una entrada de otro tenant o de otra colección es un fallo tipado (memory.query.scope-violation), nunca un descarte silencioso, y no va al embed. Cuando la ventana de lectura se llena, la respuesta es memory.query.window-saturated en lugar de cortar, y ork memory index sale con 1 sin embeber nada.",
+              "status e index muestran el universo por colección y cuentan, solo en número, lo que queda fuera de la búsqueda: entradas con injection_risk, caducadas y de otras colecciones, como session y semantic_log. La cobertura compara los vectores con ese universo; el aviso de reindexar solo aparece cuando reindexar lo resuelve, y la entrada fuera del índice por diseño se cuenta aparte."
             ],
             "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory index\nork memory search --texto \"trocar de conta quando acaba a cota\" --json"
           }
@@ -781,7 +814,8 @@ export default [
     "slug": "varias-maquinas",
     "group": "guides",
     "sources": [
-      "docs/guias/varias-maquinas.md"
+      "docs/guias/varias-maquinas.md",
+      "docs/conceitos/decisoes/ADR-001-estado-da-rede.md"
     ],
     "translations": {
       "pt": {
@@ -792,7 +826,8 @@ export default [
             "id": "adesao",
             "title": "Adesão é uma operação explícita",
             "paragraphs": [
-              "A fábrica compartilhada usa branches de estado no remoto para reservas e retratos de máquinas. ork fabrica entrar publica o primeiro retrato; execute apenas quando essa participação estiver autorizada. Cada máquina faz seu próprio login do runtime."
+              "A fábrica compartilhada usa branches de estado no remoto para reservas e retratos de máquinas. ork fabrica entrar publica o primeiro retrato; execute apenas quando essa participação estiver autorizada. Cada máquina faz seu próprio login do runtime.",
+              "fabrica.remoto é o nome de um remoto do git já configurado no clone, não uma URL: só letras, dígitos, ponto, sublinhado e hífen, sem hífen no começo, sem .. e com até 64 caracteres. O mesmo vale para o --remoto de fabrica, roadmap, ship registrar-pr, ci status e ship --para. Fora do formato, o valor nunca chega ao git: a recusa é tipada (fabrica.remoto-invalido, roadmap.remoto-invalido, ship.remoto-invalido ou ci.remoto-invalido) e mostra o valor redigido. Para outro servidor, crie o remoto com git remote add e ponha o nome no manifesto."
             ]
           },
           {
@@ -804,11 +839,22 @@ export default [
             "code": "ork board --sem-remoto\nork fabrica --sem-remoto"
           },
           {
+            "id": "pessoa",
+            "title": "A rede da pessoa: Orkastery Network",
+            "paragraphs": [
+              "A fábrica compartilhada vive no remoto de um projeto. A rede junta as máquinas de uma pessoa, de todos os projetos, num repositório privado dela na forja, <usuario>/orkastery-network. ork network entrar cria a casa quando falta, publica o primeiro retrato e só então grava a adesão; depois, a máquina publica sozinha na batida do pulse e nos eventos de thread. A identidade vem do gh ou do glab já autenticados; o ork nunca lê token. Quem já fez ork fabrica entrar é membro sem refazer nada.",
+              "A casa recebe nome, hostname, forja e login, runtimes e hosts com a versão, projetos com remoto sem credencial e a última batida. Nunca recebe token, senha, e-mail da conta, plano pago, caminho de arquivo de credencial, prompt, transcript ou log. Publicar exige a casa privada, conferida na forja, e só por HTTPS.",
+              "O ork doctor tem a linha rede: adesão, casa, última batida e última falha do rede.log. Ele só lê arquivos locais e nunca bloqueia; vira aviso quando a falha é mais nova que a batida ou quando a batida passou de 3 horas. O REDE.md da casa lista as máquinas com batida nos últimos 14 dias; as paradas há mais tempo ficam no rodapé e no ork network status. A rede está na main e ainda não saiu numa versão publicada."
+            ],
+            "code": "ork network entrar --maquina pc-casa\nork network status\nork network publicar\nork network sair"
+          },
+          {
             "id": "rede",
             "title": "O roadmap da rede, de qualquer diretório",
             "paragraphs": [
               "ork network roadmap junta o status report do roadmap, as reservas e as threads de cada máquina, com a fonte e a hora de cada parte. Roda de qualquer diretório, inclusive fora de um clone. O roadmap vem da base remota, igual para toda máquina; esta máquina entra pelo estado local, e as outras pelo retrato publicado.",
-              "Sem clone, a leitura usa a CLI da forja já autenticada, gh ou glab, só com consulta; nenhum token sai dela. O que não foi lido sai como lacuna, com o tipo e o que fazer: máquina sem batida há mais de 3 h, forja sem login, sem rede. A resposta nunca diz vazio por não ter lido."
+              "Sem clone, a leitura usa a CLI da forja já autenticada, gh ou glab, só com consulta; nenhum token sai dela. O que não foi lido sai como lacuna, com o tipo e o que fazer: máquina sem batida há mais de 3 h, forja sem login, sem rede. A resposta nunca diz vazio por não ter lido.",
+              "A rede da pessoa também entra no panorama, na seção Rede por pessoa: a casa e cada máquina, com a batida e os projetos que declara. Um projeto que só uma máquina da rede declara pode ser pedido pelo nome, sem clone nem registro nesta, e a máquina da rede que não publicou na fábrica do projeto aparece com as threads não lidas (lacuna maquina.sem-fabrica), nunca com zero ativas. ORK_REDE_LER=0 desliga essa leitura."
             ],
             "code": "ork network roadmap\nork network roadmap --projeto github:orkastery/orkastery\nork network roadmap --projeto meu-produto --json"
           }
@@ -822,7 +868,8 @@ export default [
             "id": "adesao",
             "title": "Joining is an explicit operation",
             "paragraphs": [
-              "The shared factory uses remote state branches for reservations and machine snapshots. ork fabrica entrar publishes the first snapshot; run it only when participation is authorized. Each machine performs its own runtime login."
+              "The shared factory uses remote state branches for reservations and machine snapshots. ork fabrica entrar publishes the first snapshot; run it only when participation is authorized. Each machine performs its own runtime login.",
+              "fabrica.remoto is the name of a git remote already configured in the clone, not a URL: only letters, digits, dot, underscore and hyphen, no leading hyphen, no .. and up to 64 characters. The same applies to --remoto in fabrica, roadmap, ship registrar-pr, ci status and ship --para. Outside that format, the value never reaches git: the refusal is typed (fabrica.remoto-invalido, roadmap.remoto-invalido, ship.remoto-invalido or ci.remoto-invalido) and shows the redacted value. For another server, create the remote with git remote add and put its name in the manifest."
             ]
           },
           {
@@ -834,11 +881,22 @@ export default [
             "code": "ork board --sem-remoto\nork fabrica --sem-remoto"
           },
           {
+            "id": "pessoa",
+            "title": "A person’s network: Orkastery Network",
+            "paragraphs": [
+              "The shared factory lives on one project’s remote. The network brings together one person’s machines, across all projects, in a private repository of theirs on the forge, <user>/orkastery-network. ork network entrar creates the home when it is missing, publishes the first snapshot and only then records membership; after that, the machine publishes on its own at the pulse heartbeat and on thread events. Identity comes from the already authenticated gh or glab; ork never reads a token. A machine that already ran ork fabrica entrar is a member without redoing anything.",
+              "The home receives the name, hostname, forge and login, runtimes and hosts with their version, projects with a credential-free remote, and the last heartbeat. It never receives a token, password, account email, paid plan, credential file path, prompt, transcript or log. Publishing requires a private home, checked on the forge, and HTTPS only.",
+              "ork doctor has a rede line: membership, home, last heartbeat and last failure from rede.log. It only reads local files and never blocks; it becomes a warning when the failure is newer than the heartbeat or when the heartbeat is older than 3 hours. The home’s REDE.md lists machines with a heartbeat in the last 14 days; those stopped for longer go to the footer and to ork network status. The network is on main and has not yet shipped in a published version."
+            ],
+            "code": "ork network entrar --maquina pc-casa\nork network status\nork network publicar\nork network sair"
+          },
+          {
             "id": "rede",
             "title": "The network roadmap, from any directory",
             "paragraphs": [
               "ork network roadmap combines the roadmap status report, reservations and each machine’s threads, with the source and time of every part. It runs from any directory, even outside a clone. The roadmap comes from the remote base, the same for every machine; this machine contributes its local state, and the others their published snapshots.",
-              "Without a clone, it reads through the forge CLI you have already authenticated, gh or glab, using queries only; no token leaves it. Anything not read appears as a typed gap with the next step: a machine without a heartbeat for more than 3 h, a forge without login, no network. The answer never says empty because it did not read."
+              "Without a clone, it reads through the forge CLI you have already authenticated, gh or glab, using queries only; no token leaves it. Anything not read appears as a typed gap with the next step: a machine without a heartbeat for more than 3 h, a forge without login, no network. The answer never says empty because it did not read.",
+              "The person’s network also enters the overview, in the Network by person section: the home and each machine, with its heartbeat and the projects it declares. A project declared only by a network machine can be requested by name, without a clone or registration here, and a network machine that has not published to the project’s factory appears with unread threads (gap maquina.sem-fabrica), never with zero active. ORK_REDE_LER=0 turns this reading off."
             ],
             "code": "ork network roadmap\nork network roadmap --projeto github:orkastery/orkastery\nork network roadmap --projeto meu-produto --json"
           }
@@ -852,7 +910,8 @@ export default [
             "id": "adesao",
             "title": "La adhesión es una operación explícita",
             "paragraphs": [
-              "La fábrica compartida usa ramas de estado en el remoto para reservas e instantáneas de máquinas. ork fabrica entrar publica la primera instantánea; ejecútelo solo cuando la participación esté autorizada. Cada máquina inicia su propia sesión del runtime."
+              "La fábrica compartida usa ramas de estado en el remoto para reservas e instantáneas de máquinas. ork fabrica entrar publica la primera instantánea; ejecútelo solo cuando la participación esté autorizada. Cada máquina inicia su propia sesión del runtime.",
+              "fabrica.remoto es el nombre de un remoto de git ya configurado en el clon, no una URL: solo letras, dígitos, punto, guion bajo y guion, sin guion al principio, sin .. y con hasta 64 caracteres. Lo mismo vale para --remoto de fabrica, roadmap, ship registrar-pr, ci status y ship --para. Fuera del formato, el valor nunca llega a git: el rechazo es tipado (fabrica.remoto-invalido, roadmap.remoto-invalido, ship.remoto-invalido o ci.remoto-invalido) y muestra el valor redactado. Para otro servidor, cree el remoto con git remote add y ponga el nombre en el manifiesto."
             ]
           },
           {
@@ -864,11 +923,22 @@ export default [
             "code": "ork board --sem-remoto\nork fabrica --sem-remoto"
           },
           {
+            "id": "pessoa",
+            "title": "La red de la persona: Orkastery Network",
+            "paragraphs": [
+              "La fábrica compartida vive en el remoto de un proyecto. La red reúne las máquinas de una persona, de todos los proyectos, en un repositorio privado suyo en la forja, <usuario>/orkastery-network. ork network entrar crea la casa cuando falta, publica la primera instantánea y solo entonces guarda la adhesión; después, la máquina publica sola en el latido del pulse y en los eventos de thread. La identidad viene de gh o glab ya autenticados; ork nunca lee un token. Quien ya hizo ork fabrica entrar es miembro sin rehacer nada.",
+              "La casa recibe nombre, hostname, forja y login, runtimes y hosts con su versión, proyectos con remoto sin credencial y el último latido. Nunca recibe token, contraseña, email de la cuenta, plan de pago, ruta de archivo de credenciales, prompt, transcript ni log. Publicar exige la casa privada, comprobada en la forja, y solo por HTTPS.",
+              "ork doctor tiene la línea rede: adhesión, casa, último latido y último fallo de rede.log. Solo lee archivos locales y nunca bloquea; pasa a aviso cuando el fallo es más reciente que el latido o cuando el latido supera las 3 horas. El REDE.md de la casa lista las máquinas con latido en los últimos 14 días; las detenidas desde hace más tiempo quedan en el pie y en ork network status. La red está en la main y aún no salió en una versión publicada."
+            ],
+            "code": "ork network entrar --maquina pc-casa\nork network status\nork network publicar\nork network sair"
+          },
+          {
             "id": "rede",
             "title": "El roadmap de la red, desde cualquier directorio",
             "paragraphs": [
               "ork network roadmap reúne el informe de estado del roadmap, las reservas y las threads de cada máquina, con la fuente y la hora de cada parte. Funciona desde cualquier directorio, incluso fuera de un clon. El roadmap procede de la base remota, igual para todas las máquinas; esta máquina aporta su estado local, y las demás, su instantánea publicada.",
-              "Sin clon, la lectura usa la CLI de la forja ya autenticada, gh o glab, solo con consultas; ningún token sale de ella. Lo que no se leyó aparece como laguna tipada, con lo que hay que hacer: máquina sin latido desde hace más de 3 h, forja sin sesión iniciada, sin red. La respuesta nunca dice vacío por no haber leído."
+              "Sin clon, la lectura usa la CLI de la forja ya autenticada, gh o glab, solo con consultas; ningún token sale de ella. Lo que no se leyó aparece como laguna tipada, con lo que hay que hacer: máquina sin latido desde hace más de 3 h, forja sin sesión iniciada, sin red. La respuesta nunca dice vacío por no haber leído.",
+              "La red de la persona también entra en el panorama, en la sección Red por persona: la casa y cada máquina, con el latido y los proyectos que declara. Un proyecto que solo declara una máquina de la red puede pedirse por nombre, sin clon ni registro en esta, y la máquina de la red que no publicó en la fábrica del proyecto aparece con las threads no leídas (laguna maquina.sem-fabrica), nunca con cero activas. ORK_REDE_LER=0 desactiva esa lectura."
             ],
             "code": "ork network roadmap\nork network roadmap --projeto github:orkastery/orkastery\nork network roadmap --projeto meu-produto --json"
           }
@@ -915,9 +985,9 @@ export default [
             "title": "Pedidos do ork por alternativas",
             "paragraphs": [
               "Todo pedido que o próprio ork abre ao dono é uma seleção de 3 a 5 alternativas, com exatamente uma marcada como Recomendação. O registro recusa, sem gravar nada, o pedido fora disso: hitl.selecao.fora-da-faixa, hitl.selecao.recomendada ou hitl.selecao.texto-livre. Resposta em texto só passa com uma dependência técnica: o comando exato que o dono roda no terminal e o motivo.",
-              "ork prompt lint reprova o template que peça um confirmo em texto livre ou que o dono cole texto (regra hitl-texto-livre). O tempo parado por essas perguntas aparece em ork ledger stats, no campo hitlDeConducao, com a mediana comparada à meta de 5 minutos. A pergunta nativa de uma sessão do host continua com as opções do próprio host."
+              "ork prompt lint reprova o template que peça um confirmo em texto livre ou que o dono cole texto (regra hitl-texto-livre). O tempo parado por essas perguntas aparece em ork ledger stats, no campo hitlDeConducao, com a mediana comparada à meta de 5 minutos. O mesmo tempo chega ao ork pulse e ao ork roadmap status: cada pergunta aberta, com há quanto tempo para a thread e desde que hora, no fuso do dono, e a mediana dos últimos 7 dias. O resumo do pulse ganha uma linha só acima da meta, junto do resumo que já sai, sem furar a cadência. A pergunta nativa de uma sessão do host continua com as opções do próprio host."
             ],
-            "code": "ork prompt lint\nork ledger stats"
+            "code": "ork prompt lint\nork ledger stats\nork pulse --json\nork roadmap status --json"
           },
           {
             "id": "texto-e-linha",
@@ -969,9 +1039,9 @@ export default [
             "title": "Requests from ork as options",
             "paragraphs": [
               "Every request that ork itself opens to the owner is a selection of 3 to 5 options, with exactly one marked Recommendation. Registration refuses anything else without recording it: hitl.selecao.fora-da-faixa, hitl.selecao.recomendada or hitl.selecao.texto-livre. A text answer is accepted only with a technical dependency: the exact command the owner runs in the terminal and the reason.",
-              "ork prompt lint fails a template that asks for a free-text confirmation or for the owner to paste text (rule hitl-texto-livre). Time blocked by these questions appears in ork ledger stats, in the hitlDeConducao field, with the median compared to the 5-minute target. A native question from a host session keeps the host’s own options."
+              "ork prompt lint fails a template that asks for a free-text confirmation or for the owner to paste text (rule hitl-texto-livre). Time blocked by these questions appears in ork ledger stats, in the hitlDeConducao field, with the median compared to the 5-minute target. The same time reaches ork pulse and ork roadmap status: each open question, with how long it has been blocking the thread and since when, in the owner’s timezone, and the median over the last 7 days. The pulse summary gains a line only above the target, alongside the summary that is already due, without breaking the cadence. A native question from a host session keeps the host’s own options."
             ],
-            "code": "ork prompt lint\nork ledger stats"
+            "code": "ork prompt lint\nork ledger stats\nork pulse --json\nork roadmap status --json"
           },
           {
             "id": "texto-e-linha",
@@ -1023,9 +1093,9 @@ export default [
             "title": "Pedidos de ork por alternativas",
             "paragraphs": [
               "Todo pedido que ork abre al dueño es una selección de 3 a 5 alternativas, con exactamente una marcada como Recomendación. El registro rechaza, sin grabar nada, lo que no cumpla eso: hitl.selecao.fora-da-faixa, hitl.selecao.recomendada o hitl.selecao.texto-livre. Una respuesta en texto solo se acepta con una dependencia técnica: el comando exacto que el dueño ejecuta en la terminal y el motivo.",
-              "ork prompt lint rechaza la plantilla que pida una confirmación en texto libre o que el dueño pegue texto (regla hitl-texto-livre). El tiempo detenido por estas preguntas aparece en ork ledger stats, en el campo hitlDeConducao, con la mediana frente a la meta de 5 minutos. La pregunta nativa de una sesión del host conserva las opciones del propio host."
+              "ork prompt lint rechaza la plantilla que pida una confirmación en texto libre o que el dueño pegue texto (regla hitl-texto-livre). El tiempo detenido por estas preguntas aparece en ork ledger stats, en el campo hitlDeConducao, con la mediana frente a la meta de 5 minutos. El mismo tiempo llega a ork pulse y a ork roadmap status: cada pregunta abierta, con cuánto tiempo lleva deteniendo la thread y desde qué hora, en la zona horaria del dueño, y la mediana de los últimos 7 días. El resumen del pulse gana una línea solo por encima de la meta, junto al resumen que ya sale, sin romper la cadencia. La pregunta nativa de una sesión del host conserva las opciones del propio host."
             ],
-            "code": "ork prompt lint\nork ledger stats"
+            "code": "ork prompt lint\nork ledger stats\nork pulse --json\nork roadmap status --json"
           },
           {
             "id": "texto-e-linha",

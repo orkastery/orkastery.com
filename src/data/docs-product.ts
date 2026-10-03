@@ -23,7 +23,7 @@ export default [
             "id": "sys-01",
             "title": "SYS-01 · Núcleo ork",
             "paragraphs": [
-              "O CLI concentra condução, evidência, runtimes, atenção humana e memória. Os módulos MOD-01 a MOD-05 detalham essas responsabilidades."
+              "O CLI concentra condução, evidência, runtimes, atenção humana e memória. Os módulos MOD-01 a MOD-05 detalham essas responsabilidades. O código fica em core/src, em TypeScript, com nove dependências de runtime de versão fixa, entre elas os analisadores do grafo de código."
             ]
           },
           {
@@ -50,7 +50,7 @@ export default [
             "id": "sys-01",
             "title": "SYS-01 · ork core",
             "paragraphs": [
-              "The CLI brings together conduction, evidence, runtimes, human attention and memory. Modules MOD-01 through MOD-05 detail these responsibilities."
+              "The CLI brings together conduction, evidence, runtimes, human attention and memory. Modules MOD-01 through MOD-05 detail these responsibilities. The code lives in core/src, in TypeScript, with nine pinned runtime dependencies, including the code graph analyzers."
             ]
           },
           {
@@ -77,7 +77,7 @@ export default [
             "id": "sys-01",
             "title": "SYS-01 · Núcleo ork",
             "paragraphs": [
-              "El CLI reúne conducción, pruebas, runtimes, atención humana y memoria. Los módulos MOD-01 a MOD-05 detallan estas responsabilidades."
+              "El CLI reúne conducción, pruebas, runtimes, atención humana y memoria. Los módulos MOD-01 a MOD-05 detallan estas responsabilidades. El código está en core/src, en TypeScript, con nueve dependencias de runtime de versión fija, entre ellas los analizadores del grafo de código."
             ]
           },
           {
@@ -104,7 +104,8 @@ export default [
       "docs/produto/FEAT-026-reservas-do-roadmap.md",
       "docs/produto/FEAT-027-fabrica-compartilhada.md",
       "docs/produto/FEAT-029-conducao-multicanal.md",
-      "docs/produto/FEAT-032-roadmap-da-rede.md"
+      "docs/produto/FEAT-032-roadmap-da-rede.md",
+      "docs/produto/FEAT-031-orkastery-network.md"
     ],
     "translations": {
       "pt": {
@@ -169,10 +170,19 @@ export default [
             ]
           },
           {
+            "id": "feat-031",
+            "title": "FEAT-031 · Orkastery Network",
+            "paragraphs": [
+              "Cada máquina publica um retrato sem segredo num repositório privado da pessoa na forja, e ork network status mostra todas, de qualquer diretório, com a fonte e as lacunas. A adesão é da máquina, explícita ou herdada de ork fabrica entrar; ork network sair vence a herança, e o manifesto do projeto não inscreve ninguém. Publicar exige a casa privada, conferida antes de cada publicação; repositório público recusa com rede.repositorio-publico.",
+              "O retrato é uma lista de permissão: campo com cara de segredo recusa a publicação, e projeto com cara de segredo fica fora com aviso. Cada máquina só escreve o próprio retrato; nome tomado por outra instalação vira rede.nome-em-uso, e --forcar o toma com registro no commit. Lacuna nunca vira lista vazia. Em desenvolvimento: está na main, sem versão publicada."
+            ],
+            "code": "ork network entrar --maquina pc-casa\nork network status --json"
+          },
+          {
             "id": "feat-032",
             "title": "FEAT-032 · Roadmap da rede",
             "paragraphs": [
-              "ork network roadmap junta, de qualquer diretório, o roadmap da base remota, as reservas e as threads de cada máquina, com a fonte e a hora de cada parte. Sem clone, só consulta a forja pela CLI já autenticada; o que não foi lido sai como lacuna tipada, nunca como vazio. Nos hosts, ork_network_roadmap transporta essa leitura como vem. Vigente: publicado na versão 0.5.0."
+              "ork network roadmap junta, de qualquer diretório, o roadmap da base remota, as reservas e as threads de cada máquina, com a fonte e a hora de cada parte. Sem clone, só consulta a forja pela CLI já autenticada; o que não foi lido sai como lacuna tipada, nunca como vazio. Nos hosts, ork_network_roadmap transporta essa leitura como vem. Vigente: publicado na versão 0.5.0. Na main, a fatia 3 lê também a rede por pessoa: a seção Rede por pessoa traz a casa e cada máquina; máquina vista só na rede sai com as threads não lidas e a lacuna maquina.sem-fabrica, nunca com zero threads. ork_network_status chega ao OpenClaw, ao Hermes e ao MCP, e o gh e o glab são achados fora do PATH curto do gateway e do cron."
             ]
           }
         ]
@@ -239,10 +249,19 @@ export default [
             ]
           },
           {
+            "id": "feat-031",
+            "title": "FEAT-031 · Orkastery Network",
+            "paragraphs": [
+              "Each machine publishes a secret-free snapshot to a private repository of the person on the forge, and ork network status shows all of them, from any directory, with the source and the gaps. Membership belongs to the machine, explicit or inherited from ork fabrica entrar; ork network sair overrides the inheritance, and the project manifest enrolls no one. Publishing requires a private home, checked before each publication; a public repository is refused with rede.repositorio-publico.",
+              "The snapshot is an allowlist: a field that looks like a secret refuses the publication, and a project that looks like a secret is left out with a warning. Each machine writes only its own snapshot; a name taken by another installation becomes rede.nome-em-uso, and --forcar takes it with a record in the commit. A gap never becomes an empty list. In development: on main, not yet in a published version."
+            ],
+            "code": "ork network entrar --maquina pc-casa\nork network status --json"
+          },
+          {
             "id": "feat-032",
             "title": "FEAT-032 · Network roadmap",
             "paragraphs": [
-              "From any directory, ork network roadmap combines the remote base roadmap, reservations and each machine’s threads, with the source and time of every part. Without a clone, it only queries the forge through the already authenticated CLI; anything not read appears as a typed gap, never as empty. In hosts, ork_network_roadmap passes this result through unchanged. Current: released in version 0.5.0."
+              "From any directory, ork network roadmap combines the remote base roadmap, reservations and each machine’s threads, with the source and time of every part. Without a clone, it only queries the forge through the already authenticated CLI; anything not read appears as a typed gap, never as empty. In hosts, ork_network_roadmap passes this result through unchanged. Current: released in version 0.5.0. On main, slice 3 also reads the per-person network: the Network by person section shows the home and each machine; a machine seen only in the network appears with unread threads and the maquina.sem-fabrica gap, never with zero threads. ork_network_status reaches OpenClaw, Hermes and MCP, and gh and glab are found outside the short PATH of the gateway and cron."
             ]
           }
         ]
@@ -309,10 +328,19 @@ export default [
             ]
           },
           {
+            "id": "feat-031",
+            "title": "FEAT-031 · Orkastery Network",
+            "paragraphs": [
+              "Cada máquina publica una instantánea sin secretos en un repositorio privado de la persona en la forja, y ork network status las muestra todas, desde cualquier directorio, con la fuente y las lagunas. La adhesión es de la máquina, explícita o heredada de ork fabrica entrar; ork network sair prevalece sobre la herencia, y el manifiesto del proyecto no inscribe a nadie. Publicar exige la casa privada, comprobada antes de cada publicación; un repositorio público se rechaza con rede.repositorio-publico.",
+              "La instantánea es una lista de permitidos: un campo con aspecto de secreto rechaza la publicación, y un proyecto con aspecto de secreto queda fuera con aviso. Cada máquina solo escribe su propia instantánea; un nombre tomado por otra instalación se convierte en rede.nome-em-uso, y --forcar lo toma con registro en el commit. Una laguna nunca se convierte en lista vacía. En desarrollo: está en la main, sin versión publicada."
+            ],
+            "code": "ork network entrar --maquina pc-casa\nork network status --json"
+          },
+          {
             "id": "feat-032",
             "title": "FEAT-032 · Roadmap de la red",
             "paragraphs": [
-              "Desde cualquier directorio, ork network roadmap reúne el roadmap de la base remota, las reservas y las threads de cada máquina, con la fuente y la hora de cada parte. Sin clon, solo consulta la forja mediante la CLI ya autenticada; lo que no se leyó aparece como laguna tipada, nunca como vacío. En los hosts, ork_network_roadmap transmite esa lectura tal como llega. Vigente: publicado en la versión 0.5.0."
+              "Desde cualquier directorio, ork network roadmap reúne el roadmap de la base remota, las reservas y las threads de cada máquina, con la fuente y la hora de cada parte. Sin clon, solo consulta la forja mediante la CLI ya autenticada; lo que no se leyó aparece como laguna tipada, nunca como vacío. En los hosts, ork_network_roadmap transmite esa lectura tal como llega. Vigente: publicado en la versión 0.5.0. En la main, la porción 3 también lee la red por persona: la sección Red por persona muestra la casa y cada máquina; una máquina vista solo en la red sale con las threads no leídas y la laguna maquina.sem-fabrica, nunca con cero threads. ork_network_status llega a OpenClaw, Hermes y MCP, y gh y glab se encuentran fuera del PATH corto del gateway y del cron."
             ]
           }
         ]
@@ -625,7 +653,8 @@ export default [
             "title": "FEAT-014 · Monitor, board e pulse",
             "paragraphs": [
               "O estado vem de threads, ledger e filas. ork roadmap status é leitura pura: agrupa o relatório no fuso do dono, marca #HITL no que espera decisão e mostra próximos passos. O orquestrador assume os impedimentos técnicos; sessão encerrada não vira pedido como se ainda pudesse receber resposta.",
-              "O trabalho parado no condutor depois da entrega, além de 30 minutos, sai numa linha por thread no pulse, com o próximo passo e fora de “Esperando você”: branch sem push, branch sem PR, PR verde sem merge ou merge sem registro. ork roadmap status diz o estado real da entrega da thread de cada item e, com fábrica compartilhada, avisa a máquina sem batida há mais de 3 horas."
+              "O trabalho parado no condutor depois da entrega, além de 30 minutos, sai numa linha por thread no pulse, com o próximo passo e fora de “Esperando você”: branch sem push, branch sem PR, PR verde sem merge ou merge sem registro. ork roadmap status diz o estado real da entrega da thread de cada item e, com fábrica compartilhada, avisa a máquina sem batida há mais de 3 horas.",
+              "O ork pulse e o ork roadmap status trazem o tempo parado por HITL de condução (hitlDeConducao): as perguntas abertas, com há quanto tempo cada uma para a thread, no fuso do dono, e a mediana dos últimos 7 dias contra a meta de 5 minutos. O resumo ganha uma linha só acima da meta, sem virar novidade que fure a cadência."
             ],
             "code": "ork roadmap status"
           },
@@ -633,9 +662,10 @@ export default [
             "id": "feat-015",
             "title": "FEAT-015 · MASTER e índice de condução",
             "paragraphs": [
-              "MASTER registra postmortem e índice derivado do ledger. ork master pedir solicita nota e justificativa pelo Telegram autenticado. O registro inclui remetente, canal, mensagem e hash da prova; o agente não assina pelo dono. A nota humana posterior substitui a aceitação por omissão sem apagar histórico. O diálogo MCP de nota permanece uma lacuna."
+              "MASTER registra postmortem e índice derivado do ledger. ork master pedir solicita nota e justificativa pelo Telegram autenticado. O registro inclui remetente, canal, mensagem e hash da prova; o agente não assina pelo dono. A nota humana posterior substitui a aceitação por omissão sem apagar histórico. O diálogo MCP de nota permanece uma lacuna.",
+              "ork master <thread> --aceitar-omissao aceita por omissão só a entrega da thread indicada; sem a thread, o comando aceita todas as entregues do projeto, inclusive as de outras frentes, e um agente que o rode com mais de uma recebe o aviso master.omissao-sem-thread. --dry-run lista o que fecharia, sem gravar. A nota humana exige --por com o nome de uma pessoa."
             ],
-            "code": "ork master pedir <thread> --formato telegram"
+            "code": "ork master pedir <thread> --formato telegram\nork master <thread> --aceitar-omissao --dry-run"
           }
         ]
       },
@@ -669,7 +699,8 @@ export default [
             "title": "FEAT-014 · Monitor, board and pulse",
             "paragraphs": [
               "State comes from threads, the ledger and queues. ork roadmap status is read-only: it groups the report in the owner’s timezone, marks pending decisions with #HITL and shows next steps. The orchestrator handles technical blockers; ended sessions are not presented as able to receive a response.",
-              "Work stalled with the conductor after delivery, for more than 30 minutes, appears as one line per thread in the pulse, with the next step and outside “Waiting for you”: an unpushed branch, a branch without a PR, a green PR not merged, or a merge not recorded. ork roadmap status states the real delivery state of each item’s thread and, with a shared factory, flags a machine with no heartbeat for more than 3 hours."
+              "Work stalled with the conductor after delivery, for more than 30 minutes, appears as one line per thread in the pulse, with the next step and outside “Waiting for you”: an unpushed branch, a branch without a PR, a green PR not merged, or a merge not recorded. ork roadmap status states the real delivery state of each item’s thread and, with a shared factory, flags a machine with no heartbeat for more than 3 hours.",
+              "ork pulse and ork roadmap status show the time blocked by conduction HITL (hitlDeConducao): the open questions, with how long each one has been blocking the thread, in the owner’s timezone, and the median over the last 7 days against the 5-minute target. The summary gains a line only above the target, without becoming news that breaks the cadence."
             ],
             "code": "ork roadmap status"
           },
@@ -677,9 +708,10 @@ export default [
             "id": "feat-015",
             "title": "FEAT-015 · MASTER and conduction index",
             "paragraphs": [
-              "MASTER records a postmortem and a ledger-derived index. ork master pedir requests a score and reason through authenticated Telegram. The record includes sender, channel, message and proof hash; the agent cannot sign for the owner. A later human score replaces acceptance by omission without erasing history. The MCP score dialog remains unavailable."
+              "MASTER records a postmortem and a ledger-derived index. ork master pedir requests a score and reason through authenticated Telegram. The record includes sender, channel, message and proof hash; the agent cannot sign for the owner. A later human score replaces acceptance by omission without erasing history. The MCP score dialog remains unavailable.",
+              "ork master <thread> --aceitar-omissao accepts by default only the delivery of the given thread; without a thread, the command accepts every delivered thread in the project, including other workstreams, and an agent running it with more than one gets the master.omissao-sem-thread warning. --dry-run lists what it would close without recording anything. A human score requires --por with a person’s name."
             ],
-            "code": "ork master pedir <thread> --formato telegram"
+            "code": "ork master pedir <thread> --formato telegram\nork master <thread> --aceitar-omissao --dry-run"
           }
         ]
       },
@@ -713,7 +745,8 @@ export default [
             "title": "FEAT-014 · Monitor, board y pulse",
             "paragraphs": [
               "El estado procede de threads, ledger y colas. ork roadmap status es de lectura: agrupa el informe en el huso del dueño, marca #HITL en lo que espera decisión y muestra próximos pasos. El orquestador se ocupa de los impedimentos técnicos; las sesiones terminadas no se presentan como capaces de recibir respuesta.",
-              "El trabajo detenido en el conductor después de la entrega, por más de 30 minutos, aparece en una línea por thread en el pulse, con el siguiente paso y fuera de “Esperándote”: rama sin push, rama sin PR, PR en verde sin merge o merge sin registro. ork roadmap status indica el estado real de la entrega de la thread de cada ítem y, con fábrica compartida, avisa de la máquina sin latido desde hace más de 3 horas."
+              "El trabajo detenido en el conductor después de la entrega, por más de 30 minutos, aparece en una línea por thread en el pulse, con el siguiente paso y fuera de “Esperándote”: rama sin push, rama sin PR, PR en verde sin merge o merge sin registro. ork roadmap status indica el estado real de la entrega de la thread de cada ítem y, con fábrica compartida, avisa de la máquina sin latido desde hace más de 3 horas.",
+              "ork pulse y ork roadmap status muestran el tiempo detenido por HITL de conducción (hitlDeConducao): las preguntas abiertas, con cuánto tiempo lleva cada una deteniendo la thread, en la zona horaria del dueño, y la mediana de los últimos 7 días frente a la meta de 5 minutos. El resumen gana una línea solo por encima de la meta, sin convertirse en novedad que rompa la cadencia."
             ],
             "code": "ork roadmap status"
           },
@@ -721,9 +754,10 @@ export default [
             "id": "feat-015",
             "title": "FEAT-015 · MASTER e índice de conducción",
             "paragraphs": [
-              "MASTER registra postmortem e índice derivado del ledger. ork master pedir solicita nota y justificación mediante Telegram autenticado. El registro incluye remitente, canal, mensaje y hash de la prueba; el agente no firma por el dueño. La valoración humana posterior sustituye la aceptación por omisión sin borrar el historial. El diálogo MCP de valoración sigue sin estar disponible."
+              "MASTER registra postmortem e índice derivado del ledger. ork master pedir solicita nota y justificación mediante Telegram autenticado. El registro incluye remitente, canal, mensaje y hash de la prueba; el agente no firma por el dueño. La valoración humana posterior sustituye la aceptación por omisión sin borrar el historial. El diálogo MCP de valoración sigue sin estar disponible.",
+              "ork master <thread> --aceitar-omissao acepta por omisión solo la entrega de la thread indicada; sin la thread, el comando acepta todas las entregadas del proyecto, incluidas las de otros frentes, y un agente que lo ejecute con más de una recibe el aviso master.omissao-sem-thread. --dry-run lista lo que cerraría, sin guardar. La nota humana exige --por con el nombre de una persona."
             ],
-            "code": "ork master pedir <thread> --formato telegram"
+            "code": "ork master pedir <thread> --formato telegram\nork master <thread> --aceitar-omissao --dry-run"
           }
         ]
       }
@@ -783,7 +817,8 @@ export default [
             "title": "FEAT-024 · Company Brain no CLI",
             "paragraphs": [
               "ork brain context devolve o pacote ork.brain-context/v1 com pedido, itens, lacunas e digest do JSON canônico. Inclui as entidades pedidas e seus pais; sem --ids, usa o escopo vinculado por brain bind. Cada item traz source_ref, source_hash, source_version e location, além do frescor contra o portfólio canônico.",
-              "Citação incompleta vira lacuna citacao.incompleta. Item retido pela ACL traz só ID e frescor retido, nunca conteúdo recuperado da fonte local. Brain indisponível ou recusando não produz pacote fabricado só da fonte. Identidade vem do transporte autenticado; leitura não grava, e escrita exige ativação aceita e concessão do banco."
+              "Citação incompleta vira lacuna citacao.incompleta. Item retido pela ACL traz só ID e frescor retido, nunca conteúdo recuperado da fonte local. Brain indisponível ou recusando não produz pacote fabricado só da fonte. Identidade vem do transporte autenticado; leitura não grava, e escrita exige ativação aceita e concessão do banco.",
+              "O pacote vem do modo context do OrkMind e o núcleo o confere: schema, tenant, pedido, digest, citação, ordem, fecho de pais e destino de cada id. Pacote que não confere encerra com brain.context.server-invalid, sem cair na consulta; só brain.selection.context-unsupported, de um OrkMind anterior ao modo, leva o núcleo a montar o mesmo pacote por query e get. O campo caminho diz qual foi, e os dois caminhos dão o mesmo digest para os mesmos dados."
             ],
             "code": "ork brain context --thread <thread> --ids <ids>"
           },
@@ -847,7 +882,8 @@ export default [
             "title": "FEAT-024 · Company Brain in the CLI",
             "paragraphs": [
               "ork brain context returns ork.brain-context/v1 with pedido, itens, lacunas and a canonical JSON digest. It includes requested entities and their parents; without --ids it uses the scope linked by brain bind. Every item carries source_ref, source_hash, source_version and location, plus freshness against the canonical portfolio.",
-              "Incomplete citations become citacao.incompleta gaps. ACL-withheld items expose only their ID and retido freshness, never content recovered from the local source. An unavailable or refusing Brain does not produce a package fabricated from local files. Identity comes from authenticated transport; reads do not write, and writes require accepted activation and a database grant."
+              "Incomplete citations become citacao.incompleta gaps. ACL-withheld items expose only their ID and retido freshness, never content recovered from the local source. An unavailable or refusing Brain does not produce a package fabricated from local files. Identity comes from authenticated transport; reads do not write, and writes require accepted activation and a database grant.",
+              "The package comes from OrkMind’s context mode and the core checks it: schema, tenant, request, digest, citation, order, parent closure and the target of each id. A package that does not check out ends with brain.context.server-invalid, without falling back to querying; only brain.selection.context-unsupported, from an OrkMind older than the mode, makes the core build the same package with query and get. The caminho field says which path was used, and both paths give the same digest for the same data."
             ],
             "code": "ork brain context --thread <thread> --ids <ids>"
           },
@@ -911,7 +947,8 @@ export default [
             "title": "FEAT-024 · Company Brain en el CLI",
             "paragraphs": [
               "ork brain context devuelve ork.brain-context/v1 con pedido, itens, lacunas y digest del JSON canónico. Incluye las entidades solicitadas y sus padres; sin --ids usa el ámbito vinculado por brain bind. Cada elemento contiene source_ref, source_hash, source_version y location, además de la vigencia frente al portafolio canónico.",
-              "Una cita incompleta produce la laguna citacao.incompleta. Un elemento retenido por ACL solo muestra ID y vigencia retido, nunca contenido recuperado de la fuente local. Un Brain no disponible o que rechaza la consulta no produce un paquete inventado desde archivos locales. La identidad procede del transporte autenticado; leer no escribe, y escribir requiere activación aceptada y concesión de la base."
+              "Una cita incompleta produce la laguna citacao.incompleta. Un elemento retenido por ACL solo muestra ID y vigencia retido, nunca contenido recuperado de la fuente local. Un Brain no disponible o que rechaza la consulta no produce un paquete inventado desde archivos locales. La identidad procede del transporte autenticado; leer no escribe, y escribir requiere activación aceptada y concesión de la base.",
+              "El paquete viene del modo context de OrkMind y el núcleo lo comprueba: schema, tenant, pedido, digest, cita, orden, cierre de padres y destino de cada id. Un paquete que no cuadra termina con brain.context.server-invalid, sin pasar a la consulta; solo brain.selection.context-unsupported, de un OrkMind anterior al modo, lleva al núcleo a montar el mismo paquete con query y get. El campo caminho indica cuál fue, y los dos caminos dan el mismo digest para los mismos datos."
             ],
             "code": "ork brain context --thread <thread> --ids <ids>"
           },

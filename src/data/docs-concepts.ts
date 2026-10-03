@@ -23,7 +23,7 @@ export default [
             "title": "Três camadas, responsabilidades explícitas",
             "paragraphs": [
               "O host recebe o pedido e apresenta as decisões. O núcleo ork aplica contratos, registra o estado e confere a evidência. O runtime escreve o produto. Um relato do runtime não substitui a execução dos verificadores.",
-              "O núcleo é um CLI determinístico. Adaptadores conectam hosts e runtimes; a regra de negócio permanece no núcleo para que a mesma decisão não mude de sentido entre canais."
+              "O núcleo é um CLI determinístico. Adaptadores conectam hosts e runtimes; a regra de negócio permanece no núcleo para que a mesma decisão não mude de sentido entre canais. Não há LLM dentro do núcleo, nem servidor ou banco obrigatório; as dependências de runtime são poucas e têm versão fixa."
             ]
           },
           {
@@ -72,7 +72,7 @@ export default [
             "title": "Incremental e consumo pelas fases: KG4 e KG5",
             "paragraphs": [
               "O KG4 constrói o índice de uma revisão a partir do índice ancestral e reextrai só o que a mudança alcança, com os mesmos bytes da extração completa; --verificar compara as duas. O KG5 expõe as consultas no MCP do projeto: as tools ork_grafo_* rodam o ork grafo na worktree da thread, num processo filho com prazo e cancelamento, e a resposta tem teto em bytes. O servidor MCP não carrega o grafo.",
-              "O consumo fica atrás da flag grafo.mcp do orkastery.yaml, desligada por padrão; sem ela, o MCP lista as mesmas tools de antes. As tools precisam dos analisadores instalados com o ork. O pacote de contexto da thread, a federação (KG6), a paridade entre hosts (KG7) e a rodada medida do benchmark ainda não existem: o protocolo está fixado, sem medida de economia."
+              "O consumo fica atrás da flag grafo.mcp do orkastery.yaml, desligada por padrão; sem ela, o MCP lista as mesmas tools de antes. As tools precisam dos analisadores, o typescript e o micromark, que desde a correção de empacotamento da RM-031 são dependências do pacote, com versão exata: o npm install -g os traz. Instalado dentro de um projeto ou pelo npx, o ork fica sem eles, e a recusa é grafo.parser.indisponivel, com a correção no ork grafo status e no ork doctor. O grafo pede Node 20.19, 22.12 ou mais novo. O pacote de contexto da thread, a federação (KG6), a paridade entre hosts (KG7) e a rodada medida do benchmark ainda não existem: o protocolo está fixado, sem medida de economia."
             ],
             "code": "grafo:\n  mcp: true"
           }
@@ -87,7 +87,7 @@ export default [
             "title": "Three layers with explicit responsibilities",
             "paragraphs": [
               "The host receives the request and presents decisions. The ork core applies contracts, records state and checks evidence. The runtime writes the product. A runtime report does not replace running the checks.",
-              "The core is a deterministic CLI. Adapters connect hosts and runtimes; business rules remain in the core so the same decision keeps its meaning across channels."
+              "The core is a deterministic CLI. Adapters connect hosts and runtimes; business rules remain in the core so the same decision keeps its meaning across channels. There is no LLM inside the core and no required server or database; runtime dependencies are few and pinned."
             ]
           },
           {
@@ -136,7 +136,7 @@ export default [
             "title": "Incremental index and phase consumption: KG4 and KG5",
             "paragraphs": [
               "KG4 builds a revision’s index from the ancestor index and re-extracts only what the change reaches, with the same bytes as a full extraction; --verificar compares both. KG5 exposes the queries in the project MCP server: the ork_grafo_* tools run ork grafo in the thread worktree, in a child process with a deadline and cancellation, and the answer has a byte cap. The MCP server does not load the graph.",
-              "Consumption sits behind the grafo.mcp flag in orkastery.yaml, off by default; without it, MCP lists the same tools as before. The tools need the analyzers installed with ork. The thread context package, federation (KG6), host parity (KG7) and the measured benchmark run do not exist yet: the protocol is fixed, with no savings measurement."
+              "Consumption sits behind the grafo.mcp flag in orkastery.yaml, off by default; without it, MCP lists the same tools as before. The tools need the analyzers, typescript and micromark, which have been package dependencies with exact versions since the RM-031 packaging fix: npm install -g brings them. Installed inside a project or through npx, ork goes without them, and the refusal is grafo.parser.indisponivel, with the fix in ork grafo status and ork doctor. The graph needs Node 20.19, 22.12 or later. The thread context package, federation (KG6), host parity (KG7) and the measured benchmark run do not exist yet: the protocol is fixed, with no savings measurement."
             ],
             "code": "grafo:\n  mcp: true"
           }
@@ -151,7 +151,7 @@ export default [
             "title": "Tres capas con responsabilidades explícitas",
             "paragraphs": [
               "El host recibe la petición y presenta las decisiones. El núcleo ork aplica contratos, registra el estado y comprueba las pruebas. El runtime escribe el producto. Su informe no sustituye la ejecución de los verificadores.",
-              "El núcleo es un CLI determinista. Los adaptadores conectan hosts y runtimes; las reglas de negocio permanecen en el núcleo para que una decisión conserve su significado entre canales."
+              "El núcleo es un CLI determinista. Los adaptadores conectan hosts y runtimes; las reglas de negocio permanecen en el núcleo para que una decisión conserve su significado entre canales. No hay LLM dentro del núcleo, ni servidor o base de datos obligatorios; las dependencias de runtime son pocas y tienen versión fija."
             ]
           },
           {
@@ -200,7 +200,7 @@ export default [
             "title": "Índice incremental y consumo por las fases: KG4 y KG5",
             "paragraphs": [
               "KG4 construye el índice de una revisión a partir del índice ancestro y reextrae solo lo que el cambio alcanza, con los mismos bytes de la extracción completa; --verificar compara ambas. KG5 expone las consultas en el MCP del proyecto: las tools ork_grafo_* ejecutan ork grafo en la worktree de la thread, en un proceso hijo con plazo y cancelación, y la respuesta tiene un tope en bytes. El servidor MCP no carga el grafo.",
-              "El consumo queda detrás del flag grafo.mcp de orkastery.yaml, apagado por defecto; sin él, MCP lista las mismas tools de antes. Las tools necesitan los analizadores instalados con ork. El paquete de contexto de la thread, la federación (KG6), la paridad entre hosts (KG7) y la ronda medida del benchmark aún no existen: el protocolo está fijado, sin medición de ahorro."
+              "El consumo queda detrás del flag grafo.mcp de orkastery.yaml, apagado por defecto; sin él, MCP lista las mismas tools de antes. Las tools necesitan los analizadores, typescript y micromark, que desde la corrección de empaquetado de la RM-031 son dependencias del paquete, con versión exacta: npm install -g los trae. Instalado dentro de un proyecto o mediante npx, ork se queda sin ellos, y el rechazo es grafo.parser.indisponivel, con la corrección en ork grafo status y en ork doctor. El grafo pide Node 20.19, 22.12 o posterior. El paquete de contexto de la thread, la federación (KG6), la paridad entre hosts (KG7) y la ronda medida del benchmark aún no existen: el protocolo está fijado, sin medición de ahorro."
             ],
             "code": "grafo:\n  mcp: true"
           }
