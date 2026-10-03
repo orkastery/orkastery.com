@@ -1,4 +1,6 @@
 ---
+import {richTechnicalHtml} from '../lib/technical-text.mjs';
+import TechnicalText from './TechnicalText.astro';
 import {localeFor, localize} from '../data/i18n';
 const locale=localeFor(Astro.url.pathname);
 const translations={
@@ -121,25 +123,25 @@ const niveis = [
 <div class="gate grade-flexivel">
   <div class="gate-fluxo" data-anima>
     <div class="painel etapa">
-      <p class="micro-rotulo sem-ponto">ork gate next</p>
+      <p class="micro-rotulo sem-ponto"><code>ork gate next</code></p>
       <p class="etapa-texto">{t("t8")}</p>
 
       <ul class="fontes mono">
         {fontes.map((fonte) => (
           <li class={fonte.existe ? '' : 'fonte-ausente'}>
             <span class="fonte-marca" aria-hidden="true"></span>
-            {fonte.nome}
+            <TechnicalText text={fonte.nome}/>
           </li>
         ))}
       </ul>
 
-      <p class="etapa-nota"><Fragment set:html={t("t9")} /></p>
+      <p class="etapa-nota"><Fragment set:html={richTechnicalHtml(t("t9"))} /></p>
     </div>
 
     <div class="decisao" aria-hidden="true">
       <span class="decisao-fio"></span>
       <span class="decisao-losango">
-        <span class="decisao-pergunta mono">{t("t10")}</span>
+        <span class="decisao-pergunta mono"><TechnicalText text={t("t10")}/></span>
       </span>
       <span class="decisao-fio"></span>
     </div>
@@ -151,7 +153,7 @@ const niveis = [
       </div>
       <div class="painel painel-latao saida">
         <p class="mono saida-tag saida-tag-latao">{t("t12")}</p>
-        <p class="etapa-texto"><Fragment set:html={t("t14")} /></p>
+        <p class="etapa-texto"><Fragment set:html={richTechnicalHtml(t("t14"))} /></p>
       </div>
     </div>
   </div>
@@ -165,13 +167,13 @@ const niveis = [
           <span class="nivel-ordem mono" aria-hidden="true">{String(indice + 1).padStart(2, '0')}</span>
           <div>
             <p class="nivel-nome mono">{nivel.nome}</p>
-            <p class="nivel-desc" set:html={nivel.desc} />
+            <p class="nivel-desc" set:html={richTechnicalHtml(nivel.desc)} />
           </div>
         </li>
       ))}
     </ol>
 
-    <p class="triagem-nota paragrafo"><Fragment set:html={t("t16")} /></p>
+    <p class="triagem-nota paragrafo"><Fragment set:html={richTechnicalHtml(t("t16"))} /></p>
   </div>
 </div>
 
@@ -300,7 +302,7 @@ const niveis = [
     border-radius: var(--raio-pilula);
     padding: 0.12rem 0.85rem;
     font-size: var(--t-nano);
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.16em;
     color: var(--tinta-3);
   }

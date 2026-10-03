@@ -1,7 +1,10 @@
 import {readFileSync,writeFileSync,mkdirSync,existsSync,statSync} from 'node:fs';
 import {resolve,extname} from 'node:path';
 import {pathToFileURL} from 'node:url';
-const args=process.argv.slice(2),output=args.includes('--output')?resolve(args[args.indexOf('--output')+1]):null;
+const widths=[1280,700,390],routes=['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/varias-maquinas/'];
+const args=process.argv.slice(2);
+if(args.includes('--plan')){console.log(JSON.stringify({locales:['pt','en','es'],widths,themes:['dark','light'],routes,reducedMotion:['reduce','no-preference'],screenshots:3*widths.length*2*(routes.length+1),network:'blocked',requires:['PLAYWRIGHT_MODULE','CHROMIUM_EXECUTABLE','--output']},null,2));process.exit(0);}
+const output=args.includes('--output')?resolve(args[args.indexOf('--output')+1]):null;
 if(!output||!process.env.PLAYWRIGHT_MODULE||!process.env.CHROMIUM_EXECUTABLE)throw Error('Set PLAYWRIGHT_MODULE and CHROMIUM_EXECUTABLE, then pass --output PRIVATE_DIRECTORY');
 const dist=resolve('dist');
 if(output===resolve('.')||output.startsWith(resolve('.')+'/'))throw Error('Screenshots must stay outside public output');
@@ -10,9 +13,10 @@ const results=[];let browser;
 try{
  const {chromium}=await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE));
  browser=await chromium.launch({executablePath:process.env.CHROMIUM_EXECUTABLE});
- for(const locale of ['pt','en','es'])for(const width of [1280,700,390])for(const scheme of ['light','dark']){
+ for(const locale of ['pt','en','es'])for(const width of widths)for(const scheme of ['dark','light']){
   const context=await browser.newContext({viewport:{width,height:1000},colorScheme:scheme,locale:locale==='pt'?'pt-BR':locale,reducedMotion:'reduce',serviceWorkers:'block'});
-  // All responses come from dist; no request is allowed to reach a network.
+  await context.addInitScript(theme=>{if(!localStorage.getItem('ork-theme'))localStorage.setItem('ork-theme',theme);},scheme);
+ // All responses come from dist; no request is allowed to reach a network.
   await context.route('**/*',async route=>{
    const url=new URL(route.request().url());if(url.origin!=='http://docs.local')return route.abort('blockedbyclient');
    let file=resolve(dist,'.'+decodeURIComponent(url.pathname));
@@ -22,10 +26,20 @@ try{
    const types={'.html':'text/html','.css':'text/css','.js':'text/javascript','.woff2':'font/woff2','.svg':'image/svg+xml','.png':'image/png','.ico':'image/x-icon','.json':'application/json'};
    await route.fulfill({status:200,contentType:types[extname(file)]||'application/octet-stream',body:readFileSync(file)});
   });
-  for(const path of ['/','/docs/','/docs/arquitetura/','/docs/contribuir/']){
+  for(const path of routes){
    const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
    const localized=(locale==='pt'?'':'/'+locale)+path;
    await page.goto('http://docs.local'+localized,{waitUntil:'networkidle'});await page.evaluate(()=>document.fonts.ready);
+   if(await page.locator('html').getAttribute('data-theme')!==scheme)throw Error('Theme was not applied');
+   const toggle=page.locator('[data-theme-toggle]');
+   await toggle.focus();await page.keyboard.press('Enter');
+   if(await page.locator('html').getAttribute('data-theme')===scheme)throw Error('Theme toggle failed');
+   await page.reload({waitUntil:'networkidle'});
+   if(await page.locator('html').getAttribute('data-theme')===scheme)throw Error('Theme preference was lost');
+   await toggle.click();
+   await page.goto('about:blank');
+   await page.goto('http://docs.local'+localized,{waitUntil:'networkidle'});
+   if(await page.locator('html').getAttribute('data-theme')!==scheme)throw Error('Theme preference was not restored');
    await page.keyboard.press('Tab');
    if(await page.locator(':focus').getAttribute('href')!=='#conteudo')throw Error('Skip link not first in keyboard order');
    await page.keyboard.press('Enter');if(!page.url().endsWith('#conteudo'))throw Error('Skip target failed');
@@ -35,6 +49,8 @@ try{
    await page.evaluate(()=>document.fonts.ready);
    await page.locator('details').evaluateAll(nodes=>nodes.forEach(n=>n.open=true));
    const auditLayout=async()=>{
+   const motion=await page.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length);
+   if(motion)throw Error('Animation running with reduced motion');
    const diagram=await page.evaluate(()=>{
     const boxes=[...document.querySelectorAll('[data-diagram-box]')],problems=[];
     for(const box of boxes){
@@ -47,7 +63,7 @@ try{
    });
    if(diagram.problems.length)throw Error('Diagram labels outside boxes '+localized+' '+width+': '+diagram.problems.join(', '));
    const overflow=await page.evaluate(()=>Array.from(document.querySelectorAll('body *')).filter(el=>{
-    if(el.closest('svg,pre')||!(el instanceof HTMLElement)||getComputedStyle(el).position==='fixed')return false;
+    if(el.closest('svg,pre,[hidden]')||!(el instanceof HTMLElement)||getComputedStyle(el).position==='fixed')return false;
     const r=el.getBoundingClientRect();return r.width>0&&(r.right>innerWidth+1||r.left < -1);
    }).map(el=>el.tagName+'.'+el.className));
    if(overflow.length)throw Error('Overflow '+localized+' '+width+': '+overflow.join(', '));
@@ -76,7 +92,19 @@ try{
    const shot=`${locale}-${path.replaceAll('/','-')||'home'}-${width}-${scheme}.png`;
    await page.screenshot({path:resolve(output,shot),fullPage:true});
    if(errors.length)throw Error(errors.join('; '));
-   results.push({path:localized,width,scheme,screenshot:shot,overflow:0,keyboard:true,diagramBoxes:diagram.boxes,labelsContained:true});await page.close();
+   results.push({path:localized,width,scheme,screenshot:shot,overflow:0,keyboard:true,diagramBoxes:diagram.boxes,labelsContained:true,reducedMotion:'reduce'});
+   if(path==='/'){
+    await page.emulateMedia({reducedMotion:'no-preference'});
+    await page.reload({waitUntil:'networkidle'});
+    await page.locator('.collision-scene').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(2400);
+    if(errors.length)throw Error(errors.join('; '));
+    if(!await page.locator('.false-report strong').isVisible())throw Error('Collision final state missing');
+    const movingShot=`${locale}-home-${width}-${scheme}-motion.png`;
+    await page.screenshot({path:resolve(output,movingShot),fullPage:true});
+    results.push({path:localized,width,scheme,screenshot:movingShot,reducedMotion:'no-preference',finalCollisionVisible:true});
+   }
+   await page.close();
   }
   await context.close();
  }

@@ -20,6 +20,9 @@ npm run check:i18n
 npm run check:public
 npm run check:content
 npm run test:docs
+npm run test:code
+npm run check:code
+npm run check:design
 ```
 
 O prebuild confere o snapshot e a revisão editorial. O postbuild confere HTML,
@@ -72,27 +75,63 @@ A página editorial `roadmap` contextualiza o mês em `docs-standards.ts` (Orkas
 ou `docs-retrieval.ts` (OrkMind): atualize-a na mesma revisão e registre os hashes.
 Uma intenção não é uma capacidade entregue. Datas de revisão não são prazos de entrega.
 
-## Tipografia, caixa e diagramas
+## Código sempre distinto da prosa
 
-Preserve `src/styles/tokens.css`, logos, fontes e paleta da marca. Títulos, menus,
-links, botões e rótulos usam caixa de frase. Siglas, comandos e nomes próprios
-conservam a grafia original. Display é para títulos; a fonte de texto sustenta
-prosa com largura de leitura limitada e entrelinha generosa; mono identifica código.
+Todo comando, flag, caminho, arquivo, variável de ambiente, ferramenta e contrato
+citado deve sair como `<code>` ou `<pre><code>`. Em templates, use esses elementos;
+em campos editoriais, use `TechnicalText` na renderização. O reconhecedor de
+`src/lib/technical-text.mjs` cobre a sintaxe técnica usada pelo catálogo sem alterar
+as traduções nem seus hashes. Ele escapa texto simples; `richTechnicalHtml` é
+reservado às traduções HTML locais já existentes, nunca a conteúdo remoto.
+Para uma sintaxe nova, acrescente um caso explícito ao reconhecedor e um teste,
+ou marque o trecho com `<code>` no componente. Não envolva a frase inteira.
 
-O layout documental tem trilha, sumário, navegação por assunto e anterior/próximo.
-SVGs têm title, desc, relações numeradas e legenda textual; a leitura não depende
-só da cor. A superfície documental adapta os tokens existentes ao esquema claro;
-as páginas de apresentação mantêm o tema escuro da marca. Testar o navegador em
-modo claro não significa que a home ofereça um tema claro.
+`npm run build` executa `test:code` e `check:code`. O auditor usa o DOM do HTML
+final, independentemente do reconhecedor. Reprova comandos soltos de `ork`, `npm`,
+`npx`, `git` e `pip`, flags e identificadores técnicos, inclusive em painéis ainda
+fechados, entidades HTML e comandos divididos por tags inline. Não há exceção por
+página ou idioma. `code`/`pre` e metadados não visíveis são os únicos elementos
+excluídos. A lista `proseExceptions` em `scripts/check-code.mjs` aceita pares exatos
+como “ork core” e “git repository”, descrições do programa em prosa; cada entrada
+tem teste que garante que ela não libera o comando seguinte. Os domínios públicos
+de contato também têm teste explícito. Novas exceções exigem justificativa e teste.
 
-Os componentes demonstrativos legados permanecem no histórico de desenvolvimento,
-mas não são importados pelas rotas atuais. As páginas ativas usam HomePage,
-DocsArticle e DocsDiagram com os catálogos editoriais. Não reintroduza componentes
-com texto fixo em português sem revisão das três línguas.
+## Identidade e acessibilidade
+
+`src/styles/tokens.css` concentra cores, fontes, espaçamento, raios, sombras e
+movimento. Grafite e ciano distinguem a interface; verde marca prova e rosa marca
+conflito. O padrão é escuro; o botão de tema oferece uma paleta clara em todas as
+páginas e guarda a preferência localmente. Sem JavaScript, o conteúdo permanece
+legível no tema escuro. Os nomes antigos dos tokens são aliases de compatibilidade.
+
+Instrument Sans (grotesca variável) atende títulos e prosa, com pesos e escalas
+próprios; Geist Mono identifica código. Os WOFF2 Latin são auto-hospedados pelo
+build e cobrem PT, EN e ES. Ambas usam SIL OFL 1.1. Fraunces fica restrita à marca
+existente: o logo aprovado não foi redesenhado. As três licenças e atribuições
+acompanham o bundle em `public/licenses/`. Não há fonte ou script de CDN.
+
+Nós, trilhas paralelas, terminais e uma grade técnica substituem a partitura e
+os ícones de instrumentos nos componentes ativos. A cena de colisão é uma
+ilustração, não telemetria: mantém o texto real e mostra o relatório contraditório
+com texto riscado e um aviso, além da cor. A animação CSS termina em poucos segundos;
+com `prefers-reduced-motion: reduce`, a cena final aparece estática. Os demais
+chamados de impacto seguem a mesma linguagem de trilhas e sinais de verificação.
+
+`check:design` mede os pares de texto e fundos dos dois temas (mínimo 4,5:1), código
+sobre fundo composto e bordas de controles (mínimo 3:1). Confere temas, licenças,
+ornamentos ativos, recursos externos e orçamentos de fontes (200 kB no total) e JS
+(45 kB, arquivos mais maior volume inline por página). Isso não substitui a revisão
+de contraste e layout no navegador. Títulos e rótulos usam caixa de frase.
+
+O layout documental mantém trilha, sumário, navegação e anterior/próximo. Diagramas
+informativos mantêm título, descrição e legenda; blocos de código e tabelas rolam
+por dentro, sem alargar a página. Componentes antigos sem importação nas rotas
+permanecem no clone; não devem voltar sem revisão das três línguas.
 
 ## Prova visual sem rede
 
-Forneça uma instalação local de Playwright e Chromium. Nenhum caminho pessoal
+Confira a matriz sem iniciar um navegador com `npm run check:visual -- --plan`.
+Para capturar, forneça uma instalação local de Playwright e Chromium. Nenhum caminho pessoal
 ou navegador é fixado no código ou no lockfile do site.
 
 ```sh
@@ -102,8 +141,11 @@ npm run check:visual -- --output /diretorio/privado/screenshots
 ```
 
 O verificador intercepta todas as requisições, serve somente `dist` em memória e
-bloqueia destinos externos. Exercita home, índice e arquitetura nos três idiomas,
-1280/390 px e esquemas claro/escuro: 36 screenshots, overflow e navegação por teclado.
+bloqueia destinos externos. Exercita home, páginas de produto, índice, arquitetura,
+contribuição e rede nos três idiomas e em 1280, 700 e 390 px, com os dois temas
+selecionados de verdade. São 126 capturas com movimento reduzido e mais 18 da home
+com movimento normal, após a animação: 144 capturas previstas. Confere overflow,
+teclado, alternância e persistência do tema, painéis interativos e movimento reduzido.
 Os PNGs e `report.json` ficam fora do repositório público. Se o navegador não puder
 iniciar, o comando falha e registra o impedimento; não muda sandbox nem permissões.
 A inspeção humana das imagens ainda é necessária para avaliar qualidade visual.

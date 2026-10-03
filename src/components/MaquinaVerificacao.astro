@@ -1,4 +1,6 @@
 ---
+import TechnicalText from './TechnicalText.astro';
+import {richTechnicalHtml} from '../lib/technical-text.mjs';
 import {localeFor, localize} from '../data/i18n';
 const locale=localeFor(Astro.url.pathname);
 const translations={
@@ -162,14 +164,14 @@ const passos = [
         style={`--atraso: ${indice * 0.08}s`}
       >
         <span class="passo-no" aria-hidden="true"></span>
-        <p class="passo-quem mono">{passo.quem}</p>
-        {passo.texto && <p class="passo-texto" set:html={passo.texto} />}
+        <p class="passo-quem mono"><TechnicalText text={passo.quem}/></p>
+        {passo.texto && <p class="passo-texto" set:html={richTechnicalHtml(passo.texto)} />}
         {passo.ramos && (
           <div class="ramos">
             {passo.ramos.map((ramo) => (
               <p class={`ramo ramo-${ramo.cor}`}>
                 <span class="mono ramo-tag">{ramo.tag}</span>
-                <span set:html={ramo.texto} />
+                <span set:html={richTechnicalHtml(ramo.texto)} />
               </p>
             ))}
           </div>
@@ -180,7 +182,7 @@ const passos = [
 
   <div class="motivos">
     <p class="titulo-3">{t("t13")}</p>
-    <p class="motivos-sub paragrafo"><Fragment set:html={t("t14")} /></p>
+    <p class="motivos-sub paragrafo"><Fragment set:html={richTechnicalHtml(t("t14"))} /></p>
 
     <ul class="chaves mono" aria-hidden="true">
       <li><span class="chave chave-auto"></span> {t("t15")}</li>
@@ -200,7 +202,7 @@ const passos = [
       ))}
     </ul>
 
-    <p class="motivos-nota paragrafo"><Fragment set:html={t("t18")} /></p>
+    <p class="motivos-nota paragrafo"><Fragment set:html={richTechnicalHtml(t("t18"))} /></p>
   </div>
 </div>
 
@@ -269,12 +271,12 @@ const passos = [
   .passo-latao .passo-no {
     border-color: var(--latao);
     background: var(--latao);
-    box-shadow: 0 0 0 4px var(--latao-fraco), 0 0 18px rgba(224, 178, 100, 0.55);
+    box-shadow: 0 0 0 4px var(--latao-fraco), 0 0 18px color-mix(in srgb, var(--acento) 55%, transparent);
   }
 
   .passo-quem {
     font-size: var(--t-nano);
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.18em;
     color: var(--tinta-3);
   }
@@ -343,7 +345,7 @@ const passos = [
     gap: 0.4rem 1.3rem;
     font-size: var(--t-nano);
     color: var(--tinta-3);
-    text-transform: uppercase;
+    text-transform: none;
     letter-spacing: 0.12em;
   }
 
@@ -387,7 +389,7 @@ const passos = [
     border: 1px solid var(--linha);
     border-radius: var(--raio-campo);
     padding: 0.75rem 0.95rem 0.75rem 1.15rem;
-    background: linear-gradient(180deg, rgba(245, 241, 234, 0.022), transparent), var(--palco);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--tinta) 2.2%, transparent), transparent), var(--palco);
     box-shadow: var(--lustro);
     overflow: hidden;
     transition: border-color var(--dur-2) var(--curva), transform var(--dur-2) var(--curva),
@@ -451,7 +453,7 @@ const passos = [
 
   .motivo-retry::before {
     content: 'retry: ';
-    opacity: 0.6;
+    opacity: 1;
   }
 
   .motivos-nota {
