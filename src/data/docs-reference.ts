@@ -49,7 +49,7 @@ export default [
             "title": "Confirmações desta máquina",
             "paragraphs": [
               "Na versão {versao}, três escolhas do manifesto só valem depois de a máquina confirmar, fora do git. O runtime.sandbox que afrouxa o sandbox do agente (danger-full-access) só despacha pelo Codex depois de ork setup sandbox confirmar <postura>; sem isso, ork phase run e ork retry run recusam com runtime.sandbox-nao-confirmado. O worktree.dir que leva para fora da raiz, pelo caminho real, só cria worktree depois de ork setup worktree confirmar; sem isso, a criação recusa com worktree.dir-fora-da-raiz. E o fabrica.compartilhada: true só liga a fábrica com a adesão da máquina, por ork fabrica entrar.",
-              "Cada confirmação fica em .orkastery/private (postura-local.json e worktree-local.json, modo 0600, fora do git) e vale só para este checkout; a da worktree, só para aquela pasta. O ork doctor acusa a falta de cada uma.",
+              "As duas confirmações do ork setup ficam em .orkastery/private (postura-local.json e worktree-local.json, modo 0600, fora do git) e valem só para este checkout; a da worktree, só para aquela pasta. A adesão da fábrica fica em ~/.orkastery/maquina.json e vale para a máquina. O ork doctor acusa a falta de cada uma.",
               "Também na versão {versao}, o ork eval só executa o catálogo do pacote que está rodando: um catálogo achado a partir do cwd que não é o do pacote recusa com eval.catalogo-alheio. Num checkout do Orkastery, use o do checkout, node core/dist/index.js eval, como o CI já faz."
             ],
             "links": [
@@ -189,7 +189,7 @@ export default [
             "title": "Confirmations on this machine",
             "paragraphs": [
               "In version {versao}, three manifest choices only take effect after the machine confirms them, outside git. A runtime.sandbox that loosens the agent sandbox (danger-full-access) only dispatches through Codex after ork setup sandbox confirmar <postura>; without it, ork phase run and ork retry run refuse with runtime.sandbox-nao-confirmado. A worktree.dir that leads outside the root, by its real path, only creates a worktree after ork setup worktree confirmar; without it, creation refuses with worktree.dir-fora-da-raiz. And fabrica.compartilhada: true only turns the factory on with the machine’s membership, through ork fabrica entrar.",
-              "Each confirmation lives in .orkastery/private (postura-local.json and worktree-local.json, mode 0600, outside git) and applies only to this checkout; the worktree one, only to that folder. ork doctor reports each missing confirmation.",
+              "The two ork setup confirmations live in .orkastery/private (postura-local.json and worktree-local.json, mode 0600, outside git) and apply only to this checkout; the worktree one, only to that folder. The factory membership lives in ~/.orkastery/maquina.json and applies to the machine. ork doctor reports each one that is missing.",
               "Also in version {versao}, ork eval only runs the catalog of the package that is running: a catalog found from the cwd that is not the package’s own refuses with eval.catalogo-alheio. In an Orkastery checkout, use that checkout’s own, node core/dist/index.js eval, as CI already does."
             ],
             "links": [
@@ -329,7 +329,7 @@ export default [
             "title": "Confirmaciones de esta máquina",
             "paragraphs": [
               "En la versión {versao}, tres elecciones del manifiesto solo valen después de que la máquina las confirme, fuera de git. El runtime.sandbox que afloja el sandbox del agente (danger-full-access) solo despacha por Codex después de ork setup sandbox confirmar <postura>; sin eso, ork phase run y ork retry run rechazan con runtime.sandbox-nao-confirmado. El worktree.dir que lleva fuera de la raíz, por la ruta real, solo crea worktree después de ork setup worktree confirmar; sin eso, la creación se rechaza con worktree.dir-fora-da-raiz. Y fabrica.compartilhada: true solo activa la fábrica con la adhesión de la máquina, mediante ork fabrica entrar.",
-              "Cada confirmación queda en .orkastery/private (postura-local.json y worktree-local.json, modo 0600, fuera de git) y vale solo para este checkout; la de la worktree, solo para esa carpeta. ork doctor señala la falta de cada una.",
+              "Las dos confirmaciones de ork setup quedan en .orkastery/private (postura-local.json y worktree-local.json, modo 0600, fuera de git) y valen solo para este checkout; la de la worktree, solo para esa carpeta. La adhesión a la fábrica queda en ~/.orkastery/maquina.json y vale para la máquina. ork doctor señala la falta de cada una.",
               "También en la versión {versao}, ork eval solo ejecuta el catálogo del paquete que está corriendo: un catálogo encontrado a partir del cwd que no es el del paquete se rechaza con eval.catalogo-alheio. En un checkout de Orkastery, use el del checkout, node core/dist/index.js eval, como ya hace el CI."
             ],
             "links": [

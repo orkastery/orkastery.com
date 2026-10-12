@@ -115,9 +115,11 @@ Par de verbo e subcomando do `ork` citado sem o `ork` (“claims add”, “ci p
 também reprova, numa lista fechada de pares que nenhuma das três línguas forma por
 acaso (`bareCommandPairs`): o texto diz `ork claims add`. Par que uma frase comum
 forma (“the thread status”, “each phase run”) fica com a revisão editorial. Reprova
-ainda o comando partido entre código e prosa: o código que termina no verbo com o
-subcomando na prosa, o que termina numa flag com o valor na prosa e o `node` solto
-antes de `--test`.
+ainda o comando partido entre código e prosa: o código que termina num verbo de uma
+palavra com o subcomando na prosa (só subcomandos que não são verbo comum de prosa,
+como `conferir` e `sincronizar`), o que termina numa flag com o valor na prosa e o
+`node` solto antes de `--test`. Variável de ambiente (`$HOME`, `PATH`, `LANG`) e
+comando de barra do plugin (`/orkastery:goal`, `$ork`) fora do código também reprovam.
 `Node.js`, `projeto-alvo` e “resources unavailable in CI” são prosa; arquivos como
 `index.js`, caminhos e contratos com ponto continuam distintos.
 Não há exceção por

@@ -14,11 +14,12 @@ const exceptions=new Set(proseExceptions);
 // Lista fechada de pares que não são prosa em nenhuma das três línguas. Ficam de fora os que
 // uma frase comum forma ("the thread status", "each phase run", "the memory search", "a thread
 // entrar"): esses ficam com a revisão editorial, e o par com o ork antes é outra regra.
-export const bareCommandPairs=['claims add','claims conferir','claims retirar','ci prepare','ci run','ci status','ship registrar-pr','decisao registrar','decisao placar','docs sincronizar','docs verificar','adapter install','network entrar','network sair','network publicar','fabrica entrar','fabrica publicar','grafo indexar','master pedir','brain context','brain dossie','retry run','projetos registrar','projetos esquecer','sessions limpar-fantasmas','accounts esgotamentos','roadmap reservas','worktree ensure','lease acquire','setup sandbox','setup worktree'];
+export const bareCommandPairs=['claims add','claims conferir','claims retirar','ci prepare','ci run','ci status','ship registrar-pr','decisao registrar','decisao placar','docs sincronizar','docs verificar','network entrar','network sair','network publicar','fabrica entrar','fabrica publicar','grafo indexar','master pedir','brain context','brain dossie','projetos registrar','projetos esquecer','sessions limpar-fantasmas','accounts esgotamentos','roadmap reservas','worktree ensure','lease acquire','setup sandbox','setup worktree'];
 export const bareCommand=new RegExp(`(?<![\\p{L}\\d_./@-])(?<!ork\\s)(?:${bareCommandPairs.map(p=>p.replace(' ','\\s+')).join('|')})(?![\\p{L}\\d_-])`,'gu');
 // Comando partido: o código termina antes do comando acabar e o resto ficou na prosa
 // (<code>ork claims</code> add, <code>ork docs sincronizar --so</code> RM-NNN, node <code>--test</code>).
-const restOfCommand=/^\s+(?:add|conferir|retirar|prepare|run|status|registrar-pr|registrar|placar|sincronizar|verificar|install|entrar|sair|publicar|indexar|pedir|context|dossie|esquecer|limpar-fantasmas|esgotamentos|reservas|ensure|acquire|release|list|new|show|revogar|confirmar)(?![\p{L}\d_-])/u;
+// Só subcomandos que não são verbo comum de prosa: "ork pulse e ork roadmap status show" é inglês.
+const restOfCommand=/^\s+(?:conferir|retirar|prepare|registrar-pr|registrar|placar|sincronizar|verificar|entrar|sair|publicar|indexar|pedir|dossie|esquecer|limpar-fantasmas|esgotamentos|reservas|ensure|acquire|revogar|confirmar)(?![\p{L}\d_-])/u;
 const valueAfterFlag=/^\s+(?:RM-[\dN]+|C\d+|T\d|<[^<>]+>|ork-[a-z])/;
 const isUnitNode=n=>n?.tagName==='span'&&(attrs(n).class||'').split(/\s+/).includes('code-unit');
 const textOf=n=>!n?'':n.nodeName==='#text'?n.value:content(n);
@@ -32,7 +33,7 @@ export function splitCommands(html) {
     let after=textOf(kids[i+1]),before=textOf(kids[i-1]);
     if(i===kids.length-1&&isUnitNode(node)){const up=node.parentNode?.childNodes||[];after=textOf(up[up.indexOf(node)+1]);}
     if(i===0&&isUnitNode(node)){const up=node.parentNode?.childNodes||[];before=textOf(up[up.indexOf(node)-1]);}
-    if(/^ork(?:\s+[a-z][\w-]*){1,2}$/.test(code)&&restOfCommand.test(after))found.push(`partido: ${code} + ${after.trim().split(/\s+/)[0].replace(/[.,;:)]+$/,'')}`);
+    if(/^ork\s+[a-z][\w-]*$/.test(code)&&restOfCommand.test(after))found.push(`partido: ${code} + ${after.trim().split(/\s+/)[0].replace(/[.,;:)]+$/,'')}`);
     else if(/^ork\s.*\s--[a-z][\w-]*$/.test(code)&&valueAfterFlag.test(after))found.push(`partido: ${code} + ${after.trim().split(/\s+/)[0].replace(/[.,;:)]+$/,'')}`);
     if(/^--/.test(code)&&/\bnode\s+$/.test(before))found.push(`partido: node + ${code}`);
    }else if(!excluded.has(child.tagName))visit(child);
@@ -61,6 +62,8 @@ export function violations(html) {
   if(!exceptions.has(candidate))found.push(candidate);
  }
  for(const m of text.matchAll(bareCommand))found.push('ork? '+m[0]);
+ // Variável de ambiente e comando de barra do plugin fora do código ($HOME, PATH, LANG, /orkastery:goal, $ork).
+ for(const m of text.matchAll(/\$[A-Z][A-Z0-9_]*\b|\b(?:PATH|HOME|LANG|TMPDIR|PWD)\b|(?<![\w/.:-])\/orkastery:[a-z][\w-]*|(?<![\w$])\$ork\b/g))found.push(m[0]);
  for(const m of text.matchAll(/(?<![\w-])--[a-z][\w-]*|\b(?:[A-Z][A-Z0-9]*_)+[A-Z0-9_]+\b|\b(?:mcp__\w+|ork_\w+)\b|\b[\w.-]+\.(?:jsonl?|ya?ml|md|toml|mjs|cjs|ts|py|sh)\b|\bork\.[\w.-]+\/v\d+/g))found.push(m[0]);
  for(const m of text.matchAll(/\b[a-z][\w-]*(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b|\b[a-z][\w]*(?:_[a-z\d]+)+\b|(?:~\/|\.[a-z][\w-]*\/|\/(?:usr|tmp)\/|\b(?:origin|tools|plugins|pgvector)\/)(?:[\w@*-]+|<[^<>]+>|\/|\.[\w-]+)+|@[a-z][\w-]*\/[\w.-]+/g)){
   // Public contact/domain is prose. This does not exempt any command or path.

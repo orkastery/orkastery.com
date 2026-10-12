@@ -1594,19 +1594,19 @@
     "cli": {
       "pt": {
         "sourceHash": "4f77b6472e917a814ea16e8e9c1981f01146e6b1be148723c081ed1ffed2d3f0",
-        "contentHash": "8abb3f890f41de4e31b573ca2dc04eb3efd673c4d48441cbf088fe90ac8f9682",
+        "contentHash": "fb46a12e099ce7b61236136275401c00ce9c6fde97f3792e4ec1dce559d22116",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "en": {
         "sourceHash": "4f77b6472e917a814ea16e8e9c1981f01146e6b1be148723c081ed1ffed2d3f0",
-        "contentHash": "39d68b9c51d51f2f9e2d1ac4964dcd5f62c0931832a82b86cb7ef604252725b1",
+        "contentHash": "3b9448dd8508c243a0f033104265b55534bc9399daba53b26bb76c65a5cf0a55",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "es": {
         "sourceHash": "4f77b6472e917a814ea16e8e9c1981f01146e6b1be148723c081ed1ffed2d3f0",
-        "contentHash": "7bbebf5338ecbbc3c282b7429817953040618b9706435307909f75f7963114ac",
+        "contentHash": "1b0cba3be2d784a9266166a1fdbc69f55612fa764ed597e20e2930ea6a84e6e5",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       }
@@ -1854,19 +1854,19 @@
     "claude-code": {
       "pt": {
         "sourceHash": "57dbafb599f6ddae1c6ac879418ee37dff73885f4506081af0492a3fa0600ceb",
-        "contentHash": "f0de9816c0734972c40f535ed95f074cb1bfa32651b5ae06e103903c7497cdc3",
+        "contentHash": "2c7426ab027e105c59079230e1e0fd5d827921514109cf1d319dca53dc8c30d0",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "en": {
         "sourceHash": "57dbafb599f6ddae1c6ac879418ee37dff73885f4506081af0492a3fa0600ceb",
-        "contentHash": "6259b6670bd37298e915e031a647f3877793464e3633e0ffa9368fc7dbbc6a14",
+        "contentHash": "f51ae440bd8ddf6ff91a7f7f9a758011fd7b06b39c5169d3ef8be8622a99b5b0",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "es": {
         "sourceHash": "57dbafb599f6ddae1c6ac879418ee37dff73885f4506081af0492a3fa0600ceb",
-        "contentHash": "28acc4364c791209010ec78f9dbf908e5b35f65d15c5285485672c1ad4961468",
+        "contentHash": "72023aa1f5bf7f2ce04ac299462e804a8b62f0b60b83f34453ba5410751707a3",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       }

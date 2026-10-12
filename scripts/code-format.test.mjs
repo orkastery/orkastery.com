@@ -166,10 +166,10 @@ test('three-level ork commands, git rm with a path and node with an ork subcomma
 
 test('an ork subcommand quoted without ork fails the code audit, in prose of any language',()=>{
  assert.deepEqual(violations('<p>O lint avisa em claims add e ci prepare recusa.</p>'),['ork? claims add','ork? ci prepare']);
- assert.deepEqual(violations('<p>Then retry run dispatches; ship registrar-pr records it.</p>'),['ork? retry run','ork? ship registrar-pr']);
- assert.deepEqual(violations('<p>Then retry  run, again.</p>'),['ork? retry  run']);
+ assert.deepEqual(violations('<p>Then ci run dispatches; ship registrar-pr records it.</p>'),['ork? ci run','ork? ship registrar-pr']);
+ assert.deepEqual(violations('<p>Then ci  run, again.</p>'),['ork? ci  run']);
  // Par que uma frase comum forma fica de fora; letra colada antes ou depois não é o comando.
- assert.deepEqual(violations('<p>Check the thread status. Antes de a thread entrar no GO. Each phase run, the memory search, a lease release, la worktree status.</p>'),[]);
+ assert.deepEqual(violations('<p>Check the thread status. Antes de a thread entrar no GO. Each phase run, the memory search, a lease release, la worktree status, a retry run, the adapter install step.</p>'),[]);
  assert.deepEqual(violations('<p>xclaims add, claims addx, ci preparex.</p>'),[]);
  assert.deepEqual(violations('<p>'+technicalHtml('O lint avisa em ork claims add e ork ci prepare recusa.')+'</p>'),[]);
  assert.deepEqual(violations('<p>a thread nova, o status da thread e o pacote de contexto</p>'),[]);
@@ -177,10 +177,13 @@ test('an ork subcommand quoted without ork fails the code audit, in prose of any
 });
 
 test('a command split between code and prose fails the code audit',()=>{
- assert.deepEqual(violations('<p>Use <code>ork claims</code> add.</p>'),['partido: ork claims + add']);
+ assert.deepEqual(violations('<p>Use <code>ork claims</code> conferir agora.</p>'),['partido: ork claims + conferir']);
  assert.deepEqual(violations('<p>Rode <code>ork docs sincronizar --escrever --so</code> RM-NNN.</p>'),['partido: ork docs sincronizar --escrever --so + RM-NNN']);
  assert.deepEqual(violations('<p>Rode node <code>--test</code> no arquivo.</p>'),['partido: node + --test']);
- assert.deepEqual(violations('<p>Use <span class="code-unit">(<code>ork claims</code></span> add).</p>'),['partido: ork claims + add']);
+ assert.deepEqual(violations('<p>Use <span class="code-unit">(<code>ork claims</code></span> conferir).</p>'),['partido: ork claims + conferir']);
+ assert.deepEqual(violations('<p>Rode node <span class="code-unit"><code>--test</code>,</span> e siga.</p>'),['partido: node + --test']);
+ // Dois comandos como sujeito, verbo no plural: inglês comum, não comando partido.
+ for(const s of ['ork pulse and ork roadmap status show the time','ork memory status and ork memory index show it per collection','ork claims add and ork ci prepare run the same lint','ork pulse and ork board show the time'])assert.deepEqual(violations('<p>'+technicalHtml(s)+'</p>'),[],s);
  assert.deepEqual(violations('<p>Use <code>ork claims add</code> agora e <code>ork verify</code> depois.</p>'),[]);
  assert.deepEqual(violations('<p>e '+technicalHtml('ork ship')+' entrega essa branch</p>'),[]);
  assert.deepEqual(violations('<p>'+technicalHtml('Rode node --test no arquivo e ork docs sincronizar --escrever --so RM-NNN.')+'</p>'),[]);
@@ -191,5 +194,12 @@ test('identifiers from the review stay whole, and prose abbreviations stay prose
   assert.equal(technicalHtml(token),`<code>${token.replace('<','&lt;').replace('>','&gt;')}</code>`,token);
  }
  assert.equal(technicalHtml('e ork ship entrega essa branch'),'e <code>ork ship</code> entrega essa branch');
+ // logs, ausente e pegar só depois do verbo deles.
+ assert.equal(technicalHtml('ork verify logs each command'),'<code>ork verify</code> logs each command');
+ assert.equal(technicalHtml('com o ork mcp ausente'),'com o <code>ork mcp</code> ausente');
+ assert.equal(technicalHtml('use ork claims ausente'),'use <code>ork claims ausente</code>');
+ assert.equal(technicalHtml('ork phase list --worktree DIR e --teto-bytes N.'),'<code>ork phase list --worktree DIR</code> e <span class="code-unit" style="--folga:0.6ch"><code>--teto-bytes N</code>.</span>');
+ // O auditor também guarda esses identificadores, não só o reconhecedor.
+ assert.deepEqual(violations('<p>cwd no $HOME e no PATH, (LANG), /orkastery:goal e $ork.</p>'),['$HOME','PATH','LANG','/orkastery:goal','$ork']);
  for(const text of ['Use a short name, e.g. demo','that is, i.e. now']){assert.equal(technicalHtml(text),text);assert.ok(violations(`<p>${text}</p>`).length,text);}
 });
