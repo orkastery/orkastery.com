@@ -20,7 +20,7 @@
     "test:previa": "node scripts/previa.test.mjs",
     "test:publicar": "node scripts/publicar.test.mjs",
     "prebuild": "npm run docs:check",
-    "postbuild": "npm run check:links && npm run check:i18n && npm run check:public && npm run check:content && npm run test:docs && npm run test:code && npm run check:previa && npm run test:previa",
+    "postbuild": "npm run check:links && npm run check:i18n && npm run check:public && npm run check:content && npm run test:docs && npm run test:code && npm run check:code && npm run check:previa && npm run test:previa",
     "test:code": "node scripts/code-format.test.mjs",
     "check:code": "node scripts/check-code.mjs"
   },
