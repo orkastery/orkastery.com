@@ -1752,13 +1752,13 @@
     "claude-code": {
       "pt": {
         "sourceHash": "5e2d5ebc7c329c91299e8127abf37ab8be4b8c134b0969b5ad09099cc3001ac2",
-        "contentHash": "0be3b969322eae452543378e236b32af14c64dc349669239b6d4e823d96a352a",
+        "contentHash": "ac674900085427b46b0e9eb9edb9f01a4cd5be1a4129f8190b4ac7be23867324",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "en": {
         "sourceHash": "5e2d5ebc7c329c91299e8127abf37ab8be4b8c134b0969b5ad09099cc3001ac2",
-        "contentHash": "fd49e54667a3875da23827bde5999876a5ce5ca16e6f4254bb56cbddf3293e60",
+        "contentHash": "303a4b205ec4a4c35c9aaf2e808baa45b90d406cd3451d1ffe37080905dbc388",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       }

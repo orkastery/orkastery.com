@@ -31,6 +31,7 @@ const arquivos = {
   ['deck-capa-1920x1080.png', '1920 × 1080']
  ],
  documentos: {diretrizes: '/marca/documentos/diretrizes-rapidas.pdf', manual: '/marca/documentos/manual-de-marca.pdf', componentes: '/marca/documentos/partitura-componentes.pdf'},
+ fontesLinks: ['https://fonts.google.com/specimen/Geist', 'https://fonts.google.com/specimen/Hanken+Grotesk', 'https://fonts.google.com/specimen/IBM+Plex+Mono'],
  fontesSnippet: '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@600&family=Hanken+Grotesk:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">\n<link rel="stylesheet" href="/partitura/partitura.css">'
 };
 

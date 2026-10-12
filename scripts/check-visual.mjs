@@ -15,7 +15,7 @@ import {pathToFileURL} from 'node:url';
 const opcao=(k,padrao)=>process.argv.includes(k)?process.argv[process.argv.indexOf(k)+1].split(','):padrao;
 // --linguas, --larguras e --rotas recortam a matriz (para canário e depuração); --dist troca a build.
 const locales=opcao('--linguas',['pt','en']),widths=opcao('--larguras',['1440','768','390','320']).map(Number),routes=opcao('--rotas',['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/claude-code/','/marca/']);
-const checks=['skipLink','languageKeyboard','focusRing','focusRingNotClipped','focusNotUnderHeader','textContrast','textInsideBox','overflow','inlineCodeWhole','inlineCodeScrollsOnlyIfWider','adjacentTextWithCode','codeInsideBlock','touchTarget','brassOnlyWhereAllowed','mobileMenu','boardCards','copySuccessAndRefusal','modes','phaseTabsKeyboard','options','nightScroll','reveal','kitMotionOnly','pauseMotion','reducedMotion','reducedMotionCanvasAndClock','scorePainted'];
+const checks=['skipLink','languageKeyboard','focusRing','focusRingNotClipped','focusNotUnderHeader','focusBackwards','inlineCodeCutCue','noCutCodeOnHome','textContrast','textInsideBox','overflow','inlineCodeWhole','inlineCodeScrollsOnlyIfWider','adjacentTextWithCode','codeInsideBlock','touchTarget','brassOnlyWhereAllowed','mobileMenu','boardCards','copySuccessAndRefusal','modes','phaseTabsKeyboard','options','nightScroll','reveal','kitMotionOnly','pauseMotion','reducedMotion','reducedMotionCanvasAndClock','scorePainted'];
 const args=process.argv.slice(2);
 if(args.includes('--plan')){console.log(JSON.stringify({locales,widths,routes,checks,screenshots:locales.length*widths.length*routes.length,network:'blocked',requires:['PLAYWRIGHT_MODULE','CHROMIUM_EXECUTABLE','--output']},null,2));process.exit(0);}
 const output=args.includes('--output')?resolve(args[args.indexOf('--output')+1]):null;
@@ -34,6 +34,25 @@ async function servir(context){
   await route.fulfill({status:200,contentType:types[extname(file)]||'application/octet-stream',body:readFileSync(file)});
  });
 }
+
+// O focável atual: anel do kit (2 px do chão e 4 px da cor de foco), recorte por contêiner com
+// overflow e o cabeçalho fixo por cima.
+const focoAtual=()=>{
+     const el=document.activeElement;if(!el||el===document.body)return {fim:true};
+     const cs=getComputedStyle(el),anel=/0px 0px 0px 4px/.test(cs.boxShadow)||(cs.outlineStyle!=='none'&&parseFloat(cs.outlineWidth)>=2&&cs.outlineColor!=='rgba(0, 0, 0, 0)');
+     const r=el.getBoundingClientRect(),id=el.tagName+'|'+(el.getAttribute('href')||'')+'|'+Math.round(r.top+scrollY)+'|'+Math.round(r.left);
+     let cortado=null;
+     for(let p=el.parentElement;p&&p!==document.body&&!cortado;p=p.parentElement){
+      const pc=getComputedStyle(p);if(pc.overflowX==='visible'&&pc.overflowY==='visible')continue;
+      const q=p.getBoundingClientRect(),c={l:q.left+parseFloat(pc.borderLeftWidth),t:q.top+parseFloat(pc.borderTopWidth),r:q.right-parseFloat(pc.borderRightWidth),b:q.bottom-parseFloat(pc.borderBottomWidth)};
+      // Só conta o lado em que o próprio elemento cabe no contêiner e o anel de 4 px não.
+      const lados=[['esq',r.left>=c.l-.5&&r.left-4<c.l-.5],['topo',r.top>=c.t-.5&&r.top-4<c.t-.5],['dir',r.right<=c.r+.5&&r.right+4>c.r+.5],['base',r.bottom<=c.b+.5&&r.bottom+4>c.b+.5]].filter(x=>x[1]).map(x=>x[0]);
+      if(lados.length)cortado=p.tagName.toLowerCase()+'.'+String(p.className).split(' ')[0]+' '+lados.join('+');
+     }
+     const cab=document.querySelector('.cabecalho'),hb=cab?cab.getBoundingClientRect().bottom:0;
+     const sob=!el.closest('.cabecalho,.pular')&&cs.position!=='fixed'&&r.top<hb-1;
+     return {id,nome:(el.textContent||el.getAttribute('aria-label')||'').trim().replace(/\s+/g,' ').slice(0,30),anel,cortado,sob};
+    };
 
 // Auditoria de layout que roda na página: sobra horizontal e código inline.
 const auditoria=()=>{
@@ -74,6 +93,9 @@ const auditoria=()=>{
  const larguraUtil=b=>{const cs=getComputedStyle(b);return b.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);};
  const rolaAToa=codigos.filter(c=>c.scrollWidth>c.clientWidth+1).filter(c=>{const b=bloco(c);if(!b)return false;const u=c.parentElement?.classList.contains('code-unit')?c.parentElement:null;const extra=u?u.getBoundingClientRect().width-c.getBoundingClientRect().width:0;return c.scrollWidth+extra<=larguraUtil(b)-1;}).map(c=>c.textContent.trim());
  const rolando=codigos.filter(c=>c.scrollWidth>c.clientWidth+1).length;
+ // O chip que rola mostra o corte (D24): data-rola, o comando inteiro no title, foco pelo teclado
+ // (fora de link e botão) e o degradê do lado em que há comando escondido.
+ const semSinal=codigos.filter(c=>c.scrollWidth>c.clientWidth+1).filter(c=>{const cs=getComputedStyle(c),mascara=(cs.maskImage||cs.webkitMaskImage||'none')!=='none';return !c.hasAttribute('data-rola')||c.title!==c.textContent.trim()||(!c.closest('a,button')&&c.tabIndex!==0)||(c.scrollLeft+c.clientWidth<c.scrollWidth-1&&!mascara);}).map(c=>c.textContent.trim());
  // Contraste real do texto (regra dura 3): cor do texto contra o fundo efetivo, misturando as
  // camadas translúcidas; 4,5:1, ou 3:1 em texto grande. Texto sob opacidade (eventos da noite
  // ainda apagados, que acendem antes do centro da tela) fica de fora.
@@ -83,13 +105,15 @@ const auditoria=()=>{
  const razao=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
  const fundoDe=el=>{const camadas=[];for(let p=el;p;p=p.parentElement){const c=cor(getComputedStyle(p).backgroundColor);if(c&&c[3]>0){camadas.push(c);if(c[3]>=1)break;}}let base=[255,255,255,1];for(const c of camadas.reverse())base=sobre(c,base);return base;};
  const apagado=el=>{for(let p=el;p;p=p.parentElement)if(Number(getComputedStyle(p).opacity)<1)return true;return false;};
- const comTexto=[...document.querySelectorAll('body *')].filter(el=>!el.closest('svg,canvas,.so-leitor,[hidden]')&&el.getClientRects().length&&[...el.childNodes].some(n=>n.nodeType===3&&n.nodeValue.trim())&&getComputedStyle(el).visibility!=='hidden');
+ // Texto escondido só da vista (recorte de 1 px, como o .so-leitor) é para leitor de tela.
+ const soLeitor=el=>{for(let q=el;q;q=q.parentElement){if(getComputedStyle(q).clip==='rect(0px, 0px, 0px, 0px)')return true;}return false;};
+ const comTexto=[...document.querySelectorAll('body *')].filter(el=>!el.closest('svg,canvas,.so-leitor,[hidden]')&&!soLeitor(el)&&el.getClientRects().length&&[...el.childNodes].some(n=>n.nodeType===3&&n.nodeValue.trim())&&getComputedStyle(el).visibility!=='hidden');
  // Separador decorativo ("/", "·") escondido do leitor de tela é ornamento, não texto.
  const ornamento=el=>!!el.closest('[aria-hidden="true"]')&&/^[\/·|•]$/.test(el.textContent.trim());
  const contraste=comTexto.filter(el=>!apagado(el)&&!ornamento(el)).flatMap(el=>{const cs=getComputedStyle(el),f=cor(cs.color);if(!f)return [];const b=fundoDe(el),r=razao(f[3]<1?sobre(f,b):f,b),grande=parseFloat(cs.fontSize)>=24||(parseFloat(cs.fontSize)>=18.66&&Number(cs.fontWeight)>=700);return r<(grande?3:4.5)?[`${el.tagName.toLowerCase()}.${el.className} "${el.textContent.trim().slice(0,20)}" ${r.toFixed(2)}`]:[];});
  // Texto que vaza da própria caixa (legenda maior que o bloco), fora de contêiner com rolagem.
  const vazaCaixa=comTexto.filter(el=>{const cs=getComputedStyle(el);return !['inline','contents'].includes(cs.display)&&cs.overflowX==='visible'&&el.clientWidth>0&&!rolagem(el)&&el.scrollWidth>el.clientWidth+1&&el.tagName!=='PRE';}).map(el=>`${el.tagName.toLowerCase()}.${el.className} "${el.textContent.trim().slice(0,20)}"`);
- return {sobra,partido,solto,vaza,pequeno,latao,rolaAToa,rolando,contraste,vazaCaixa};
+ return {sobra,partido,solto,vaza,pequeno,latao,rolaAToa,rolando,semSinal,contraste,vazaCaixa};
 };
 
 const results=[];let browser;
@@ -114,32 +138,21 @@ try{
    // Foco visível pelo anel do kit (--anel-foco: 2 px do chão e 4 px da cor de foco).
    const foco=await page.evaluate(()=>{const cs=getComputedStyle(document.activeElement);return /0px 0px 0px 4px/.test(cs.boxShadow)||(cs.outlineStyle!=='none'&&parseFloat(cs.outlineWidth)>=2&&cs.outlineColor!=='rgba(0, 0, 0, 0)');});
    if(!foco)throw Error('Focus ring not visible '+onde);
-   // Todos os focáveis na ordem do Tab: anel do kit visível, sem recorte por contêiner e fora do
-   // cabeçalho fixo (WCAG 2.4.11).
-   await page.evaluate(()=>{document.activeElement?.blur();window.scrollTo({top:0,behavior:'instant'});});
+   // Todos os focáveis, numa página recém-carregada (o percurso começa no link de pular): com Tab
+   // e depois com Shift+Tab, cada um com o anel do kit visível, sem recorte por contêiner e fora do
+   // cabeçalho fixo (WCAG 2.4.11; para trás é que o foco cai embaixo do cabeçalho).
+   await page.goto('http://docs.local'+local,{waitUntil:'networkidle'});await page.evaluate(()=>document.fonts.ready);
    const vistos=new Set();
-   for(let i=0;i<200;i++){
-    await page.keyboard.press('Tab');
-    const f=await page.evaluate(()=>{
-     const el=document.activeElement;if(!el||el===document.body)return {fim:true};
-     const cs=getComputedStyle(el),anel=/0px 0px 0px 4px/.test(cs.boxShadow)||(cs.outlineStyle!=='none'&&parseFloat(cs.outlineWidth)>=2&&cs.outlineColor!=='rgba(0, 0, 0, 0)');
-     const r=el.getBoundingClientRect(),id=el.tagName+'|'+(el.getAttribute('href')||'')+'|'+Math.round(r.top+scrollY)+'|'+Math.round(r.left);
-     let cortado=null;
-     for(let p=el.parentElement;p&&p!==document.body&&!cortado;p=p.parentElement){
-      const pc=getComputedStyle(p);if(pc.overflowX==='visible'&&pc.overflowY==='visible')continue;
-      const q=p.getBoundingClientRect(),c={l:q.left+parseFloat(pc.borderLeftWidth),t:q.top+parseFloat(pc.borderTopWidth),r:q.right-parseFloat(pc.borderRightWidth),b:q.bottom-parseFloat(pc.borderBottomWidth)};
-      // Só conta o lado em que o próprio elemento cabe no contêiner e o anel de 4 px não.
-      const lados=[['esq',r.left>=c.l-.5&&r.left-4<c.l-.5],['topo',r.top>=c.t-.5&&r.top-4<c.t-.5],['dir',r.right<=c.r+.5&&r.right+4>c.r+.5],['base',r.bottom<=c.b+.5&&r.bottom+4>c.b+.5]].filter(x=>x[1]).map(x=>x[0]);
-      if(lados.length)cortado=p.tagName.toLowerCase()+'.'+String(p.className).split(' ')[0]+' '+lados.join('+');
-     }
-     const cab=document.querySelector('.cabecalho'),hb=cab?cab.getBoundingClientRect().bottom:0;
-     const sob=!el.closest('.cabecalho,.pular')&&cs.position!=='fixed'&&r.top<hb-1;
-     return {id,nome:(el.textContent||el.getAttribute('aria-label')||'').trim().replace(/\s+/g,' ').slice(0,30),anel,cortado,sob};
-    });
-    if(f.fim||vistos.has(f.id))break;vistos.add(f.id);
-    if(!f.anel)throw Error('Focus ring not visible on "'+f.nome+'" '+onde);
-    if(f.cortado)throw Error('Focus ring clipped on "'+f.nome+'" by '+f.cortado+' '+onde);
-    if(f.sob)throw Error('Focused element under the sticky header "'+f.nome+'" '+onde);
+   for(const tecla of ['Tab','Shift+Tab']){
+    const nestaVolta=new Set();
+    for(let i=0;i<250;i++){
+     await page.keyboard.press(tecla);
+     const f=await page.evaluate(focoAtual);
+     if(f.fim||nestaVolta.has(f.id))break;nestaVolta.add(f.id);vistos.add(f.id);
+     if(!f.anel)throw Error('Focus ring not visible on "'+f.nome+'" ('+tecla+') '+onde);
+     if(f.cortado)throw Error('Focus ring clipped on "'+f.nome+'" by '+f.cortado+' ('+tecla+') '+onde);
+     if(f.sob)throw Error('Focused element under the sticky header "'+f.nome+'" ('+tecla+') '+onde);
+    }
    }
    await page.evaluate(()=>{document.activeElement?.blur();window.scrollTo({top:0,behavior:'instant'});});
    const a=await page.evaluate(auditoria);
@@ -148,6 +161,8 @@ try{
    if(a.solto.length)throw Error('Adjacent text detached from inline code '+onde+': '+a.solto.join(', '));
    if(a.vaza.length)throw Error('Inline code past its block edge '+onde+': '+a.vaza.join(', '));
    if(a.rolaAToa.length)throw Error('Inline code scrolls although it fits its column '+onde+': '+a.rolaAToa.join(', '));
+   if(a.semSinal.length)throw Error('Inline code cut without the visible cue '+onde+': '+a.semSinal.join(', '));
+   if(path==='/'&&a.rolando)throw Error('Inline code cut on the home '+onde+' ('+a.rolando+' chips)');
    if(a.contraste.length)throw Error('Text contrast below AA '+onde+': '+a.contraste.slice(0,6).join(' | '));
    if(a.vazaCaixa.length)throw Error('Text overflows its box '+onde+': '+a.vazaCaixa.slice(0,6).join(' | '));
    if(a.pequeno.length)throw Error('Touch target under 44 px '+onde+': '+a.pequeno.slice(0,6).join(' | '));

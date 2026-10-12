@@ -44,7 +44,7 @@ let fio=0;
       <div class="maquina-topo"><span class="quadrado" style={`background:${cor(m.color)}`}></span><span class="maquina-nome">{m.name}</span><span class="estica"></span><span class="maquina-amb">{m.env}</span></div>
       {m.runtimes.map((r,ri)=><div class="runtime">
        <div class="runtime-topo"><span class="runtime-nome">{r.rt}</span><span class="runtime-perfil" data-rt-perfil={mi+'-'+ri}>{preencher(p.profile,{p:r.prof})}</span><span class="estica"></span><span class="runtime-estado" data-rt-estado={mi+'-'+ri} style={`background:${cor(r.sbg)};color:${cor(r.sfg)}`}>{r.state}</span></div>
-       <div class="runtime-threads">{r.threads.map(th=>{const id=fio++;return <div class="thread"><span class="thread-nome">{th.n}</span><span class="segmentos" data-fio={id}>{th.segs.map(sg=><span style={`background:${cor(sg)}`}></span>)}</span></div>;})}</div>
+       <div class="runtime-threads">{r.threads.map(th=>{const id=fio++;return <div class="thread"><span class="thread-nome">{th.n}</span><span class="segmentos" data-fio={id} role="img" aria-label={`${th.n}: ${th.fase}, ${th.estado}`}>{th.segs.map(sg=><span style={`background:${cor(sg)}`}></span>)}</span><span class="thread-fase" data-fio-fase={id} aria-hidden="true">{th.fase}</span></div>;})}</div>
       </div>)}
       <div class="maquina-pe">{m.foot}</div>
      </div>)}
@@ -126,7 +126,8 @@ let fio=0;
 .runtime-perfil{font:var(--peso-texto) var(--t-rotulo)/1 var(--f-mono);color:var(--texto-3)}
 .runtime-estado{padding:5px var(--e-2);border-radius:var(--raio-pilula);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-texto);transition:background var(--dur-longa) var(--curva),color var(--dur-longa) var(--curva)}
 .runtime-threads{margin-top:var(--e-3);display:flex;flex-direction:column;gap:var(--e-2)}
-.thread{display:grid;grid-template-columns:minmax(0,1fr) 72px;gap:var(--e-3);align-items:center}
+.thread{display:grid;grid-template-columns:minmax(0,1fr) 72px 7ch;gap:var(--e-3);align-items:center}
+.thread-fase{font:var(--peso-texto) var(--t-rotulo)/1 var(--f-mono);color:var(--texto-3);white-space:nowrap}
 .thread-nome{font:var(--peso-destaque) var(--t-apoio)/1.2 var(--f-texto);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .segmentos{display:grid;grid-template-columns:repeat(6,1fr);gap:2px}
 .segmentos span{height:5px;border-radius:var(--raio-segmento);transition:background var(--dur-longa) var(--curva)}

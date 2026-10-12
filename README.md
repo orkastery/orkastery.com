@@ -138,7 +138,11 @@ Desvios do HTML da home, cada um com motivo (decisões da thread):
 - Acessibilidade (revisão independente): botão de pausar o movimento da home (WCAG
   2.2.2), nome acessível do seletor de língua com o rótulo visível, foco nunca sob o
   cabeçalho, diagrama que rola como região focável, link da navegação que não cabe
-  sumindo inteiro e o resumo das 09:00 em 2 x 2 no cartão estreito.
+  sumindo inteiro, o resumo das 09:00 em 2 x 2 no cartão estreito, a tabela Sem ork /
+  Com ork empilhada no estreito e a fase atual escrita ao lado de cada barra da
+  topologia (estado nunca só pela cor).
+- Rótulos com identificador ou sigla (`#Maestro`, CTOs) e o título do destaque das docs
+  ficam em caixa normal: a caixa alta do rótulo do kit mudaria a grafia deles.
 - Os glifos →, ✓, ✕ e ∞ saem da fonte de reserva, porque as fontes embutidas no HTML da
   home não os têm.
 
@@ -152,8 +156,12 @@ feitos dos documentos do kit por `scripts/documentos-da-marca.mjs`, que precisa 
 Playwright e de rede (fontes e runtime do Claude Design) e não faz parte do build; o
 sha256 de cada PDF fica em `src/data/kit-partitura.json`, e o `check:design` o confere. O
 link "editar os templates" do Brand Kit não entra: ele abre o editor do Claude Design,
-sem endereço público. O inventário dos itens do kit, com o destino de cada um no site,
-está em `scripts/fidelidade/inventario-kit.json`.
+sem endereço público. Em inglês, os botões dos dois documentos dizem "(PT)": o kit tem o
+manual e as diretrizes só em português. O `DESIGN.md` publicado é o do kit, byte a byte,
+inclusive o travessão que ele usa como glifo da lacuna (D23). A imagem de compartilhamento é
+a do kit, com o texto em PT, também nas páginas em inglês, até o kit trazer uma em EN (D21).
+O inventário dos itens do kit, com o destino de cada um no site, está em
+`scripts/fidelidade/inventario-kit.json`.
 
 ## A home
 
@@ -199,7 +207,7 @@ npm run docs:sync -- --source /caminho/do/repositorio
 npm run docs:check -- --source /caminho/do/repositorio
 
 # Depois de revisar de fato as traduções e fontes afetadas:
-npm run docs:sync -- --source /caminho/do/repositorio --review pt,en,es --reviewer executor-editorial --articles contribuir
+npm run docs:sync -- --source /caminho/do/repositorio --review pt,en --reviewer executor-editorial --articles contribuir
 npm run build
 ```
 
@@ -218,7 +226,7 @@ um resumo mensal traduzido e um link para o repositório, sem cópia de tickets.
 
 ## Revisão mensal do roadmap
 
-Revise `src/data/roadmap.json`, atualize `updatedAt`, `nextReview` e os três resumos.
+Revise `src/data/roadmap.json`, atualize `updatedAt`, `nextReview` e os dois resumos (PT e EN).
 A página editorial `roadmap` contextualiza o mês em `docs-standards.ts` (Orkastery)
 ou `docs-retrieval.ts` (OrkMind): atualize-a na mesma revisão e registre os hashes.
 Uma intenção não é uma capacidade entregue. Datas de revisão não são prazos de entrega.
@@ -241,8 +249,10 @@ Comando, caminho, flag e identificador técnico ficam sempre como código e inte
 quebrar no meio da linha. O reconhecedor `src/lib/technical-text.mjs`, usado pelo
 componente `TechnicalText`, põe esse texto em `<code>` no build; o que encosta no código
 (parêntese, ponto, sufixo colado) viaja junto numa unidade sem quebra. O chip nunca
-quebra por dentro: desce de linha como um bloco e, se for mais largo que a coluna inteira,
-rola nele mesmo. O `check:code` audita o HTML gerado: reprova comando, flag, caminho
+quebra por dentro (D20): desce de linha como um bloco e, se for mais largo que a coluna
+inteira, rola nele mesmo, com um degradê na borda do lado em que há comando escondido, o
+comando inteiro no `title` e foco pelo teclado (`src/scripts/moldura.ts`). Na home nenhum
+chip rola: a tabela Sem ork / Com ork empilha as colunas quando a célula não cabe o comando. O `check:code` audita o HTML gerado: reprova comando, flag, caminho
 (inclusive diretório com a barra no fim, como `core/`) ou identificador fora de código,
 identificador partido entre código e texto (como `claude-bg` seguido de `/pessoal`), e
 subcomando do `ork` sem o `ork`. As poucas frases em que `ork` é o sujeito da frase

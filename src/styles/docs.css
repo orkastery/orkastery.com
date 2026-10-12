@@ -56,7 +56,7 @@
 
 /* O que muda para quem já usa: o alerta do kit em regência (informação), nunca latão. */
 .docs-destaque{margin:var(--e-5) 0 var(--e-5);padding:var(--e-4) var(--e-5);border-radius:var(--raio-cartao);background:var(--superficie);border:1px solid var(--linha);color:var(--texto)}
-.docs-destaque-titulo{display:flex;align-items:center;gap:var(--e-3);margin:0 0 6px!important;font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--executando-texto)}
+.docs-destaque-titulo{display:flex;align-items:center;gap:var(--e-3);margin:0 0 6px!important;font:var(--tipo-destaque);color:var(--executando-texto)}
 .docs-destaque-marca{flex:none;width:7px;height:7px;border-radius:50%;background:var(--executando);font-size:0;overflow:hidden}
 .docs-destaque p,.docs-destaque li{color:var(--texto)}
 

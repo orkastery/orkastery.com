@@ -130,7 +130,7 @@ test('missing contribution navigation fails the content audit',()=>outputFixture
  assert.throws(()=>checkContent(dir),/contribution navigation/);
 }));
 test('prohibited kit vocabulary fails the content audit',()=>outputFixture(dir=>{
- for(const termo of ['batuta','afrouxa o sandbox','uma pausa humana','metronome','Bernstein']){
+ for(const termo of ['batuta','afrouxa o sandbox','uma pausa humana','metronome','Bernstein','a thread fica pausada','a paused thread']){
   edit(dir,'en/docs/comecar/index.html',s=>s.replace('</main>','<p>'+termo+'</p></main>'));
   assert.throws(()=>checkContent(dir),/Vocabulário proibido/,termo);
   edit(dir,'en/docs/comecar/index.html',s=>s.replace('<p>'+termo+'</p></main>','</main>'));

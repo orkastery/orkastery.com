@@ -5,8 +5,8 @@ import {ehRedirecionamento} from './check-redirecionamentos.mjs';
 // Vocabulário proibido pelo kit (DESIGN.md, seção 4, e CLAUDE.md do kit): afrouxar, batuta, metrônomo,
 // Bernstein, disruptivo e "pausa" no sentido de HITL (diga "ponto de HITL: decidir ou aprovar"), nas
 // duas línguas. Pausar o movimento da home e a Sentinela pausada (estado de um mod) não são HITL.
-export const PROIBIDOS=[/\bafrouxa\w*/i,/\bbatuta\b/i,/\bmetr[oô]nomos?\b/i,/\bbernstein\b/i,/\bdisruptiv\w*/i,/\bpausas?\b/i,/\bloosen\w*/i,/\bbaton\b/i,/\bmetronomes?\b/i,/\bpauses\b/i,/\bpause\b/i];
-export const FORA_DE_HITL=['pause motion','pause and resume the Sentinel','pauses and resumes the Sentinel','pausa e retoma a Sentinela'];
+export const PROIBIDOS=[/\bafrouxa\w*/i,/\bbatuta\b/i,/\bmetr[oô]nomos?\b/i,/\bbernstein\b/i,/\bdisruptiv\w*/i,/\bpausas?\b/i,/\bpausad[oa]s?\b/i,/\bloosen\w*/i,/\bbaton\b/i,/\bmetronomes?\b/i,/\bpauses\b/i,/\bpause\b/i,/\bpaused\b/i];
+export const FORA_DE_HITL=['pause motion','pause and resume the Sentinel','pauses and resumes the Sentinel','pausa e retoma a Sentinela','Sentinela ligada e não pausada','Com a Sentinela pausada','the Sentinel on and not paused','With the Sentinel paused'];
 export function vocabularioProibido(texto){
  let t=texto;for(const f of FORA_DE_HITL)t=t.replaceAll(f,'');
  return PROIBIDOS.map(re=>re.exec(t)?.[0]).filter(Boolean);

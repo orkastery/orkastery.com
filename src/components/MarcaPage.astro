@@ -8,8 +8,8 @@
 import Base from '../layouts/Base.astro';
 import Divider from './ds/Divider.astro';
 import marca from '../data/marca';
-import {localeFor,withBase} from '../data/i18n';
-const locale=localeFor(Astro.url.pathname),t=marca[locale],a=marca.arquivos;
+import {localeFor,withBase,ui} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname),t=marca[locale],a=marca.arquivos,text=ui(locale);
 // Trecho entre crases vira código; o resto é texto.
 const partes=(s:string)=>s.split('`').map((p,i)=>({codigo:i%2===1,p}));
 const arquivo=(p:string)=>withBase(p);
@@ -57,10 +57,11 @@ const arquivo=(p:string)=>withBase(p);
 
   <section id="fontes" class="marca-secao" aria-labelledby="fontes-titulo">
    <h2 id="fontes-titulo">{t.fontes.titulo}</h2>
-   <div class="fontes">{t.fontes.itens.map(([amostra,nome,uso,familia])=><div class="fonte">
+   <div class="fontes">{t.fontes.itens.map(([amostra,nome,uso,familia],i)=><div class="fonte">
     <span class={'fonte-amostra fonte-'+familia} aria-hidden="true">{amostra}</span>
     <span class="fonte-nome">{nome}</span>
     <span class="fonte-uso">{uso}</span>
+    <a class="fonte-link" href={a.fontesLinks[i]} target="_blank" rel="noopener">Google Fonts <span aria-hidden="true">↗</span><span class="so-leitor"> ({text.newTab})</span></a>
    </div>)}</div>
    <div class="trecho" data-tema="noite">
     <div class="trecho-topo"><span>{t.fontes.cabeca}</span><button type="button" class="trecho-copiar" data-copiar-trecho data-rotulo={t.fontes.copiar} data-ok={t.fontes.ok} data-falha={t.fontes.falha} data-msg-ok={t.fontes.msgOk} data-msg-falha={t.fontes.msgFalha}>{t.fontes.copiar}</button><span class="so-leitor" role="status" data-status></span></div>
@@ -135,7 +136,7 @@ const arquivo=(p:string)=>withBase(p);
 .marca-icones a:hover{text-decoration-color:var(--texto)}
 /* Paleta: cada amostra copia o hex (rótulo "✓ copiado" por 1,6 s, como o comando copiável). */
 .paleta-grupo{display:flex;flex-direction:column;gap:var(--e-3)}
-.paleta-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:var(--e-3)}
+.paleta-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:var(--e-2)}
 .amostra{display:flex;flex-direction:column;gap:var(--e-2);padding:var(--e-2) var(--e-2) var(--e-3);border-radius:var(--raio-cartao);border:1px solid var(--linha);background:var(--superficie);color:var(--texto);text-align:left;cursor:pointer;font:inherit;transition:border-color var(--dur-curta) var(--curva)}
 .amostra:hover{border-color:var(--texto-3)}
 .amostra-cor{height:64px;border-radius:var(--raio-botao);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tinta) 8%,transparent)}
@@ -151,6 +152,8 @@ const arquivo=(p:string)=>withBase(p);
 .fonte-mono{font-family:var(--f-mono)}
 .fonte-nome{font:var(--peso-titulo) var(--t-titulo-3)/1.2 var(--f-titulo)}
 .fonte-uso{font:var(--tipo-apoio);color:var(--texto-2)}
+.fonte-link{align-self:flex-start;display:inline-flex;align-items:center;min-height:var(--alvo);font:var(--peso-texto) var(--t-rotulo)/1 var(--f-mono);color:var(--texto);text-decoration:underline;text-decoration-color:var(--linha-forte);text-underline-offset:3px;transition:text-decoration-color var(--dur-curta) var(--curva)}
+.fonte-link:hover{text-decoration-color:var(--texto)}
 .trecho{border-radius:var(--raio-cartao);background:var(--superficie)}
 .trecho-topo{display:flex;justify-content:space-between;align-items:center;gap:var(--e-3);padding:var(--e-2) var(--e-2) var(--e-2) var(--e-4);border-bottom:1px solid var(--linha);font:var(--peso-texto) var(--t-rotulo)/1 var(--f-mono);color:var(--texto-2)}
 .trecho-copiar{display:inline-flex;align-items:center;min-height:var(--alvo);padding:0 var(--e-3);border-radius:9px;border:1px solid var(--linha-forte);background:var(--superficie-2);color:var(--texto);font:var(--peso-texto) var(--t-rotulo)/1 var(--f-mono);white-space:nowrap;cursor:pointer;box-sizing:border-box}

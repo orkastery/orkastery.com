@@ -31,3 +31,30 @@ function revelar() {
 }
 // O HTML da home revela 60 ms depois de montar a página.
 setTimeout(revelar, 60);
+
+// Código inline mais largo que a coluna (D20) rola no próprio chip. Para o corte nunca passar por
+// comando inteiro: degradê na borda enquanto houver comando escondido (data-antes e data-mais),
+// title com o comando inteiro e foco pelo teclado (o WebKit não dá foco a quem só rola), menos
+// dentro de link ou botão, que já são focáveis.
+function bordas(c: HTMLElement) {
+ c.toggleAttribute('data-antes', c.scrollLeft > 1);
+ c.toggleAttribute('data-mais', c.scrollLeft + c.clientWidth < c.scrollWidth - 1);
+}
+function marcarChips() {
+ for (const c of document.querySelectorAll<HTMLElement>(':not(pre)>code')) {
+  const rola = c.scrollWidth > c.clientWidth + 1;
+  if (rola === c.hasAttribute('data-rola')) { if (rola) bordas(c); continue; }
+  c.toggleAttribute('data-rola', rola);
+  if (rola) {
+   c.title = (c.textContent || '').trim();
+   if (!c.closest('a,button')) c.tabIndex = 0;
+   c.addEventListener('scroll', () => bordas(c), {passive: true});
+   bordas(c);
+  } else {
+   c.removeAttribute('title'); c.removeAttribute('tabindex'); c.removeAttribute('data-antes'); c.removeAttribute('data-mais');
+  }
+ }
+}
+marcarChips();
+document.fonts?.ready.then(marcarChips);
+if ('ResizeObserver' in window) new ResizeObserver(() => marcarChips()).observe(document.documentElement);

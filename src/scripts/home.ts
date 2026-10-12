@@ -43,8 +43,11 @@ if (dados) {
   }));
   let fio = 0;
   v.machines.forEach((m: any) => m.runtimes.forEach((r: any) => r.threads.forEach((th: any) => {
-   const segs = $(':scope > span', $(`[data-fio="${fio++}"]`)[0] || document.createElement('span'));
+   const barra = $(`[data-fio="${fio}"]`)[0], rotulo = $(`[data-fio-fase="${fio++}"]`)[0];
+   const segs = $(':scope > span', barra || document.createElement('span'));
    th.segs.forEach((s: string, i: number) => pinta(segs[i], {background: cor(s)}));
+   if (rotulo) rotulo.textContent = th.fase;
+   barra?.setAttribute('aria-label', `${th.n}: ${th.fase}, ${th.estado}`);
   })));
   v.mergeQueue.forEach((q: any, k: number) => { const el = $(`[data-fila="${k}"]`)[0]; if (el) { el.textContent = q.t; pinta(el, {background: cor(q.bg), color: cor(q.fg)}); } });
   v.roadmap.forEach((it: any, i: number) => pinta($(`[data-rm="${i}"]`)[0], {background: cor(it.bg), color: cor(it.fg), border: `1px ${it.bs} ${cor(it.bd)}`}));

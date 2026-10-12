@@ -307,7 +307,7 @@ const en: Home = {
   eyebrow: '05 · Your attention',
   title: 'The simple decisions, Orkastery makes for you.',
   titleMuted: 'You decide only what matters.',
-  lead: 'Every question from the ork arrives short and organized, with alternatives and a recommendation, so you can decide in seconds. That lightness is a design goal, and it also has people with ADHD in mind.',
+  lead: 'Every question from ork arrives short and organized, with alternatives and a recommendation, so you can decide in seconds. That lightness is a design goal, and it also has people with ADHD in mind.',
   boardMeta: '7 threads · updates by itself',
   boardHead: ['Thread', 'Where it runs', 'Phase', 'State'],
   threads: [

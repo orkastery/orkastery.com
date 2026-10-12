@@ -51,7 +51,9 @@ export function topo(t, tick) {
   let count = 0;
   const runtimes = m.runtimes.map((r, ri) => {
    const rotating = rot && mi === 0 && ri === 0;
-   const threads = r.threads.map(n => { seed++; count++; return {n, segs: segs(seed * 2 + Math.floor((tick + seed) / 3))}; });
+   const threads = r.threads.map(n => { seed++; count++; const k = seed * 2 + Math.floor((tick + seed) / 3), cur = k % 7;
+    // Estado nunca só pela cor (kit): a fase atual vai escrita ao lado da barra e no nome acessível dela.
+    return {n, segs: segs(k), fase: cur === 6 ? 'MASTER ✓' : PH[cur], estado: cur === 6 ? t.attention.states.ok : t.attention.states.run}; });
    return {rt: r.rt, prof: rotating ? t.parallel.rotatedProfile : r.prof, state: rotating ? t.parallel.rotated : t.parallel.active,
     sbg: rotating ? C.runS : C.patS, sfg: rotating ? C.runT : C.patT, threads};
   });
