@@ -151,10 +151,15 @@ test('the CLI version lives in one module and the editorial marker becomes that 
 });
 
 test('three-level ork commands, git rm with a path and node with an ork subcommand stay whole',()=>{
- for(const token of ['ork setup sandbox confirmar danger-full-access','ork setup worktree confirmar','ork claims conferir --claims C3,C7','ork claims conferir --tarefa T2.1','ork docs sincronizar --escrever --so RM-059','git rm -r --cached .orkastery','node core/dist/index.js eval','ork master ork-rm059torre --aceitar-omissao']){
+ for(const token of ['ork setup sandbox confirmar danger-full-access','ork setup worktree confirmar','ork master digest enviar','ork audit finding add','ork adapter install claude-code','ork_*','ork-ponte','ork-torre','/torre','ork audit verify','ork handoff recall','danger-full-access','ork claims conferir --claims C3,C7','ork claims conferir --tarefa T2.1','ork docs sincronizar --escrever --so RM-059','git rm -r --cached .orkastery','node core/dist/index.js eval','ork master ork-rm059torre --aceitar-omissao']){
   assert.equal(technicalHtml(token),`<code>${token}</code>`,token);
  }
  assert.equal(technicalHtml('Rode git status e veja.'),'Rode <code>git status</code> e veja.');
  assert.equal(technicalHtml('crie o remoto com git remote add e ponha'),'crie o remoto com <code>git remote add</code> e ponha');
+ // Um segundo nivel generico engolia o verbo da prosa: o comando termina onde a referencia termina.
+ assert.equal(technicalHtml('ork roadmap status show the time'),'<code>ork roadmap status</code> show the time');
+ assert.equal(technicalHtml('e ork ship entrega essa branch'),'e <code>ork ship</code> entrega essa branch');
+ assert.equal(technicalHtml('ork experiencia uninstall remove o bloco'),'<code>ork experiencia uninstall</code> remove o bloco');
+ assert.equal(technicalHtml('Abra /torre no Claude Code; e/ou siga.'),'Abra <code>/torre</code> no Claude Code; e/ou siga.');
  assert.equal(technicalHtml('Use ork thread status para ver.'),'Use <code>ork thread status</code> para ver.');
 });
