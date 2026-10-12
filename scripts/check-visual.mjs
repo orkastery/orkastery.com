@@ -189,15 +189,16 @@ try{
     const fila=()=>page.locator('[data-fila="0"]').textContent();
     const [q1,f1]=[await quadro(),await fila()];await page.waitForTimeout(2700);
     if(await quadro()!==q1||await fila()!==f1)throw Error('Score or clock moved with reduced motion '+onde);
-    // Copiar: sucesso e recusa.
+    // Copiar: sucesso e recusa. A pílula é observada na própria página: a duração do "✓" (1,6 s no
+    // kit) sai dos tempos de lá, sem a latência do Playwright, que cresce com a carga da máquina.
     const botao=page.locator('.instalar-hero');
-    await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async t=>{window.__copiado=t;}}}));
+    await page.evaluate(()=>{Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async t=>{window.__copiado=t;}}});const p=document.querySelector('.instalar-hero [data-pilula]');window.__pilula=[];new MutationObserver(()=>window.__pilula.push([p.textContent,performance.now()])).observe(p,{childList:true,characterData:true,subtree:true});});
     await botao.click();
     await page.waitForFunction(()=>window.__copiado==='npm install -g @orkastery/cli');
-    if(await page.locator('.instalar-hero [data-pilula]').textContent()!==await botao.getAttribute('data-rotulo-ok')||!/^✓ /.test(await botao.getAttribute('data-rotulo-ok')))throw Error('Copy confirmation missing '+onde);
-    const inicio=Date.now();
-    await page.waitForFunction(()=>document.querySelector('.instalar-hero [data-pilula]').textContent===document.querySelector('.instalar-hero').dataset.rotulo,null,{timeout:3000});
-    if(Date.now()-inicio<1300)throw Error('Copy confirmation shorter than the kit 1.6 s '+onde);
+    await page.waitForFunction(()=>{const b=document.querySelector('.instalar-hero'),m=window.__pilula,i=m.findIndex(x=>x[0]===b.dataset.rotuloOk);return i>=0&&m.slice(i+1).some(x=>x[0]===b.dataset.rotulo);},null,{timeout:4000}).catch(()=>{throw Error('Copy confirmation missing or never cleared '+onde);});
+    const copia=await page.evaluate(()=>{const b=document.querySelector('.instalar-hero'),m=window.__pilula,i=m.findIndex(x=>x[0]===b.dataset.rotuloOk),j=m.findIndex((x,k)=>k>i&&x[0]===b.dataset.rotulo);return {ok:b.dataset.rotuloOk,ms:m[j][1]-m[i][1]};});
+    if(!/^✓ /.test(copia.ok))throw Error('Copy confirmation missing '+onde);
+    if(copia.ms<1500)throw Error('Copy confirmation shorter than the kit 1.6 s ('+Math.round(copia.ms)+' ms) '+onde);
     await page.evaluate(()=>Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async()=>{throw Error('negado');}}}));
     await botao.click();
     await page.waitForFunction(()=>/^× use (⌘C|Ctrl\+C)$/.test(document.querySelector('.instalar-hero [data-pilula]').textContent)&&document.querySelector('.instalar-hero').dataset.estado==='falha');
