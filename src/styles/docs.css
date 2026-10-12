@@ -6,7 +6,7 @@
 .docs-surface{background:var(--chao);color:var(--texto);padding:clamp(var(--e-7),5vw,var(--e-8)) 0 var(--secao)}
 .docs-shell{display:grid;grid-template-columns:240px minmax(0,1fr);gap:var(--e-6) var(--e-8)}
 .docs-breadcrumb{grid-column:1/-1;display:flex;gap:var(--e-2);flex-wrap:wrap;align-items:center;font:var(--peso-destaque) var(--t-rotulo)/1.4 var(--f-mono);color:var(--texto-3)}
-.docs-breadcrumb a{display:inline-flex;align-items:center;min-height:var(--alvo);transition:color var(--dur-curta) var(--curva)}
+.docs-breadcrumb a{display:inline-flex;align-items:center;min-height:var(--alvo);min-width:var(--alvo);transition:color var(--dur-curta) var(--curva)}
 .docs-breadcrumb a:hover{color:var(--texto)}
 .docs-breadcrumb [aria-current]{color:var(--texto-2)}
 
@@ -25,7 +25,7 @@
 .docs-reading h1,.docs-reading h2,.docs-reading h3{color:var(--texto);text-wrap:balance}
 .docs-reading h1{margin:var(--e-4) 0 0;font:var(--tipo-titulo-1);letter-spacing:var(--trk-titulo-1);max-width:20ch}
 .docs-reading h2{margin:0 0 var(--e-3);font:var(--tipo-titulo-2);letter-spacing:var(--trk-titulo-2)}
-.docs-reading h2 a{color:inherit}
+.docs-reading h2 a{color:inherit;display:inline-flex;align-items:center;min-height:var(--alvo)}
 .docs-reading h3{margin:0 0 var(--e-2);font:var(--tipo-titulo-3);letter-spacing:var(--trk-titulo-3)}
 .docs-reading p{margin:var(--e-3) 0}
 .docs-reading a:not(.docs-card):not([rel]){color:var(--texto);text-decoration:underline;text-decoration-color:var(--linha-forte);text-decoration-thickness:1px;text-underline-offset:3px;transition:text-decoration-color var(--dur-curta) var(--curva)}
@@ -49,7 +49,7 @@
 .docs-toc>p{margin:0 0 var(--e-1);font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-3)}
 .docs-toc ul{columns:2;column-gap:var(--e-6);list-style:none;padding:0;margin:0}
 .docs-toc li{break-inside:avoid;margin:0}
-.docs-toc a{display:inline-flex;align-items:center;min-height:var(--alvo);color:var(--texto-2)!important;text-decoration:none!important;transition:color var(--dur-curta) var(--curva)}
+.docs-toc a{display:inline-flex;align-items:center;min-height:var(--alvo);min-width:var(--alvo);color:var(--texto-2)!important;text-decoration:none!important;transition:color var(--dur-curta) var(--curva)}
 .docs-toc a:hover{color:var(--texto)!important}
 
 /* O que muda para quem já usa: o alerta do kit em regência (informação), nunca latão. */
@@ -72,6 +72,10 @@
 .docs-note{padding:var(--e-4) var(--e-5);border:0;border-radius:var(--raio-cartao);background:var(--superficie)}
 .docs-sources h2,.docs-legacy h2{font:var(--tipo-rotulo)!important;letter-spacing:var(--espaco-rotulo)!important;text-transform:uppercase;color:var(--texto-3)!important}
 .docs-sources ul{list-style:none;padding:0}
+/* Listas só de links (fontes, atalhos antigos, destinos de uma seção): cada link é um alvo de 44 px. */
+.docs-links,.docs-sources ul,.docs-legacy ul{margin:var(--e-2) 0}
+.docs-links li,.docs-sources li,.docs-legacy li{margin:0}
+.docs-links a,.docs-sources a,.docs-legacy a,.docs-note-link{display:inline-flex;align-items:center;min-height:var(--alvo);min-width:var(--alvo)}
 
 /* Anterior e próximo: dois cartões. */
 .docs-pagination{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:var(--e-3);margin-top:var(--e-7)}

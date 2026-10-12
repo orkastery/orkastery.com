@@ -27,7 +27,7 @@ const destino=(alvo:string)=>alvo.startsWith('/')?localize(alvo,locale):destinos
 .rodape-marca p{margin:var(--e-5) 0 0;max-width:40ch;font:var(--tipo-apoio);color:var(--texto-2)}
 .rodape-coluna{display:flex;flex-direction:column;font:var(--tipo-apoio)}
 .rodape-titulo{margin-bottom:var(--e-2);font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-2)}
-.rodape-coluna a{display:inline-flex;align-items:center;align-self:flex-start;min-height:var(--alvo);color:var(--texto);transition:color var(--dur-curta) var(--curva)}
+.rodape-coluna a{display:inline-flex;align-items:center;align-self:flex-start;min-height:var(--alvo);min-width:var(--alvo);color:var(--texto);transition:color var(--dur-curta) var(--curva)}
 .rodape-coluna a:hover{color:var(--texto-2)}
 .rodape-base{max-width:var(--largura);margin:0 auto;padding:var(--e-5) var(--calha) var(--e-6);display:flex;flex-wrap:wrap;gap:var(--e-3);justify-content:space-between;font:var(--peso-texto) var(--t-rotulo)/1.4 var(--f-mono);color:var(--texto-2);border-top:1px solid var(--linha)}
 @media (max-width:420px){.rodape-marca{min-width:0;grid-column:auto}}

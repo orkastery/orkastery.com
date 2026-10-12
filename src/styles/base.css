@@ -39,15 +39,14 @@ button{font:inherit;color:inherit}
 .texto-corrido a,a.link{text-decoration:underline;text-decoration-color:var(--linha-forte);text-decoration-thickness:1px;text-underline-offset:3px;transition:text-decoration-color var(--dur-curta) var(--curva)}
 .texto-corrido a:hover,a.link:hover{text-decoration-color:var(--texto)}
 
-/* Movimento do kit: pulso de 2,8 s só no que está vivo; fluxo tracejado; a borda de luz do
-   comando de instalação gira. O partitura.css zera durações e animações com movimento
-   reduzido; aqui só sai a rolagem suave. */
-@keyframes orkPulse{0%,100%{opacity:1}50%{opacity:.3}}
+/* Movimento do kit: o fluxo tracejado da instrução e a borda de luz do comando de instalação,
+   que gira. O pulso de 2,8 s do kit é só para o que está vivo, e a home não tem nada vivo que o
+   HTML dela pulse. O partitura.css zera durações e animações com movimento reduzido; aqui só
+   sai a rolagem suave. */
 @property --orkA{syntax:'<angle>';inherits:false;initial-value:0deg}
 @keyframes orkSpin{to{--orkA:360deg}}
 @keyframes orkFlow{to{background-position:0 9px}}
 @keyframes orkFlowX{to{background-position:9px 0}}
-.pulso{animation:orkPulse var(--pulso) ease-in-out infinite}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 
 /* Foco visível em todo interativo, pelo anel do kit. O contorno transparente aparece no modo de
