@@ -1,44 +1,82 @@
-/* Base do design system, tirada do HTML do dono (Claude Design). Os valores vêm dos tokens
-   (src/styles/tokens.css, gerado de src/data/design-system.json). Como no design, não há reset
-   global de box-sizing: o contêiner é content-box (1200px de conteúdo mais a calha). */
+/* Base do site sobre a Partitura, o design system do kit do dono. Os tokens são os de
+   /partitura/partitura.css (public/partitura/, cópia sem mudança do kit, ligada no <head>):
+   aqui e nos componentes só entram var(--…) dele, nenhuma cor solta. Como no HTML da home,
+   não há reset global de box-sizing: o contêiner é content-box (até 1280 px de conteúdo mais
+   a calha do kit). */
+
+/* Papéis de texto: a escala --t-* com o peso, a entrelinha e o tracking das notas do
+   partitura.css. Títulos em Geist 600 com tracking entre -0,01 e -0,035em; corpo em Hanken
+   17/1,5; rótulo em Plex Mono 500 caixa alta +0,06em; código em Plex Mono 400. */
+:root{
+ --tipo-display:var(--peso-titulo) var(--t-display)/1 var(--f-titulo);
+ --tipo-titulo-1:var(--peso-titulo) var(--t-titulo-1)/1.1 var(--f-titulo);
+ --tipo-titulo-2:var(--peso-titulo) var(--t-titulo-2)/1.15 var(--f-titulo);
+ --tipo-titulo-3:var(--peso-titulo) var(--t-titulo-3)/1.3 var(--f-titulo);
+ --tipo-corpo:var(--peso-texto) var(--t-corpo)/1.5 var(--f-texto);
+ --tipo-destaque:var(--peso-destaque) var(--t-corpo)/1.5 var(--f-texto);
+ --tipo-apoio:var(--peso-texto) var(--t-apoio)/1.45 var(--f-texto);
+ --tipo-rotulo:var(--peso-destaque) var(--t-rotulo)/1.33 var(--f-mono);
+ --tipo-codigo:var(--peso-texto) var(--t-codigo)/1.6 var(--f-mono);
+ --tipo-botao:var(--peso-destaque) 15px/1 var(--f-texto);
+ --trk-display:-0.035em;
+ --trk-titulo-1:-0.03em;
+ --trk-titulo-2:-0.02em;
+ --trk-titulo-3:-0.01em;
+ /* Estrutura do site (não é identidade): alturas e respiros feitos da escala --e-*. */
+ --altura-cabecalho:64px;
+ --alvo:44px;
+ --secao:clamp(var(--e-8),8vw,var(--e-9));
+ --secao-ampla:clamp(var(--e-8),10vw,calc(var(--e-9) + var(--e-6)));
+}
 
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--fonte-texto);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{margin:0;background:var(--chao);color:var(--texto);font:var(--tipo-corpo);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 a{color:inherit;text-decoration:none}
-a:hover{color:var(--acento-texto)}
-::selection{background:var(--selecao)}
+::selection{background:var(--linha-forte);color:var(--texto)}
 button{font:inherit;color:inherit}
 
+/* Links no texto corrido: sublinhado na linha forte, que escurece no hover. */
+.texto-corrido a,a.link{text-decoration:underline;text-decoration-color:var(--linha-forte);text-decoration-thickness:1px;text-underline-offset:3px;transition:text-decoration-color var(--dur-curta) var(--curva)}
+.texto-corrido a:hover,a.link:hover{text-decoration-color:var(--texto)}
+
+/* Movimento do kit: pulso de 2,8 s só no que está vivo; fluxo tracejado; a borda de luz do
+   comando de instalação gira. O partitura.css zera durações e animações com movimento
+   reduzido; aqui só sai a rolagem suave. */
 @keyframes orkPulse{0%,100%{opacity:1}50%{opacity:.3}}
 @property --orkA{syntax:'<angle>';inherits:false;initial-value:0deg}
 @keyframes orkSpin{to{--orkA:360deg}}
 @keyframes orkFlow{to{background-position:0 9px}}
 @keyframes orkFlowX{to{background-position:9px 0}}
-@media (prefers-reduced-motion: reduce){*{animation:none!important;scroll-behavior:auto!important}}
+.pulso{animation:orkPulse var(--pulso) ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 
-/* Foco visível só no teclado: não muda o desenho, só aparece quando alguém navega por Tab. */
-:focus-visible{outline:2px solid var(--acento-texto);outline-offset:3px}
-.sobre-escuro :focus-visible{outline-color:var(--acento)}
+/* Foco visível em todo interativo, pelo anel do kit. O contorno transparente aparece no modo de
+   alto contraste, onde a sombra some. */
+:focus-visible{outline:2px solid transparent;outline-offset:2px;box-shadow:var(--anel-foco)}
 
-/* Raiz da página, como a do design: altura mínima de uma tela e nenhuma sobra horizontal. */
+/* Tema noite (data-tema, como no kit): o texto herda a cor da noite. O partitura.css declara
+   --anel-foco só no :root, com o chão e o foco do dia já resolvidos ali; a mesma fórmula,
+   declarada de novo no tema noite, usa o chão e o foco da noite. */
+[data-tema="noite"]{color:var(--texto);--anel-foco:0 0 0 2px var(--chao),0 0 0 4px var(--foco)}
+
+/* Raiz da página: altura mínima de uma tela e nenhuma sobra horizontal. */
 .pagina{min-height:100vh;overflow-x:clip}
 
-.container{max-width:var(--largura-maxima);margin:0 auto;padding:0 var(--calha)}
+.container{max-width:var(--largura);margin:0 auto;padding:0 var(--calha)}
 
-/* Sobretítulo numerado das seções. */
-.sobretitulo{font:var(--tipo-sobretitulo);letter-spacing:var(--tracking-sobretitulo);text-transform:uppercase;color:var(--tinta-3)}
-.sobre-escuro .sobretitulo{color:var(--sobre-noite-3)}
+/* Rótulo das seções (sobretítulo numerado): Plex Mono 500, caixa alta, +0,06em. */
+.sobretitulo{font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-3)}
 
 /* Pular para o conteúdo: fora da tela até receber foco. */
-.pular{position:fixed;z-index:1000;left:16px;top:12px;transform:translateY(-200%);padding:12px 16px;border-radius:10px;background:var(--tinta);color:var(--papel);font:var(--tipo-navegacao)}
-.pular:focus{transform:none;color:var(--papel)}
+.pular{position:fixed;z-index:1000;left:var(--e-4);top:var(--e-3);transform:translateY(-200%);display:inline-flex;align-items:center;min-height:var(--alvo);padding:0 var(--e-4);border-radius:var(--raio-botao);background:var(--acao);color:var(--sobre-acao);font:var(--tipo-botao)}
+.pular:focus{transform:none}
 
 /* Texto só para leitor de tela. */
 .so-leitor{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-/* Código inline no estilo do chip do design (mono 500, raio curto, fundo da tinta a 8%).
-   Atômico: um comando curto nunca se parte entre linhas; um longo quebra dentro do próprio chip. */
-:not(pre)>code{display:inline-block;max-width:100%;font-family:var(--fonte-mono);font-weight:500;font-size:.86em;line-height:1.3;padding:.08em .38em;border-radius:6px;background:color-mix(in srgb,currentColor 8%,transparent);white-space:normal;overflow-wrap:anywhere;vertical-align:baseline}
+/* Código inline: Plex Mono, raio de segmento, fundo da cor do texto a 7%. Atômico: um comando
+   curto nunca se parte entre linhas; um longo quebra dentro do próprio chip. */
+:not(pre)>code{display:inline-block;max-width:100%;font-family:var(--f-mono);font-weight:var(--peso-texto);font-size:.875em;line-height:1.3;padding:.08em .38em;border-radius:var(--raio-segmento);background:color-mix(in srgb,currentColor 7%,transparent);white-space:normal;overflow-wrap:anywhere;vertical-align:baseline}
 /* Inline-block não herda o sublinhado do link: o código o aplica a si mesmo. */
 a>code,a .code-unit,a .code-unit>code{text-decoration:inherit}
 /* Unidade sem quebra: o que encosta no chip viaja com ele (parêntese, ponto, sufixo colado). */
@@ -46,15 +84,18 @@ a>code,a .code-unit,a .code-unit>code{text-decoration:inherit}
 .code-unit>code{max-width:calc(100% - var(--folga,2ch) - 1px)}
 pre code{font:inherit;background:none;padding:0;border-radius:0;white-space:pre}
 
-/* Código sem chip: o comando ou identificador que o design já mostra em mono (terminal, rótulo,
-   selo) fica em <code> para a regra do código inteiro, com a fonte e a cor de quem o contém. */
+/* Código sem chip: o comando ou identificador que já aparece em mono (terminal, rótulo, selo)
+   fica em <code> para a regra do código inteiro, com a fonte e a cor de quem o contém. */
 .codigo-liso{display:inline;font:inherit;color:inherit;background:none;padding:0;border-radius:0;white-space:nowrap;vertical-align:baseline}
 
 /* Âncoras de versões anteriores da home: alvo de link antigo, sem ocupar espaço. */
 .ancora-antiga{position:absolute;width:0;height:0;overflow:hidden}
 
-/* Seção padrão do design e holofote: o cartão com data-holofote recebe --mx e --my do mouse
-   (src/scripts/home.ts) e um brilho de latão segue o ponteiro. Use background-color, nunca o
-   atalho background, no cartão que também tem .holofote. */
-.secao-padrao{padding:var(--secao-padrao) 0}
-.holofote{background-image:radial-gradient(480px circle at var(--mx,-600px) var(--my,-600px),rgba(224,178,100,.12),transparent 42%)}
+/* Seção padrão e o brilho que segue o cursor (kit: luz neutra, texto a 7%, raio de 320 px,
+   nunca latão, só em cartão de destaque, desligado em toque). O cartão com data-holofote recebe
+   --mx e --my do mouse (src/scripts/moldura.ts). Use background-color, nunca o atalho
+   background, no cartão que também tem .holofote. */
+.secao-padrao{padding:var(--secao) 0}
+@media (hover:hover) and (pointer:fine){
+ .holofote{background-image:radial-gradient(320px circle at var(--mx,-600px) var(--my,-600px),color-mix(in srgb,var(--texto) 7%,transparent),transparent)}
+}

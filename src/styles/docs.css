@@ -1,90 +1,89 @@
-/* Docs no design system do dono. O design não desenha as docs (o link "Docs" dele aponta para um
-   arquivo que não veio); estas regras aplicam os mesmos tokens e blocos da home: superfície papel,
-   cartões brancos, títulos em Geist, sobretítulo em mono, código em bloco como o terminal do
-   ork demo e código inline como o chip. Como no resto do site, sem reset global de box-sizing. */
+/* Docs na Partitura. O HTML da home não desenha as docs; estas regras aplicam os mesmos tokens e
+   blocos: chão névoa, cartões em papel, títulos em Geist, rótulos em mono, bloco de código sempre
+   noite (data-tema no <pre>) e código inline como o chip. Alvos de 44 px na navegação; links no
+   texto corrido com o sublinhado do kit. Como no resto do site, sem reset global de box-sizing. */
 
-.docs-surface{background:var(--papel);color:var(--tinta);padding:clamp(40px,5vw,72px) 0 clamp(72px,9vw,112px)}
-.docs-shell{display:grid;grid-template-columns:240px minmax(0,1fr);gap:28px 56px}
-.docs-breadcrumb{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap;align-items:center;font:500 12px/1.4 var(--fonte-mono);letter-spacing:.04em;color:var(--tinta-3)}
-.docs-breadcrumb a:hover{color:var(--acento-texto)}
-.docs-breadcrumb [aria-current]{color:var(--tinta-2)}
+.docs-surface{background:var(--chao);color:var(--texto);padding:clamp(var(--e-7),5vw,var(--e-8)) 0 var(--secao)}
+.docs-shell{display:grid;grid-template-columns:240px minmax(0,1fr);gap:var(--e-6) var(--e-8)}
+.docs-breadcrumb{grid-column:1/-1;display:flex;gap:var(--e-2);flex-wrap:wrap;align-items:center;font:var(--peso-destaque) var(--t-rotulo)/1.4 var(--f-mono);color:var(--texto-3)}
+.docs-breadcrumb a{display:inline-flex;align-items:center;min-height:var(--alvo);transition:color var(--dur-curta) var(--curva)}
+.docs-breadcrumb a:hover{color:var(--texto)}
+.docs-breadcrumb [aria-current]{color:var(--texto-2)}
 
-/* Navegação lateral: grupos em sobretítulo, item atual como a pílula ativa do seletor de língua. */
-.docs-navigation{align-self:start;position:sticky;top:88px;max-height:calc(100vh - 112px);overflow:auto;scrollbar-width:thin;font:500 14px/1.35 var(--fonte-texto)}
-.docs-navigation summary{cursor:pointer;padding:8px 0;font:500 12px/1 var(--fonte-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-3)}
+/* Navegação lateral: grupos em rótulo, item atual com a marca do board do kit (inset 2px). */
+.docs-navigation{align-self:start;position:sticky;top:88px;max-height:calc(100vh - 112px);overflow:auto;scrollbar-width:thin;font:var(--peso-destaque) var(--t-apoio)/1.35 var(--f-texto)}
+.docs-navigation summary{display:flex;align-items:center;min-height:var(--alvo);cursor:pointer;font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-3)}
 .docs-navigation ul{list-style:none;padding:0;margin:0}
-.nav-group{margin-top:22px}
-.nav-group>p{margin:0 0 8px;font:500 11px/1 var(--fonte-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-4-aa)}
-.docs-navigation a{display:block;padding:7px 10px;border-radius:var(--raio-8);color:var(--tinta-2)}
-.docs-navigation a:hover{color:var(--tinta);background:rgba(18,22,28,.04)}
-.docs-navigation a[aria-current]{background:var(--branco);color:var(--tinta);box-shadow:var(--sombra-pilula)}
+.nav-group{margin-top:var(--e-5)}
+.nav-group>p{margin:0 0 var(--e-1);font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-3)}
+.docs-navigation a{display:flex;align-items:center;min-height:var(--alvo);padding:0 var(--e-3);border-radius:var(--raio-chip);color:var(--texto-2);box-sizing:border-box;transition:color var(--dur-curta) var(--curva),background-color var(--dur-curta) var(--curva)}
+.docs-navigation a:hover{color:var(--texto);background:color-mix(in srgb,var(--texto) 4%,transparent)}
+.docs-navigation a[aria-current]{background:var(--superficie);color:var(--texto);box-shadow:inset 2px 0 0 var(--texto),var(--sombra-1)}
 
 /* Coluna de leitura. */
-.docs-reading{min-width:0;max-width:76ch;font:400 17px/1.7 var(--fonte-texto);color:var(--tinta-2)}
-.docs-reading h1,.docs-reading h2,.docs-reading h3{color:var(--tinta);font-family:var(--fonte-display);font-weight:600;text-wrap:balance}
-.docs-reading h1{margin:16px 0 0;font-size:clamp(36px,4.6vw,58px);line-height:1.02;letter-spacing:-0.035em;max-width:20ch}
-.docs-reading h2{margin:0 0 14px;font-size:clamp(24px,2.6vw,32px);line-height:1.12;letter-spacing:-0.025em}
+.docs-reading{min-width:0;max-width:76ch;font:var(--tipo-corpo);color:var(--texto-2)}
+.docs-reading h1,.docs-reading h2,.docs-reading h3{color:var(--texto);text-wrap:balance}
+.docs-reading h1{margin:var(--e-4) 0 0;font:var(--tipo-titulo-1);letter-spacing:var(--trk-titulo-1);max-width:20ch}
+.docs-reading h2{margin:0 0 var(--e-3);font:var(--tipo-titulo-2);letter-spacing:var(--trk-titulo-2)}
 .docs-reading h2 a{color:inherit}
-.docs-reading h2 a:hover{color:var(--acento-texto)}
-.docs-reading h3{margin:0 0 8px;font-size:18px;line-height:1.25;letter-spacing:-0.01em}
-.docs-reading p{margin:14px 0}
-.docs-reading a:not(.docs-card):not([rel]){color:var(--tinta);text-decoration:underline;text-decoration-color:rgba(18,22,28,.28);text-underline-offset:.2em}
-.docs-reading a:not(.docs-card):not([rel]):hover{color:var(--acento-texto);text-decoration-color:currentColor}
+.docs-reading h3{margin:0 0 var(--e-2);font:var(--tipo-titulo-3);letter-spacing:var(--trk-titulo-3)}
+.docs-reading p{margin:var(--e-3) 0}
+.docs-reading a:not(.docs-card):not([rel]){color:var(--texto);text-decoration:underline;text-decoration-color:var(--linha-forte);text-decoration-thickness:1px;text-underline-offset:3px;transition:text-decoration-color var(--dur-curta) var(--curva)}
+.docs-reading a:not(.docs-card):not([rel]):hover{text-decoration-color:var(--texto)}
 .docs-reading h2 a:not(.docs-card):not([rel]){text-decoration:none}
-.docs-lead{margin:20px 0 0;font:var(--tipo-lead-hero);color:var(--tinta-2);text-wrap:pretty}
-.docs-eyebrow{margin:0;font:var(--tipo-sobretitulo);letter-spacing:var(--tracking-sobretitulo);text-transform:uppercase;color:var(--tinta-3)}
-.docs-reading>header,.docs-article>header{padding-bottom:8px}
-.docs-section{margin:48px 0;scroll-margin-top:88px}
+.docs-lead{margin:var(--e-5) 0 0;font:var(--tipo-corpo);color:var(--texto-2);text-wrap:pretty}
+.docs-eyebrow{margin:0;font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-3)}
+.docs-reading>header,.docs-article>header{padding-bottom:var(--e-2)}
+.docs-section{margin:var(--e-7) 0;scroll-margin-top:88px}
 .docs-section h2[id],.docs-legacy li[id]{scroll-margin-top:88px}
 .docs-reading ul{padding-left:22px}
-.docs-reading li{margin:8px 0}
-.docs-reading li::marker{color:var(--tinta-5)}
+.docs-reading li{margin:var(--e-2) 0}
+.docs-reading li::marker{color:color-mix(in srgb,var(--texto-3) 60%,var(--linha))}
 
-/* Código: bloco como o terminal do design, inline como o chip. */
-.docs-reading pre{margin:24px 0;padding:22px 24px;background:var(--noite);color:var(--sobre-noite-2);border-radius:var(--raio-16);font:var(--tipo-terminal);overflow:auto;max-width:100%;tab-size:2}
+/* Código: bloco sempre noite (o <pre> leva data-tema), inline como o chip. */
+.docs-reading pre{margin:var(--e-5) 0;padding:var(--e-5);background:var(--superficie);color:var(--texto);border-radius:var(--raio-cartao);font:var(--tipo-codigo);overflow:auto;max-width:100%;tab-size:2}
 .docs-reading pre code{color:inherit}
-.docs-reading pre:focus-visible{outline:2px solid var(--acento);outline-offset:3px}
 
-/* Sumário da página: cartão branco em duas colunas. */
-.docs-toc{margin:32px 0;padding:20px 24px;background:var(--branco);border:1px solid var(--linha-cartao);border-radius:var(--raio-16);font:500 14.5px/1.45 var(--fonte-texto)}
-.docs-toc>p{margin:0 0 10px;font:500 12px/1 var(--fonte-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-3)}
-.docs-toc ul{columns:2;column-gap:28px;list-style:none;padding:0;margin:0}
-.docs-toc li{break-inside:avoid;margin:0 0 8px}
-.docs-toc a{color:var(--tinta-2)!important;text-decoration:none!important}
-.docs-toc a:hover{color:var(--acento-texto)!important}
+/* Sumário da página: cartão em duas colunas. */
+.docs-toc{margin:var(--e-6) 0;padding:var(--e-4) var(--e-5);background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio-cartao);font:var(--peso-destaque) var(--t-apoio)/1.45 var(--f-texto)}
+.docs-toc>p{margin:0 0 var(--e-1);font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-3)}
+.docs-toc ul{columns:2;column-gap:var(--e-6);list-style:none;padding:0;margin:0}
+.docs-toc li{break-inside:avoid;margin:0}
+.docs-toc a{display:inline-flex;align-items:center;min-height:var(--alvo);color:var(--texto-2)!important;text-decoration:none!important;transition:color var(--dur-curta) var(--curva)}
+.docs-toc a:hover{color:var(--texto)!important}
 
-/* Destaque do que muda para quem já usa: latão suave, com o ponto de atenção do design. */
-.docs-destaque{margin:20px 0 24px;padding:20px 24px;border-radius:var(--raio-16);background:var(--acento-suave);border:1px solid rgba(138,95,23,.18);color:var(--tinta)}
-.docs-destaque-titulo{display:flex;align-items:center;gap:12px;margin:0 0 6px!important;font:600 17px/1.35 var(--fonte-display);color:var(--acento-texto)}
-.docs-destaque-marca{flex:none;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--acento);color:var(--sobre-acento);font:600 13px/1 var(--fonte-texto)}
-.docs-destaque p,.docs-destaque li{color:var(--tinta)}
+/* O que muda para quem já usa: o alerta do kit em regência (informação), nunca latão. */
+.docs-destaque{margin:var(--e-5) 0 var(--e-5);padding:var(--e-4) var(--e-5);border-radius:var(--raio-cartao);background:var(--superficie);border:1px solid var(--linha);color:var(--texto)}
+.docs-destaque-titulo{display:flex;align-items:center;gap:var(--e-3);margin:0 0 6px!important;font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--executando-texto)}
+.docs-destaque-marca{flex:none;width:7px;height:7px;border-radius:50%;background:var(--executando);font-size:0;overflow:hidden}
+.docs-destaque p,.docs-destaque li{color:var(--texto)}
 
 /* Índice das docs: cartões como os de escala da home. */
-.docs-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:12px}
-.docs-card{display:flex;flex-direction:column;gap:10px;padding:24px;border-radius:var(--raio-16);background-color:var(--branco);border:1px solid var(--linha-cartao);color:var(--tinta)}
-.docs-card:hover{border-color:var(--linha-hover);color:var(--tinta)}
+.docs-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:var(--e-3)}
+.docs-card{display:flex;flex-direction:column;gap:var(--e-3);padding:var(--e-5);border-radius:var(--raio-cartao);background-color:var(--superficie);border:1px solid var(--linha);color:var(--texto);transition:border-color var(--dur-curta) var(--curva)}
+.docs-card:hover{border-color:var(--linha-forte)}
 .docs-card h3{margin:0}
-.docs-card p{margin:0;flex:1;font:var(--tipo-corpo-cartao);color:var(--tinta-2)}
-.docs-card>span{font:500 14px/1 var(--fonte-texto);color:var(--acento-texto)}
-.docs-grupo>h2{font:500 12px/1 var(--fonte-mono)!important;letter-spacing:.1em!important;text-transform:uppercase;color:var(--tinta-3)!important;margin-bottom:16px!important}
+.docs-card p{margin:0;flex:1;font:var(--tipo-apoio);color:var(--texto-2)}
+.docs-card>span{font:var(--peso-destaque) var(--t-apoio)/1 var(--f-texto);color:var(--texto-2)}
+.docs-grupo>h2{font:var(--tipo-rotulo)!important;letter-spacing:var(--espaco-rotulo)!important;text-transform:uppercase;color:var(--texto-3)!important;margin-bottom:var(--e-4)!important}
 
-/* Nota do roadmap, fontes e atalhos antigos: texto pequeno sob uma linha, como a linha final do rodapé. */
-.docs-note,.docs-sources,.docs-legacy{margin:48px 0;padding-top:24px;border-top:1px solid var(--linha-forte);font:400 14.5px/1.6 var(--fonte-texto);color:var(--tinta-3)}
-.docs-note{padding:20px 24px;border:0;border-radius:var(--raio-16);background:var(--branco)}
-.docs-sources h2,.docs-legacy h2{font:500 12px/1 var(--fonte-mono)!important;letter-spacing:.1em!important;text-transform:uppercase;color:var(--tinta-3)!important}
+/* Nota do roadmap, fontes e atalhos antigos: texto de apoio sob uma linha. */
+.docs-note,.docs-sources,.docs-legacy{margin:var(--e-7) 0;padding-top:var(--e-5);border-top:1px solid var(--linha-forte);font:var(--tipo-apoio);color:var(--texto-3)}
+.docs-note{padding:var(--e-4) var(--e-5);border:0;border-radius:var(--raio-cartao);background:var(--superficie)}
+.docs-sources h2,.docs-legacy h2{font:var(--tipo-rotulo)!important;letter-spacing:var(--espaco-rotulo)!important;text-transform:uppercase;color:var(--texto-3)!important}
 .docs-sources ul{list-style:none;padding:0}
 
 /* Anterior e próximo: dois cartões. */
-.docs-pagination{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:12px;margin-top:48px}
-.docs-pagination a{display:grid;gap:8px;padding:20px 22px;border-radius:var(--raio-16);background:var(--branco);border:1px solid var(--linha-cartao);font:600 17px/1.3 var(--fonte-display);color:var(--tinta);text-decoration:none!important}
-.docs-pagination a:hover{border-color:var(--linha-hover);color:var(--tinta)}
+.docs-pagination{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:var(--e-3);margin-top:var(--e-7)}
+.docs-pagination a{display:grid;gap:var(--e-2);padding:var(--e-4) var(--e-5);border-radius:var(--raio-cartao);background:var(--superficie);border:1px solid var(--linha);font:var(--peso-titulo) var(--t-corpo)/1.3 var(--f-titulo);color:var(--texto);text-decoration:none!important;transition:border-color var(--dur-curta) var(--curva)}
+.docs-pagination a:hover{border-color:var(--linha-forte)}
 .docs-pagination a[rel="next"]{text-align:right}
-.docs-pagination small{font:500 11px/1 var(--fonte-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-3)}
+.docs-pagination small{font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-3)}
 
 @media (max-width:900px){
- .docs-shell{grid-template-columns:minmax(0,1fr);gap:20px}
- .docs-navigation{position:static;max-height:none;padding:4px 16px;background:var(--branco);border:1px solid var(--linha-cartao);border-radius:var(--raio-16)}
- .docs-navigation details[open]{max-height:60vh;overflow:auto;padding-bottom:12px}
+ .docs-shell{grid-template-columns:minmax(0,1fr);gap:var(--e-5)}
+ .docs-navigation{position:static;max-height:none;padding:var(--e-1) var(--e-4);background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio-cartao)}
+ .docs-navigation details[open]{max-height:60vh;overflow:auto;padding-bottom:var(--e-3)}
  .docs-reading{max-width:none}
 }
 @media (max-width:560px){.docs-toc ul{columns:1}}

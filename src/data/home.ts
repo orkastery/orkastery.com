@@ -144,11 +144,11 @@ const pt = {
   lead: 'Você fecha o laptop às 23h. Isto é o que o ledger registra até o café. Nada aqui pediu a sua presença.',
   note: 'role a página · exemplo de uma noite no seu fuso',
   events: [
-   {t: '23:04', tag: 'GO', c: 'noite-info', text: 'Seis threads abertas em três máquinas, cada uma na sua worktree. Nenhuma toca o arquivo da outra.'},
-   {t: '00:37', tag: 'CHECK ✕', c: 'noite-alerta', text: 'checkout-v2 reprovou em dois testes contra a baseline. Volta como GO-FIX com spec tipada, sem acordar você.'},
-   {t: '01:52', tag: 'rotação', c: 'sobre-noite-2', text: 'A cota do perfil claude-bg/pessoal acabou. O mesmo prompt segue no perfil claude-bg/time.'},
-   {t: '03:18', tag: 'SHIP ✓', c: 'noite-ok', text: 'billing-api em merge serializado. O push só contou quando git ls-remote bateu com o SHA local.'},
-   {t: '05:40', tag: 'decisão', c: 'acento', text: 'Uma decisão óbvia tomada e registrada: o porquê, como mudar e quanto custa mudar agora ou depois.'}
+   {t: '23:04', tag: 'GO', c: 'executando', text: 'Seis threads abertas em três máquinas, cada uma na sua worktree. Nenhuma toca o arquivo da outra.'},
+   {t: '00:37', tag: 'CHECK ✕', c: 'falha', text: 'checkout-v2 reprovou em dois testes contra a baseline. Volta como GO-FIX com spec tipada, sem acordar você.'},
+   {t: '01:52', tag: 'rotação', c: 'texto-2', text: 'A cota do perfil claude-bg/pessoal acabou. O mesmo prompt segue no perfil claude-bg/time.'},
+   {t: '03:18', tag: 'SHIP ✓', c: 'verificado', text: 'billing-api em merge serializado. O push só contou quando git ls-remote bateu com o SHA local.'},
+   {t: '05:40', tag: 'decisão', c: 'texto', text: 'Uma decisão óbvia tomada e registrada: o porquê, como mudar e quanto custa mudar agora ou depois.'}
   ],
   morningLabel: '07:00 · resumo da noite',
   morning: 'Bom dia. 11 entregas verificadas, 2 perguntas esperando você, nenhuma crítica.'
@@ -182,19 +182,19 @@ const pt = {
   ],
   demoMeta: '30 s · sem conta · sem modelo',
   demo: [
-   {k: '$', kc: 'acento', v: 'ork demo', vc: 'sobre-noite', code: true},
-   {k: 'claim', kc: 'sobre-noite-4', v: 'soma() trata números negativos', vc: 'sobre-noite-2'},
-   {k: 'verify', kc: 'sobre-noite-4', v: 'npm test -- soma.spec.ts', vc: 'sobre-noite-2', code: true},
-   {k: '✕ falhou', kc: 'noite-alerta', v: 'claims.failed · 2 de 5 casos no HEAD a41f9c2', vc: 'noite-alerta'},
-   {k: '→', kc: 'sobre-noite-4', v: 'GO-FIX com spec tipada', vc: 'sobre-noite-2'},
-   {k: 'verify', kc: 'sobre-noite-4', v: 'npm test -- soma.spec.ts', vc: 'sobre-noite-2', code: true},
-   {k: '✓ aceita', kc: 'noite-ok', v: '5 de 5 casos no HEAD 7d02e1b', vc: 'noite-ok'},
-   {k: '', kc: 'sobre-noite-4', v: 'o relatório do agente não contou. O comando contou.', vc: 'sobre-noite-4'}
+   {k: '$', kc: 'texto', v: 'ork demo', vc: 'texto', code: true},
+   {k: 'claim', kc: 'texto-2', v: 'soma() trata números negativos', vc: 'texto-2'},
+   {k: 'verify', kc: 'texto-2', v: 'npm test -- soma.spec.ts', vc: 'texto-2', code: true},
+   {k: '✕ falhou', kc: 'falha', v: 'claims.failed · 2 de 5 casos no HEAD a41f9c2', vc: 'falha'},
+   {k: '→', kc: 'texto-2', v: 'GO-FIX com spec tipada', vc: 'texto-2'},
+   {k: 'verify', kc: 'texto-2', v: 'npm test -- soma.spec.ts', vc: 'texto-2', code: true},
+   {k: '✓ aceita', kc: 'verificado', v: '5 de 5 casos no HEAD 7d02e1b', vc: 'verificado'},
+   {k: '', kc: 'texto-2', v: 'o relatório do agente não contou. O comando contou.', vc: 'texto-2'}
   ],
   gapsTitle: 'Lacuna publicada como lacuna.',
   gaps: [
-   {s: 'não existe', c: 'alerta-texto', t: 'Verify local estável em VM com CPU roubada pelo hipervisor. Nessa máquina, a prova confiável é o CI.'},
-   {s: 'planejado', c: 'info-texto', t: 'Estado de conta compartilhado entre projetos, no roadmap como RM-040.'}
+   {s: 'não existe', c: 'falha-texto', t: 'Verify local estável em VM com CPU roubada pelo hipervisor. Nessa máquina, a prova confiável é o CI.'},
+   {s: 'planejado', c: 'executando-texto', t: 'Estado de conta compartilhado entre projetos, no roadmap como RM-040.'}
   ]
  },
  cta: {
@@ -345,11 +345,11 @@ const en: Home = {
   lead: 'You close the laptop at 23:00. This is what the ledger records until coffee. Nothing here asked for you to be there.',
   note: 'scroll the page · an example night in your time zone',
   events: [
-   {t: '23:04', tag: 'GO', c: 'noite-info', text: 'Six threads open on three machines, each in its own worktree. None touches the files of another.'},
-   {t: '00:37', tag: 'CHECK ✕', c: 'noite-alerta', text: 'checkout-v2 failed two tests against the baseline. It goes back as GO-FIX with a typed spec, without waking you.'},
-   {t: '01:52', tag: 'rotation', c: 'sobre-noite-2', text: 'The quota of the claude-bg/personal profile ran out. The same prompt carries on in the claude-bg/team profile.'},
-   {t: '03:18', tag: 'SHIP ✓', c: 'noite-ok', text: 'billing-api in a serialized merge. The push only counted when git ls-remote matched the local SHA.'},
-   {t: '05:40', tag: 'decision', c: 'acento', text: 'An obvious decision made and recorded: the why, how to change it and how much changing costs now or later.'}
+   {t: '23:04', tag: 'GO', c: 'executando', text: 'Six threads open on three machines, each in its own worktree. None touches the files of another.'},
+   {t: '00:37', tag: 'CHECK ✕', c: 'falha', text: 'checkout-v2 failed two tests against the baseline. It goes back as GO-FIX with a typed spec, without waking you.'},
+   {t: '01:52', tag: 'rotation', c: 'texto-2', text: 'The quota of the claude-bg/personal profile ran out. The same prompt carries on in the claude-bg/team profile.'},
+   {t: '03:18', tag: 'SHIP ✓', c: 'verificado', text: 'billing-api in a serialized merge. The push only counted when git ls-remote matched the local SHA.'},
+   {t: '05:40', tag: 'decision', c: 'texto', text: 'An obvious decision made and recorded: the why, how to change it and how much changing costs now or later.'}
   ],
   morningLabel: '07:00 · night summary',
   morning: 'Good morning. 11 verified deliveries, 2 questions waiting for you, nothing critical.'
@@ -383,19 +383,19 @@ const en: Home = {
   ],
   demoMeta: '30 s · no account · no model',
   demo: [
-   {k: '$', kc: 'acento', v: 'ork demo', vc: 'sobre-noite', code: true},
-   {k: 'claim', kc: 'sobre-noite-4', v: 'soma() handles negative numbers', vc: 'sobre-noite-2'},
-   {k: 'verify', kc: 'sobre-noite-4', v: 'npm test -- soma.spec.ts', vc: 'sobre-noite-2', code: true},
-   {k: '✕ failed', kc: 'noite-alerta', v: 'claims.failed · 2 of 5 cases on HEAD a41f9c2', vc: 'noite-alerta'},
-   {k: '→', kc: 'sobre-noite-4', v: 'GO-FIX with a typed spec', vc: 'sobre-noite-2'},
-   {k: 'verify', kc: 'sobre-noite-4', v: 'npm test -- soma.spec.ts', vc: 'sobre-noite-2', code: true},
-   {k: '✓ accepted', kc: 'noite-ok', v: '5 of 5 cases on HEAD 7d02e1b', vc: 'noite-ok'},
-   {k: '', kc: 'sobre-noite-4', v: 'the agent’s report did not count. The command did.', vc: 'sobre-noite-4'}
+   {k: '$', kc: 'texto', v: 'ork demo', vc: 'texto', code: true},
+   {k: 'claim', kc: 'texto-2', v: 'soma() handles negative numbers', vc: 'texto-2'},
+   {k: 'verify', kc: 'texto-2', v: 'npm test -- soma.spec.ts', vc: 'texto-2', code: true},
+   {k: '✕ failed', kc: 'falha', v: 'claims.failed · 2 of 5 cases on HEAD a41f9c2', vc: 'falha'},
+   {k: '→', kc: 'texto-2', v: 'GO-FIX with a typed spec', vc: 'texto-2'},
+   {k: 'verify', kc: 'texto-2', v: 'npm test -- soma.spec.ts', vc: 'texto-2', code: true},
+   {k: '✓ accepted', kc: 'verificado', v: '5 of 5 cases on HEAD 7d02e1b', vc: 'verificado'},
+   {k: '', kc: 'texto-2', v: 'the agent’s report did not count. The command did.', vc: 'texto-2'}
   ],
   gapsTitle: 'A gap published as a gap.',
   gaps: [
-   {s: 'does not exist', c: 'alerta-texto', t: 'Stable local verify on a VM whose CPU is stolen by the hypervisor. On that machine, the reliable proof is CI.'},
-   {s: 'planned', c: 'info-texto', t: 'Account state shared across projects, on the roadmap as RM-040.'}
+   {s: 'does not exist', c: 'falha-texto', t: 'Stable local verify on a VM whose CPU is stolen by the hypervisor. On that machine, the reliable proof is CI.'},
+   {s: 'planned', c: 'executando-texto', t: 'Account state shared across projects, on the roadmap as RM-040.'}
   ]
  },
  cta: {

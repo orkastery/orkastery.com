@@ -1,15 +1,16 @@
 ---
-// Chamada final do design: símbolo claro, título grande, o comando que copia e o contato por e-mail.
-// Também serve às páginas de produto (props titulo e texto).
+// Chamada final do HTML da home, no tema noite do kit: o símbolo (versão padrão, a do fundo noite),
+// o título no --t-display (D16), o comando que copia e o contato por e-mail no botão primário,
+// nunca latão (D18). Também serve às páginas de produto (props titulo e texto).
 import InstallButton from '../ds/InstallButton.astro';
 import TechnicalText from '../TechnicalText.astro';
 import {contato,withBase} from '../../data/i18n';
 interface Props { titulo: string; texto: string; falar: string; }
 const {titulo,texto,falar}=Astro.props;
 ---
-<section class="chamada sobre-escuro">
+<section class="chamada" data-tema="noite">
  <div class="chamada-coluna">
-  <img src={withBase('/marca/simbolo-fundo-escuro.svg')} alt="" width="56" height="56"/>
+  <img src={withBase('/marca/svg/simbolo.svg')} alt="" width="56" height="56"/>
   <h2 class="chamada-titulo">{titulo}</h2>
   <p class="chamada-texto"><TechnicalText text={texto}/></p>
   <div class="chamada-acoes">
@@ -19,12 +20,12 @@ const {titulo,texto,falar}=Astro.props;
  </div>
 </section>
 <style>
-.chamada{padding:var(--secao-chamada) 0;background:var(--noite);color:var(--sobre-noite);text-align:center}
+.chamada{padding:var(--secao-ampla) 0;background:var(--chao);text-align:center}
 .chamada-coluna{max-width:900px;margin:0 auto;padding:0 var(--calha);display:flex;flex-direction:column;align-items:center}
 .chamada-coluna img{width:56px;height:56px}
-.chamada-titulo{margin:28px 0 0;font:var(--tipo-h2-chamada);letter-spacing:var(--tracking-h2-chamada)}
-.chamada-texto{margin:24px 0 0;max-width:46ch;font:var(--tipo-lead);color:var(--sobre-noite-3);text-wrap:pretty}
-.chamada-acoes{margin-top:36px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
-.chamada-falar{display:flex;align-items:center;height:52px;padding:0 20px;border-radius:var(--raio-12);background:var(--acento);color:var(--sobre-acento);font:600 15px/1 var(--fonte-texto)}
-.chamada-falar:hover{background:var(--acento-forte);color:var(--sobre-acento)}
+.chamada-titulo{margin:var(--e-6) 0 0;font:var(--tipo-display);letter-spacing:var(--trk-display)}
+.chamada-texto{margin:var(--e-5) 0 0;max-width:46ch;font:var(--tipo-corpo);color:var(--texto-2);text-wrap:pretty}
+.chamada-acoes{margin-top:var(--e-6);display:flex;flex-wrap:wrap;gap:var(--e-3);justify-content:center;align-items:center}
+.chamada-falar{display:inline-flex;align-items:center;min-height:48px;padding:0 var(--e-5);border-radius:var(--raio-botao);background:var(--acao);color:var(--sobre-acao);font:var(--tipo-botao);box-sizing:border-box;transition:background-color var(--dur-curta) var(--curva)}
+.chamada-falar:hover{background:color-mix(in srgb,var(--acao) 86%,var(--chao))}
 </style>

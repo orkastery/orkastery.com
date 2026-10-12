@@ -1,20 +1,29 @@
-// A partitura do hero: o canvas do design (startScore do Claude Design), portado sem mudar o desenho.
-// Cada linha é um roadmap; a nota anda pelas seis fases, espera em latão no PLAN ou no CHECK quando
-// é de latão, acende um anel verde ao entrar em SHIP e fica verde quando passa do CHECK. A ordem das
-// chamadas a Math.random é a do design (x, v, latão), para a mesma semente dar o mesmo quadro.
-// Com movimento reduzido, as notas ficam paradas onde nasceram.
+// A partitura do hero: o canvas do HTML da home (startScore do Claude Design), portado sem mudar o
+// desenho. Cada linha é um roadmap; a nota anda pelas seis fases, espera em latão no PLAN ou no
+// CHECK quando é de latão (ponto de HITL), acende um anel verde ao entrar em SHIP e fica verde
+// quando passa do CHECK. A ordem das chamadas a Math.random é a do design (x, v, latão), para a
+// mesma semente dar o mesmo quadro. Com movimento reduzido, as notas ficam paradas onde nasceram.
+// As cores são as da Partitura, lidas dos tokens do partitura.css no próprio canvas (kit:
+// pátina = verificado, regência = executando, latão = ponto de HITL); nenhuma cor fica aqui.
 import {PH} from './home-state.mjs';
 
 export const DENSIDADE = 20, TEMPO = 1;
-const cores = {
- rotulo: '#7A818B', faixa: 'rgba(18,22,28,0.025)', linha: 'rgba(18,22,28,0.08)', nome: '#5F6670', nomeEspera: '#8A5F17',
- latao: '#E0B264', lataoForte: 'rgba(224,178,100,0.95)', lataoHalo: 'rgba(224,178,100,0.22)', etiqueta: '#F6ECD9',
- ok: '#3C9A86', okRastro: 'rgba(60,154,134,0.8)', tinta: '#12161C', rastro: 'rgba(18,22,28,0.5)', rastroInicio: 'rgba(18,22,28,0)'
-};
+// '#RRGGBB' do token com transparência, para traço e halo.
+const comAlfa = (hex, a) => { const n = parseInt(hex.replace('#', '').slice(0, 6), 16); return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`; };
+export function coresDaPartitura(el) {
+ const s = getComputedStyle(el), v = n => s.getPropertyValue('--' + n).trim();
+ const texto = v('texto'), espera = v('espera'), verificado = v('verificado'), executando = v('executando');
+ return {
+  rotulo: v('texto-3'), faixa: comAlfa(texto, 0.025), linha: comAlfa(texto, 0.08), nome: v('texto-3'), nomeEspera: v('espera-texto'),
+  latao: espera, lataoForte: comAlfa(espera, 0.95), lataoHalo: comAlfa(espera, 0.22), etiqueta: comAlfa(espera, 0.22),
+  ok: verificado, okRastro: comAlfa(verificado, 0.8), tinta: executando, rastro: comAlfa(executando, 0.5), rastroInicio: comAlfa(executando, 0)
+ };
+}
 
 export function iniciarPartitura(canvas, {nomes, etiqueta, reduzir, densidade = DENSIDADE, tempo = TEMPO, aoContar}) {
  const ctx = canvas.getContext('2d');
  if (!ctx) return {parar() {}, retomar() {}, encerrar() {}};
+ const cores = coresDaPartitura(canvas);
  let w = 0, h = 0, last = 0, lastCount = -1000, raf = 0, ro = null, vivo = {run: -1, wait: -1, ok: -1}, parado = false, pedirParada = false;
  // Mudar o tamanho do canvas apaga o quadro: ele é repintado na hora, parado ou não (sem abrir outro laço).
  const size = () => {
@@ -67,7 +76,7 @@ export function iniciarPartitura(canvas, {nomes, etiqueta, reduzir, densidade = 
    }
    if (n.flash > 0) {
     n.flash = Math.max(0, n.flash - dt * 0.5);
-    ctx.strokeStyle = `rgba(60,154,134,${n.flash})`; ctx.lineWidth = 1.5;
+    ctx.strokeStyle = comAlfa(cores.ok, n.flash); ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.arc(x, y, 4 + (1 - n.flash) * 12, 0, Math.PI * 2); ctx.stroke();
    }
    if (holding) {

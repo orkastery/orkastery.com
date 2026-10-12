@@ -14,15 +14,15 @@ const height=d.nodes.length*112-28;
  <figcaption><strong>{d.title}.</strong> {d.description}</figcaption>
 </figure>
 <style>
-/* Diagrama das docs no design system: cartão branco, caixas em papel, texto em Hanken e mono. */
-.docs-diagram{margin:28px 0;padding:20px;background:var(--branco);border:1px solid var(--linha-cartao);border-radius:var(--raio-20)}
-svg{width:100%;max-width:540px;display:block;margin:auto;color:var(--tinta)}
-rect{fill:var(--papel-3);stroke:rgba(18,22,28,.18);stroke-width:1.2}
-text{fill:currentColor;font:500 23px var(--fonte-texto)}
-.node-detail{fill:var(--tinta-3);font:400 19px var(--fonte-mono)}
-.edge-label{fill:var(--tinta-3);font:400 19px var(--fonte-mono)}
-.connector{fill:none;stroke:var(--tinta-5);stroke-width:1.5}
-figcaption{margin-top:14px;font:400 14px/1.6 var(--fonte-texto);color:var(--tinta-3)}
-figcaption strong{color:var(--tinta);font-weight:600}
-@media(max-width:550px){.docs-diagram{padding:12px}}
+/* Diagrama das docs na Partitura: cartão em papel, nós em névoa clara, texto em Hanken e mono. */
+.docs-diagram{margin:var(--e-6) 0;padding:var(--e-5);background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio-cartao)}
+svg{width:100%;max-width:540px;display:block;margin:auto;color:var(--texto)}
+rect{fill:color-mix(in srgb,var(--superficie-2) 60%,var(--superficie));stroke:color-mix(in srgb,var(--texto) 18%,transparent);stroke-width:1.2}
+text{fill:currentColor;font:500 23px var(--f-texto)}
+.node-detail{fill:var(--texto-3);font:400 19px var(--f-mono)}
+.edge-label{fill:var(--texto-3);font:400 19px var(--f-mono)}
+.connector{fill:none;stroke:color-mix(in srgb,var(--texto-3) 60%,var(--linha));stroke-width:1.5}
+figcaption{margin-top:var(--e-3);font:var(--tipo-apoio);color:var(--texto-3)}
+figcaption strong{color:var(--texto);font-weight:var(--peso-destaque)}
+@media(max-width:550px){.docs-diagram{padding:var(--e-3)}}
 </style>

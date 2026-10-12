@@ -1,14 +1,16 @@
 ---
-// Seletor de língua em pílula, como o PT/EN do design, com as três línguas do site.
+// Seletor de língua em segmentos, PT e EN (o espanhol saiu pela decisão E1 a do dono). Cada
+// opção é um alvo de 44 px; o segmento visível fica dentro dele.
 import {locales,languageName,languageTag,localeFor,localize,moldura,ui} from '../data/i18n';
 const locale=localeFor(Astro.url.pathname),text=ui(locale),m=moldura(locale);
 ---
 <nav class="linguas" aria-label={text.language} data-language-selector>
- {locales.map(l=><a href={localize(Astro.url.pathname,l)} hreflang={languageTag[l]} lang={languageTag[l]} aria-current={l===locale?'page':undefined} title={languageName[l]}><span aria-hidden="true">{m.languageShort[l]}</span><span class="so-leitor">{languageName[l]}</span></a>)}
+ {locales.map(l=><a href={localize(Astro.url.pathname,l)} hreflang={languageTag[l]} lang={languageTag[l]} aria-current={l===locale?'page':undefined} title={languageName[l]}><span class="lingua-segmento" aria-hidden="true">{m.languageShort[l]}</span><span class="so-leitor">{languageName[l]}</span></a>)}
 </nav>
 <style>
-.linguas{display:flex;align-items:center;gap:4px;padding:3px;border-radius:var(--raio-8);background:rgba(18,22,28,.05);font:500 12px/1 var(--fonte-mono);flex:none}
-.linguas a{padding:5px 8px;border-radius:var(--raio-6);color:var(--tinta-3)}
-.linguas a[aria-current]{background:var(--branco);box-shadow:var(--sombra-pilula);color:var(--tinta)}
-.linguas a:hover{color:var(--acento-texto)}
+.linguas{display:flex;align-items:center;flex:none;font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono)}
+.linguas a{display:inline-flex;align-items:center;justify-content:center;min-width:var(--alvo);min-height:var(--alvo);color:var(--texto-3);border-radius:var(--raio-botao)}
+.lingua-segmento{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 var(--e-2);border-radius:var(--raio-chip);background:var(--superficie-2);box-sizing:border-box;transition:background-color var(--dur-curta) var(--curva),color var(--dur-curta) var(--curva)}
+.linguas a:hover .lingua-segmento{color:var(--texto);background:var(--linha)}
+.linguas a[aria-current] .lingua-segmento{background:var(--acao);color:var(--sobre-acao)}
 </style>

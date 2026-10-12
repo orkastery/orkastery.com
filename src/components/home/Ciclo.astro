@@ -1,6 +1,7 @@
 ---
 // 07 · Como funciona (#ciclo): as seis fases como abas (CHECK no início, como no design), os dois
-// cartões da fase escolhida e a nota do GO-FIX. Cada fase sai pronta do build; só a escolhida aparece.
+// cartões da fase escolhida e a nota do GO-FIX. Cada fase sai pronta do build; só a escolhida
+// aparece. A aba escolhida usa a cor de ação do kit (--acao), não o latão.
 import SectionHead from '../ds/SectionHead.astro';
 import TechnicalText from '../TechnicalText.astro';
 import {phases,phaseDetail,ESTADO_INICIAL,PH,cor} from '../../lib/home-state.mjs';
@@ -34,21 +35,21 @@ const c=t.cycle,abas=phases(t,ESTADO_INICIAL.phase);
  </div>
 </section>
 <style>
-.ciclo{background:var(--branco);border-top:1px solid var(--linha-suave);border-bottom:1px solid var(--linha-suave)}
-.fases{margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:8px}
-.fase{text-align:left;padding:18px 18px 20px;border-radius:var(--raio-14);cursor:pointer;border:1px solid;transition:background .25s ease,color .25s ease}
-.fase:hover{border-color:rgba(18,22,28,.3)!important}
-.fase-n{display:block;font:500 12px/1 var(--fonte-mono);opacity:.7}
-.fase-nome{display:block;margin-top:22px;font:600 22px/1 var(--fonte-display);letter-spacing:-0.01em}
-.ciclo-detalhe{margin-top:12px}
-.ciclo-par{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:12px}
+.ciclo{background:var(--superficie);border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}
+.fases{margin-top:var(--e-7);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:var(--e-2)}
+.fase{text-align:left;padding:var(--e-4) var(--e-4) var(--e-5);border-radius:var(--raio-cartao);cursor:pointer;border:1px solid;transition:background var(--dur-media) var(--curva),color var(--dur-media) var(--curva)}
+.fase:hover{border-color:var(--linha-forte)!important}
+.fase-n{display:block;font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);opacity:.7}
+.fase-nome{display:block;margin-top:var(--e-5);font:var(--tipo-titulo-3);letter-spacing:var(--trk-titulo-3);line-height:1}
+.ciclo-detalhe{margin-top:var(--e-3)}
+.ciclo-par{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:var(--e-3)}
 .ciclo-par[hidden]{display:none}
-.ciclo-cartao{padding:28px;border-radius:var(--raio-16);background:var(--papel)}
-.ciclo-exige{background:var(--ok-fundo);border:1px solid var(--ok-suave)}
-.ciclo-rotulo{font:500 12px/1 var(--fonte-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-3)}
-.ciclo-exige .ciclo-rotulo{color:var(--ok-texto)}
-.ciclo-texto{margin-top:14px;font:var(--tipo-titulo-detalhe);letter-spacing:var(--tracking-titulo-detalhe);text-wrap:pretty}
-.ciclo-codigo{margin-top:16px;font:500 13px/1 var(--fonte-mono);color:var(--ok-texto)}
-.ciclo-nota{margin-top:20px;display:flex;align-items:center;gap:12px;font:400 14.5px/1.5 var(--fonte-texto);color:var(--tinta-2)}
-.ciclo-chip{font:500 12px/1 var(--fonte-mono);padding:6px 9px;border-radius:var(--raio-7);background:var(--alerta-suave);color:var(--alerta-texto)}
+.ciclo-cartao{padding:var(--e-5);border-radius:var(--raio-cartao);background:var(--superficie-2)}
+.ciclo-exige{background:color-mix(in srgb,var(--verificado) 6%,var(--superficie));border:1px solid color-mix(in srgb,var(--verificado) 18%,var(--superficie))}
+.ciclo-rotulo{font:var(--tipo-rotulo);line-height:1;letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-3)}
+.ciclo-exige .ciclo-rotulo{color:var(--verificado-texto)}
+.ciclo-texto{margin-top:var(--e-3);font:var(--peso-destaque) var(--t-titulo-2)/1.35 var(--f-titulo);letter-spacing:var(--trk-titulo-2);text-wrap:pretty}
+.ciclo-codigo{margin-top:var(--e-4);font:var(--peso-destaque) var(--t-rotulo)/1.4 var(--f-mono);color:var(--verificado-texto)}
+.ciclo-nota{margin-top:var(--e-5);display:flex;align-items:center;gap:var(--e-3);font:var(--tipo-apoio);color:var(--texto-2)}
+.ciclo-chip{flex:none;display:inline-flex;align-items:center;height:28px;padding:0 var(--e-3);border-radius:var(--raio-chip);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);background:color-mix(in srgb,var(--falha) 16%,var(--superficie));color:var(--falha-texto);box-sizing:border-box}
 </style>

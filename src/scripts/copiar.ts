@@ -1,22 +1,25 @@
-// Botão de instalação: copia o comando. Como no design, o rótulo vale para todos os botões da página
-// e volta a "copiar" depois de 1,8 s. Se a área de transferência recusar, o rótulo diz que falhou e
-// a mensagem para leitor de tela manda copiar à mão (o design mostraria "copiado" mesmo assim).
+// Comando copiável (kit Partitura): "copiar" vira "✓ copiado" por 1,6 s; se a área de
+// transferência recusar, "× use ⌘C" (Ctrl+C fora dos sistemas da Apple) e a mensagem para leitor
+// de tela manda copiar à mão. Como no HTML da home, o rótulo vale para todos os botões da página.
 let volta = 0;
-function rotular(chave: 'rotulo' | 'rotuloOk' | 'rotuloFalha', origem: HTMLElement, mensagem: string) {
+const atalho = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent) ? '⌘C' : 'Ctrl+C';
+function rotular(estado: 'pronto' | 'ok' | 'falha', origem: HTMLElement, mensagem: string) {
  for (const botao of document.querySelectorAll<HTMLElement>('[data-copiar]')) {
   const pilula = botao.querySelector<HTMLElement>('[data-pilula]');
-  if (pilula) pilula.textContent = botao.dataset[chave] || '';
+  const rotulo = estado === 'ok' ? botao.dataset.rotuloOk : estado === 'falha' ? botao.dataset.rotuloFalha : botao.dataset.rotulo;
+  if (pilula) pilula.textContent = (rotulo || '').replace('⌘C', atalho);
+  if (estado === 'pronto') delete botao.dataset.estado; else botao.dataset.estado = estado;
  }
  const status = origem.parentElement?.querySelector<HTMLElement>('[data-status]');
- if (status) status.textContent = mensagem;
+ if (status) status.textContent = mensagem.replace('⌘C', atalho);
 }
 for (const botao of document.querySelectorAll<HTMLElement>('[data-copiar]')) {
  botao.addEventListener('click', async () => {
   const texto = botao.dataset.copiar || '';
   let ok = true;
   try { if (!navigator.clipboard) throw new Error('sem clipboard'); await navigator.clipboard.writeText(texto); } catch { ok = false; }
-  rotular(ok ? 'rotuloOk' : 'rotuloFalha', botao, (ok ? botao.dataset.msgOk : botao.dataset.msgFalha) || '');
+  rotular(ok ? 'ok' : 'falha', botao, (ok ? botao.dataset.msgOk : botao.dataset.msgFalha) || '');
   clearTimeout(volta);
-  volta = window.setTimeout(() => rotular('rotulo', botao, ''), 1800);
+  volta = window.setTimeout(() => rotular('pronto', botao, ''), 1600);
  });
 }

@@ -1,6 +1,8 @@
 ---
-// Hero do design: grade de pontos, selo, título com a continuação em cinza, parágrafo, botão que
-// copia o comando, contato, nota e o cartão da partitura (canvas animado com a contagem viva).
+// Hero do HTML da home: grade de pontos, selo, título com a continuação em cinza, parágrafo, o
+// comando copiável, contato, nota e o cartão da partitura (canvas animado com a contagem viva).
+// Tipografia e cor da Partitura: h1 no --t-display (D16), latão só na borda de luz do comando e
+// no que espera você (D18).
 import InstallButton from '../ds/InstallButton.astro';
 import TechnicalText from '../TechnicalText.astro';
 import {versao} from '../../data/release.mjs';
@@ -13,7 +15,7 @@ const [fabrica,,licenca]=t.hero.badge;
  <div class="hero-pontos" aria-hidden="true"></div>
  <div class="container hero-conteudo">
   <span id="manifesto-titulo" class="ancora-antiga" aria-hidden="true"></span>
-  <div class="hero-selo"><span class="hero-pulso" aria-hidden="true"></span><span>{fabrica}</span><span class="hero-barra" aria-hidden="true">/</span><span><code class="codigo-liso">@orkastery/cli</code> <code class="codigo-liso">{versao}</code></span><span class="hero-barra" aria-hidden="true">/</span><span>{licenca}</span></div>
+  <div class="hero-selo"><span class="hero-ponto-selo" aria-hidden="true"></span><span>{fabrica}</span><span class="hero-barra" aria-hidden="true">/</span><span><code class="codigo-liso">@orkastery/cli</code> <code class="codigo-liso">{versao}</code></span><span class="hero-barra" aria-hidden="true">/</span><span>{licenca}</span></div>
   <h1 class="hero-titulo">{t.hero.title} <span class="hero-continuacao">{t.hero.titleMuted}</span></h1>
   <p class="hero-lead"><TechnicalText text={t.hero.lead}/></p>
   <div id="instalar" class="hero-acoes">
@@ -25,7 +27,7 @@ const [fabrica,,licenca]=t.hero.badge;
    <div class="hero-partitura-topo">
     <div class="hero-partitura-titulo">{preencher(t.hero.scoreHead,{n:DENSIDADE})}</div>
     <div class="hero-vivo" aria-live="off">
-     <span><span class="hero-ponto" aria-hidden="true"></span><span data-vivo="run">0</span> {t.hero.live.run}</span>
+     <span><span class="hero-ponto hero-ponto-executando" aria-hidden="true"></span><span data-vivo="run">0</span> {t.hero.live.run}</span>
      <span><span class="hero-ponto hero-ponto-espera" aria-hidden="true"></span><span data-vivo="wait">0</span> {t.hero.live.wait}</span>
      <span><span class="hero-ponto hero-ponto-ok" aria-hidden="true"></span><span data-vivo="ok">0</span> {t.hero.live.ok}</span>
     </div>
@@ -35,28 +37,30 @@ const [fabrica,,licenca]=t.hero.badge;
  </div>
 </section>
 <style>
-.hero{position:relative;padding:clamp(64px,10vw,120px) 0 72px}
-.hero-pontos{position:absolute;left:0;right:0;top:0;height:760px;background-image:radial-gradient(rgba(18,22,28,.10) 1px,transparent 1.3px);background-size:24px 24px;-webkit-mask-image:radial-gradient(70% 62% at 28% 18%,#000 15%,transparent 72%);mask-image:radial-gradient(70% 62% at 28% 18%,#000 15%,transparent 72%);pointer-events:none}
+.hero{position:relative;padding:var(--secao-ampla) 0 var(--e-8)}
+.hero-pontos{position:absolute;left:0;right:0;top:0;height:760px;background-image:radial-gradient(color-mix(in srgb,var(--texto) 10%,transparent) 1px,transparent 1.3px);background-size:24px 24px;-webkit-mask-image:radial-gradient(70% 62% at 28% 18%,var(--texto) 15%,transparent 72%);mask-image:radial-gradient(70% 62% at 28% 18%,var(--texto) 15%,transparent 72%);pointer-events:none}
 .hero-conteudo{position:relative}
-.hero-selo{display:inline-flex;align-items:center;gap:10px;padding:7px 12px 7px 10px;border-radius:var(--raio-pilula);background:var(--branco);border:1px solid var(--linha-media);font:var(--tipo-selo);color:var(--tinta-2)}
-.hero-pulso{width:7px;height:7px;border-radius:50%;background:var(--ok);animation:orkPulse 2.8s ease-in-out infinite}
-.hero-barra{color:var(--tinta-7)}
-.hero-titulo{margin:28px 0 0;font:var(--tipo-h1);letter-spacing:var(--tracking-h1);max-width:16ch;text-wrap:balance}
-.hero-continuacao{color:var(--tinta-4)}
-.hero-lead{margin:30px 0 0;max-width:58ch;font:var(--tipo-lead-hero);color:var(--tinta-2);text-wrap:pretty}
-.hero-acoes{margin-top:36px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.hero-falar{display:flex;align-items:center;gap:8px;height:52px;padding:0 20px;border-radius:var(--raio-12);background:var(--branco);border:1px solid var(--linha-forte);font:500 15px/1 var(--fonte-texto);color:var(--tinta)}
-.hero-falar:hover{border-color:var(--linha-hover);color:var(--tinta)}
-.hero-seta{color:var(--acento-texto)}
-.hero-nota{margin:16px 0 0;font:var(--tipo-nota);color:var(--tinta-3)}
-.hero-partitura{margin-top:64px;background:var(--branco);border:1px solid var(--linha-cartao);border-radius:var(--raio-22);box-shadow:var(--sombra-cartao);overflow:hidden}
-.hero-partitura-topo{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--linha-suave)}
-.hero-partitura-titulo{font:500 13px/1 var(--fonte-mono);color:var(--tinta-2)}
-.hero-vivo{display:flex;gap:18px;font:500 12.5px/1 var(--fonte-texto);color:var(--tinta-2);flex-wrap:wrap}
-.hero-vivo>span{display:flex;align-items:center;gap:7px}
-.hero-ponto{width:8px;height:8px;border-radius:50%;background:var(--tinta)}
-.hero-ponto-espera{background:var(--acento);box-shadow:0 0 0 3px var(--acento-suave)}
-.hero-ponto-ok{background:var(--ok)}
-.hero-canvas-caixa{padding:18px 22px 22px}
+.hero-selo{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px var(--e-3);min-height:32px;padding:6px var(--e-3);border-radius:var(--raio-pilula);background:var(--superficie);border:1px solid var(--linha);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);color:var(--texto-2);box-sizing:border-box}
+.hero-selo>span{white-space:nowrap}
+.hero-ponto-selo{width:7px;height:7px;border-radius:50%;background:var(--verificado)}
+.hero-barra{color:var(--linha-forte)}
+.hero-titulo{margin:var(--e-6) 0 0;font:var(--tipo-display);letter-spacing:var(--trk-display);max-width:16ch;text-wrap:balance}
+.hero-continuacao{color:var(--texto-3)}
+.hero-lead{margin:var(--e-6) 0 0;max-width:58ch;font:var(--tipo-corpo);color:var(--texto-2);text-wrap:pretty}
+.hero-acoes{margin-top:var(--e-6);display:flex;flex-wrap:wrap;gap:var(--e-3);align-items:center}
+.hero-falar{display:inline-flex;align-items:center;gap:var(--e-2);min-height:48px;padding:0 var(--e-5);border-radius:var(--raio-botao);background:var(--superficie);border:1px solid var(--linha-forte);font:var(--tipo-botao);color:var(--texto);box-sizing:border-box;transition:border-color var(--dur-curta) var(--curva)}
+.hero-falar:hover{border-color:var(--texto)}
+.hero-seta{color:var(--texto-3)}
+.hero-nota{margin:var(--e-4) 0 0;font:var(--tipo-apoio);color:var(--texto-3)}
+.hero-partitura{margin-top:var(--e-8);background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio-palco);box-shadow:var(--sombra-2);overflow:hidden}
+.hero-partitura-topo{display:flex;flex-wrap:wrap;gap:var(--e-3) var(--e-5);align-items:center;justify-content:space-between;padding:var(--e-4) var(--e-5);border-bottom:1px solid var(--linha)}
+.hero-partitura-titulo{font:var(--peso-destaque) var(--t-rotulo)/1.33 var(--f-mono);color:var(--texto-2)}
+.hero-vivo{display:flex;gap:var(--e-4);font:var(--tipo-apoio);color:var(--texto-2);flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.hero-vivo>span{display:flex;align-items:center;gap:var(--e-2)}
+.hero-ponto{width:7px;height:7px;border-radius:50%}
+.hero-ponto-executando{background:var(--executando)}
+.hero-ponto-espera{background:var(--espera);box-shadow:0 0 0 3px color-mix(in srgb,var(--espera) 25%,transparent)}
+.hero-ponto-ok{background:var(--verificado)}
+.hero-canvas-caixa{padding:var(--e-4) var(--e-5) var(--e-5)}
 .hero-canvas-caixa canvas{display:block;width:100%;height:clamp(340px,36vw,440px)}
 </style>

@@ -1,6 +1,6 @@
 ---
-// Abertura de seção do design: sobretítulo, h2 (com a continuação em cinza, se houver) e parágrafo.
-// medidaTitulo e medidaLead são as larguras de leitura do design (em ch).
+// Abertura de seção: rótulo, h2 (com a continuação em cinza, se houver) e parágrafo.
+// medidaTitulo e medidaLead são as larguras de leitura do HTML da home (em ch).
 import TechnicalText from '../TechnicalText.astro';
 import Eyebrow from './Eyebrow.astro';
 interface Props { sobretitulo: string; titulo: string; continuacao?: string; lead?: string; medidaTitulo?: string; medidaLead?: string; id?: string; }
@@ -10,7 +10,7 @@ const {sobretitulo,titulo,continuacao,lead,medidaTitulo='18ch',medidaLead='60ch'
 <h2 class="secao-titulo" data-reveal style={`max-width:${medidaTitulo}`} id={id}>{titulo}{continuacao&&<> <span class="secao-continuacao">{continuacao}</span></>}</h2>
 {lead&&<p class="secao-lead" style={`max-width:${medidaLead}`}><TechnicalText text={lead}/></p>}
 <style>
-.secao-titulo{margin:20px 0 0;font:var(--tipo-h2);letter-spacing:var(--tracking-h2);text-wrap:balance}
-.secao-continuacao{color:var(--tinta-4)}
-.secao-lead{margin:24px 0 0;font:var(--tipo-lead);color:var(--tinta-2);text-wrap:pretty}
+.secao-titulo{margin:var(--e-4) 0 0;font:var(--tipo-titulo-1);letter-spacing:var(--trk-titulo-1);text-wrap:balance}
+.secao-continuacao{color:var(--texto-3)}
+.secao-lead{margin:var(--e-5) 0 0;font:var(--tipo-corpo);color:var(--texto-2);text-wrap:pretty}
 </style>

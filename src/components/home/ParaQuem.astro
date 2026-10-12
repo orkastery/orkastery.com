@@ -1,6 +1,7 @@
 ---
-// 03 · Para quem (#contato): o cartão claro de quem constrói, com o comando, e o cartão escuro de
-// times, com o contato por e-mail (endereço institucional publicado, D7).
+// 03 · Para quem (#contato): o cartão claro de quem constrói, com o comando, e o cartão no tema
+// noite de times, com o contato por e-mail (endereço institucional publicado, D7). O botão de
+// contato é o primário do kit, nunca latão (D18).
 import InstallButton from '../ds/InstallButton.astro';
 import TechnicalText from '../TechnicalText.astro';
 import {contato} from '../../data/i18n';
@@ -18,7 +19,7 @@ const a=t.audience;
     <p class="publico-texto"><TechnicalText text={a.builders.text}/></p>
     <InstallButton variante="cartao"/>
    </div>
-   <div class="publico-cartao publico-escuro holofote sobre-escuro" data-holofote>
+   <div class="publico-cartao publico-escuro holofote" data-holofote data-tema="noite">
     <div class="publico-rotulo">{a.teams.label}</div>
     <h2 class="publico-titulo">{a.teams.title}</h2>
     <p class="publico-texto"><TechnicalText text={a.teams.text}/></p>
@@ -28,16 +29,14 @@ const a=t.audience;
  </div>
 </section>
 <style>
-.publico{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:16px}
-.publico-cartao{container-type:inline-size;padding:clamp(28px,3.4vw,44px);border-radius:var(--raio-24);background-color:var(--branco);border:1px solid var(--linha-cartao);display:flex;flex-direction:column;gap:18px}
-.publico-escuro{background-color:var(--tinta);color:var(--sobre-noite);border:0}
-.publico-rotulo{font:500 13px/1 var(--fonte-mono);color:var(--tinta-3)}
-.publico-escuro .publico-rotulo{color:var(--sobre-noite-3)}
-.publico-titulo{margin:0;font:var(--tipo-titulo-publico);letter-spacing:var(--tracking-titulo-publico);text-wrap:balance}
-.publico-texto{margin:0;flex:1;font:var(--tipo-corpo);color:var(--tinta-2);text-wrap:pretty}
-.publico-escuro .publico-texto{color:var(--sobre-noite-2)}
-.publico-contato{align-self:flex-start;display:flex;align-items:center;gap:10px;height:48px;padding:0 20px;border-radius:var(--raio-12);background:var(--acento);color:var(--sobre-acento);font:600 15px/1 var(--fonte-texto)}
-.publico-contato:hover{background:var(--acento-forte);color:var(--sobre-acento)}
+.publico{margin-top:var(--e-5);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:var(--e-4)}
+.publico-cartao{container-type:inline-size;padding:clamp(var(--e-5),3.4vw,var(--e-7));border-radius:var(--raio-palco);background-color:var(--superficie);border:1px solid var(--linha);display:flex;flex-direction:column;gap:var(--e-4)}
+.publico-escuro{border:0}
+.publico-rotulo{font:var(--tipo-rotulo);line-height:1;letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-3)}
+.publico-titulo{margin:0;font:var(--tipo-titulo-1);letter-spacing:var(--trk-titulo-1);text-wrap:balance}
+.publico-texto{margin:0;flex:1;font:var(--tipo-corpo);color:var(--texto-2);text-wrap:pretty}
+.publico-contato{align-self:flex-start;display:inline-flex;align-items:center;gap:var(--e-2);min-height:var(--alvo);padding:0 var(--e-5);border-radius:var(--raio-botao);background:var(--acao);color:var(--sobre-acao);font:var(--tipo-botao);box-sizing:border-box;transition:background-color var(--dur-curta) var(--curva)}
+.publico-contato:hover{background:color-mix(in srgb,var(--acao) 86%,var(--chao))}
 /* Abaixo de 360 px o respiro do cartão cede para o comando caber inteiro (regra de 03/10). */
-@media (max-width:360px){.publico-cartao{padding:24px 20px}}
+@media (max-width:360px){.publico-cartao{padding:var(--e-5) 20px}}
 </style>

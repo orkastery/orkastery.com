@@ -1,12 +1,15 @@
 ---
 // 06 · Enquanto você dorme (#noite): a coluna fixa com o relógio que anda de 23:00 a 07:00 com a
-// rolagem, a linha do tempo que acende evento a evento e o resumo da manhã.
+// rolagem, a linha do tempo que acende evento a evento e o resumo da manhã. Tema noite do kit; o
+// progresso da noite é trabalho em execução (regência), nunca latão (D18). No tema noite, o texto
+// de "executando" vai em luar e a cor fica no ponto.
 import TechnicalText from '../TechnicalText.astro';
 import {nightVals,nightItems,ESTADO_INICIAL} from '../../lib/home-state.mjs';
 const {t}=Astro.props;
 const n=t.night,v=nightVals(ESTADO_INICIAL.np),itens=nightItems(t,ESTADO_INICIAL.np);
+const corDoRotulo=(c:string)=>['executando','falha','verificado','espera'].includes(c)?c+'-texto':c;
 ---
-<section id="noite" class="noite sobre-escuro" data-noite>
+<section id="noite" class="noite" data-noite data-tema="noite">
  <div class="noite-brilho" aria-hidden="true"></div>
  <div class="noite-grade">
   <div class="noite-fixa">
@@ -21,7 +24,7 @@ const n=t.night,v=nightVals(ESTADO_INICIAL.np),itens=nightItems(t,ESTADO_INICIAL
    <div class="noite-fio" aria-hidden="true"><div data-noite-fio style={`height:${v.pct}`}></div></div>
    {itens.map((e,i)=><div class="noite-evento" data-noite-evento={i} style={`opacity:${e.op}`}>
     <span class="noite-ponto" data-noite-ponto style={`background:var(--${e.fill});border-color:var(--${e.c});box-shadow:${e.glow}`}></span>
-    <div class="noite-quando"><span class="noite-hora">{e.t}</span><span class="noite-tag" style={`color:var(--${e.c})`}>{e.tag}</span></div>
+    <div class="noite-quando"><span class="noite-hora">{e.t}</span><span class="noite-tag" style={`color:var(--${corDoRotulo(e.c)})`}>{e.tag}</span></div>
     <p class="noite-texto"><TechnicalText text={e.text}/></p>
    </div>)}
    <div class="noite-manha" data-noite-manha style={`opacity:${v.morningOp};transform:${v.morningTf}`}>
@@ -32,29 +35,29 @@ const n=t.night,v=nightVals(ESTADO_INICIAL.np),itens=nightItems(t,ESTADO_INICIAL
  </div>
 </section>
 <style>
-.noite{background:var(--noite);color:var(--sobre-noite);padding:var(--secao-noite) 0;position:relative}
-.noite-brilho{position:absolute;inset:0;background:radial-gradient(60% 50% at 80% 0%,rgba(224,178,100,.07),transparent 70%);pointer-events:none}
-.noite-grade{position:relative;max-width:var(--largura-maxima);margin:0 auto;padding:0 var(--calha);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:56px 80px;align-items:start}
+.noite{background:var(--chao);padding:var(--secao-ampla) 0;position:relative}
+.noite-brilho{position:absolute;inset:0;background:radial-gradient(60% 50% at 80% 0%,color-mix(in srgb,var(--texto) 5%,transparent),transparent 70%);pointer-events:none}
+.noite-grade{position:relative;max-width:var(--largura);margin:0 auto;padding:0 var(--calha);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:var(--e-8) var(--e-9);align-items:start}
 .noite-fixa{position:sticky;top:120px}
 /* Fixa só com duas colunas: numa coluna só, ela cobriria a linha do tempo ao rolar. */
 @media (max-width:782px){.noite-fixa{position:relative;top:auto}}
-.noite-titulo{margin:20px 0 0;font:var(--tipo-h2-noite);letter-spacing:var(--tracking-h2-noite);text-wrap:balance}
-.noite-lead{margin:26px 0 0;max-width:44ch;font:var(--tipo-lead);color:var(--sobre-noite-3);text-wrap:pretty}
-.noite-relogio{margin-top:40px;font:var(--tipo-relogio);letter-spacing:var(--tracking-relogio);color:var(--sobre-noite);font-variant-numeric:tabular-nums}
-.noite-barra{margin-top:20px;max-width:380px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;font:500 12px/1 var(--fonte-mono);color:var(--sobre-noite-4)}
-.noite-trilho{position:relative;height:2px;border-radius:2px;background:var(--noite-linha);overflow:hidden}
-.noite-trilho span{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:var(--acento)}
-.noite-nota{margin-top:14px;font:400 13px/1.4 var(--fonte-mono);color:var(--sobre-noite-4)}
+.noite-titulo{margin:var(--e-4) 0 0;font:var(--tipo-titulo-1);letter-spacing:var(--trk-titulo-1);text-wrap:balance}
+.noite-lead{margin:var(--e-5) 0 0;max-width:44ch;font:var(--tipo-corpo);color:var(--texto-2);text-wrap:pretty}
+.noite-relogio{margin-top:var(--e-7);font:var(--peso-destaque) var(--t-display)/1 var(--f-mono);letter-spacing:var(--trk-display);color:var(--texto);font-variant-numeric:tabular-nums}
+.noite-barra{margin-top:var(--e-5);max-width:380px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:var(--e-3);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);color:var(--texto-2)}
+.noite-trilho{position:relative;height:2px;border-radius:2px;background:var(--linha);overflow:hidden}
+.noite-trilho span{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:var(--executando)}
+.noite-nota{margin-top:var(--e-4);font:var(--peso-texto) var(--t-rotulo)/1.4 var(--f-mono);color:var(--texto-2)}
 .noite-linha{position:relative;padding-left:28px}
-.noite-fio{position:absolute;left:5px;top:10px;bottom:10px;width:1px;background:var(--noite-linha)}
-.noite-fio div{width:1px;background:linear-gradient(rgba(224,178,100,.15),var(--acento));box-shadow:0 0 12px rgba(224,178,100,.6)}
-.noite-evento{position:relative;padding:0 0 38px;transition:opacity .7s ease}
-.noite-ponto{position:absolute;left:-28px;top:6px;width:11px;height:11px;border-radius:50%;border:2px solid;box-sizing:border-box;transition:background .5s ease,box-shadow .5s ease}
-.noite-quando{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
-.noite-hora{font:500 14px/1 var(--fonte-mono);color:var(--sobre-noite)}
-.noite-tag{font:500 11.5px/1 var(--fonte-mono);padding:5px 8px;border-radius:var(--raio-6);background:var(--noite-painel);border:1px solid var(--noite-linha)}
-.noite-texto{margin:12px 0 0;max-width:48ch;font:400 16.5px/1.6 var(--fonte-texto);color:var(--sobre-noite-2);text-wrap:pretty}
-.noite-manha{margin-top:4px;padding:22px 24px;border-radius:var(--raio-16);background:var(--noite-painel);border:1px solid rgba(224,178,100,.28);transition:opacity .9s ease,transform .9s var(--curva-revelar)}
-.noite-manha-rotulo{font:500 12px/1 var(--fonte-mono);color:var(--acento)}
-.noite-manha-texto{margin-top:12px;font:600 24px/1.25 var(--fonte-display);letter-spacing:-0.02em}
+.noite-fio{position:absolute;left:5px;top:10px;bottom:10px;width:1px;background:var(--linha)}
+.noite-fio div{width:1px;background:linear-gradient(color-mix(in srgb,var(--executando) 15%,transparent),var(--executando));box-shadow:0 0 12px color-mix(in srgb,var(--executando) 60%,transparent)}
+.noite-evento{position:relative;padding:0 0 var(--e-6);transition:opacity var(--dur-longa) var(--curva)}
+.noite-ponto{position:absolute;left:-28px;top:6px;width:11px;height:11px;border-radius:50%;border:2px solid;box-sizing:border-box;transition:background var(--dur-media) var(--curva),box-shadow var(--dur-media) var(--curva)}
+.noite-quando{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e-3)}
+.noite-hora{font:var(--peso-destaque) var(--t-apoio)/1 var(--f-mono);color:var(--texto)}
+.noite-tag{font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);padding:5px var(--e-2);border-radius:var(--raio-chip);background:var(--superficie);border:1px solid var(--linha)}
+.noite-texto{margin:var(--e-3) 0 0;max-width:48ch;font:var(--tipo-corpo);color:var(--texto-2);text-wrap:pretty}
+.noite-manha{margin-top:var(--e-1);padding:var(--e-5);border-radius:var(--raio-cartao);background:var(--superficie);border:1px solid var(--linha-forte);transition:opacity var(--dur-longa) var(--curva),transform var(--dur-longa) var(--curva)}
+.noite-manha-rotulo{font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-2)}
+.noite-manha-texto{margin-top:var(--e-3);font:var(--tipo-titulo-2);letter-spacing:var(--trk-titulo-2)}
 </style>
