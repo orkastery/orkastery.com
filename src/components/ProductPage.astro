@@ -18,7 +18,7 @@ const locale=localeFor(Astro.url.pathname),text=ui(locale),t=home[locale];
 const docsHref=(path:string)=>docsBase?docsBase+localizedPath(path,locale):localize(path,locale);
 const legacy:Record<string,string[]>={topo:['manifesto-titulo'],metodo:['ciclo-titulo','ork-ciclo-titulo','ork-threads-titulo','ork-estado-titulo'],modos:['modos-titulo','ork-modos-titulo','ork-radar-titulo'],evidencia:['numeros-titulo','ork-verify-titulo','ork-gate-titulo','ork-audit-titulo','ork-score-titulo'],memoria:['ecossistema-titulo'],arquitetura:['camadas-titulo','ork-adapt-titulo','ork-comp-titulo']};
 const ancoras=(id:string)=>legacy[id]||[];
-const selo=product==='Ork'?['AI Software Factory','@orkastery/cli',versao,text.license]:['OrkMind','Python',text.license];
+const selo=product==='Ork'?['AI Software Factory','@orkastery/cli',versao,'MIT']:['OrkMind','Python','MIT'];
 ---
 <Base titulo={product+' · '+copy.description} descricao={copy.description}>
  <section id="topo" class="produto-hero">
@@ -78,7 +78,7 @@ const selo=product==='Ork'?['AI Software Factory','@orkastery/cli',versao,text.l
 .produto-hero{position:relative;padding:clamp(64px,10vw,120px) 0 72px}
 .produto-pontos{position:absolute;left:0;right:0;top:0;height:560px;background-image:radial-gradient(rgba(18,22,28,.10) 1px,transparent 1.3px);background-size:24px 24px;-webkit-mask-image:radial-gradient(70% 62% at 28% 18%,#000 15%,transparent 72%);mask-image:radial-gradient(70% 62% at 28% 18%,#000 15%,transparent 72%);pointer-events:none}
 .produto-hero-conteudo{position:relative}
-.produto-selo{display:inline-flex;align-items:center;gap:10px;padding:7px 12px 7px 10px;border-radius:var(--raio-pilula);background:var(--branco);border:1px solid var(--linha-media);font:var(--tipo-selo);color:var(--tinta-2)}
+.produto-selo{display:inline-flex;flex-wrap:wrap;row-gap:6px;align-items:center;gap:10px;padding:7px 12px 7px 10px;border-radius:var(--raio-pilula);background:var(--branco);border:1px solid var(--linha-media);font:var(--tipo-selo);color:var(--tinta-2)}
 .produto-pulso{width:7px;height:7px;border-radius:50%;background:var(--ok);animation:orkPulse 2.8s ease-in-out infinite}
 .produto-barra{color:var(--tinta-7)}
 .produto-titulo{margin:28px 0 0;font:600 clamp(40px,6vw,80px)/1 var(--fonte-display);letter-spacing:-0.04em;max-width:18ch;text-wrap:balance}

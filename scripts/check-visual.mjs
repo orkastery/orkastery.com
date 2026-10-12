@@ -9,8 +9,8 @@ import {readFileSync,writeFileSync,mkdirSync,existsSync,statSync} from 'node:fs'
 import {resolve,extname} from 'node:path';
 import {pathToFileURL} from 'node:url';
 
-const locales=['pt','en','es'],widths=[1440,768,390],routes=['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/claude-code/'];
-const checks=['skipLink','languageKeyboard','focusVisible','overflow','inlineCodeWhole','adjacentTextWithCode','copySuccessAndRefusal','modes','phaseTabsKeyboard','options','nightScroll','reveal','reducedMotion','scorePainted'];
+const locales=['pt','en','es'],widths=[1440,768,390,320],routes=['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/claude-code/'];
+const checks=['skipLink','languageKeyboard','focusVisible','overflow','inlineCodeWhole','adjacentTextWithCode','codeInsideBlock','copySuccessAndRefusal','modes','phaseTabsKeyboard','options','nightScroll','reveal','reducedMotion','scorePainted'];
 const args=process.argv.slice(2);
 if(args.includes('--plan')){console.log(JSON.stringify({locales,widths,routes,checks,screenshots:locales.length*widths.length*routes.length,network:'blocked',requires:['PLAYWRIGHT_MODULE','CHROMIUM_EXECUTABLE','--output']},null,2));process.exit(0);}
 const output=args.includes('--output')?resolve(args[args.indexOf('--output')+1]):null;
@@ -48,7 +48,10 @@ const auditoria=()=>{
  const solto=codigos.flatMap(c=>{const b=c.getBoundingClientRect(),t=c.textContent.trim(),p=vizinho(c,true),n=vizinho(c,false),f=[];
   if(p&&/\S$/.test(p.nodeValue)&&!mesmaLinha(glifo(p,p.nodeValue.length-1),b))f.push(p.nodeValue.at(-1)+t);
   if(n&&/^\S/.test(n.nodeValue)&&!mesmaLinha(glifo(n,0),b))f.push(t+n.nodeValue[0]);return f;});
- return {sobra,partido,solto};
+ // Código que não quebra e passa da borda do bloco que o contém (fora de contêiner com rolagem).
+ const bloco=el=>{let p=el.parentElement;while(p&&['inline','contents'].includes(getComputedStyle(p).display))p=p.parentElement;return p;};
+ const vaza=codigos.filter(c=>!rolagem(c)).filter(c=>{const b=bloco(c);if(!b)return false;const r=c.getBoundingClientRect(),q=b.getBoundingClientRect(),cs=getComputedStyle(b);return r.right>q.right-parseFloat(cs.paddingRight)-parseFloat(cs.borderRightWidth)+1.5;}).map(c=>c.textContent.trim());
+ return {sobra,partido,solto,vaza};
 };
 
 const results=[];let browser;
@@ -76,7 +79,8 @@ try{
    if(a.sobra.length)throw Error('Overflow '+onde+': '+a.sobra.slice(0,8).join(', '));
    if(a.partido.length)throw Error('Inline code split across lines '+onde+': '+a.partido.join(', '));
    if(a.solto.length)throw Error('Adjacent text detached from inline code '+onde+': '+a.solto.join(', '));
-   const r={path:local,width,overflow:0,keyboard:true,focusVisible:true,inlineCodeWhole:true,adjacentTextWithCode:true};
+   if(a.vaza.length)throw Error('Inline code past its block edge '+onde+': '+a.vaza.join(', '));
+   const r={path:local,width,overflow:0,keyboard:true,focusVisible:true,inlineCodeWhole:true,adjacentTextWithCode:true,codeInsideBlock:true};
    if(path==='/'){
     // Movimento reduzido: nada anima sozinho.
     const rodando=await page.evaluate(()=>document.getAnimations().filter(x=>x.playState==='running').length);

@@ -26,7 +26,7 @@ const c=t.cycle,abas=phases(t,ESTADO_INICIAL.phase);
     <div class="ciclo-cartao ciclo-exige">
      <div class="ciclo-rotulo">{c.needsLabel}</div>
      <div class="ciclo-texto"><TechnicalText text={d.needs}/></div>
-     <div class="ciclo-codigo"><code class="codigo-liso">{d.code}</code></div>
+     <div class="ciclo-codigo">{d.code.split(' · ').map((c,k)=><>{k>0&&' · '}<code class="codigo-liso">{c}</code></>)}</div>
     </div>
    </div>;})}
   </div>
