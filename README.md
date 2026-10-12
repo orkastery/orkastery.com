@@ -47,10 +47,14 @@ cor de alerta. Ele existe na mesma seção das três línguas, ou em nenhuma; o
 começa com `/docs/` e vai para a mesma língua, dentro do `base` da prévia.
 
 A versão do CLI que o site descreve fica só em `src/data/release.mjs`. O texto
-editorial escreve `{versao}`, que a renderização troca pelo número: para outra
-release, troque o número ali e rode `npm run build`, sem revisar texto. O
-`check:content` reprova o marcador que sobrar no HTML e procura na home o rótulo
-`@orkastery/cli` com a versão.
+editorial escreve `{versao}`, que a renderização troca pelo número, para duas coisas
+ao mesmo tempo: a versão que esta revisão das docs descreve e a release em que entram
+as mudanças desta revisão (“na versão {versao}”). Se o número desta mesma release
+mudar antes de ela sair, troque-o ali e rode `npm run build`, sem revisar texto. Ao
+passar para a release seguinte, troque antes o marcador pelo número publicado nas
+frases do que já saiu e registre a revisão desses artigos; senão uma mudança antiga
+passaria a constar como da release nova. O `check:content` reprova o marcador que
+sobrar no HTML e procura na home o rótulo `@orkastery/cli` com a versão.
 
 `src/data/docs-sources.json` contém caminhos relativos, SHA-256, classificação,
 tratamento e destinos das fontes. Cada revisão registra hash das fontes, hash
@@ -107,8 +111,13 @@ final, independentemente do reconhecedor. Reprova comandos soltos de `ork`, `npm
 `npx`, `git` e `pip`, flags e identificadores técnicos, inclusive em painéis ainda
 fechados, entidades HTML e comandos divididos por tags inline. Não há exceção por
 pedaço de comando: `ork <code>doctor</code>` também reprova; marque o comando inteiro.
-Subcomando do `ork` citado sem o `ork` (“claims add”, “ci prepare”) também reprova:
-o texto diz `ork claims add`.
+Par de verbo e subcomando do `ork` citado sem o `ork` (“claims add”, “ci prepare”)
+também reprova, numa lista fechada de pares que nenhuma das três línguas forma por
+acaso (`bareCommandPairs`): o texto diz `ork claims add`. Par que uma frase comum
+forma (“the thread status”, “each phase run”) fica com a revisão editorial. Reprova
+ainda o comando partido entre código e prosa: o código que termina no verbo com o
+subcomando na prosa, o que termina numa flag com o valor na prosa e o `node` solto
+antes de `--test`.
 `Node.js`, `projeto-alvo` e “resources unavailable in CI” são prosa; arquivos como
 `index.js`, caminhos e contratos com ponto continuam distintos.
 Não há exceção por

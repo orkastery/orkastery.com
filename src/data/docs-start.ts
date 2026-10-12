@@ -19,7 +19,7 @@ export default [
             "highlight": {
               "title": "Se você já usa o Orkastery",
               "paragraphs": [
-                "A versão {versao} traz mudanças de segurança que, em alguns casos, pedem um comando uma vez em cada máquina: com o sandbox do agente em danger-full-access, com o .orkastery/ versionado no git, com o worktree.dir fora da raiz do projeto ou com a fábrica compartilhada ligada só pelo manifesto. A página da fronteira de confiança explica cada caso e o comando dele."
+                "A versão {versao} traz mudanças de segurança que, em alguns casos, pedem um comando uma vez em cada máquina: com o sandbox do agente em danger-full-access, com o .orkastery/ versionado no git, com o worktree.dir fora da raiz do projeto, com a fábrica compartilhada ligada só pelo manifesto ou com o pacote instalado rodando ork eval num checkout do Orkastery. A página da fronteira de confiança explica cada caso e o comando dele."
               ],
               "links": [
                 {
@@ -97,7 +97,7 @@ export default [
             "highlight": {
               "title": "If you already use Orkastery",
               "paragraphs": [
-                "Version {versao} brings security changes that, in some cases, ask for one command once on each machine: with the agent sandbox set to danger-full-access, with .orkastery/ tracked in git, with worktree.dir outside the project root, or with the shared factory turned on only by the manifest. The trust boundary page explains each case and its command."
+                "Version {versao} brings security changes that, in some cases, ask for one command once on each machine: with the agent sandbox set to danger-full-access, with .orkastery/ tracked in git, with worktree.dir outside the project root, with the shared factory turned on only by the manifest, or with the installed package running ork eval in an Orkastery checkout. The trust boundary page explains each case and its command."
               ],
               "links": [
                 {
@@ -175,7 +175,7 @@ export default [
             "highlight": {
               "title": "Si ya usa Orkastery",
               "paragraphs": [
-                "La versión {versao} trae cambios de seguridad que, en algunos casos, piden un comando una vez en cada máquina: con el sandbox del agente en danger-full-access, con .orkastery/ versionado en git, con worktree.dir fuera de la raíz del proyecto o con la fábrica compartida activada solo por el manifiesto. La página de la frontera de confianza explica cada caso y su comando."
+                "La versión {versao} trae cambios de seguridad que, en algunos casos, piden un comando una vez en cada máquina: con el sandbox del agente en danger-full-access, con .orkastery/ versionado en git, con worktree.dir fuera de la raíz del proyecto, con la fábrica compartida activada solo por el manifiesto o con el paquete instalado ejecutando ork eval en un checkout de Orkastery. La página de la frontera de confianza explica cada caso y su comando."
               ],
               "links": [
                 {
