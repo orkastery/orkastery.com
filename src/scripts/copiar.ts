@@ -10,8 +10,9 @@ function rotular(estado: 'pronto' | 'ok' | 'falha', origem: HTMLElement, mensage
   if (pilula) pilula.textContent = (rotulo || '').replace('⌘C', atalho);
   if (estado === 'pronto') delete botao.dataset.estado; else botao.dataset.estado = estado;
  }
+ if (estado === 'pronto') for (const s of document.querySelectorAll<HTMLElement>('[data-status]')) s.textContent = '';
  const status = origem.parentElement?.querySelector<HTMLElement>('[data-status]');
- if (status) status.textContent = mensagem.replace('⌘C', atalho);
+ if (status && estado !== 'pronto') status.textContent = mensagem.replace('⌘C', atalho);
 }
 for (const botao of document.querySelectorAll<HTMLElement>('[data-copiar]')) {
  botao.addEventListener('click', async () => {

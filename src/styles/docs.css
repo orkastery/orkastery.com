@@ -11,7 +11,7 @@
 .docs-breadcrumb [aria-current]{color:var(--texto-2)}
 
 /* Navegação lateral: grupos em rótulo, item atual com a marca do board do kit (inset 2px). */
-.docs-navigation{align-self:start;position:sticky;top:88px;max-height:calc(100vh - 112px);overflow:auto;scrollbar-width:thin;font:var(--peso-destaque) var(--t-apoio)/1.35 var(--f-texto)}
+.docs-navigation{align-self:start;position:sticky;top:88px;max-height:calc(100vh - 112px);overflow:auto;scrollbar-width:thin;padding:4px;margin:-4px;scroll-padding-block:8px;font:var(--peso-destaque) var(--t-apoio)/1.35 var(--f-texto)}
 .docs-navigation summary{display:flex;align-items:center;min-height:var(--alvo);cursor:pointer;font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-3)}
 .docs-navigation ul{list-style:none;padding:0;margin:0}
 .nav-group{margin-top:var(--e-5)}
@@ -19,6 +19,8 @@
 .docs-navigation a{display:flex;align-items:center;min-height:var(--alvo);padding:0 var(--e-3);border-radius:var(--raio-chip);color:var(--texto-2);box-sizing:border-box;transition:color var(--dur-curta) var(--curva),background-color var(--dur-curta) var(--curva)}
 .docs-navigation a:hover{color:var(--texto);background:color-mix(in srgb,var(--texto) 4%,transparent)}
 .docs-navigation a[aria-current]{background:var(--superficie);color:var(--texto);box-shadow:inset 2px 0 0 var(--texto),var(--sombra-1)}
+/* O anel de foco vence a marca do item atual (a sombra dela tiraria o anel). */
+.docs-navigation a:focus-visible,.docs-navigation a[aria-current]:focus-visible{box-shadow:var(--anel-foco)}
 
 /* Coluna de leitura. */
 .docs-reading{min-width:0;max-width:76ch;font:var(--tipo-corpo);color:var(--texto-2)}
@@ -75,7 +77,7 @@
 /* Listas só de links (fontes, atalhos antigos, destinos de uma seção): cada link é um alvo de 44 px. */
 .docs-links,.docs-sources ul,.docs-legacy ul{margin:var(--e-2) 0}
 .docs-links li,.docs-sources li,.docs-legacy li{margin:0}
-.docs-links a,.docs-sources a,.docs-legacy a,.docs-note-link{display:inline-flex;align-items:center;min-height:var(--alvo);min-width:var(--alvo)}
+.docs-links a,.docs-sources a,.docs-legacy a,.docs-note-link{display:inline-flex;align-items:center;min-height:var(--alvo);min-width:var(--alvo);max-width:100%}
 
 /* Anterior e próximo: dois cartões. */
 .docs-pagination{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:var(--e-3);margin-top:var(--e-7)}

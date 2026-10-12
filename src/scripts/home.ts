@@ -10,6 +10,7 @@ if (dados) {
  const t = JSON.parse(dados.textContent || '{}');
  const reduzir = matchMedia('(prefers-reduced-motion: reduce)').matches;
  const estado = {...ESTADO_INICIAL};
+ let pausado = false;
  const $ = <T extends Element = HTMLElement>(sel: string, raiz: ParentNode = document) => [...raiz.querySelectorAll<T & HTMLElement>(sel)];
  const pinta = (el: HTMLElement | undefined, estilo: Record<string, string>) => { if (el) for (const [k, v] of Object.entries(estilo)) el.style.setProperty(k, v); };
 
@@ -19,7 +20,16 @@ if (dados) {
   const vivo = Object.fromEntries($('[data-vivo]').map(el => [el.dataset.vivo, el]));
   const partitura = iniciarPartitura(canvas, {nomes: t.hero.names, etiqueta: t.hero.waitTag, reduzir,
    aoContar: (c: {run: number, wait: number, ok: number}) => { for (const k of ['run', 'wait', 'ok'] as const) if (vivo[k]) vivo[k].textContent = String(c[k]); }});
-  if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(en => en.isIntersecting ? partitura.retomar() : partitura.parar())).observe(canvas);
+  let visivel = true;
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(en => { visivel = en.isIntersecting; visivel && !pausado ? partitura.retomar() : partitura.parar(); })).observe(canvas);
+  // Pausar o movimento (WCAG 2.2.2): para a partitura, o relógio e as animações CSS da página.
+  const botao = document.querySelector<HTMLButtonElement>('[data-movimento-botao]');
+  botao?.addEventListener('click', () => {
+   pausado = !pausado;
+   document.documentElement.toggleAttribute('data-movimento-pausado', pausado);
+   botao.textContent = (pausado ? botao.dataset.rotuloRetomar : botao.dataset.rotuloPausar) || '';
+   pausado || !visivel ? partitura.parar() : partitura.retomar();
+  });
  }
 
  // Topologia e board pelo relógio.
@@ -50,7 +60,7 @@ if (dados) {
    const rot = $('[data-board-rotulo]', linha)[0]; if (rot) rot.textContent = l.label;
   });
  }
- if (!reduzir) setInterval(() => { estado.tick++; pintaTopo(estado.tick); pintaBoard(estado.tick); }, TICK_MS);
+ if (!reduzir) setInterval(() => { if (pausado) return; estado.tick++; pintaTopo(estado.tick); pintaBoard(estado.tick); }, TICK_MS);
 
  // Modos.
  function pintaModos() {

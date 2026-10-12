@@ -5,7 +5,7 @@ import {locales,languageName,languageTag,localeFor,localize,moldura,ui} from '..
 const locale=localeFor(Astro.url.pathname),text=ui(locale),m=moldura(locale);
 ---
 <nav class="linguas" aria-label={text.language} data-language-selector>
- {locales.map(l=><a href={localize(Astro.url.pathname,l)} hreflang={languageTag[l]} lang={languageTag[l]} aria-current={l===locale?'page':undefined} title={languageName[l]}><span class="lingua-segmento" aria-hidden="true">{m.languageShort[l]}</span><span class="so-leitor">{languageName[l]}</span></a>)}
+ {locales.map(l=><a href={localize(Astro.url.pathname,l)} hreflang={languageTag[l]} lang={languageTag[l]} aria-current={l===locale?'page':undefined} title={languageName[l]}><span class="lingua-segmento">{m.languageShort[l]}</span><span class="so-leitor">, {languageName[l]}</span></a>)}
 </nav>
 <style>
 .linguas{display:flex;align-items:center;flex:none;font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono)}

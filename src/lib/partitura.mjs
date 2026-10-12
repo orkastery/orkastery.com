@@ -81,9 +81,11 @@ export function iniciarPartitura(canvas, {nomes, etiqueta, reduzir, densidade = 
    }
    if (holding) {
     ctx.fillStyle = cores.lataoHalo; ctx.beginPath(); ctx.arc(x, y, 8 + Math.sin(t / 380) * 2, 0, Math.PI * 2); ctx.fill();
-    if (gap >= 11 && x < w - 100) {
+    // A pílula mede o rótulo (o do design tem 84 px; "waiting on you" não cabe nisso).
+    const largura = Math.max(84, Math.ceil(ctx.measureText(etiqueta).width) + 14);
+    if (gap >= 11 && x < w - largura - 16) {
      ctx.fillStyle = cores.etiqueta; ctx.beginPath();
-     if (ctx.roundRect) ctx.roundRect(x + 14, y - 8, 84, 16, 5); else ctx.rect(x + 14, y - 8, 84, 16);
+     if (ctx.roundRect) ctx.roundRect(x + 14, y - 8, largura, 16, 5); else ctx.rect(x + 14, y - 8, largura, 16);
      ctx.fill(); ctx.fillStyle = cores.nomeEspera; ctx.fillText(etiqueta, x + 21, y + .5);
     }
     ctx.fillStyle = cores.latao;

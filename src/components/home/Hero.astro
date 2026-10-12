@@ -2,7 +2,8 @@
 // Hero do HTML da home: grade de pontos, selo, título com a continuação em cinza, parágrafo, o
 // comando copiável, contato, nota e o cartão da partitura (canvas animado com a contagem viva).
 // Tipografia e cor da Partitura: h1 no --t-display (D16), latão só na borda de luz do comando e
-// no que espera você (D18).
+// no que espera você (D18). O botão de pausar o movimento não está no HTML da home: é o controle
+// que a WCAG 2.2.2 pede para o que se move sozinho por mais de 5 s.
 import InstallButton from '../ds/InstallButton.astro';
 import TechnicalText from '../TechnicalText.astro';
 import {versao} from '../../data/release.mjs';
@@ -26,6 +27,7 @@ const [fabrica,,licenca]=t.hero.badge;
   <div class="hero-partitura">
    <div class="hero-partitura-topo">
     <div class="hero-partitura-titulo">{preencher(t.hero.scoreHead,{n:DENSIDADE})}</div>
+    <button type="button" class="hero-pausa" data-movimento-botao data-rotulo-pausar={t.hero.pause} data-rotulo-retomar={t.hero.resume}>{t.hero.pause}</button>
     <div class="hero-vivo" aria-live="off">
      <span><span class="hero-ponto hero-ponto-executando" aria-hidden="true"></span><span data-vivo="run">0</span> {t.hero.live.run}</span>
      <span><span class="hero-ponto hero-ponto-espera" aria-hidden="true"></span><span data-vivo="wait">0</span> {t.hero.live.wait}</span>
@@ -61,6 +63,10 @@ const [fabrica,,licenca]=t.hero.badge;
 .hero-ponto-executando{background:var(--executando)}
 .hero-ponto-espera{background:var(--espera);box-shadow:0 0 0 3px color-mix(in srgb,var(--espera) 25%,transparent)}
 .hero-ponto-ok{background:var(--verificado)}
+/* Pausa todo o movimento da home (WCAG 2.2.2); some com movimento reduzido, quando nada se move. */
+.hero-pausa{display:inline-flex;align-items:center;min-height:var(--alvo);padding:0 var(--e-3);border:1px solid var(--linha-forte);border-radius:var(--raio-botao);background:var(--superficie);color:var(--texto);font:var(--peso-destaque) var(--t-apoio)/1 var(--f-texto);cursor:pointer;box-sizing:border-box;transition:border-color var(--dur-curta) var(--curva)}
+.hero-pausa:hover{border-color:var(--texto)}
+@media (prefers-reduced-motion: reduce){.hero-pausa{display:none}}
 .hero-canvas-caixa{padding:var(--e-4) var(--e-5) var(--e-5)}
 .hero-canvas-caixa canvas{display:block;width:100%;height:clamp(340px,36vw,440px)}
 </style>

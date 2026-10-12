@@ -19,6 +19,9 @@ const pt = {
   live: {run: 'executando', wait: 'esperando você', ok: 'já verificados'},
   canvasLabel: 'Partitura animada: 20 roadmaps atravessam as seis fases, de GOAL a MASTER. Os pontos em latão esperam você; os verdes já foram verificados.',
   waitTag: 'espera você',
+  // Controle de movimento (WCAG 2.2.2), que o HTML da home não tem: pausa a partitura, o relógio e as animações.
+  pause: 'pausar movimento',
+  resume: 'retomar movimento',
   names: ['checkout-v2', 'billing-api', 'onboarding', 'docs-modos', 'search-index', 'auth-keys', 'pricing', 'mobile-push', 'analytics', 'crm-sync', 'infra-tf', 'design-tokens', 'api-gateway', 'notificações', 'relatórios', 'i18n-en', 'marketplace', 'suporte-bot', 'pagamentos-pix', 'status-page']
  },
  runtimes: {label: 'Conduza de onde você já trabalha', list: ['Claude Code', 'Codex', 'Hermes', 'OpenClaw']},
@@ -220,13 +223,15 @@ const en: Home = {
   live: {run: 'running', wait: 'waiting on you', ok: 'already verified'},
   canvasLabel: 'Animated score: 20 roadmaps move through the six phases, from GOAL to MASTER. The brass dots are waiting on you; the green ones are already verified.',
   waitTag: 'waiting on you',
+  pause: 'pause motion',
+  resume: 'resume motion',
   names: ['checkout-v2', 'billing-api', 'onboarding', 'docs-modes', 'search-index', 'auth-keys', 'pricing', 'mobile-push', 'analytics', 'crm-sync', 'infra-tf', 'design-tokens', 'api-gateway', 'notifications', 'reports', 'i18n-en', 'marketplace', 'support-bot', 'payments-pix', 'status-page']
  },
  runtimes: {label: 'Conduct from where you already work', list: ['Claude Code', 'Codex', 'Hermes', 'OpenClaw']},
  parallel: {
   eyebrow: '01 · Parallelism',
   title: 'One layer conducts all your runtimes, on all your machines.',
-  lead: 'You conduct from a single conversation. The ork reserves the roadmap items, spreads the threads across machines, runtimes and accounts, isolates each one in its own worktree and brings everything back through a serialized merge.',
+  lead: 'You conduct from a single conversation. The ork CLI reserves the roadmap items, spreads the threads across machines, runtimes and accounts, isolates each one in its own worktree and brings everything back through a serialized merge.',
   you: 'You, from one conversation',
   youSub: '#TAG in the request · hourly summary · batch a–d',
   layer: 'orchestration layer',
@@ -342,7 +347,7 @@ const en: Home = {
  night: {
   eyebrow: '06 · While you sleep',
   title: 'The factory does not stop when you sleep.',
-  lead: 'You close the laptop at 23:00. This is what the ledger records until coffee. Nothing here asked for you to be there.',
+  lead: 'You close the laptop at 23:00. This is what the ledger records until coffee. Nothing here needed you.',
   note: 'scroll the page · an example night in your time zone',
   events: [
    {t: '23:04', tag: 'GO', c: 'executando', text: 'Six threads open on three machines, each in its own worktree. None touches the files of another.'},
@@ -359,7 +364,7 @@ const en: Home = {
   title: 'Six phases no agent skips.',
   lead: 'Each phase has a contract. The result does not depend on believing the agent’s report. Tap a phase.',
   givesLabel: '{phase} delivers',
-  needsLabel: 'The ork requires, to pass',
+  needsLabel: 'Required to pass',
   phases: [
    {gives: 'Goal, definition of done and claims with a command.', needs: 'A claim without a command is refused.', code: 'claims.unverifiable'},
    {gives: 'Tasks, decisions and an executable verify per task.', needs: 'Without the recorded plan, the phase does not close.', code: 'artifact.missing'},

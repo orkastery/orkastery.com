@@ -56,6 +56,17 @@ test('paths, field names and public domains are distinguished',()=>{
  }
  assert.deepEqual(violations('<p>maestro@orkastery.com · orkmind.com</p>'),[]);
 });
+test('directory with a trailing slash and a runtime profile are whole code (review findings 6 and 14)',()=>{
+ assert.deepEqual(violations('<p>Mudou comportamento em core/, adapters/ ou marketplaces/?</p>'),['core/','adapters/','marketplaces/']);
+ for(const dir of ['core/','adapters/','marketplaces/'])assert.ok(technicalHtml('Mudou comportamento em core/, adapters/ ou marketplaces/?').includes(`<code>${dir}</code>`),dir);
+ assert.deepEqual(violations(`<p>${technicalHtml('Mudou comportamento em core/, adapters/ ou marketplaces/?')}</p>`),[]);
+ assert.deepEqual(violations('<p>A cota do perfil <code>claude-bg</code>/pessoal acabou.</p>'),['partido: claude-bg + /pessoal']);
+ // Separador decorativo noutro elemento não é caminho partido (selo: versão / MIT).
+ assert.deepEqual(violations('<p><span><code>0.5.5</code></span><span aria-hidden="true">/</span><span>MIT</span></p>'),[]);
+ assert.ok(technicalHtml('A cota do perfil claude-bg/pessoal acabou.').includes('<code>claude-bg/pessoal</code>'));
+ assert.deepEqual(violations(`<p>${technicalHtml('O mesmo prompt segue no perfil claude-bg/time.')}</p>`),[]);
+ assert.deepEqual(violations('<p>dia/noite, e/ou, PT/EN</p>'),[]);
+});
 test('full command placeholders, single flags and rich markup stay intact',()=>{
  assert.equal(technicalHtml('ork worktree ensure <thread>'),'<code>ork worktree ensure &lt;thread&gt;</code>');
  assert.equal(technicalHtml('pgvector/pgvector:pg16.'),'<span class="code-unit" style="--folga:0.6ch"><code>pgvector/pgvector:pg16</code>.</span>');
@@ -109,7 +120,8 @@ test('adjacent non-space text travels with inline code in one unit',()=>{
 
 test('a unit that glues more than 12 characters fails the code audit',()=>{
  // A unidade nao encolhe: colada a uma sequencia longa, estouraria a coluna estreita.
- const longa=technicalHtml('Veja ork_x/'+'a'.repeat(30)+' depois.');
+ // Colado sem barra: a barra colada é outra regra (identificador partido).
+ const longa=technicalHtml('Veja ork_x,'+'a'.repeat(30)+' depois.');
  assert.match(longa,/--folga:12ch/);
  assert.equal(glueViolations(`<p>${longa}</p>`).length,1);
  assert.deepEqual(glueViolations(`<p>${technicalHtml('Fica em $CODEX_HOME/sessions hoje.')}</p>`),[]);

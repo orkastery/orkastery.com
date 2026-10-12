@@ -28,6 +28,11 @@ export function checkKit(dist=distArg(),manifesto=lerJson(MANIFESTO_KIT),base=ro
   const publicado=resolve(dist,relative('public',rel));
   if(!existsSync(publicado)||sha256(readFileSync(publicado))!==esperado)throw Error('Arquivo do kit diferente na build: '+rel);
  }
+ // PDFs gerados dos documentos do kit (manual, diretrizes e componentes): o arquivo é o registrado.
+ for(const [rel,d] of Object.entries(manifesto.derivados||{})){
+  if(rel==='descricao')continue;
+  for(const f of [resolve(base,rel),resolve(dist,relative('public',rel))])if(!existsSync(f)||sha256(readFileSync(f))!==d.sha256)throw Error('Documento da marca mudou ou sumiu: '+rel);
+ }
  const ico=readFileSync(resolve(dist,'favicon.ico')),png=readFileSync(resolve(base,'public/marca/png/favicon-32.png'));
  if(ico.readUInt16LE(2)!==1||ico.readUInt16LE(4)!==1||!ico.subarray(ico.readUInt32LE(18)).equals(png))throw Error('favicon.ico não é o favicon-32.png do kit');
  return arquivos.length;
@@ -136,7 +141,8 @@ export function checkLatao(css){
 // 6. Regras do CSS: código inteiro, foco sem outline apagado (o alvo do link de pular, main, não é
 //    interativo), anel do kit no :focus-visible, nenhuma fonte proibida pelo kit.
 export function codeRules(css){
- if(!cssRules(css).some(r=>r.selectors.includes(':not(pre)>code')&&/display:\s*inline-block/.test(r.declarations)&&/max-width:\s*100%/.test(r.declarations)))throw Error('Inline code can split across lines');
+ // O chip é inteiro (regra de 03/10): nunca quebra por dentro; mais largo que a coluna, rola nele mesmo.
+ if(!cssRules(css).some(r=>r.selectors.includes(':not(pre)>code')&&/white-space:\s*nowrap/.test(r.declarations)&&/max-width:\s*100%/.test(r.declarations)&&/overflow-x:\s*auto/.test(r.declarations)))throw Error('Inline code can split across lines');
  if(!cssRules(css).some(r=>r.selectors.some(s=>/^\.code-unit$/.test(s))&&/white-space:\s*nowrap/.test(r.declarations)))throw Error('Adjacent text can detach from inline code');
  if(!cssRules(css).some(r=>r.selectors.some(s=>/^\.codigo-liso$/.test(s))&&/white-space:\s*nowrap/.test(r.declarations)))throw Error('Plain code can split across lines');
  return true;

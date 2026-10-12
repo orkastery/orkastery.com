@@ -7,6 +7,7 @@ import {pages,distArg,walk,attrs,content} from './check-links.mjs';
 export const proseExceptions = [
  'git a','git aos','git both','git call','git com','git con','git en','git facts','git has','git já','git nos','git repository','git sem','git sin','git without','git ya',
  'npm hoists','npm los','npm os',
+ 'ork CLI',
  'ork a','ork abre','ork abrió','ork abriu','ork aplica','ork arrives','ork as','ork brings','ork chamado','ork chega','ork com','ork con','ork core','ork e','ork é','ork elige','ork entry','ork es','ork escolhe','ork exige','ork fica','ork goes','ork is','ork itself','ork llega','ork nas','ork never','ork nunca','ork opens','ork package','ork picks','ork por','ork reserva','ork reserves','ork se','ork state','ork version','ork with','ork y','ork requires',
 ];
 const exceptions=new Set(proseExceptions);
@@ -36,6 +37,9 @@ export function splitCommands(html) {
     if(/^ork\s+[a-z][\w-]*$/.test(code)&&restOfCommand.test(after))found.push(`partido: ${code} + ${after.trim().split(/\s+/)[0].replace(/[.,;:)]+$/,'')}`);
     else if(/^ork\s.*\s--[a-z][\w-]*$/.test(code)&&valueAfterFlag.test(after))found.push(`partido: ${code} + ${after.trim().split(/\s+/)[0].replace(/[.,;:)]+$/,'')}`);
     if(/^--/.test(code)&&/\bnode\s+$/.test(before))found.push(`partido: node + ${code}`);
+    // Identificador partido: o código termina e o caminho continua colado no texto (claude-bg + /pessoal).
+    const resto=/^\/[\p{L}\d][\p{L}\d_-]*/u.exec(kids[i+1]?.nodeName==='#text'?kids[i+1].value:'');
+    if(resto)found.push(`partido: ${code} + ${resto[0]}`);
    }else if(!excluded.has(child.tagName))visit(child);
   });
  };
@@ -62,6 +66,8 @@ export function violations(html) {
   if(!exceptions.has(candidate))found.push(candidate);
  }
  for(const m of text.matchAll(bareCommand))found.push('ork? '+m[0]);
+ // Diretório com a barra no fim (core/, adapters/) é caminho: código.
+ for(const m of text.matchAll(/(?<![\w./\u0001-])[a-z][\w-]*\/(?=[\s,.;:)?!]|\u0000|$)/g))found.push(m[0]);
  // Variável de ambiente e comando de barra do plugin fora do código ($HOME, PATH, LANG, /orkastery:goal, $ork).
  for(const m of text.matchAll(/\$[A-Z][A-Z0-9_]*\b|\b(?:PATH|HOME|LANG|TMPDIR|PWD)\b|(?<![\w/.:-])\/orkastery:[a-z][\w-]*|(?<![\w$])\$ork\b/g))found.push(m[0]);
  for(const m of text.matchAll(/(?<![\w-])--[a-z][\w-]*|\b(?:[A-Z][A-Z0-9]*_)+[A-Z0-9_]+\b|\b(?:mcp__\w+|ork_\w+)\b|\b[\w.-]+\.(?:jsonl?|ya?ml|md|toml|mjs|cjs|ts|py|sh)\b|\bork\.[\w.-]+\/v\d+/g))found.push(m[0]);

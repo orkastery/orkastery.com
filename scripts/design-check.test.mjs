@@ -43,9 +43,10 @@ test('foco: sem o anel do kit ou com outline apagado reprova',()=>{
  assert.throws(()=>checkFoco(ok+'.botao:focus{outline:none}'),/outline apagado/);
 });
 test('código inline: sem inline-block, sem a unidade sem quebra ou sem o código liso inteiro, reprova',()=>{
- const ok=':not(pre)>code{display:inline-block;max-width:100%}.code-unit{white-space:nowrap}.codigo-liso{display:inline;white-space:nowrap}';
+ const ok=':not(pre)>code{display:inline-flex;max-width:100%;white-space:nowrap;overflow-x:auto}.code-unit{white-space:nowrap}.codigo-liso{display:inline;white-space:nowrap}';
  assert.equal(codeRules(ok),true);
- assert.throws(()=>codeRules(ok.replace('display:inline-block;','')),/Inline code can split/);
+ assert.throws(()=>codeRules(ok.replace('white-space:nowrap;overflow-x:auto','white-space:normal;overflow-wrap:anywhere')),/Inline code can split/);
+ assert.throws(()=>codeRules(ok.replace(';overflow-x:auto','')),/Inline code can split/);
  assert.throws(()=>codeRules(ok.replace('.code-unit{white-space:nowrap}','')),/Adjacent text can detach/);
  assert.throws(()=>codeRules(ok.replace('.codigo-liso{display:inline;white-space:nowrap}','')),/Plain code can split/);
 });

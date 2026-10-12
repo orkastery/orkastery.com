@@ -29,7 +29,7 @@
  --secao-ampla:clamp(var(--e-8),10vw,calc(var(--e-9) + var(--e-6)));
 }
 
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--altura-cabecalho) + var(--e-4))}
 body{margin:0;background:var(--chao);color:var(--texto);font:var(--tipo-corpo);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--linha-forte);color:var(--texto)}
@@ -48,6 +48,8 @@ button{font:inherit;color:inherit}
 @keyframes orkFlow{to{background-position:0 9px}}
 @keyframes orkFlowX{to{background-position:9px 0}}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+/* O botão de pausar o movimento da home liga este atributo (WCAG 2.2.2). */
+[data-movimento-pausado] *,[data-movimento-pausado] *::before,[data-movimento-pausado] *::after{animation-play-state:paused!important}
 
 /* Foco visível em todo interativo, pelo anel do kit. O contorno transparente aparece no modo de
    alto contraste, onde a sombra some. */
@@ -73,10 +75,11 @@ button{font:inherit;color:inherit}
 /* Texto só para leitor de tela. */
 .so-leitor{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-/* Código inline: Plex Mono, raio de segmento, fundo da cor do texto a 7%. Atômico: um comando
-   curto nunca se parte entre linhas; um longo quebra dentro do próprio chip. */
-:not(pre)>code{display:inline-block;max-width:100%;font-family:var(--f-mono);font-weight:var(--peso-texto);font-size:.875em;line-height:1.3;padding:.08em .38em;border-radius:var(--raio-segmento);background:color-mix(in srgb,currentColor 7%,transparent);white-space:normal;overflow-wrap:anywhere;vertical-align:baseline}
-/* Inline-block não herda o sublinhado do link: o código o aplica a si mesmo. */
+/* Código inline: Plex Mono, raio de segmento, fundo da cor do texto a 7%. Inteiro (regra de
+   03/10): nunca quebra por dentro. Desce de linha como um bloco só; se for mais largo que a coluna
+   inteira, rola dentro do próprio chip, sem partir. inline-flex mantém a linha de base do texto. */
+:not(pre)>code{display:inline-flex;max-width:100%;min-width:0;box-sizing:border-box;font-family:var(--f-mono);font-weight:var(--peso-texto);font-size:.875em;line-height:1.3;padding:.08em .38em;border-radius:var(--raio-segmento);background:color-mix(in srgb,currentColor 7%,transparent);white-space:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;vertical-align:baseline}
+/* inline-flex não herda o sublinhado do link: o código o aplica a si mesmo. */
 a>code,a .code-unit,a .code-unit>code{text-decoration:inherit}
 /* Unidade sem quebra: o que encosta no chip viaja com ele (parêntese, ponto, sufixo colado). */
 .code-unit{white-space:nowrap}
@@ -85,7 +88,7 @@ pre code{font:inherit;background:none;padding:0;border-radius:0;white-space:pre}
 
 /* Código sem chip: o comando ou identificador que já aparece em mono (terminal, rótulo, selo)
    fica em <code> para a regra do código inteiro, com a fonte e a cor de quem o contém. */
-.codigo-liso{display:inline;font:inherit;color:inherit;background:none;padding:0;border-radius:0;white-space:nowrap;vertical-align:baseline}
+.codigo-liso{display:inline;font:inherit;color:inherit;background:none;padding:0;border-radius:0;white-space:nowrap;vertical-align:baseline;overflow:visible;flex:none}
 
 /* Âncoras de versões anteriores da home: alvo de link antigo, sem ocupar espaço. */
 .ancora-antiga{position:absolute;width:0;height:0;overflow:hidden}

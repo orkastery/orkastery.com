@@ -22,7 +22,9 @@ function revelar() {
   if (el.getBoundingClientRect().top < window.innerHeight) return;
   const pai = el.parentElement as Element, ordem = irmaos.get(pai) ?? 0;
   irmaos.set(pai, ordem + 1);
-  el.style.opacity = '0'; el.style.transform = 'translateY(16px)';
+  el.style.transition = 'none'; el.style.opacity = '0'; el.style.transform = 'translateY(16px)';
+  // O estado escondido vale antes de a transição existir: sem isso, o bloco sumiria em fade.
+  el.getBoundingClientRect();
   el.style.transition = `opacity var(--dur-longa) var(--curva) ${ordem * 80}ms, transform var(--dur-longa) var(--curva) ${ordem * 80}ms`;
   io.observe(el);
  });

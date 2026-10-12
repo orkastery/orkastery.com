@@ -14,7 +14,11 @@ const patterns = [
   /\.(?:git|env|gitignore|orkastery|agents|claude|codex)\b\/?/g,
   /\b(?:git\s+(?:ls-remote|rebase|remote(?:\s+(?:-v|add|remove|rename|set-url|get-url))?|status|diff|log|clone|fetch|pull|push|commit|checkout|switch|merge-tree(?:\s+--write-tree)?|rm(?:\s+-r)?(?:\s+--cached)?)|pip3?\s+install)(?:\s+(?:<[^<>]+>|\.[\w.\/-]+|[\w-]+\/[\w.\/-]*))?/g,
   /(?<![\w-])--[a-z][\w-]*(?:[= ](?:<[^<>]+>|auto|block|true|false|(?:DIR|N|ID|R|D|M|S|F|K|T|Q|NOME|URL)\b(?![-.]\w)))?/g,
-  /(?:~\/|\.{1,2}\/|\b(?:docs|core|src|scripts|maquinas|threads|skills|adapters|marketplaces|prompts)\/|\.orkastery\/|\bork\/)(?:[\w.@*{}-]+|<[^<>]+>|\/)+/g,
+  /(?:~\/|\.{1,2}\/|\.orkastery\/|\bork\/)(?:[\w.@*{}-]+|<[^<>]+>|\/)+/g,
+  // Diretório da raiz do repositório: com o resto do caminho ou só com a barra (core/, adapters/).
+  /\b(?:docs|core|src|scripts|maquinas|threads|skills|adapters|marketplaces|prompts)\/(?:[\w.@*{}-]+|<[^<>]+>|\/)*/g,
+  // Perfil de conta de um runtime, inteiro: claude-bg/pessoal, codex/time.
+  /\b(?:claude-bg|codex)\/[\wÀ-ÿ-]+/g,
   // A product name is not a filename. Explicit paths/commands above still
   // format a file named Node.js; the standalone product name stays prose.
   /\b(?!Node\.js\b)[\w.-]+\.(?:jsonl?|ya?ml|md|ts|mjs|cjs|js|py|toml|sh|svg|woff2|html|css)\b/g,

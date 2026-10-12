@@ -38,10 +38,15 @@ const rotuloNav=locale==='en'?'Main navigation':'Navegação principal';
 </header>
 <script>
  // Navegação de prioridade, como no HTML da home: o link que não cabe quebra para uma linha
- // escondida e sai do teclado e do leitor de tela (inert), para o foco nunca cair no invisível.
+ // escondida ou ficaria cortado na borda; ele some inteiro e sai do teclado e do leitor de tela
+ // (inert), para o foco nunca cair no invisível nem num link pela metade.
  const nav=document.querySelector<HTMLElement>('[data-nav-prioridade]');
  if(nav){
-  const atualizar=()=>{const topo=nav.getBoundingClientRect().top;for(const a of nav.querySelectorAll('a')){const escondido=a.getBoundingClientRect().top-topo>2||nav.clientWidth===0;a.toggleAttribute('inert',escondido);}};
+  const atualizar=()=>{
+   const links=[...nav.querySelectorAll('a')];links.forEach(a=>a.removeAttribute('inert'));
+   const caixa=nav.getBoundingClientRect(),topo=links[0]?.getBoundingClientRect().top??caixa.top,direita=caixa.right-4;
+   for(const a of links){const r=a.getBoundingClientRect();a.toggleAttribute('inert',nav.clientWidth===0||r.top-topo>2||r.right>direita+1);}
+  };
   new ResizeObserver(atualizar).observe(nav);atualizar();
  }
  // Menu abaixo de 768 px: abre e fecha pelo botão, fecha com Esc (o foco volta ao botão), ao
@@ -67,7 +72,9 @@ const rotuloNav=locale==='en'?'Main navigation':'Navegação principal';
 .cabecalho-marca img{display:block;width:auto}
 .marca-assinatura{height:26px}
 .marca-simbolo{height:28px;display:none!important}
-.cabecalho-nav{display:flex;gap:var(--e-5);font:var(--peso-destaque) var(--t-apoio)/1 var(--f-texto);color:var(--texto-2);flex-wrap:wrap;white-space:nowrap;overflow:hidden;min-width:0;flex:0 1 auto;height:var(--alvo);align-self:center}
+/* 4 px de respiro em volta dos links: o anel de foco (--anel-foco) cabe dentro do recorte. */
+.cabecalho-nav{display:flex;gap:var(--e-5);font:var(--peso-destaque) var(--t-apoio)/1 var(--f-texto);color:var(--texto-2);flex-wrap:wrap;white-space:nowrap;overflow:hidden;min-width:0;flex:0 1 auto;height:calc(var(--alvo) + 8px);padding:4px;margin:0 -4px;box-sizing:border-box;align-self:center}
+.cabecalho-nav a[inert]{visibility:hidden}
 .cabecalho-nav a{display:inline-flex;align-items:center;min-height:var(--alvo);min-width:var(--alvo);transition:color var(--dur-curta) var(--curva)}
 .cabecalho-nav a:hover,.cabecalho-nav a[aria-current]{color:var(--texto)}
 .cabecalho-espaco{flex:1}
