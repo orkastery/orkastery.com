@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {violations,proseExceptions,scaleViolations,glueViolations} from './check-code.mjs';
 import {technicalHtml,richTechnicalHtml,technicalUnits} from '../src/lib/technical-text.mjs';
 import {checkCode} from './check-code.mjs';
+import {versao,comVersao,marcadorDeVersao} from '../src/data/release.mjs';
 import {mkdtempSync,writeFileSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
@@ -134,4 +135,12 @@ test('inline code inside a paragraph keeps the shared type scale',()=>{
 
 test('multiword subcommands do not leave their command suffix as prose',()=>{
  for(const command of ['ork docs sincronizar','ork brain context','ork network roadmap','ork sessions limpar-fantasmas','ork prompt lint','ork roadmap feat'])assert.equal(technicalHtml(command),`<code>${command}</code>`);
+});
+
+test('the CLI version lives in one module and the editorial marker becomes that number',()=>{
+ assert.match(versao,/^[0-9]+[.][0-9]+[.][0-9]+$/);
+ assert.equal(marcadorDeVersao,'{versao}');
+ assert.equal(comVersao('versão {versao}; de novo {versao}.'),`versão ${versao}; de novo ${versao}.`);
+ assert.equal(comVersao('outro marcador {versão} fica'),'outro marcador {versão} fica');
+ assert.equal(technicalHtml(comVersao('Instale @orkastery/cli e use a {versao}.')),`Instale <code>@orkastery/cli</code> e use a ${versao}.`);
 });

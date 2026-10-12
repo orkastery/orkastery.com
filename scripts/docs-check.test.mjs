@@ -125,6 +125,10 @@ test('missing contribution navigation fails the content audit',()=>outputFixture
  edit(dir,'en/index.html',s=>s.replaceAll('href="'+B+'/en/docs/contribuir/"','href="'+B+'/en/docs/"'));
  assert.throws(()=>checkContent(dir),/contribution navigation/);
 }));
+test('an unreplaced version marker fails the content audit',()=>outputFixture(dir=>{
+ edit(dir,'en/docs/comecar/index.html',s=>s.replace('</main>','<p>{versao}</p></main>'));
+ assert.throws(()=>checkContent(dir),/Unreplaced version marker/);
+}));
 test('layout canaries reject tracks over wrapped chips and splittable inline code',()=>{
  const css='@media(max-width:680px){.lacos[data-a],.trilha-envelope[data-a] .factory-tracks{display:none}}:not(pre)>code{display:inline-block;max-width:100%}.code-unit{white-space:nowrap}';
  assert.equal(layoutCanaries(css).wrappedCycleRules,1);
