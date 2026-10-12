@@ -29,7 +29,10 @@ const dados={'data-copiar':comando,'data-rotulo':m.copy,'data-rotulo-ok':m.copie
 .instalar-hero:hover{background:var(--grafite-2)}
 .instalar-noite{gap:14px;min-height:52px;padding:0 8px 0 18px;border-radius:var(--raio-12);background:var(--grafite);border:1px solid var(--grafite-3)}
 .instalar-noite:hover{border-color:var(--grafite-5)}
-.instalar-cartao{gap:12px;min-height:48px;padding:0 18px;border-radius:var(--raio-12);background:var(--tinta);font:400 14px/1 var(--fonte-mono)}
+.instalar-cartao{gap:12px;min-height:48px;padding:0 18px;border-radius:var(--raio-12);background:var(--tinta);font:400 14px/1 var(--fonte-mono);flex-wrap:nowrap}
+/* No cartão (contêiner de tamanho), "$ comando" fica numa linha só: a letra encolhe o necessário
+   para caber (36 px de respiro, 12 de vão, 30 caracteres de 0,6 em). */
+@container (max-width:560px){.instalar-cartao{font-size:min(14px,calc((100cqi - 49px) / 18))}}
 .instalar-cartao:hover{background:var(--grafite-2)}
 .instalar-cifrao{color:var(--acento)}
 /* O comando é código e inteiro: herda a fonte do botão, sem o chip da prosa. */
@@ -39,5 +42,5 @@ const dados={'data-copiar':comando,'data-rotulo':m.copy,'data-rotulo-ok':m.copie
 /* Quando a pílula desce de linha, o botão ganha respiro em cima e embaixo. */
 @media (max-width:440px){.instalar-hero,.instalar-noite{padding:10px 8px 10px 18px}}
 /* Abaixo de 360 px o comando inteiro só cabe numa linha com a letra um pouco menor. */
-@media (max-width:360px){.instalar-hero,.instalar-noite{font-size:12.5px;padding-left:14px}.instalar-cartao{font-size:11px;gap:8px;padding:0 12px}}
+@media (max-width:360px){.instalar-hero,.instalar-noite{font-size:12.5px;padding-left:14px}}
 </style>

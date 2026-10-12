@@ -1,0 +1,963 @@
+[
+ {
+  "id": "G01",
+  "secao": "Global",
+  "tipo": "texto",
+  "item": "Título da página: Orkastery · Conduza 20 roadmaps com a calma de quem conduz um.",
+  "destino": "src/data/home.ts (title)",
+  "site": "title",
+  "design": "title",
+  "largura": 1440,
+  "estado": "texto"
+ },
+ {
+  "id": "G02",
+  "secao": "Global",
+  "tipo": "token",
+  "item": "Fontes: Geist 400 a 700 (variável), Hanken Grotesk 400, 500 e 600, IBM Plex Mono 400 e 500, com os subconjuntos latin, latin-ext, vietnamese, cyrillic e cyrillic-ext",
+  "destino": "src/styles/fonts.css, src/data/design-system.json (identidade.fontes)",
+  "site": ".hero-titulo",
+  "design": "#topo h1",
+  "largura": 1440
+ },
+ {
+  "id": "G03",
+  "secao": "Global",
+  "tipo": "interacao",
+  "item": "Rolagem suave nas âncoras (html scroll-behavior smooth), desligada com movimento reduzido",
+  "destino": "src/styles/base.css (html)",
+  "site": "html",
+  "design": "html",
+  "largura": 1440,
+  "estado": "pagina"
+ },
+ {
+  "id": "G04",
+  "secao": "Global",
+  "tipo": "token",
+  "item": "Corpo: fundo #EEF0F2, texto #12161C, Hanken Grotesk, antialiasing e optimizeLegibility",
+  "destino": "src/styles/base.css (body), tokens papel e tinta",
+  "site": ".runtimes",
+  "design": "section:nth-of-type(2)",
+  "largura": 1440
+ },
+ {
+  "id": "G05",
+  "secao": "Global",
+  "tipo": "interacao",
+  "item": "Links sem sublinhado herdando a cor; hover em latão #8A5F17",
+  "destino": "src/styles/base.css (a, a:hover)",
+  "site": ".cabecalho-nav",
+  "design": "header nav",
+  "largura": 1440,
+  "estado": "hover-link"
+ },
+ {
+  "id": "G06",
+  "secao": "Global",
+  "tipo": "token",
+  "item": "Seleção de texto em #F1E2C4",
+  "destino": "src/styles/base.css (::selection), token selecao",
+  "site": ".hero-lead",
+  "design": "#topo h1 + p",
+  "largura": 1440
+ },
+ {
+  "id": "G07",
+  "secao": "Global",
+  "tipo": "token",
+  "item": "Keyframes orkPulse, orkSpin (com @property --orkA), orkFlow e orkFlowX",
+  "destino": "src/styles/base.css (@keyframes, @property --orkA)",
+  "site": ".instalar-giro",
+  "design": "#instalar > span",
+  "largura": 1440
+ },
+ {
+  "id": "G08",
+  "secao": "Global",
+  "tipo": "interacao",
+  "item": "Movimento reduzido: animações e rolagem suave desligadas, revelação desligada, partitura parada",
+  "destino": "src/styles/base.css, src/scripts/moldura.ts, src/lib/partitura.mjs",
+  "site": "html",
+  "design": "html",
+  "largura": 1440,
+  "estado": "pagina"
+ },
+ {
+  "id": "G09",
+  "secao": "Global",
+  "tipo": "bloco",
+  "item": "Raiz com min-height 100vh e overflow-x clip",
+  "destino": "src/layouts/Base.astro (.pagina)",
+  "site": "html",
+  "design": "html",
+  "largura": 1440,
+  "estado": "pagina"
+ },
+ {
+  "id": "G10",
+  "secao": "Global",
+  "tipo": "token",
+  "item": "Contêiner: largura máxima 1200px, calha clamp(20px,4vw,40px)",
+  "destino": "src/styles/base.css (.container), tokens largura-maxima e calha",
+  "site": "#escala",
+  "design": "#escala",
+  "largura": 1440
+ },
+ {
+  "id": "G11",
+  "secao": "Global",
+  "tipo": "bloco",
+  "item": "Divisor de seção: fio em degradê com ponto de latão (6 ocorrências, uma sobre fundo branco)",
+  "destino": "src/components/ds/Divider.astro",
+  "site": ".divisor",
+  "design": "div[aria-hidden=\"true\"]",
+  "largura": 1440
+ },
+ {
+  "id": "G12",
+  "secao": "Global",
+  "tipo": "interacao",
+  "item": "Revelação ao rolar ([data-reveal]): opacidade 0 e translateY 28px até entrar na tela, 1s cubic-bezier(.16,1,.3,1), só abaixo da dobra",
+  "destino": "src/scripts/moldura.ts (revelar)",
+  "site": "#problema .problema-titulo",
+  "design": "#problema h2",
+  "largura": 1440
+ },
+ {
+  "id": "G13",
+  "secao": "Global",
+  "tipo": "interacao",
+  "item": "Holofote que segue o mouse (radial 480px de latão a 12%) nos cartões de máquina, de escala, de comparação, de público, do resumo, da pergunta e das provas",
+  "destino": "src/scripts/moldura.ts (holofote), .holofote em base.css",
+  "site": ".escala-cartao",
+  "design": "#escala h2 + p + div + div + div > div",
+  "largura": 1440,
+  "estado": "holofote"
+ },
+ {
+  "id": "G14",
+  "secao": "Global",
+  "tipo": "interacao",
+  "item": "Relógio de 2,4 s que anima board, topologia, fila de merge e roadmap (prop liveBoard)",
+  "destino": "src/scripts/home.ts (TICK_MS), src/lib/home-state.mjs",
+  "site": ".board",
+  "design": "#manha h2 + p + div > div:nth-child(1)",
+  "largura": 1440
+ },
+ {
+  "id": "G15",
+  "secao": "Global",
+  "tipo": "token",
+  "item": "Props do design: scoreDensity 20 (4 a 40), tempo 1 (0,25 a 4), liveBoard true",
+  "destino": "src/lib/partitura.mjs (DENSIDADE, TEMPO), src/lib/home-state.mjs",
+  "site": ".hero-partitura",
+  "design": "#topo canvas >> xpath=../..",
+  "largura": 1440
+ },
+ {
+  "id": "H01",
+  "secao": "Cabeçalho",
+  "tipo": "bloco",
+  "item": "Cabeçalho fixo no topo, fundo rgba(238,240,242,.82) com desfoque 14px e saturação 1,4, borda inferior",
+  "destino": "src/components/SiteHeader.astro",
+  "site": ".cabecalho",
+  "design": "header",
+  "largura": 1440
+ },
+ {
+  "id": "H02",
+  "secao": "Cabeçalho",
+  "tipo": "imagem",
+  "item": "Assinatura escura (26px) com link para #topo",
+  "destino": "src/components/SiteHeader.astro (.cabecalho-marca), public/marca/assinatura-fundo-claro.svg",
+  "site": ".cabecalho-marca",
+  "design": "header a[href=\"#topo\"]",
+  "largura": 1440
+ },
+ {
+  "id": "H03",
+  "secao": "Cabeçalho",
+  "tipo": "link",
+  "item": "Navegação: Paralelismo (#escala), Como funciona (#ciclo), Modos (#modos), Prova (#prova), Docs",
+  "destino": "src/components/SiteHeader.astro (.cabecalho-nav), src/data/i18n.ts (moldura)",
+  "site": ".cabecalho-nav",
+  "design": "header nav",
+  "largura": 1440
+ },
+ {
+  "id": "H04",
+  "secao": "Cabeçalho",
+  "tipo": "responsivo",
+  "item": "Navegação some item a item quando falta largura (quebra para uma linha escondida)",
+  "destino": "src/components/SiteHeader.astro (navegação de prioridade)",
+  "site": ".cabecalho",
+  "design": "header",
+  "largura": 768
+ },
+ {
+  "id": "H05",
+  "secao": "Cabeçalho",
+  "tipo": "botao",
+  "item": "Seletor de língua em pílula: PT ativo (branco com sombra) e EN",
+  "destino": "src/components/LanguageSelector.astro",
+  "site": ".linguas",
+  "design": "header > div > div:nth-of-type(2)",
+  "largura": 1440
+ },
+ {
+  "id": "H06",
+  "secao": "Cabeçalho",
+  "tipo": "botao",
+  "item": "Botão Falar com a gente (contorno, para #contato), hover branco",
+  "destino": "src/components/SiteHeader.astro (.cabecalho-falar)",
+  "site": ".cabecalho-falar",
+  "design": "header a[href=\"#contato\"]",
+  "largura": 1440,
+  "estado": "hover"
+ },
+ {
+  "id": "H07",
+  "secao": "Cabeçalho",
+  "tipo": "botao",
+  "item": "Botão Instalar (escuro, para #instalar), hover #2A3039",
+  "destino": "src/components/SiteHeader.astro (.cabecalho-instalar)",
+  "site": ".cabecalho-instalar",
+  "design": "header a[href=\"#instalar\"]",
+  "largura": 1440,
+  "estado": "hover"
+ },
+ {
+  "id": "HE01",
+  "secao": "Hero",
+  "tipo": "bloco",
+  "item": "Seção #topo com respiro clamp(64px,10vw,120px) e 72px",
+  "destino": "src/components/home/Hero.astro",
+  "site": "#topo",
+  "design": "#topo",
+  "largura": 1440
+ },
+ {
+  "id": "HE02",
+  "secao": "Hero",
+  "tipo": "bloco",
+  "item": "Grade de pontos com máscara radial no topo",
+  "destino": "src/components/home/Hero.astro (.hero-pontos)",
+  "site": ".hero-pontos",
+  "design": "#topo > div:first-child",
+  "largura": 1440
+ },
+ {
+  "id": "HE03",
+  "secao": "Hero",
+  "tipo": "texto",
+  "item": "Selo: ponto verde pulsando, AI Software Factory / @orkastery/cli 0.5.5 / MIT",
+  "destino": "src/components/home/Hero.astro (.hero-selo), src/data/release.mjs",
+  "site": ".hero-selo",
+  "design": "#topo > div:nth-child(2) > div:first-child",
+  "largura": 1440
+ },
+ {
+  "id": "HE04",
+  "secao": "Hero",
+  "tipo": "texto",
+  "item": "H1 Conduza 20 roadmaps com a calma de quem conduz um. (segunda parte em cinza)",
+  "destino": "src/components/home/Hero.astro (.hero-titulo), src/data/home.ts",
+  "site": ".hero-titulo",
+  "design": "#topo h1",
+  "largura": 1440
+ },
+ {
+  "id": "HE05",
+  "secao": "Hero",
+  "tipo": "texto",
+  "item": "Parágrafo: A Orkastery é a plataforma que rege seus agentes de código em threads paralelas...",
+  "destino": "src/components/home/Hero.astro (.hero-lead)",
+  "site": ".hero-lead",
+  "design": "#topo h1 + p",
+  "largura": 1440
+ },
+ {
+  "id": "HE06",
+  "secao": "Hero",
+  "tipo": "botao",
+  "item": "Botão de instalação (#instalar) com borda cônica girando, $ npm install -g @orkastery/cli e pílula copiar/copiado",
+  "destino": "src/components/ds/InstallButton.astro (hero), src/scripts/copiar.ts",
+  "site": ".instalar-giro",
+  "design": "#instalar > span",
+  "largura": 1440
+ },
+ {
+  "id": "HE07",
+  "secao": "Hero",
+  "tipo": "link",
+  "item": "Falar com a gente → (para #contato), hover na borda",
+  "destino": "src/components/home/Hero.astro (.hero-falar)",
+  "site": ".hero-falar",
+  "design": "#instalar > a",
+  "largura": 1440,
+  "estado": "hover"
+ },
+ {
+  "id": "HE08",
+  "secao": "Hero",
+  "tipo": "texto",
+  "item": "Nota: Sem servidor e sem LLM embutido. Roda nas suas assinaturas de Claude Code e Codex.",
+  "destino": "src/components/home/Hero.astro (.hero-nota)",
+  "site": ".hero-nota",
+  "design": "#instalar + p",
+  "largura": 1440
+ },
+ {
+  "id": "HE09",
+  "secao": "Hero",
+  "tipo": "bloco",
+  "item": "Cartão da partitura: agora · 20 roadmaps · 3 máquinas · 2 runtimes e legenda viva (executando, esperando você, já verificados)",
+  "destino": "src/components/home/Hero.astro (.hero-partitura)",
+  "site": ".hero-partitura",
+  "design": "#topo canvas >> xpath=../..",
+  "largura": 1440
+ },
+ {
+  "id": "HE10",
+  "secao": "Hero",
+  "tipo": "interacao",
+  "item": "Canvas da partitura: 6 colunas de fase, 20 linhas com nomes, notas andando, espera em latão com etiqueta espera você, anel verde ao entrar em SHIP, contagem a cada 700 ms",
+  "destino": "src/lib/partitura.mjs, src/scripts/home.ts",
+  "site": "[data-partitura]",
+  "design": "#topo canvas",
+  "largura": 1440
+ },
+ {
+  "id": "RT01",
+  "secao": "Runtimes",
+  "tipo": "texto",
+  "item": "Conduza de onde você já trabalha: Claude Code, Codex, Hermes, OpenClaw",
+  "destino": "src/components/home/Runtimes.astro",
+  "site": ".runtimes",
+  "design": "section:nth-of-type(2)",
+  "largura": 1440
+ },
+ {
+  "id": "P01",
+  "secao": "01 Paralelismo",
+  "tipo": "texto",
+  "item": "Sobretítulo 01 · Paralelismo",
+  "destino": "src/components/ds/Eyebrow.astro via SectionHead",
+  "site": "#escala .sobretitulo",
+  "design": "#escala > div > div:first-child",
+  "largura": 1440
+ },
+ {
+  "id": "P02",
+  "secao": "01 Paralelismo",
+  "tipo": "texto",
+  "item": "H2 Uma camada rege todos os seus runtimes, em todas as suas máquinas.",
+  "destino": "src/components/ds/SectionHead.astro",
+  "site": "#escala h2",
+  "design": "#escala h2",
+  "largura": 1440
+ },
+ {
+  "id": "P03",
+  "secao": "01 Paralelismo",
+  "tipo": "texto",
+  "item": "Parágrafo: Você conduz de uma conversa só...",
+  "destino": "src/components/ds/SectionHead.astro (.secao-lead)",
+  "site": "#escala .secao-lead",
+  "design": "#escala h2 + p",
+  "largura": 1440
+ },
+ {
+  "id": "P04",
+  "secao": "01 Paralelismo",
+  "tipo": "bloco",
+  "item": "Cartão do diagrama com rolagem horizontal (largura mínima 920px)",
+  "destino": "src/components/home/Paralelismo.astro (.diagrama)",
+  "site": ".diagrama",
+  "design": "#escala h2 + p + div",
+  "largura": 1440
+ },
+ {
+  "id": "P05",
+  "secao": "01 Paralelismo",
+  "tipo": "bloco",
+  "item": "Você, de uma conversa: símbolo, título, #TAG no pedido · resumo de hora em hora · lote a–d e os 4 runtimes",
+  "destino": "src/components/home/Paralelismo.astro (.voce)",
+  "site": ".voce",
+  "design": "#escala h2 + p + div > div > div:nth-child(1)",
+  "largura": 1440
+ },
+ {
+  "id": "P06",
+  "secao": "01 Paralelismo",
+  "tipo": "interacao",
+  "item": "Conectores tracejados andando (orkFlow e orkFlowX)",
+  "destino": "src/components/home/Paralelismo.astro (.ligacao, .fluxo-v, .fluxo-h)",
+  "site": ".ligacao >> nth=0",
+  "design": "#escala h2 + p + div > div > div:nth-child(4)",
+  "largura": 1440
+ },
+ {
+  "id": "P07",
+  "secao": "01 Paralelismo",
+  "tipo": "bloco",
+  "item": "Camada de orquestração escura: ork, determinístico · sem servidor · sem LLM e 6 funções com a ativa girando",
+  "destino": "src/components/home/Paralelismo.astro (.camada), home-state.mjs topo().coreFns",
+  "site": ".camada",
+  "design": "#escala h2 + p + div > div > div:nth-child(3)",
+  "largura": 1440
+ },
+ {
+  "id": "P08",
+  "secao": "01 Paralelismo",
+  "tipo": "bloco",
+  "item": "3 máquinas (mac-studio, vps-01, vps-02) com runtimes, perfis, estado ativo ou cota esgotada · rotacionou, threads com 6 segmentos e rodapé de threads, worktrees e leases",
+  "destino": "src/components/home/Paralelismo.astro (.maquinas)",
+  "site": ".maquinas",
+  "design": "#escala h2 + p + div > div > div:nth-child(5)",
+  "largura": 1440
+ },
+ {
+  "id": "P09",
+  "secao": "01 Paralelismo",
+  "tipo": "bloco",
+  "item": "Fila de merge: main, merge serializado, um por vez, e 3 itens (o primeiro com ✓ ls-remote)",
+  "destino": "src/components/home/Paralelismo.astro (.fila)",
+  "site": ".fila",
+  "design": "#escala h2 + p + div > div > div:nth-child(7) > div",
+  "largura": 1440
+ },
+ {
+  "id": "P10",
+  "secao": "01 Paralelismo",
+  "tipo": "bloco",
+  "item": "Roadmap: título, $ ork roadmap pegar · ..., legenda das máquinas e livre, 24 itens RM-031 a RM-054",
+  "destino": "src/components/home/Paralelismo.astro (.roadmap)",
+  "site": ".roadmap",
+  "design": "#escala h2 + p + div + div",
+  "largura": 1440
+ },
+ {
+  "id": "P11",
+  "secao": "01 Paralelismo",
+  "tipo": "bloco",
+  "item": "4 cartões de escala com título, texto e comando",
+  "destino": "src/components/home/Paralelismo.astro (.escala)",
+  "site": ".escala",
+  "design": "#escala h2 + p + div + div + div",
+  "largura": 1440
+ },
+ {
+  "id": "PR01",
+  "secao": "02 Problema",
+  "tipo": "texto",
+  "item": "Sobretítulo 02 · O problema",
+  "destino": "src/components/home/Problema.astro",
+  "site": "#problema .sobretitulo",
+  "design": "#problema > div > div:first-child",
+  "largura": 1440
+ },
+ {
+  "id": "PR02",
+  "secao": "02 Problema",
+  "tipo": "texto",
+  "item": "H2 Agentes ficaram bons. Conduzir agentes, não.",
+  "destino": "src/components/home/Problema.astro (.problema-titulo)",
+  "site": ".problema-titulo",
+  "design": "#problema h2",
+  "largura": 1440
+ },
+ {
+  "id": "PR03",
+  "secao": "02 Problema",
+  "tipo": "texto",
+  "item": "Frase: Aponte três agentes para o mesmo repositório (continuação em cinza)",
+  "destino": "src/components/home/Problema.astro (.problema-frase)",
+  "site": ".problema-frase",
+  "design": "#problema h2 + div > div:first-child > p",
+  "largura": 1440
+ },
+ {
+  "id": "PR04",
+  "secao": "02 Problema",
+  "tipo": "bloco",
+  "item": "Lista de dores: 20, 02h, ∞",
+  "destino": "src/components/home/Problema.astro (.dores)",
+  "site": ".dores",
+  "design": "#problema h2 + div > div:first-child > div",
+  "largura": 1440
+ },
+ {
+  "id": "PR05",
+  "secao": "02 Problema",
+  "tipo": "bloco",
+  "item": "Tabela Sem ork / Com ork com 6 linhas",
+  "destino": "src/components/home/Problema.astro (.comparacao)",
+  "site": ".comparacao",
+  "design": "#problema h2 + div > div:nth-child(2)",
+  "largura": 1440
+ },
+ {
+  "id": "A01",
+  "secao": "03 Para quem",
+  "tipo": "texto",
+  "item": "Sobretítulo 03 · Para quem (seção #contato)",
+  "destino": "src/components/home/ParaQuem.astro",
+  "site": "#contato .sobretitulo",
+  "design": "#contato > div > div:first-child",
+  "largura": 1440
+ },
+ {
+  "id": "A02",
+  "secao": "03 Para quem",
+  "tipo": "bloco",
+  "item": "Cartão claro Builders, vibecoders, fundadores com botão que copia o comando",
+  "destino": "src/components/home/ParaQuem.astro, InstallButton (cartao)",
+  "site": ".publico-cartao >> nth=0",
+  "design": "#contato > div > div:nth-child(2) > div:nth-child(1)",
+  "largura": 1440
+ },
+ {
+  "id": "A03",
+  "secao": "03 Para quem",
+  "tipo": "bloco",
+  "item": "Cartão escuro CTOs, startups, empresas com Falar com a gente → por e-mail (latão, hover #ECC57F)",
+  "destino": "src/components/home/ParaQuem.astro (.publico-escuro)",
+  "site": ".publico-escuro",
+  "design": "#contato > div > div:nth-child(2) > div:nth-child(2)",
+  "largura": 1440
+ },
+ {
+  "id": "M01",
+  "secao": "04 Modos",
+  "tipo": "texto",
+  "item": "Sobretítulo 04 · Modos",
+  "destino": "src/components/home/Modos.astro",
+  "site": "#modos .sobretitulo",
+  "design": "#modos > div > div:first-child",
+  "largura": 1440
+ },
+ {
+  "id": "M02",
+  "secao": "04 Modos",
+  "tipo": "texto",
+  "item": "H2 Quanta autonomia você dá à fábrica? Escreva uma #TAG.",
+  "destino": "src/components/ds/SectionHead.astro",
+  "site": "#modos h2",
+  "design": "#modos h2",
+  "largura": 1440
+ },
+ {
+  "id": "M03",
+  "secao": "04 Modos",
+  "tipo": "texto",
+  "item": "Parágrafo sobre a #TAG e os pontos de HITL",
+  "destino": "src/components/ds/SectionHead.astro (.secao-lead)",
+  "site": "#modos .secao-lead",
+  "design": "#modos h2 + p",
+  "largura": 1440
+ },
+ {
+  "id": "M04",
+  "secao": "04 Modos",
+  "tipo": "interacao",
+  "item": "Matriz dos modos: cabeçalho GOAL a MASTER e HITL, 4 linhas clicáveis com blocos e pontos de HITL, #Maestro selecionado no início, rolagem horizontal (mínimo 680px)",
+  "destino": "src/components/home/Modos.astro (.matriz), home-state.mjs modes()",
+  "site": ".matriz",
+  "design": "#modos h2 + p + div",
+  "largura": 1440
+ },
+ {
+  "id": "M05",
+  "secao": "04 Modos",
+  "tipo": "texto",
+  "item": "Legenda: ponto de HITL e bloco que a fábrica executa sozinha",
+  "destino": "src/components/home/Modos.astro (.modos-legenda)",
+  "site": ".modos-legenda",
+  "design": "#modos h2 + p + div + div",
+  "largura": 1440
+ },
+ {
+  "id": "M06",
+  "secao": "04 Modos",
+  "tipo": "bloco",
+  "item": "Dois cartões: modo · para quando e nos pontos de HITL, você decide ou aprova",
+  "destino": "src/components/home/Modos.astro (.modos-detalhe)",
+  "site": ".modos-detalhe",
+  "design": "#modos h2 + p + div + div + div",
+  "largura": 1440
+ },
+ {
+  "id": "M07",
+  "secao": "04 Modos",
+  "tipo": "texto",
+  "item": "Fecho: O modo ajusta a autonomia. A verificação é sempre a mesma. (em pátina)",
+  "destino": "src/components/home/Modos.astro (.modos-fecho)",
+  "site": ".modos-fecho",
+  "design": "#modos > div > p:last-child",
+  "largura": 1440
+ },
+ {
+  "id": "AT01",
+  "secao": "05 Atenção",
+  "tipo": "texto",
+  "item": "Sobretítulo 05 · Sua atenção (seção #manha)",
+  "destino": "src/components/home/Atencao.astro",
+  "site": "#manha .sobretitulo",
+  "design": "#manha > div > div:first-child",
+  "largura": 1440
+ },
+ {
+  "id": "AT02",
+  "secao": "05 Atenção",
+  "tipo": "texto",
+  "item": "H2 As decisões simples, a Orkastery toma por você. Você decide só o que importa.",
+  "destino": "src/components/ds/SectionHead.astro",
+  "site": "#manha h2",
+  "design": "#manha h2",
+  "largura": 1440
+ },
+ {
+  "id": "AT03",
+  "secao": "05 Atenção",
+  "tipo": "texto",
+  "item": "Parágrafo sobre perguntas curtas e TDAH",
+  "destino": "src/components/ds/SectionHead.astro (.secao-lead)",
+  "site": "#manha .secao-lead",
+  "design": "#manha h2 + p",
+  "largura": 1440
+ },
+ {
+  "id": "AT04",
+  "secao": "05 Atenção",
+  "tipo": "interacao",
+  "item": "Janela $ ork board: 7 threads com repositório, onde roda, 6 segmentos, fase e estado, linha destacada quando muda, atualiza sozinho (mínimo 720px)",
+  "destino": "src/components/home/Atencao.astro (.board), home-state.mjs board()",
+  "site": ".board",
+  "design": "#manha h2 + p + div > div:nth-child(1)",
+  "largura": 1440
+ },
+ {
+  "id": "AT05",
+  "secao": "05 Atenção",
+  "tipo": "bloco",
+  "item": "Resumo das 09:00 · BRT com 4 números, pergunta Posso enviar as 3 perguntas agora? e Sim, agora / Às 11:00",
+  "destino": "src/components/home/Atencao.astro (.pulso)",
+  "site": ".pulso",
+  "design": "#manha h2 + p + div > div:nth-child(2)",
+  "largura": 1440
+ },
+ {
+  "id": "AT06",
+  "secao": "05 Atenção",
+  "tipo": "interacao",
+  "item": "Pergunta 1 de 3 com alternativas a a d (a recomendada), escolha marcada e nota que muda",
+  "destino": "src/components/home/Atencao.astro (.pergunta), home-state.mjs options()",
+  "site": ".pergunta",
+  "design": "#manha h2 + p + div > div:nth-child(3)",
+  "largura": 1440
+ },
+ {
+  "id": "AT07",
+  "secao": "05 Atenção",
+  "tipo": "bloco",
+  "item": "4 camadas: Resumo de hora em hora, Perguntas em lote, A óbvia já vem decidida, Prazo nunca aprova",
+  "destino": "src/components/home/Atencao.astro (.camadas)",
+  "site": ".camadas",
+  "design": "#manha h2 + p + div + div",
+  "largura": 1440
+ },
+ {
+  "id": "N01",
+  "secao": "06 Noite",
+  "tipo": "bloco",
+  "item": "Seção escura #noite com brilho de latão no canto",
+  "destino": "src/components/home/Noite.astro",
+  "site": "#noite",
+  "design": "#noite",
+  "largura": 1440
+ },
+ {
+  "id": "N02",
+  "secao": "06 Noite",
+  "tipo": "interacao",
+  "item": "Coluna fixa: sobretítulo, H2 A fábrica não para quando você dorme., parágrafo, relógio 23:00 a 07:00 pela rolagem, barra de progresso e nota",
+  "destino": "src/components/home/Noite.astro (.noite-fixa), home-state.mjs nightVals()",
+  "site": ".noite-fixa",
+  "design": "#noite > div:nth-child(2) > div:nth-child(1)",
+  "largura": 1440
+ },
+ {
+  "id": "N03",
+  "secao": "06 Noite",
+  "tipo": "interacao",
+  "item": "Linha do tempo com 5 eventos (23:04, 00:37, 01:52, 03:18, 05:40) acendendo pela rolagem, com brilho de latão na linha",
+  "destino": "src/components/home/Noite.astro (.noite-linha), home-state.mjs nightItems()",
+  "site": ".noite-linha",
+  "design": "#noite > div:nth-child(2) > div:nth-child(2)",
+  "largura": 1440
+ },
+ {
+  "id": "N04",
+  "secao": "06 Noite",
+  "tipo": "interacao",
+  "item": "Cartão 07:00 · resumo da noite que surge no fim (Bom dia. 11 entregas verificadas...)",
+  "destino": "src/components/home/Noite.astro (.noite-manha)",
+  "site": ".noite-manha",
+  "design": "#noite > div:nth-child(2) > div:nth-child(2) > div:last-child",
+  "largura": 1440
+ },
+ {
+  "id": "C01",
+  "secao": "07 Como funciona",
+  "tipo": "texto",
+  "item": "Seção branca #ciclo: sobretítulo, H2 Seis fases que nenhum agente pula. e parágrafo",
+  "destino": "src/components/home/Ciclo.astro, SectionHead",
+  "site": "#ciclo h2",
+  "design": "#ciclo h2",
+  "largura": 1440
+ },
+ {
+  "id": "C02",
+  "secao": "07 Como funciona",
+  "tipo": "interacao",
+  "item": "6 botões de fase (01 GOAL a 06 MASTER), CHECK selecionado no início",
+  "destino": "src/components/home/Ciclo.astro (.fases), home-state.mjs phases()",
+  "site": ".fases",
+  "design": "#ciclo h2 + p + div",
+  "largura": 1440
+ },
+ {
+  "id": "C03",
+  "secao": "07 Como funciona",
+  "tipo": "bloco",
+  "item": "Dois cartões: fase entrega e O ork exige para passar, com o código",
+  "destino": "src/components/home/Ciclo.astro (.ciclo-detalhe)",
+  "site": ".ciclo-detalhe",
+  "design": "#ciclo h2 + p + div + div",
+  "largura": 1440
+ },
+ {
+  "id": "C04",
+  "secao": "07 Como funciona",
+  "tipo": "texto",
+  "item": "Nota CHECK ✕ Reprovou? A thread volta como GO-FIX...",
+  "destino": "src/components/home/Ciclo.astro (.ciclo-nota)",
+  "site": ".ciclo-nota",
+  "design": "#ciclo > div > div:last-child",
+  "largura": 1440
+ },
+ {
+  "id": "PV01",
+  "secao": "08 Prova",
+  "tipo": "texto",
+  "item": "Seção #prova: sobretítulo, H2 Cada número tem o comando que o prova. e parágrafo",
+  "destino": "src/components/home/Prova.astro, SectionHead",
+  "site": "#prova h2",
+  "design": "#prova h2",
+  "largura": 1440
+ },
+ {
+  "id": "PV02",
+  "secao": "08 Prova",
+  "tipo": "bloco",
+  "item": "Grade 2x2 de provas: 1.553, 23, 193 e 0 com rótulo e comando",
+  "destino": "src/components/home/Prova.astro (.numeros), src/data/home.ts (proofs)",
+  "site": ".numeros",
+  "design": "#prova h2 + p + div > div:nth-child(1)",
+  "largura": 1440
+ },
+ {
+  "id": "PV03",
+  "secao": "08 Prova",
+  "tipo": "bloco",
+  "item": "Terminal ork demo (30 s · sem conta · sem modelo) com 8 linhas",
+  "destino": "src/components/home/Prova.astro (.terminal)",
+  "site": ".terminal",
+  "design": "#prova h2 + p + div > div:nth-child(2)",
+  "largura": 1440
+ },
+ {
+  "id": "PV04",
+  "secao": "08 Prova",
+  "tipo": "bloco",
+  "item": "Lacuna publicada como lacuna.: não existe e planejado",
+  "destino": "src/components/home/Prova.astro (.lacunas)",
+  "site": ".lacunas",
+  "design": "#prova > div > div:last-child",
+  "largura": 1440
+ },
+ {
+  "id": "CT01",
+  "secao": "Chamada final",
+  "tipo": "bloco",
+  "item": "Seção escura: símbolo claro, H2 Comece a conduzir hoje., parágrafo, botão de instalação escuro com copiar e Falar com a gente por e-mail",
+  "destino": "src/components/home/ChamadaFinal.astro",
+  "site": ".chamada",
+  "design": "section:nth-of-type(11)",
+  "largura": 1440
+ },
+ {
+  "id": "F01",
+  "secao": "Rodapé",
+  "tipo": "bloco",
+  "item": "Assinatura clara e frase Maestria é construir mais, e mais rápido...",
+  "destino": "src/components/SiteFooter.astro (.rodape-marca)",
+  "site": ".rodape-marca",
+  "design": "footer > div:first-child > div:first-child",
+  "largura": 1440
+ },
+ {
+  "id": "F02",
+  "secao": "Rodapé",
+  "tipo": "link",
+  "item": "Colunas Plataforma (Ork, OrkMind, Modos, Changelog), Docs (Quickstart, Guias, Referência do CLI, Arquitetura) e Orkastery (GitHub, npm, Segurança, Contato)",
+  "destino": "src/components/SiteFooter.astro (.rodape-grade), src/data/i18n.ts (moldura.columns)",
+  "site": ".rodape-grade",
+  "design": "footer > div:first-child",
+  "largura": 1440
+ },
+ {
+  "id": "F03",
+  "secao": "Rodapé",
+  "tipo": "texto",
+  "item": "Linha final: © 2026 Orkastery · MIT e or-KAS-te-ree",
+  "destino": "src/components/SiteFooter.astro (.rodape-base)",
+  "site": ".rodape-base",
+  "design": "footer > div:last-child",
+  "largura": 1440
+ },
+ {
+  "id": "IMG01",
+  "secao": "Imagens",
+  "tipo": "imagem",
+  "item": "Assinatura para fundo claro (cabeçalho)",
+  "destino": "public/marca/assinatura-fundo-claro.svg",
+  "site": ".cabecalho-marca img",
+  "design": "header img",
+  "largura": 1440
+ },
+ {
+  "id": "IMG02",
+  "secao": "Imagens",
+  "tipo": "imagem",
+  "item": "Assinatura para fundo escuro (rodapé)",
+  "destino": "public/marca/assinatura-fundo-escuro.svg",
+  "site": ".rodape-marca img",
+  "design": "footer img",
+  "largura": 1440
+ },
+ {
+  "id": "IMG03",
+  "secao": "Imagens",
+  "tipo": "imagem",
+  "item": "Símbolo para fundo claro (Você, de uma conversa e resumo do ork)",
+  "destino": "public/marca/simbolo-fundo-claro.svg",
+  "site": ".voce img",
+  "design": "#escala img",
+  "largura": 1440
+ },
+ {
+  "id": "IMG04",
+  "secao": "Imagens",
+  "tipo": "imagem",
+  "item": "Símbolo para fundo escuro (chamada final)",
+  "destino": "public/marca/simbolo-fundo-escuro.svg",
+  "site": ".chamada img",
+  "design": "section:nth-of-type(11) img",
+  "largura": 1440
+ },
+ {
+  "id": "I01",
+  "secao": "Interações",
+  "tipo": "interacao",
+  "item": "Copiar o comando nos 3 botões; copiado por 1,8 s no hero e na chamada final",
+  "destino": "src/scripts/copiar.ts, src/components/ds/InstallButton.astro",
+  "site": ".instalar-giro",
+  "design": "#instalar > span",
+  "largura": 1440,
+  "estado": "copiar"
+ },
+ {
+  "id": "I02",
+  "secao": "Interações",
+  "tipo": "interacao",
+  "item": "Hover de cada botão e link com style-hover (cabeçalho, hero, cartões, modos, alternativas, fases, chamada final)",
+  "destino": "hover em cada componente (:hover nos estilos)",
+  "site": ".cabecalho-instalar",
+  "design": "header a[href=\"#instalar\"]",
+  "largura": 1440,
+  "estado": "hover"
+ },
+ {
+  "id": "R01",
+  "secao": "Responsivo",
+  "tipo": "responsivo",
+  "item": "Título e textos com clamp por largura",
+  "destino": "clamp nos tokens de tipografia (design-system.json)",
+  "site": ".hero-titulo",
+  "design": "#topo h1",
+  "largura": 390
+ },
+ {
+  "id": "R02",
+  "secao": "Responsivo",
+  "tipo": "responsivo",
+  "item": "Cabeçalho: grupo da direita sem encolher; em 390 e 320 os botões ficam cortados",
+  "destino": "src/components/SiteHeader.astro (@media 660 e 480)",
+  "site": ".cabecalho",
+  "design": "header",
+  "largura": 390
+ },
+ {
+  "id": "R03",
+  "secao": "Responsivo",
+  "tipo": "responsivo",
+  "item": "Selo e botão de instalação quebram linha no estreito (o comando parte em 390 e 320)",
+  "destino": "src/components/ds/InstallButton.astro e Hero.astro no estreito",
+  "site": "#instalar",
+  "design": "#instalar",
+  "largura": 390
+ },
+ {
+  "id": "R04",
+  "secao": "Responsivo",
+  "tipo": "responsivo",
+  "item": "Partitura: nomes à esquerda só acima de 620px de canvas; altura clamp(340px,36vw,440px)",
+  "destino": "src/lib/partitura.mjs (gut > 620) e Hero.astro (clamp)",
+  "site": ".hero-partitura",
+  "design": "#topo canvas >> xpath=../..",
+  "largura": 390
+ },
+ {
+  "id": "R05",
+  "secao": "Responsivo",
+  "tipo": "responsivo",
+  "item": "Grades auto-fit: problema, público, escala, provas, atenção, camadas, noite, fases e detalhes passam a 2 e 1 coluna",
+  "destino": "grades com minmax(min(Xpx,100%),1fr) nos componentes da home",
+  "site": ".publico",
+  "design": "#contato > div > div:nth-child(2)",
+  "largura": 320
+ },
+ {
+  "id": "R06",
+  "secao": "Responsivo",
+  "tipo": "responsivo",
+  "item": "Rolagem horizontal interna no diagrama, na matriz dos modos, no board e no terminal",
+  "destino": "overflow-x:auto em .diagrama, .matriz-rolagem, .board-rolagem e .terminal",
+  "site": ".matriz",
+  "design": "#modos h2 + p + div",
+  "largura": 390
+ },
+ {
+  "id": "R07",
+  "secao": "Responsivo",
+  "tipo": "responsivo",
+  "item": "Coluna da noite fixa (top 120px) só com duas colunas",
+  "destino": "src/components/home/Noite.astro (sticky só com duas colunas)",
+  "site": ".noite-fixa",
+  "design": "#noite > div:nth-child(2) > div:nth-child(1)",
+  "largura": 1024
+ }
+]

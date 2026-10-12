@@ -1,8 +1,12 @@
-# Orkastery — site e documentação
+# Orkastery: site e documentação
 
 Site estático Astro com português em `/`, inglês em `/en/` e espanhol em `/es/`.
 Todas as páginas HTML têm idioma, canonical, alternates recíprocos e seletor para
 a mesma página. Os slugs e IDs técnicos permanecem estáveis entre línguas.
+
+O visual é o design que o dono fez no Claude Design ("Orkastery Home"): a home o
+reproduz seção por seção, e o resto do site (docs, contribuir, páginas de produto e as
+três línguas) usa o mesmo design system, descrito em "Design system".
 
 ## Desenvolvimento e prova local
 
@@ -19,15 +23,98 @@ npm run check:links
 npm run check:i18n
 npm run check:public
 npm run check:content
+npm run check:code
+npm run check:design
 npm run test:docs
+npm run test:code
+npm run test:design
 ```
 
 O prebuild confere o snapshot e a revisão editorial. O postbuild confere HTML,
-links, fragmentos, idiomas, metadados, padrões públicos e semântica, e executa
-canários negativos. Build aprovado não é revisão visual nem prova de naturalidade
-da tradução. Links externos são inventariados, mas não consultados pela prova offline.
-`parse5` já integra a árvore do Astro; a mesma versão do lockfile é declarada
-diretamente para os auditores de HTML, sem adicionar outro parser.
+links, fragmentos, idiomas, metadados, padrões públicos, semântica, texto técnico
+formatado como código, o design system (tokens, contraste e CSS gerado) e a lógica
+da home contra a do design, e executa canários negativos. Build aprovado não é
+revisão visual nem prova de naturalidade da tradução: a prova visual é o
+`check:visual` e o `check:fidelity`, com navegador. Links externos são
+inventariados, mas não consultados pela prova offline. `parse5` já integra a árvore
+do Astro; a mesma versão do lockfile é declarada diretamente para os auditores de
+HTML, sem adicionar outro parser.
+
+## Design system
+
+A fonte única dos tokens é `src/data/design-system.json`, com os valores tirados do
+HTML do design do dono. `npm run tokens` (`scripts/design-tokens.mjs`) gera
+`src/styles/tokens.css` a partir dele; não edite o CSS à mão. O `check:design`
+reprova o CSS fora de sincronia, confere o contraste AA de 42 pares de texto dos
+tokens, a ausência de asset externo e de fonte do visual antigo, as licenças das
+fontes, a regra do código inline inteiro no CSS gerado e o orçamento de JS e fontes.
+
+O JSON tem duas camadas:
+
+- `identidade`: o que muda de uma marca para outra. Cores por papel (`tinta`,
+  `papel`, `acento`, `ok`, `info`, `alerta`, `noite` e as variantes), as três
+  famílias tipográficas e os arquivos de marca em `public/marca/`.
+- `estrutura`: o que vale para qualquer marca da família. Escala tipográfica
+  (`--tipo-*`, com o `tracking` de cada uma), espaço, padding das seções, raios,
+  sombras, linhas, movimento, contêiner (1200 px de conteúdo com a calha
+  `clamp(20px,4vw,40px)`) e as larguras de referência (1440, 1280, 1024, 768, 390 e 320).
+
+Os componentes saem dos blocos do design e usam só os tokens:
+
+| Componente | Arquivo | Bloco do design |
+| --- | --- | --- |
+| `SiteHeader` | `src/components/SiteHeader.astro` | cabeçalho fixo, translúcido, com navegação de prioridade |
+| `LanguageSelector` | `src/components/LanguageSelector.astro` | seletor de língua em pílula |
+| `SiteFooter` | `src/components/SiteFooter.astro` | rodapé escuro com frase, colunas e linha final |
+| `Eyebrow` e `SectionHead` | `src/components/ds/` | sobretítulo, h2 com continuação em cinza e parágrafo |
+| `Divider` | `src/components/ds/Divider.astro` | fio em degradê com o ponto de latão |
+| `InstallButton` | `src/components/ds/InstallButton.astro` | botão que copia o comando, nas variantes hero, cartão e noite |
+
+Classes globais em `src/styles/base.css`: `.container`, `.sobretitulo`, `.secao-padrao`,
+`.holofote` (o brilho que segue o mouse, com `data-holofote`), `.codigo-liso` (código
+sem chip, na letra de quem o contém) e o código inline no estilo do chip.
+
+Para outro site da família (por exemplo, o do OrkMind) reaproveitar a estrutura e
+trocar só a identidade: copie `src/data/design-system.json`, `scripts/design-tokens.mjs`,
+`src/styles/base.css`, `src/styles/fonts.css` e os componentes acima; troque os
+valores de `identidade.cores` (os nomes são papéis, não cores: `acento` pode deixar
+de ser latão), as famílias de `identidade.fontes` (e os pacotes em `fonts.css` e em
+`package.json`, com as licenças em `public/licenses/`) e os SVGs de `identidade.marca`;
+rode `npm run tokens`. A estrutura, os componentes e as checagens seguem iguais, e o
+`check:design` já confere o contraste dos pares com as cores novas.
+
+As fontes são Geist, Hanken Grotesk e IBM Plex Mono, pelos pacotes
+`@fontsource-variable/geist`, `@fontsource-variable/hanken-grotesk` e
+`@fontsource/ibm-plex-mono` na versão 5.3.0, fixada: são os mesmos arquivos, byte a
+byte, que o HTML do design embutia. As licenças OFL ficam em `public/licenses/`.
+
+Desvios do design, cada um com motivo (lista em `desvios`, no JSON): rótulo pequeno
+no cinza `tinta-4-aa` em vez de `tinta-4` (contraste AA); comando inteiro no botão de
+instalação, com a pílula descendo de linha no estreito (regra do código inteiro);
+botões do cabeçalho que somem inteiros no estreito em vez de ficar cortados; PT, EN e
+ES no seletor; comando e identificador na prosa como código; o endereço de contato
+institucional; e grades que no estreito estourariam a tela passam a refluir.
+
+## A home
+
+`src/components/HomePage.astro` compõe as seções de `src/components/home/` na ordem do
+design: hero com a partitura, runtimes, 01 a 08 e a chamada final. O texto mora em
+`src/data/home.ts`: o PT é o do design, palavra por palavra; EN e ES são traduções no
+mesmo tom; comandos e identificadores ficam iguais nas três línguas. Os números da
+seção Prova e a lacuna publicada seguem o README do núcleo, não um valor solto.
+
+A lógica do script do design virou funções puras em `src/lib/home-state.mjs` (board,
+topologia, fila, roadmap, noite, modos, fases e alternativas), e o canvas da partitura
+está em `src/lib/partitura.mjs`, com a mesma ordem de `Math.random`. O build renderiza o
+estado inicial do design; `src/scripts/home.ts` recalcula com as mesmas funções (relógio
+de 2,4 s, cliques, rolagem). `test:design` confere que essas funções dão o mesmo estado
+que o script do design em 25 tiques, na noite, nos modos, nas fases e nas alternativas
+(`scripts/fidelidade/estado-do-design.json`).
+
+Com movimento reduzido, nada se move sozinho: animações paradas, partitura parada, sem
+revelação ao rolar e sem o relógio de 2,4 s. Os modos são botões com `aria-pressed`, as
+fases são abas (com setas, Home e End), a alternativa escolhida tem `aria-pressed`, e o
+botão de instalação anuncia o resultado da cópia para leitor de tela.
 
 ## Conteúdo e fontes
 
@@ -72,23 +159,41 @@ A página editorial `roadmap` contextualiza o mês em `docs-standards.ts` (Orkas
 ou `docs-retrieval.ts` (OrkMind): atualize-a na mesma revisão e registre os hashes.
 Uma intenção não é uma capacidade entregue. Datas de revisão não são prazos de entrega.
 
+## Versão do CLI
+
+A versão do CLI que o site descreve fica só em `src/data/release.mjs`. O texto
+editorial escreve `{versao}`, que a renderização troca pelo número, para duas coisas
+ao mesmo tempo: a versão que esta revisão das docs descreve e a release em que entram
+as mudanças desta revisão ("na versão {versao}"). Se o número desta mesma release
+mudar antes de ela sair, troque-o ali e rode `npm run build`, sem revisar texto. Ao
+passar para a release seguinte, troque antes o marcador pelo número publicado nas
+frases do que já saiu e registre a revisão desses artigos; senão uma mudança antiga
+passaria a constar como da release nova. O `check:content` reprova o marcador que
+sobrar no HTML e procura na home o rótulo `@orkastery/cli` com a versão.
+
+## Código no texto
+
+Comando, caminho, flag e identificador técnico ficam sempre como código e inteiros, sem
+quebrar no meio da linha. O reconhecedor `src/lib/technical-text.mjs`, usado pelo
+componente `TechnicalText`, põe esse texto em `<code>` no build; o que encosta no código
+(parêntese, ponto, sufixo colado) viaja junto numa unidade sem quebra. O `check:code`
+audita o HTML gerado: reprova comando, flag, caminho ou identificador fora de código, e
+subcomando do `ork` sem o `ork`. As poucas frases em que `ork` é o sujeito da frase
+(como "o ork reserva") estão numa lista exata de exceções de prosa. No visual, o código
+inline é o chip do design; o código que o design já mostra em mono (terminal, rótulos)
+usa `.codigo-liso`, sem chip.
+
 ## Tipografia, caixa e diagramas
 
-Preserve `src/styles/tokens.css`, logos, fontes e paleta da marca. Títulos, menus,
-links, botões e rótulos usam caixa de frase. Siglas, comandos e nomes próprios
-conservam a grafia original. Display é para títulos; a fonte de texto sustenta
-prosa com largura de leitura limitada e entrelinha generosa; mono identifica código.
+Títulos em Geist, texto em Hanken Grotesk e código em IBM Plex Mono, com a escala dos
+tokens `--tipo-*`. Títulos, menus, links, botões e rótulos usam caixa de frase; o
+sobretítulo em mono maiúsculo é desenho do design. Siglas, comandos e nomes próprios
+conservam a grafia original.
 
-O layout documental tem trilha, sumário, navegação por assunto e anterior/próximo.
-SVGs têm title, desc, relações numeradas e legenda textual; a leitura não depende
-só da cor. A superfície documental adapta os tokens existentes ao esquema claro;
-as páginas de apresentação mantêm o tema escuro da marca. Testar o navegador em
-modo claro não significa que a home ofereça um tema claro.
-
-Os componentes demonstrativos legados permanecem no histórico de desenvolvimento,
-mas não são importados pelas rotas atuais. As páginas ativas usam HomePage,
-DocsArticle e DocsDiagram com os catálogos editoriais. Não reintroduza componentes
-com texto fixo em português sem revisão das três línguas.
+O layout documental tem trilha, sumário, navegação por assunto e anterior/próximo, em
+cartões brancos sobre o papel. SVGs têm title, desc, relações numeradas e legenda
+textual; a leitura não depende só da cor. O site tem um tema só, o claro do design, com
+as seções escuras que o próprio design desenha.
 
 ## Prova visual sem rede
 
@@ -102,18 +207,39 @@ npm run check:visual -- --output /diretorio/privado/screenshots
 ```
 
 O verificador intercepta todas as requisições, serve somente `dist` em memória e
-bloqueia destinos externos. Exercita home, índice e arquitetura nos três idiomas,
-1280/390 px e esquemas claro/escuro: 36 screenshots, overflow e navegação por teclado.
+bloqueia destinos externos. Exercita home, `/ork/`, `/orkmind/`, o índice das docs e três
+artigos nas três línguas, a 1440, 768 e 390 px: 63 capturas de página inteira. Em cada uma
+confere o link de pular, o seletor de língua pelo teclado, o foco visível, nenhuma sobra
+horizontal e o código inline inteiro e colado ao vizinho; na home, também copiar (com
+sucesso e com recusa da área de transferência), os modos, as fases com setas, as
+alternativas, o relógio da noite pela rolagem, a revelação ao rolar e nenhuma animação
+rodando com movimento reduzido. `node scripts/check-visual.mjs --plan` mostra a matriz.
 Os PNGs e `report.json` ficam fora do repositório público. Se o navegador não puder
 iniciar, o comando falha e registra o impedimento; não muda sandbox nem permissões.
-A inspeção humana das imagens ainda é necessária para avaliar qualidade visual.
+
+## Fidelidade ao design
+
+```sh
+PLAYWRIGHT_MODULE=/caminho/playwright-core/index.mjs \
+CHROMIUM_EXECUTABLE=/caminho/chromium \
+npm run check:fidelity -- --design /caminho/do/design.html --output /diretorio/privado/fidelidade
+```
+
+Captura o HTML do design e a home construída em 1440, 1280, 1024, 768, 390 e 320 px, com
+movimento reduzido, relógio parado e a mesma semente de `Math.random` (a partitura sai
+igual), e mede a diferença de pixels na página e em cada seção, alinhada pelo próprio
+topo. Também captura cada item do inventário do design (`scripts/fidelidade/inventario.json`,
+um id por seção, bloco, texto, botão, imagem, interação e variação responsiva, com o
+arquivo de destino no site) dos dois lados. O relatório (`fidelidade.json`) traz os
+números; quem lê compara com os desvios registrados no design system. O HTML do design
+não fica no repositório.
 
 ## Privacidade e publicação
 
 `check:public` procura padrões de dados pessoais e credenciais em fontes e saída,
 sem imprimir o valor encontrado. O email institucional de contato é uma exceção
-explícita; a busca não substitui revisão contextual. O formulário apenas prepara
-um email no aplicativo do visitante; não tem backend de coleta.
+explícita; a busca não substitui revisão contextual. O contato do site é por
+`mailto:`, sem formulário e sem backend de coleta.
 
 O workflow `.github/workflows/publicar.yml` publica somente por tag (`producao-*` ou
 `validacao-*`), pelo apagamento de uma tag `validacao-*` ou por execução manual, e
