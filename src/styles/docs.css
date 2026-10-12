@@ -36,6 +36,12 @@
 .docs-card{display:flex;flex-direction:column;text-decoration:none;background:var(--doc-panel);border:1px solid var(--linha-forte);border-radius:var(--raio-superficie);padding:1.4rem;}
 .docs-card p{font-size:.96rem;color:var(--doc-muted);line-height:1.6;margin:0 0 1rem;}
 .docs-card>span{margin-top:auto;font-size:.9rem;color:var(--doc-accent);}
+/* Destaque: o que muda para quem já usa. Mesma linguagem das frases de impacto (borda e sinal), na cor de alerta. */
+.docs-destaque{margin:1.5rem 0 2rem;padding:1rem 1.25rem 1rem 1.4rem;background:color-mix(in srgb,var(--alerta) 6%,var(--doc-panel));border:1px solid color-mix(in srgb,var(--alerta) 32%,transparent);border-left:3px solid var(--alerta);border-radius:var(--raio-superficie);}
+.docs-reading .docs-destaque-titulo{margin:0 0 .6rem;font-weight:600;line-height:1.5;}
+.docs-destaque-marca{display:inline-block;margin-right:.6rem;font:600 1rem var(--f-mono,var(--fonte-mono));color:var(--alerta);}
+.docs-reading .docs-destaque p:last-child,.docs-reading .docs-destaque ul:last-child{margin-bottom:0;}
+.docs-reading .docs-destaque ul{margin:.6rem 0 0;}
 .docs-note,.docs-sources,.docs-legacy{margin:3rem 0;padding-top:1.5rem;border-top:1px solid var(--linha-forte);font-size:.9rem;color:var(--doc-muted);}
 .docs-sources h2,.docs-legacy h2{font-size:1.3rem;}
 .docs-pagination{display:grid;grid-template-columns:1fr 1fr;gap:1rem;border-top:1px solid var(--linha-forte);padding-top:1.5rem;}

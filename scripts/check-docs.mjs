@@ -59,7 +59,7 @@ export function validate(dir=root,{schemaOnly=false,section,source}={}) {
   slugs.add(a.slug);
   if(!a.group || !a.sources?.length) throw Error('article without provenance');
   if(Object.keys(a.translations).sort().join(',')!=='en,es,pt') throw Error('missing locale');
-  let ids;
+  let ids, highlights;
   for(const locale of ['pt','en','es']) {
    const t=a.translations[locale];
    if(!t.title?.trim() || !t.description?.trim() || !t.sections?.length) throw Error('missing text');
@@ -68,6 +68,10 @@ export function validate(dir=root,{schemaOnly=false,section,source}={}) {
    if(ids && JSON.stringify(ids)!==JSON.stringify(current)) throw Error('section parity');
    ids=current;
    for(const s of t.sections) if(!s.title?.trim() || !s.paragraphs?.length || s.paragraphs.some(x=>typeof x!=='string'||!x.trim())) throw Error('empty section');
+   for(const s of t.sections) if(s.highlight && (!s.highlight.title?.trim() || !s.highlight.paragraphs?.length || [...s.highlight.paragraphs,...(s.highlight.items||[])].some(x=>typeof x!=='string'||!x.trim()))) throw Error('empty highlight');
+   const marks=t.sections.map(s=>Boolean(s.highlight));
+   if(highlights && JSON.stringify(highlights)!==JSON.stringify(marks)) throw Error('highlight parity');
+   highlights=marks;
    if(!schemaOnly && selected.includes(a)) {
     const review=snapshot.reviews?.[a.slug]?.[locale];
     if(!review?.reviewer || !review?.date || review.sourceHash!==sourceHash(a,snapshot) || review.contentHash!==hash(JSON.stringify(t))) throw Error('stale editorial review: '+a.slug+'/'+locale);
