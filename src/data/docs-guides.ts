@@ -8,13 +8,13 @@ export default [
     "translations": {
       "pt": {
         "title": "Escolha um modo de condução",
-        "description": "Compare as pausas previstas e os limites de cada modo.",
+        "description": "Compare os pontos de HITL e os limites de cada modo.",
         "sections": [
           {
             "id": "escolher",
             "title": "Escolha pela decisão necessária",
             "paragraphs": [
-              "#Classic separa objetivo, plano e evidências em três pausas. #Maestro concentra a pausa nas premissas e no plano. #Auto percorre o ciclo completo sem pausa prevista. Em todos eles, bloqueios e escalações continuam ativos."
+              "#Classic tem três pontos de HITL: objetivo, plano e evidências. #Maestro concentra o ponto de HITL nas premissas e no plano. #Auto percorre o ciclo completo sem ponto de HITL previsto. Em todos eles, bloqueios e escalações continuam ativos."
             ],
             "code": "ork modos\nork modos --do-pedido \"revisar a documentação #Maestro\""
           },
@@ -44,7 +44,7 @@ export default [
             "id": "worktree",
             "title": "A worktree da thread",
             "paragraphs": [
-              "O modo diz quantas pausas a thread tem; a worktree diz onde ela escreve. Com worktree.por_thread: true, o valor que o ork init grava, ork thread new cria a worktree e a branch ork/<slug> em qualquer modo, sem flag, e ork ship entrega essa branch. Com a chave false ou ausente, a worktree só nasce com --worktree auto ou com um ciclo que a exige.",
+              "O modo diz quantos pontos de HITL a thread tem; a worktree diz onde ela escreve. Com worktree.por_thread: true, o valor que o ork init grava, ork thread new cria a worktree e a branch ork/<slug> em qualquer modo, sem flag, e ork ship entrega essa branch. Com a chave false ou ausente, a worktree só nasce com --worktree auto ou com um ciclo que a exige.",
               "--worktree <DIR> reusa um diretório existente. --sem-worktree cria a thread na raiz do projeto: na branch base, ork ship é barrado por push_direto_na_base: block, o padrão do ork init, e antes do GO ork worktree ensure <thread> ainda cria a worktree. --dry-run mostra a worktree e a branch que seriam criadas, ou por que a criação seria recusada. Os ciclos greenfield, merge-branch e feature-xl-faseada exigem worktree e recusam --sem-worktree. Num repositório sem commit, a thread nasce na raiz, com aviso."
             ],
             "code": "ork thread new \"corrigir o filtro\" --modo classic --dry-run\nork thread new \"corrigir o filtro\" --modo classic --sem-worktree\nork worktree ensure <thread>"
@@ -53,13 +53,13 @@ export default [
       },
       "en": {
         "title": "Choose a conduction mode",
-        "description": "Compare scheduled pauses and the limits of each mode.",
+        "description": "Compare the HITL points and the limits of each mode.",
         "sections": [
           {
             "id": "escolher",
             "title": "Choose by the decision required",
             "paragraphs": [
-              " #Classic provides three pauses for the goal, plan and evidence. #Maestro concentrates its pause on assumptions and the plan. #Auto runs the full cycle without scheduled pauses. Blocking conditions and escalations remain active in all three."
+              " #Classic has three HITL points: goal, plan and evidence. #Maestro concentrates its HITL point on assumptions and the plan. #Auto runs the full cycle without a scheduled HITL point. Blocking conditions and escalations remain active in all three."
             ],
             "code": "ork modos\nork modos --do-pedido \"revisar a documentação #Maestro\""
           },
@@ -89,7 +89,7 @@ export default [
             "id": "worktree",
             "title": "The thread worktree",
             "paragraphs": [
-              "The mode decides how many pauses a thread has; the worktree decides where it writes. With worktree.por_thread: true, the value written by ork init, ork thread new creates the worktree and the ork/<slug> branch in any mode, without a flag, and ork ship delivers that branch. With the key set to false or missing, the worktree is only created with --worktree auto or by a cycle that requires it.",
+              "The mode decides how many HITL points a thread has; the worktree decides where it writes. With worktree.por_thread: true, the value written by ork init, ork thread new creates the worktree and the ork/<slug> branch in any mode, without a flag, and ork ship delivers that branch. With the key set to false or missing, the worktree is only created with --worktree auto or by a cycle that requires it.",
               "--worktree <DIR> reuses an existing directory. --sem-worktree creates the thread at the project root: on the base branch, ork ship is blocked by push_direto_na_base: block, the ork init default, and before GO ork worktree ensure <thread> can still create the worktree. --dry-run shows the worktree and branch that would be created, or why creation would be refused. The greenfield, merge-branch and feature-xl-faseada cycles require a worktree and refuse --sem-worktree. In a repository without commits, the thread starts at the root with a warning."
             ],
             "code": "ork thread new \"corrigir o filtro\" --modo classic --dry-run\nork thread new \"corrigir o filtro\" --modo classic --sem-worktree\nork worktree ensure <thread>"
@@ -860,7 +860,7 @@ export default [
     ],
     "translations": {
       "pt": {
-        "title": "Acompanhe pausas e decisões",
+        "title": "Acompanhe pontos de HITL e decisões",
         "description": "Diferencie uma sessão viva de uma sessão que consegue continuar.",
         "sections": [
           {
@@ -916,7 +916,7 @@ export default [
         ]
       },
       "en": {
-        "title": "Track pauses and decisions",
+        "title": "Track HITL points and decisions",
         "description": "Distinguish a live session from one that can make progress.",
         "sections": [
           {

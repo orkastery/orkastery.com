@@ -39,7 +39,7 @@ export default [
             "title": "Isolamento e decisões",
             "paragraphs": [
               "A worktree separa o código de uma thread. Leases coordenam recursos que podem colidir, como caminhos de edição e a árvore de destino do merge. Paralelismo não elimina a necessidade de serializar a entrega.",
-              "O modo controla pausas previstas. Policies block, falhas de verificação e escalações tipadas continuam valendo. Memória oferece contexto; não concede autorização."
+              "O modo define os pontos de HITL previstos. Policies block, falhas de verificação e escalações tipadas continuam valendo. Memória oferece contexto; não concede autorização."
             ]
           },
           {
@@ -105,7 +105,7 @@ export default [
             "title": "Isolation and decisions",
             "paragraphs": [
               "A worktree separates a thread’s code. Leases coordinate resources that could collide, such as edited paths and the merge destination tree. Parallel work still requires serialized delivery.",
-              "The mode controls scheduled pauses. Blocking policies, verification failures and typed escalations still apply. Memory provides context; it does not grant authorization."
+              "The mode sets the scheduled HITL points. Blocking policies, verification failures and typed escalations still apply. Memory provides context; it does not grant authorization."
             ]
           },
           {

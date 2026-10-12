@@ -129,6 +129,13 @@ test('missing contribution navigation fails the content audit',()=>outputFixture
  edit(dir,'en/index.html',s=>s.replaceAll('href="'+B+'/en/docs/contribuir/"','href="'+B+'/en/docs/"'));
  assert.throws(()=>checkContent(dir),/contribution navigation/);
 }));
+test('prohibited kit vocabulary fails the content audit',()=>outputFixture(dir=>{
+ for(const termo of ['batuta','afrouxa o sandbox','uma pausa humana','metronome','Bernstein']){
+  edit(dir,'en/docs/comecar/index.html',s=>s.replace('</main>','<p>'+termo+'</p></main>'));
+  assert.throws(()=>checkContent(dir),/Vocabulário proibido/,termo);
+  edit(dir,'en/docs/comecar/index.html',s=>s.replace('<p>'+termo+'</p></main>','</main>'));
+ }
+}));
 test('an unreplaced version marker fails the content audit',()=>outputFixture(dir=>{
  edit(dir,'en/docs/comecar/index.html',s=>s.replace('</main>','<p>{versao}</p></main>'));
  assert.throws(()=>checkContent(dir),/Unreplaced version marker/);

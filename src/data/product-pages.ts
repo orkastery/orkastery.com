@@ -19,7 +19,7 @@ export default {
         {
           "id": "modos",
           "title": "Sua atenção, no ponto certo",
-          "text": "Escolha #Classic, #Maestro ou #Auto para o ciclo completo. #Fast atende ajustes pequenos dentro de seus limites. Os modos controlam pausas; permissões e provas continuam explícitas.",
+          "text": "Escolha #Classic, #Maestro ou #Auto para o ciclo completo. #Fast atende ajustes pequenos dentro de seus limites. O modo ajusta a autonomia; permissões e provas continuam explícitas.",
           "href": "/docs/modos/"
         },
         {
@@ -61,7 +61,7 @@ export default {
         {
           "id": "modos",
           "title": "Your attention, where it matters",
-          "text": "Choose #Classic, #Maestro or #Auto for the full cycle. #Fast handles small changes within its limits. Modes control pauses; permissions and evidence remain explicit.",
+          "text": "Choose #Classic, #Maestro or #Auto for the full cycle. #Fast handles small changes within its limits. The mode sets the autonomy; permissions and evidence remain explicit.",
           "href": "/docs/modos/"
         },
         {

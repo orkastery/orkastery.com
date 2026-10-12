@@ -98,7 +98,7 @@ export default [
             "id": "feat-002",
             "title": "FEAT-002 · Modos de condução",
             "paragraphs": [
-              "#Classic, #Maestro e #Auto mudam as pausas. #Fast executa apenas GO e não autoriza push nem alterações de contrato público."
+              "#Classic, #Maestro e #Auto mudam os pontos de HITL. #Fast executa apenas GO e não autoriza push nem alterações de contrato público."
             ]
           },
           {
@@ -191,7 +191,7 @@ export default [
             "id": "feat-002",
             "title": "FEAT-002 · Conduction modes",
             "paragraphs": [
-              "#Classic, #Maestro and #Auto change pauses. #Fast runs only GO and does not authorize push or public contract changes."
+              "#Classic, #Maestro and #Auto change the HITL points. #Fast runs only GO and does not authorize push or public contract changes."
             ]
           },
           {

@@ -2,10 +2,21 @@ import {fileURLToPath} from 'node:url';
 import {pages,attrs,content,distArg,siteBase} from './check-links.mjs';
 import {versao,marcadorDeVersao} from '../src/data/release.mjs';
 import {ehRedirecionamento} from './check-redirecionamentos.mjs';
+// Vocabulário proibido pelo kit (DESIGN.md, seção 4, e CLAUDE.md do kit): afrouxar, batuta, metrônomo,
+// Bernstein, disruptivo e "pausa" no sentido de HITL (diga "ponto de HITL: decidir ou aprovar"), nas
+// duas línguas. Pausar o movimento da home e a Sentinela pausada (estado de um mod) não são HITL.
+export const PROIBIDOS=[/\bafrouxa\w*/i,/\bbatuta\b/i,/\bmetr[oô]nomos?\b/i,/\bbernstein\b/i,/\bdisruptiv\w*/i,/\bpausas?\b/i,/\bloosen\w*/i,/\bbaton\b/i,/\bmetronomes?\b/i,/\bpauses\b/i,/\bpause\b/i];
+export const FORA_DE_HITL=['pause motion','pause and resume the Sentinel','pauses and resumes the Sentinel','pausa e retoma a Sentinela'];
+export function vocabularioProibido(texto){
+ let t=texto;for(const f of FORA_DE_HITL)t=t.replaceAll(f,'');
+ return PROIBIDOS.map(re=>re.exec(t)?.[0]).filter(Boolean);
+}
 export function checkContent(dist=distArg(),base=siteBase()){
  // As páginas que levam as URLs /es/ antigas para /en/ têm a checagem delas (check-redirecionamentos.mjs).
  const all=pages(dist).filter(p=>!ehRedirecionamento(p));let diagrams=0;
  for(const p of all){
+  const proibidos=vocabularioProibido(content(p.nodes.find(n=>n.tagName==='body')).replace(/\s+/g,' '));
+  if(proibidos.length)throw Error('Vocabulário proibido pelo kit em '+p.path+': '+proibidos.join(', '));
   if(p.nodes.filter(n=>n.tagName==='main').length!==1||p.nodes.filter(n=>n.tagName==='h1').length!==1)throw Error('Expected one main and h1: '+p.path);
   // O marcador da versão só existe no texto editorial; no HTML ele sempre vira o número.
   if(p.source.includes(marcadorDeVersao))throw Error('Unreplaced version marker: '+p.path);
@@ -17,7 +28,7 @@ export function checkContent(dist=distArg(),base=siteBase()){
     diagrams++;
    }
    if(/^h[1-6]$/.test(n.tagName||'')){
-    const value=content(n).replace(/\b(?:GOAL|PLAN|GO|CHECK|SHIP|MASTER|CLI|MCP|SVG|PT|EN|ES|MIT|DAG|PLAT|SYS|MOD|FEAT)\b/g,'').trim();
+    const value=content(n).replace(/\b(?:GOAL|PLAN|GO|CHECK|SHIP|MASTER|CLI|MCP|SVG|PT|EN|ES|MIT|DAG|PLAT|SYS|MOD|FEAT|HITL)\b/g,'').trim();
     if(/[A-ZÀ-Ý]{4,}/.test(value))throw Error('All-caps heading: '+p.path);
    }
   }
