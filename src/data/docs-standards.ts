@@ -148,7 +148,8 @@ export default [
       "docs/roadmap/RM-058-modo-noctum.md",
       "docs/roadmap/RM-059-conducao-dentro-do-claude-code.md",
       "docs/roadmap/RM-060-site-como-produto.md",
-      "docs/roadmap/RM-061-cli-em-ingles-e-pt-br.md"
+      "docs/roadmap/RM-061-cli-em-ingles-e-pt-br.md",
+      "docs/roadmap/RM-062-repositorio-publico-sem-dado-privado.md"
     ],
     "translations": {
       "pt": {
@@ -160,13 +161,14 @@ export default [
             "title": "Resumo de outubro de 2026",
             "paragraphs": [
               "O planejamento reúne condução, integração com hosts, memória governada e qualidade da documentação. A prioridade do topo continua sendo o HITL de condução por alternativas: todo pedido que o ork abre ao dono vira uma escolha entre 3 e 5 opções, uma delas recomendada, sem texto colado. Também seguem em desenvolvimento o impedimento que só o dono resolve no terminal, que vira um pedido a ele com o comando exato, e o perfil por despacho, com divisão pela carga entre contas. Esta página não replica tickets nem transforma uma intenção em promessa de disponibilidade.",
-              "Desde a revisão anterior, quatro itens novos entraram no roadmap, e outros avançaram sem mudar de estágio:"
+              "Desde a revisão anterior, cinco itens novos entraram no roadmap, e outros avançaram sem mudar de estágio:"
             ],
             "items": [
               "Modo #Noctum, arcos autônomos de 6 a 12 horas com muitas threads e máquinas: em refinamento, ainda sem implementação. O dono já tomou as quatro decisões de produto; a posição 5 na prioridade é uma proposta, e o primeiro piloto espera a autorização dele.",
-              "Condução dentro do Claude Code, com dez mods em quatro ondas: em desenvolvimento; a fundação e a onda 1 (Torre de Controle, Clima de Cota, Freio de Lote e Radar de Colisão) estão na versão {versao}, e os outros mods seguem como plano.",
+              "Condução dentro do Claude Code, com dez mods em quatro ondas: em desenvolvimento; a fundação, a onda 1 (Torre de Controle, Clima de Cota, Freio de Lote e Radar de Colisão) e a Mesa do Dono, da onda 2, estão na versão {versao}, e os outros mods seguem como plano.",
               "Site como produto, os dois sites públicos com o rigor do núcleo: em desenvolvimento, e nada é publicado sem a aprovação do dono.",
-              "CLI em inglês e pt-BR: em desenvolvimento. Na versão {versao}, a primeira metade do caminho da primeira experiência (de ork doctor e ork init a ork thread new e ork phase run) e a ajuda falam inglês quando owner.language ou o locale pedem en; ork verify, ork ship, ork pulse, ork master, ork retry e ork roadmap status ficam para a fatia seguinte.",
+              "CLI em inglês e pt-BR: em desenvolvimento. Na versão {versao}, o caminho da primeira experiência (de ork doctor e ork init a ork thread new e ork phase run), ork verify, ork ship, ork pulse, ork master, ork retry plan, ork retry run, ork roadmap status e a ajuda falam inglês quando owner.language ou o locale pedem en. A cobertura medida é de 23,0% dos textos de saída do CLI; o restante segue em português.",
+              "Repositório público sem dado privado: em desenvolvimento. O nome do arquivo de evidência da RM-040, que levava o nome de uma máquina, já foi trocado por um nome genérico. A barreira automática no CI, no ork verify e no ork ci prepare ainda é plano.",
               "Busca por significado na memória: o dono escolheu os pares da prova, que passou em todas as execuções medidas; o item segue em validação.",
               "Grafo de código: o consumo pelas fases ganhou citações, segundo salto e proveniência conferida contra a árvore, com a flag grafo.mcp ainda desligada.",
               "Verify rápido e confiável: avançou no registro de instabilidade e no ork verify que leva em conta o steal da CPU.",
@@ -195,13 +197,14 @@ export default [
             "title": "October 2026 summary",
             "paragraphs": [
               "Planning covers conduction, host integration, governed memory and documentation quality. The top priority is still conduction HITL by alternatives: every request ork opens to the owner becomes a choice among 3 to 5 options, one of them recommended, with no pasted text. Also still in development: a blocker only the owner can clear in the terminal becomes a request to them with the exact command, and a profile per dispatch, with load-based distribution across accounts. This page neither replicates tickets nor turns intent into a promise of availability.",
-              "Since the previous review, four new items entered the roadmap, and others moved forward without changing stage:"
+              "Since the previous review, five new items entered the roadmap, and others moved forward without changing stage:"
             ],
             "items": [
               "#Noctum mode, autonomous arcs of 6 to 12 hours across many threads and machines: in refinement, not implemented yet. The owner has made the four product decisions; position 5 in the priority list is a proposal, and the first pilot awaits the owner’s authorization.",
-              "Conduction inside Claude Code, with ten mods in four waves: in development; the foundation and wave 1 (the Control Tower, the Quota Weather, the Batch Brake and the Collision Radar) are in version {versao}, and the other mods remain planned.",
+              "Conduction inside Claude Code, with ten mods in four waves: in development; the foundation, wave 1 (the Control Tower, the Quota Weather, the Batch Brake and the Collision Radar) and the Owner’s Desk, from wave 2, are in version {versao}, and the other mods remain planned.",
               "Site as a product, the two public sites held to the core’s rigor: in development, and nothing is published without the owner’s approval.",
-              "CLI in English and pt-BR: in development. In version {versao}, the first half of the first-run path (from ork doctor and ork init to ork thread new and ork phase run) and the help print English when owner.language or the locale asks for en; ork verify, ork ship, ork pulse, ork master, ork retry and ork roadmap status are left for the next slice.",
+              "CLI in English and pt-BR: in development. In version {versao}, the first-run path (from ork doctor and ork init to ork thread new and ork phase run), ork verify, ork ship, ork pulse, ork master, ork retry plan, ork retry run, ork roadmap status and the help print English when owner.language or the locale asks for en. The measured coverage is 23.0% of the CLI’s output texts; the rest still prints Portuguese.",
+              "Public repository without private data: in development. The RM-040 evidence file, whose name carried a machine name, has already been renamed to a generic one. The automatic barrier in CI, in ork verify and in ork ci prepare is still a plan.",
               "Search by meaning in memory: the owner chose the proof pairs, and the proof passed in every measured run; the item is still in validation.",
               "Code graph: phase consumption gained citations, a second hop and provenance checked against the tree, with the grafo.mcp flag still off.",
               "Fast and reliable verify: progress on the instability registry and on making ork verify aware of CPU steal.",
@@ -230,13 +233,14 @@ export default [
             "title": "Resumen de octubre de 2026",
             "paragraphs": [
               "La planificación reúne conducción, integración con hosts, memoria gobernada y calidad de la documentación. La prioridad principal sigue siendo el HITL de conducción por alternativas: toda petición que ork abre al dueño se convierte en una elección entre 3 y 5 opciones, una de ellas recomendada, sin texto pegado. También siguen en desarrollo el impedimento que solo el dueño resuelve en la terminal, que pasa a ser una petición con el comando exacto, y el perfil por despacho, con reparto por carga entre cuentas. Esta página no replica tickets ni convierte una intención en promesa de disponibilidad.",
-              "Desde la revisión anterior entraron en el roadmap cuatro elementos nuevos, y otros avanzaron sin cambiar de etapa:"
+              "Desde la revisión anterior entraron en el roadmap cinco elementos nuevos, y otros avanzaron sin cambiar de etapa:"
             ],
             "items": [
               "Modo #Noctum, arcos autónomos de 6 a 12 horas con muchas threads y máquinas: en refinamiento, aún sin implementar. El dueño ya tomó las cuatro decisiones de producto; la posición 5 en la prioridad es una propuesta, y el primer piloto espera su autorización.",
-              "Conducción dentro de Claude Code, con diez mods en cuatro oleadas: en desarrollo; la base y la oleada 1 (la Torre de Control, el Clima de Cuota, el Freno de Lote y el Radar de Colisión) están en la versión {versao}, y los demás mods siguen como plan.",
+              "Conducción dentro de Claude Code, con diez mods en cuatro oleadas: en desarrollo; la base, la oleada 1 (la Torre de Control, el Clima de Cuota, el Freno de Lote y el Radar de Colisión) y la Mesa del Dueño, de la oleada 2, están en la versión {versao}, y los demás mods siguen como plan.",
               "Sitio como producto, los dos sitios públicos con el rigor del núcleo: en desarrollo, y nada se publica sin la aprobación del dueño.",
-              "CLI en inglés y pt-BR: en desarrollo. En la versión {versao}, la primera mitad del camino del primer uso (de ork doctor y ork init a ork thread new y ork phase run) y la ayuda salen en inglés cuando owner.language o el locale piden en; ork verify, ork ship, ork pulse, ork master, ork retry y ork roadmap status quedan para la siguiente porción.",
+              "CLI en inglés y pt-BR: en desarrollo. En la versión {versao}, el camino del primer uso (de ork doctor y ork init a ork thread new y ork phase run), ork verify, ork ship, ork pulse, ork master, ork retry plan, ork retry run, ork roadmap status y la ayuda salen en inglés cuando owner.language o el locale piden en. La cobertura medida es del 23,0% de los textos de salida del CLI; el resto sigue en portugués.",
+              "Repositorio público sin datos privados: en desarrollo. El nombre del archivo de evidencia de la RM-040, que llevaba el nombre de una máquina, ya se cambió por uno genérico. La barrera automática en el CI, en ork verify y en ork ci prepare sigue siendo un plan.",
               "Búsqueda por significado en la memoria: el dueño eligió los pares de la prueba, que pasó en todas las ejecuciones medidas; el elemento sigue en validación.",
               "Grafo de código: el consumo por las fases ganó citas, un segundo salto y procedencia comprobada contra el árbol, con el flag grafo.mcp todavía apagado.",
               "Verify rápido y fiable: avances en el registro de inestabilidad y en un ork verify que tiene en cuenta el steal de la CPU.",

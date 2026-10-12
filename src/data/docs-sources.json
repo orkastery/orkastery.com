@@ -4,7 +4,7 @@
   "sources": [
     {
       "path": "CONTRIBUTING.md",
-      "sha256": "e0d18f3cd8c9d478d2fb13be05f789d61c6aab927906c394b6b43f8346d41cfb",
+      "sha256": "fcb69be49ab8b356119726828d1c48159f7a0d6e20fb24b717cd52697c21487c",
       "category": "root",
       "treatment": "article",
       "targets": [
@@ -13,7 +13,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "e55fa5d4bb3a6d8efa6efbc6ddd1da9c2d33910fbf66229239bfda5fba502e30",
+      "sha256": "ea9c60d23f4cfb5428d242ecd49a9b33acebef632c31cde1c8225aeac52694bd",
       "category": "root",
       "treatment": "article",
       "targets": [
@@ -792,7 +792,7 @@
     },
     {
       "path": "docs/referencia/contratos/rede-rm053.md",
-      "sha256": "45cfb9280149fb80c59486197fb8ddc725f9e07528a753e631e1e510df25269f",
+      "sha256": "d2886f205542ec8b54aa6692f4f50f8b396505de187cfeafa680a2113f785000",
       "category": "referencia",
       "treatment": "article",
       "targets": [
@@ -830,7 +830,7 @@
     },
     {
       "path": "docs/roadmap/README.md",
-      "sha256": "25605db4438c14f176a20cb586a8da5c80c0e869f8bb6154ed62a3e137d2ca2f",
+      "sha256": "7cfcb143a8dc8bf9118d47adf8fc4f9153fe876c880add482fccd9937041de89",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1001,7 +1001,7 @@
     },
     {
       "path": "docs/roadmap/RM-032-bootstrap-maestro.md",
-      "sha256": "465a32ada1daa0acc994c8fad65a5c617c0c8e23961e3391a965859a40756068",
+      "sha256": "6d68fbd1d1ffcdd0748eca51d559186b893edb34642fc53734d61242419d0688",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1073,7 +1073,7 @@
     },
     {
       "path": "docs/roadmap/RM-040-estado-de-conta-compartilhado.md",
-      "sha256": "cf4abd0f73776dd4de097810c75bba961331586984eda1c9f057ad9522264074",
+      "sha256": "0c555f4e38b835fa9dee90412c9254e3673d0fb5e308cfbccc751206199227a8",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1136,7 +1136,7 @@
     },
     {
       "path": "docs/roadmap/RM-047-fabrica-em-varias-maquinas.md",
-      "sha256": "c87f5bb7758b3e482525b1c36c8a2b4b284caa0fa0a6da721ca6ae357b34ea8b",
+      "sha256": "80ed5aed2375beb0dc7bedcb5477b58a5cca52a60900eae6bff82ce3698e06d8",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1190,7 +1190,7 @@
     },
     {
       "path": "docs/roadmap/RM-053-orkastery-network.md",
-      "sha256": "8f93d07f59e1e3da8b23c5f2ec032e85f0518684a0e78a4be781fa3b43e45c0b",
+      "sha256": "6740f790f715fdc2ad15fad295b7c82fe523779c76dbbbfe6528dec69bb67fce",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1199,7 +1199,7 @@
     },
     {
       "path": "docs/roadmap/RM-054-roadmaps-e-threads-da-rede.md",
-      "sha256": "92ee22814d0d5d459c818c9df5bf24a674e7b3b5b43792f181f0161664bd2f3e",
+      "sha256": "a515bae42cdbdee73f67ad280f6692dbdb66aa681c43e5e33c31d154e345c182",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1208,7 +1208,7 @@
     },
     {
       "path": "docs/roadmap/RM-055-impedimento-do-dono-vira-hitl.md",
-      "sha256": "131e53f06a2bd6ab1bd67589848d5f45a1f8ab821e559bef87593ecb18a57255",
+      "sha256": "f2ff8ec88fa83d406fb96f527478de1245f461b32a6a1b68593d67740035401c",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1218,7 +1218,7 @@
     },
     {
       "path": "docs/roadmap/RM-056-perfil-por-thread-e-carga.md",
-      "sha256": "fe53ed029397a50a9cc48af212aa4bc559fb3720d438a26165c752633c31e278",
+      "sha256": "a33fcf6c4c8af1f5963360257c0158765eb5f989e21f4eff40c5001a27194fff",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1227,7 +1227,7 @@
     },
     {
       "path": "docs/roadmap/RM-057-hitl-por-alternativas.md",
-      "sha256": "2436fbc71d171463959bfc1e270a79b4e85553fc0ffbe5c80e3c1caada9f0aee",
+      "sha256": "36b95ddd7045132719997bef769b1ab7fae0d2b9f907c7a154a3febd375890bc",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1264,7 +1264,16 @@
     },
     {
       "path": "docs/roadmap/RM-061-cli-em-ingles-e-pt-br.md",
-      "sha256": "48c47e22d2f56ac7fbd2a3337cef374d087dc797d343ab63835d4def86237f04",
+      "sha256": "76e5a660e6719e808ddc0ee2c996bb4e546c0715e7216c6dab2573613af8b065",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/RM-062-repositorio-publico-sem-dado-privado.md",
+      "sha256": "700c094203c185318a28e2dbe4562d3574e636413310ff36055614b0c27a16ca",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1291,7 +1300,7 @@
     },
     {
       "path": "docs/roadmap/evidencias/RM-032/claude-code-2026-10-01.json",
-      "sha256": "204614ce009515681fa62f0408b5d6c52ade0a7e8fabae158d368b30fa7bafac",
+      "sha256": "9770788415a3d6d53f0e3488da377d38d56a57347fe7d9afb39942ff15e69b5b",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1300,7 +1309,7 @@
     },
     {
       "path": "docs/roadmap/evidencias/RM-032/codex-2026-10-03-desvio.json",
-      "sha256": "844ca6363fa1ef32e1e39f259ab4aa90c65876f65ac3bdeb9051ea05a291770f",
+      "sha256": "b41a93ff9544b8b16f918fe9517e163610e7f6373889550b092901a61771dfc0",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1309,7 +1318,7 @@
     },
     {
       "path": "docs/roadmap/evidencias/RM-032/codex-2026-10-03.json",
-      "sha256": "9b74cce1ab3e0c1678ed3cf23502fcf3a68db1631068c36040a273f5cebe1d31",
+      "sha256": "d34e9236b24d8d8f27bd2e2aebd4490c55048443fac2ea097b0f56ca564e7caa",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1318,7 +1327,7 @@
     },
     {
       "path": "docs/roadmap/evidencias/RM-032/openclaw-2026-10-01-travou.json",
-      "sha256": "05d1ee47bf5d1f6c78f6a7300d1943ccd224f417dfbf55a2d701784deaeedc23",
+      "sha256": "c6237d5f98a1f0fb328b116b9acfb2c1ce6c8da5e84bbe2ef655c1389e7bc91b",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1327,7 +1336,7 @@
     },
     {
       "path": "docs/roadmap/evidencias/RM-032/openclaw-2026-10-01.json",
-      "sha256": "22f2a8fcafe3c11dd34ea33926cc00ce8c5f2d3e8e1d74bfb7ebe313b1a01a96",
+      "sha256": "45427fc7d230af58bb0615a8edc4d9085203f4b081b6549e690ddba3f97ff15d",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1335,8 +1344,8 @@
       ]
     },
     {
-      "path": "docs/roadmap/evidencias/RM-040/srvjcp86-2026-10-03.json",
-      "sha256": "0ecdbad0e51a65f6f05ac5164bda041d2c16c2862426d412502ec439e0c05198",
+      "path": "docs/roadmap/evidencias/RM-040/maquina-b-2026-10-03.json",
+      "sha256": "5645b4509ab88fdefbed179d965d679adc0b5bc0a04b103b19bebcc036efd073",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1345,7 +1354,7 @@
     },
     {
       "path": "docs/roadmap/evidencias/RM-049/ensaio-2026-10-03-candidato.json",
-      "sha256": "c3db9aa68465140e86000343a39f67d141f605d8487a98d6190761021f1daa7e",
+      "sha256": "2e8a8c1441ba47a2b5469cef8840fdc65a9120dc6d360dbada0bdf76cdd56e06",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1354,7 +1363,7 @@
     },
     {
       "path": "docs/roadmap/evidencias/RM-049/ensaio-2026-10-03-en.json",
-      "sha256": "a310687565a9ae6402f42e220293a8e6b6df126e3f5e25eb49def9c445308380",
+      "sha256": "d4decc9968bd77949a3cf177ee50f9df7c72d27f14a655f2b8a36505cdec7518",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1363,7 +1372,7 @@
     },
     {
       "path": "docs/roadmap/evidencias/RM-049/ensaio-2026-10-03.json",
-      "sha256": "034951483e775d3995a09c58f2b41d7125dc65c5cdefc30aa9e99280107a07da",
+      "sha256": "0a822e4f590294664122c0eddac0471e60dcdd2efd892650d70818e6209caf01",
       "category": "roadmap",
       "treatment": "roadmap",
       "targets": [
@@ -1380,6 +1389,24 @@
       ]
     },
     {
+      "path": "docs/roadmap/evidencias/RM-061/cobertura-f2b.json",
+      "sha256": "c200bba662d7051185cf57bd4191cb0d7dd03a019a62e882bd0eb53351b497f9",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "roadmap"
+      ]
+    },
+    {
+      "path": "docs/roadmap/evidencias/mods-dialogo-nativo.md",
+      "sha256": "609566ec85a7ed5c1b3fd8c4e6fbd90a2df5fc3648e2a9c6c2bd60f17a42ab90",
+      "category": "roadmap",
+      "treatment": "roadmap",
+      "targets": [
+        "claude-code"
+      ]
+    },
+    {
       "path": "docs/roadmap/evidencias/mods-sessao-de-fase.md",
       "sha256": "72a4c0a19eacb1b11842b1bca1bcc4ffc9f1ae870dfe0b520e5926f81d77f321",
       "category": "roadmap",
@@ -1389,24 +1416,24 @@
       ]
     }
   ],
-  "inventoryHash": "7dc96046d6235f6b032bcada7101fb82ce7f3bf7e9c91e91a923b62ce98d6bf5",
+  "inventoryHash": "c251964c6f0026f9ab5caa9708bb43349c008ca0eb22be8e520ce2687ae0fc36",
   "reviews": {
     "comecar": {
       "pt": {
-        "sourceHash": "c885dd01a84cbe763eadd63d91e3547c82651336a6568d31f479f1f7a3f82910",
-        "contentHash": "7929126052f7d68215a231b69bb9ddf58c0d7ffaa0453cad174e6e42f548530f",
+        "sourceHash": "4fcb67457c1d97cfb2bd460e6916a173637d6edb5d07149ec38aba53eb208d17",
+        "contentHash": "906370006c476e127b79906d79ee64e28a575f7310deb355b66a73a0ba413759",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "en": {
-        "sourceHash": "c885dd01a84cbe763eadd63d91e3547c82651336a6568d31f479f1f7a3f82910",
-        "contentHash": "2b2239a72bb53b14a3283fea796df9af0b61bbb69cc0998f77a552236108228f",
+        "sourceHash": "4fcb67457c1d97cfb2bd460e6916a173637d6edb5d07149ec38aba53eb208d17",
+        "contentHash": "516d410de833ad7d757650501334537da95656e266470c15f9e2fae1f490e1ce",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "es": {
-        "sourceHash": "c885dd01a84cbe763eadd63d91e3547c82651336a6568d31f479f1f7a3f82910",
-        "contentHash": "9de9c4073fc10f3fc588a5461563bd293fa0dfb8009b535564ba8977348c56af",
+        "sourceHash": "4fcb67457c1d97cfb2bd460e6916a173637d6edb5d07149ec38aba53eb208d17",
+        "contentHash": "e2478ebdc3a686810907f4628536f21802d45d5e4f96cd6ca0723a51d9ae7560",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       }
@@ -1573,19 +1600,19 @@
     },
     "hitl": {
       "pt": {
-        "sourceHash": "b3808515515fb8f5e830e8dd1791cf24ba4454566aef894f9ac68f025fd6e48d",
+        "sourceHash": "745437f6c0a68a019540c99881ad415c81d9d1a1ce6466b663d33a6017fe78d0",
         "contentHash": "56c08b8602461cd451667507116f230c1c801bdcac27ae135a224a8a9f4594d4",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "en": {
-        "sourceHash": "b3808515515fb8f5e830e8dd1791cf24ba4454566aef894f9ac68f025fd6e48d",
+        "sourceHash": "745437f6c0a68a019540c99881ad415c81d9d1a1ce6466b663d33a6017fe78d0",
         "contentHash": "c5b6804709b5e4c25902c0b022be97dfc74b938684f86233a2802a971ee9481e",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "es": {
-        "sourceHash": "b3808515515fb8f5e830e8dd1791cf24ba4454566aef894f9ac68f025fd6e48d",
+        "sourceHash": "745437f6c0a68a019540c99881ad415c81d9d1a1ce6466b663d33a6017fe78d0",
         "contentHash": "b613a4421ea10320533b24e0963c7d47a20e98715451a942f0923225a976ed25",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
@@ -1613,19 +1640,19 @@
     },
     "contratos": {
       "pt": {
-        "sourceHash": "c82dee44cc420575671210dc56e5fab0875de63e18c12fdd321cb4bc7573b58f",
+        "sourceHash": "6fe8d72290334858f98a68115c2a9a21dfb9dc3c1c8d4a74844b0bdc555b9713",
         "contentHash": "e6952a12fea5d424a5cc04b155f9f8a4ce4f0311e3b22e3e475f271f2c7005e9",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "en": {
-        "sourceHash": "c82dee44cc420575671210dc56e5fab0875de63e18c12fdd321cb4bc7573b58f",
+        "sourceHash": "6fe8d72290334858f98a68115c2a9a21dfb9dc3c1c8d4a74844b0bdc555b9713",
         "contentHash": "75d57839f75d6276454c165206452ba2b1c06ed1376c58f827e6ce695f0a0872",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "es": {
-        "sourceHash": "c82dee44cc420575671210dc56e5fab0875de63e18c12fdd321cb4bc7573b58f",
+        "sourceHash": "6fe8d72290334858f98a68115c2a9a21dfb9dc3c1c8d4a74844b0bdc555b9713",
         "contentHash": "2964eaf9d6ad2264ab2d1e6f887b0605e1e06ab080eb7df427ab0b210c901661",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
@@ -1653,20 +1680,20 @@
     },
     "roadmap": {
       "pt": {
-        "sourceHash": "e81f76090b2ca520396087590773b997c60c4b3087dc3d23d4ac58e6ce8dbbae",
-        "contentHash": "239588d7bd889d19d4a01a3dcf801236a9a60065f60ffc72f4f3817e0c3dbf0e",
+        "sourceHash": "70116ed48d6fc6afaac436fd32ff237e3f9601cda55e729d199e80399bbac25d",
+        "contentHash": "c004244d7fc6c245058ff5b25dc3be9ad4a621728a321b11454a2d544aa965dc",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "en": {
-        "sourceHash": "e81f76090b2ca520396087590773b997c60c4b3087dc3d23d4ac58e6ce8dbbae",
-        "contentHash": "fb0a6541ab933482720690729b5785de1e9bed8a99c1ca48051f8dac8acd6f80",
+        "sourceHash": "70116ed48d6fc6afaac436fd32ff237e3f9601cda55e729d199e80399bbac25d",
+        "contentHash": "20046aaa7c84963129e030afd41112a85893b32db17549fbbfda035a8285624c",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "es": {
-        "sourceHash": "e81f76090b2ca520396087590773b997c60c4b3087dc3d23d4ac58e6ce8dbbae",
-        "contentHash": "91fe836f788229684368b067431c45e6699f9deae3bb8385e736502fe7a6bb32",
+        "sourceHash": "70116ed48d6fc6afaac436fd32ff237e3f9601cda55e729d199e80399bbac25d",
+        "contentHash": "407fa7496e51a458655a87b8a7fc8a42e4a927c562cc77d612a76568fee41a60",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       }
@@ -1813,19 +1840,19 @@
     },
     "contribuir": {
       "pt": {
-        "sourceHash": "84451c772873cc7cc73bd510ce6b5781da0b30a71b13983e1b467b903859fe00",
+        "sourceHash": "e301d8d5bd7aa003c1aaf4dda2bddd39f988fe651078ddc2da88931a501dbed2",
         "contentHash": "79496fd3fb3832f2e1f42f89d589f957e2e06867456cf4269b13bd4589604577",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "en": {
-        "sourceHash": "84451c772873cc7cc73bd510ce6b5781da0b30a71b13983e1b467b903859fe00",
+        "sourceHash": "e301d8d5bd7aa003c1aaf4dda2bddd39f988fe651078ddc2da88931a501dbed2",
         "contentHash": "796337fc520ba9460fef24d44c9ebdaadbe51a0e0f40251ad666fd1e466e8651",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "es": {
-        "sourceHash": "84451c772873cc7cc73bd510ce6b5781da0b30a71b13983e1b467b903859fe00",
+        "sourceHash": "e301d8d5bd7aa003c1aaf4dda2bddd39f988fe651078ddc2da88931a501dbed2",
         "contentHash": "f79ff77ba1303e32a6e05ba64e7919fdb21864cc3a7465168ea84df2dce23d94",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
@@ -1853,20 +1880,20 @@
     },
     "claude-code": {
       "pt": {
-        "sourceHash": "57dbafb599f6ddae1c6ac879418ee37dff73885f4506081af0492a3fa0600ceb",
-        "contentHash": "8ab741057fd84bacbe8f8ca89d6cdff0545117f5bec4fce64c588fe9f92d0530",
+        "sourceHash": "3d5a28f1605afb2dbc310a5af94bd508a4eb290e052ec9bcf46dbbc4fc3e47d1",
+        "contentHash": "86f1b6957564ff8f9be6b3e5994b6f60436828ffebea55ff9de1554bed714e37",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "en": {
-        "sourceHash": "57dbafb599f6ddae1c6ac879418ee37dff73885f4506081af0492a3fa0600ceb",
-        "contentHash": "81b802270f9fa4b33f663ee67b3785529ffccb69ab035e852be3994dd272a034",
+        "sourceHash": "3d5a28f1605afb2dbc310a5af94bd508a4eb290e052ec9bcf46dbbc4fc3e47d1",
+        "contentHash": "fb941d76ba6ae9fd940f6e1fa50ec0a33c0d7c97c08d06c56f9e7499f888b0d3",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "es": {
-        "sourceHash": "57dbafb599f6ddae1c6ac879418ee37dff73885f4506081af0492a3fa0600ceb",
-        "contentHash": "4ef64ee1443abfc870c305270f4b6eab673fb28072ee50cb2ad66ac1342a6705",
+        "sourceHash": "3d5a28f1605afb2dbc310a5af94bd508a4eb290e052ec9bcf46dbbc4fc3e47d1",
+        "contentHash": "564f114d0742d85d5f60dcbde87effb73dcd68a533f86734bf97cccd3fabab02",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       }
