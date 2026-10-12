@@ -4,10 +4,11 @@ import HomeSections from './HomeSections.astro';
 import Contato from './Contato.astro';
 import DocsDiagram from './DocsDiagram.astro';
 import home from '../data/home';
-import {localeFor,localize,ui} from '../data/i18n';
+import {localeFor,localize,localizedPath,ui} from '../data/i18n';
 import catalog from '../data/docs-catalog';
 const locale=localeFor(Astro.url.pathname),text=ui(locale),copy=Astro.props.content||home[locale];
-const docsHref=(path:string)=>(Astro.props.docsBase||'')+localize(path,locale);
+// docsBase aponta para o outro site (página do OrkMind): lá vai o caminho sem o base desta prévia.
+const docsHref=(path:string)=>Astro.props.docsBase?Astro.props.docsBase+localizedPath(path,locale):localize(path,locale);
 const legacy={"topo": ["manifesto-titulo"], "metodo": ["ciclo-titulo", "ork-ciclo-titulo", "ork-threads-titulo", "ork-estado-titulo"], "modos": ["modos-titulo", "ork-modos-titulo", "ork-radar-titulo"], "evidencia": ["numeros-titulo", "ork-verify-titulo", "ork-gate-titulo", "ork-audit-titulo", "ork-score-titulo"], "memoria": ["ecossistema-titulo"], "arquitetura": ["camadas-titulo", "ork-adapt-titulo", "ork-comp-titulo"]};
 const restored=!Astro.props.content;
 const restoredIds=['manifesto-titulo','ciclo-titulo','modos-titulo','numeros-titulo','ecossistema-titulo'];
