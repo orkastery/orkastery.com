@@ -25,9 +25,9 @@
     "check:code": "node scripts/check-code.mjs"
   },
   "dependencies": {
-    "@fontsource-variable/fraunces": "^5.3.0",
-    "@fontsource-variable/geist-mono": "^5.3.0",
-    "@fontsource-variable/instrument-sans": "^5.3.0",
+    "@fontsource-variable/geist": "5.3.0",
+    "@fontsource-variable/hanken-grotesk": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
     "astro": "^5.13.0",
     "serve": "^14.2.4"
   },

@@ -1,0 +1,43 @@
+---
+// Botão do design que copia o comando de instalação, em três variantes:
+//  hero: escuro, com a borda de latão girando e a pílula copiar/copiado;
+//  cartao: escuro e compacto, sem pílula (cartão "Builders");
+//  noite: grafite com borda, para a chamada final sobre fundo escuro.
+// O comando nunca parte em duas linhas (regra de 03/10): se não couber, a pílula desce de linha.
+import {localeFor,moldura} from '../../data/i18n';
+interface Props { variante?: 'hero'|'cartao'|'noite'; comando?: string; id?: string; }
+const {variante='hero',comando='npm install -g @orkastery/cli',id}=Astro.props;
+const m=moldura(localeFor(Astro.url.pathname));
+const dados={'data-copiar':comando,'data-rotulo':m.copy,'data-rotulo-ok':m.copied,'data-rotulo-falha':m.copyFailed,'data-msg-ok':m.copiedMessage,'data-msg-falha':m.copyFailedMessage};
+---
+{variante==='hero'?
+ <span class="instalar-giro" id={id}><button type="button" class="instalar instalar-hero" {...dados}><span class="instalar-cifrao" aria-hidden="true">$</span><code class="instalar-comando">{comando}</code><span class="instalar-pilula" data-pilula>{m.copy}</span></button><span class="so-leitor" role="status" data-status></span></span>
+:variante==='noite'?
+ <span class="instalar-caixa" id={id}><button type="button" class="instalar instalar-noite" {...dados}><span class="instalar-cifrao" aria-hidden="true">$</span><code class="instalar-comando">{comando}</code><span class="instalar-pilula" data-pilula>{m.copy}</span></button><span class="so-leitor" role="status" data-status></span></span>
+:
+ <span class="instalar-caixa instalar-caixa-cartao" id={id}><button type="button" class="instalar instalar-cartao" {...dados}><span class="instalar-cifrao" aria-hidden="true">$</span><code class="instalar-comando">{comando}</code></button><span class="so-leitor" role="status" data-status></span></span>
+}
+<script>
+ import '../../scripts/copiar.ts';
+</script>
+<style>
+.instalar-giro{display:inline-flex;padding:1.5px;border-radius:13.5px;background:conic-gradient(from var(--orkA),rgba(224,178,100,0) 0deg,rgba(224,178,100,0) 230deg,var(--acento) 325deg,rgba(224,178,100,0) 360deg),var(--grafite-3);animation:orkSpin 6s linear infinite;box-shadow:var(--sombra-botao-instalar);max-width:100%}
+.instalar-caixa{display:inline-flex;max-width:100%}
+.instalar-caixa-cartao{align-self:flex-start}
+.instalar{display:flex;align-items:center;flex-wrap:wrap;row-gap:8px;border:0;cursor:pointer;color:var(--sobre-noite);font:var(--tipo-comando);max-width:100%}
+.instalar-hero{gap:14px;min-height:52px;padding:0 8px 0 18px;border-radius:var(--raio-12);background:var(--tinta)}
+.instalar-hero:hover{background:var(--grafite-2)}
+.instalar-noite{gap:14px;min-height:52px;padding:0 8px 0 18px;border-radius:var(--raio-12);background:var(--grafite);border:1px solid var(--grafite-3)}
+.instalar-noite:hover{border-color:var(--grafite-5)}
+.instalar-cartao{gap:12px;min-height:48px;padding:0 18px;border-radius:var(--raio-12);background:var(--tinta);font:400 14px/1 var(--fonte-mono)}
+.instalar-cartao:hover{background:var(--grafite-2)}
+.instalar-cifrao{color:var(--acento)}
+/* O comando é código e inteiro: herda a fonte do botão, sem o chip da prosa. */
+.instalar-comando{display:inline;font:inherit;background:none;padding:0;border-radius:0;white-space:nowrap;color:inherit}
+.instalar-pilula{margin-left:auto;padding:9px 11px;border-radius:var(--raio-8);background:rgba(233,236,239,.1);font:500 12px/1 var(--fonte-texto);color:var(--sobre-noite);min-width:56px;box-sizing:content-box}
+.instalar-noite .instalar-pilula{background:rgba(233,236,239,.08)}
+/* Quando a pílula desce de linha, o botão ganha respiro em cima e embaixo. */
+@media (max-width:440px){.instalar-hero,.instalar-noite{padding:10px 8px 10px 18px}}
+/* Abaixo de 360 px o comando inteiro só cabe numa linha com a letra um pouco menor. */
+@media (max-width:360px){.instalar-hero,.instalar-noite{font-size:12.5px;padding-left:14px}.instalar-cartao{font-size:11px;gap:8px;padding:0 12px}}
+</style>

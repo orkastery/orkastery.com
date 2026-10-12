@@ -1,0 +1,50 @@
+---
+// Cabeçalho do design: fixo no topo, translúcido, com assinatura, navegação, seletor de língua
+// e dois botões. Na home as âncoras são da própria página; nas outras, levam à home na língua.
+import LanguageSelector from './LanguageSelector.astro';
+import {localeFor,localize,moldura,unlocalize,withBase} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname),m=moldura(locale);
+const naHome=unlocalize(Astro.url.pathname)==='/';
+const home=localize('/',locale);
+const ancora=(hash:string)=>naHome?hash:home+hash;
+const nasDocs=unlocalize(Astro.url.pathname).startsWith('/docs/');
+---
+<header class="cabecalho">
+ <div class="cabecalho-linha">
+  <a class="cabecalho-marca" href={naHome?'#topo':home}><img src={withBase('/marca/assinatura-fundo-claro.svg')} alt="Orkastery" width="132" height="26"/></a>
+  <nav class="cabecalho-nav" aria-label={locale==='en'?'Main navigation':locale==='es'?'Navegación principal':'Navegação principal'} data-nav-prioridade>
+   {m.nav.map(([hash,label])=><a href={ancora(hash)}>{label}</a>)}
+   <a href={localize('/docs/',locale)} aria-current={nasDocs?'page':undefined}>{m.docs}</a>
+  </nav>
+  <div class="cabecalho-espaco"></div>
+  <LanguageSelector/>
+  <a class="cabecalho-falar" href={ancora('#contato')}>{m.talk}</a>
+  <a class="cabecalho-instalar" href={ancora('#instalar')}>{m.install}</a>
+ </div>
+</header>
+<script>
+ // Navegação de prioridade, como no design: o link que não cabe quebra para uma linha escondida.
+ // Aqui ele também sai do teclado e do leitor de tela (inert), para o foco nunca cair no invisível.
+ const nav=document.querySelector<HTMLElement>('[data-nav-prioridade]');
+ if(nav){
+  const atualizar=()=>{const topo=nav.getBoundingClientRect().top;for(const a of nav.querySelectorAll('a')){const escondido=a.getBoundingClientRect().top-topo>2||nav.clientWidth===0;a.toggleAttribute('inert',escondido);}};
+  new ResizeObserver(atualizar).observe(nav);atualizar();
+ }
+</script>
+<style>
+.cabecalho{position:sticky;top:0;z-index:20;background:rgba(238,240,242,.82);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--linha-cartao)}
+.cabecalho-linha{max-width:var(--largura-maxima);margin:0 auto;padding:0 var(--calha);height:var(--altura-cabecalho);display:flex;align-items:center;gap:28px}
+.cabecalho-marca{display:flex;align-items:center;flex:none}
+.cabecalho-marca img{height:26px;width:auto;display:block}
+.cabecalho-nav{display:flex;gap:22px;font:var(--tipo-navegacao);color:var(--tinta-2);flex-wrap:wrap;white-space:nowrap;overflow:hidden;min-width:0;flex:0 1 auto;height:14px;align-self:center}
+.cabecalho-nav a[aria-current]{color:var(--tinta)}
+.cabecalho-espaco{flex:1}
+.cabecalho-falar{font:var(--tipo-navegacao);color:var(--tinta);padding:11px 14px;border-radius:var(--raio-10);border:1px solid var(--linha-controle);flex:none}
+.cabecalho-falar:hover{background:var(--branco);color:var(--tinta)}
+.cabecalho-instalar{font:var(--tipo-navegacao);color:var(--papel);background:var(--tinta);padding:12px 15px;border-radius:var(--raio-10);flex:none}
+.cabecalho-instalar:hover{background:var(--grafite-4);color:var(--branco)}
+/* O design deixa o grupo da direita sem encolher e os botões ficam cortados no estreito.
+   Aqui eles somem inteiros, primeiro Falar com a gente, depois Instalar (ambos repetem logo abaixo). */
+@media (max-width:660px){.cabecalho-falar{display:none}}
+@media (max-width:480px){.cabecalho-instalar,.cabecalho-nav{display:none}.cabecalho-linha{gap:16px}}
+</style>

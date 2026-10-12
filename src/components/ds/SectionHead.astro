@@ -1,0 +1,15 @@
+---
+// Abertura de seção do design: sobretítulo, h2 (com a continuação em cinza, se houver) e parágrafo.
+// medidaTitulo e medidaLead são as larguras de leitura do design (em ch).
+import TechnicalText from '../TechnicalText.astro';
+interface Props { sobretitulo: string; titulo: string; continuacao?: string; lead?: string; medidaTitulo?: string; medidaLead?: string; id?: string; }
+const {sobretitulo,titulo,continuacao,lead,medidaTitulo='18ch',medidaLead='60ch',id}=Astro.props;
+---
+<div class="sobretitulo">{sobretitulo}</div>
+<h2 class="secao-titulo" data-reveal style={`max-width:${medidaTitulo}`} id={id}>{titulo}{continuacao&&<> <span class="secao-continuacao">{continuacao}</span></>}</h2>
+{lead&&<p class="secao-lead" style={`max-width:${medidaLead}`}><TechnicalText text={lead}/></p>}
+<style>
+.secao-titulo{margin:20px 0 0;font:var(--tipo-h2);letter-spacing:var(--tracking-h2);text-wrap:balance}
+.secao-continuacao{color:var(--tinta-4)}
+.secao-lead{margin:24px 0 0;font:var(--tipo-lead);color:var(--tinta-2);text-wrap:pretty}
+</style>
