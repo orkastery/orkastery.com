@@ -23,7 +23,7 @@ export default [
             "id": "familias",
             "title": "Comandos por responsabilidade",
             "paragraphs": [
-              "A condução reúne ork thread, ork phase, ork modos e ork gate. A evidência usa ork claims, ork verify, ork fix e ork retry. O isolamento usa ork worktree e ork lease. A continuidade usa ork handoff, ork recall e ork memory. A entrega usa ork ship e ork master. A auditoria usa ork audit, com o board de dívida em ork audit divida."
+              "A condução reúne ork thread, ork phase, ork modos e ork gate. A evidência usa ork claims, ork verify, ork fix e ork retry. O isolamento usa ork worktree, ork lease e ork conducao, que diz quem conduz cada thread. A continuidade usa ork handoff, ork recall e ork memory. A entrega usa ork ship e ork master. A auditoria usa ork audit, com o board de dívida em ork audit divida."
             ],
             "code": "ork --help\nork ship --help\nork master --help"
           },
@@ -36,6 +36,21 @@ export default [
               "Na versão {versao}, com --pedido, ork thread new guarda o pedido em pedido.md, na pasta da thread, com o sha256 no thread.json e no thread_created; pedido vazio ou acima de 64 KiB recusa antes de gravar. Sem --pedido, ork prompt render usa o pedido guardado, conferido pelo sha256 (thread.pedido.divergente quando o arquivo foi editado fora do núcleo); thread sem pedido guardado segue com o texto de exemplo."
             ],
             "code": "ork thread new \"<nome>\" --modo auto --dry-run\nork thread new \"<nome>\" --modo auto --sem-worktree\nork thread new \"<nome>\" --modo auto --pedido \"<texto>\"\nork prompt render <thread> --fase GO\nork worktree sync <thread> --dry-run"
+          },
+          {
+            "id": "conducao",
+            "title": "Quem conduz a thread",
+            "paragraphs": [
+              "ork conducao status <thread> diz quem conduz a thread agora (o canal, a sessão ou o processo, a fase e desde quando) e libera, com prova, a condução que ficou sem dono. ork conducao assumir <thread> faz o handoff: encerra a condução atual pelo runtime, registra quem assumiu, de qual canal e por quê, e reserva a vez para esse canal; --por e --motivo são obrigatórios.",
+              "Na main do núcleo, ainda fora de uma versão publicada, o ork conducao também tem os três comandos da Sentinela do Condutor, no bloco abaixo. O primeiro diz se a Sentinela está ligada nesta máquina, com a sessão, a última batida e o prazo, e dá o passo do condutor em cada thread aberta, calculado pelo núcleo; com --json, no contrato ork.conducao-sentinela/v1, é o que o condutor externo lê para ceder o despacho. O segundo é a batida: renova a presença da sessão por 3 min, ou a toma quando não há outra viva; com outra sessão viva na máquina, sai 3 e não toma o lugar dela. O terceiro tira a presença da própria sessão, e o condutor externo volta a conduzir. Quem bate e desliga é o mod ork-sentinela, sozinho."
+            ],
+            "links": [
+              {
+                "label": "Conduza de dentro do Claude Code",
+                "href": "/docs/claude-code/#sentinela"
+              }
+            ],
+            "code": "ork conducao status <thread> --json\nork conducao assumir <thread> --por <quem> --motivo \"<por que>\"\nork conducao sentinela status --json\nork conducao sentinela bater --sessao <id>\nork conducao sentinela desligar --sessao <id>"
           },
           {
             "id": "integracoes",
@@ -163,7 +178,7 @@ export default [
             "id": "familias",
             "title": "Commands by responsibility",
             "paragraphs": [
-              "Conduction covers ork thread, ork phase, ork modos and ork gate. Evidence uses ork claims, ork verify, ork fix and ork retry. Isolation uses ork worktree and ork lease. Continuity uses ork handoff, ork recall and ork memory. Delivery uses ork ship and ork master. Auditing uses ork audit, with the debt board in ork audit divida."
+              "Conduction covers ork thread, ork phase, ork modos and ork gate. Evidence uses ork claims, ork verify, ork fix and ork retry. Isolation uses ork worktree, ork lease and ork conducao, which shows who is conducting each thread. Continuity uses ork handoff, ork recall and ork memory. Delivery uses ork ship and ork master. Auditing uses ork audit, with the debt board in ork audit divida."
             ],
             "code": "ork --help\nork ship --help\nork master --help"
           },
@@ -176,6 +191,21 @@ export default [
               "In version {versao}, with --pedido, ork thread new stores the request in pedido.md, in the thread folder, with the sha256 in thread.json and in thread_created; an empty request or one over 64 KiB is refused before anything is written. Without --pedido, ork prompt render uses the stored request, checked against the sha256 (thread.pedido.divergente when the file was edited outside the core); a thread with no stored request keeps the sample text."
             ],
             "code": "ork thread new \"<nome>\" --modo auto --dry-run\nork thread new \"<nome>\" --modo auto --sem-worktree\nork thread new \"<nome>\" --modo auto --pedido \"<text>\"\nork prompt render <thread> --fase GO\nork worktree sync <thread> --dry-run"
+          },
+          {
+            "id": "conducao",
+            "title": "Who conducts a thread",
+            "paragraphs": [
+              "ork conducao status <thread> shows who is conducting the thread right now (the channel, the session or process, the phase and since when) and releases, with proof, a conduction left without an owner. ork conducao assumir <thread> performs the handoff: it ends the current conduction through the runtime, records who took over, from which channel and why, and reserves the turn for that channel; --por and --motivo are required.",
+              "On the core’s main branch, not yet in a published version, ork conducao also has the three commands of the Conductor’s Sentinel, in the block below. The first shows whether the Sentinel is active on this machine, with the session, the last heartbeat and the deadline, and gives the conductor’s next step for each open thread, computed by the core; with --json, in the ork.conducao-sentinela/v1 contract, it is what the external conductor reads to yield dispatch. The second is the heartbeat: it renews the session’s presence for 3 minutes, or takes it over when no other one is alive; with another live session on the machine, it exits with code 3 and does not take its place. The third removes the session’s own presence, and the external conductor takes over again. The ork-sentinela mod runs the heartbeat and the switch-off by itself."
+            ],
+            "links": [
+              {
+                "label": "Run the factory from Claude Code",
+                "href": "/docs/claude-code/#sentinela"
+              }
+            ],
+            "code": "ork conducao status <thread> --json\nork conducao assumir <thread> --por <who> --motivo \"<why>\"\nork conducao sentinela status --json\nork conducao sentinela bater --sessao <id>\nork conducao sentinela desligar --sessao <id>"
           },
           {
             "id": "integracoes",
@@ -303,7 +333,7 @@ export default [
             "id": "familias",
             "title": "Comandos por responsabilidad",
             "paragraphs": [
-              "La conducción reúne ork thread, ork phase, ork modos y ork gate. Las pruebas usan ork claims, ork verify, ork fix y ork retry. El aislamiento usa ork worktree y ork lease. La continuidad usa ork handoff, ork recall y ork memory. La entrega usa ork ship y ork master. La auditoría usa ork audit, con el tablero de deuda en ork audit divida."
+              "La conducción reúne ork thread, ork phase, ork modos y ork gate. Las pruebas usan ork claims, ork verify, ork fix y ork retry. El aislamiento usa ork worktree, ork lease y ork conducao, que indica quién conduce cada thread. La continuidad usa ork handoff, ork recall y ork memory. La entrega usa ork ship y ork master. La auditoría usa ork audit, con el tablero de deuda en ork audit divida."
             ],
             "code": "ork --help\nork ship --help\nork master --help"
           },
@@ -316,6 +346,21 @@ export default [
               "En la versión {versao}, con --pedido, ork thread new guarda el pedido en pedido.md, en la carpeta de la thread, con el sha256 en thread.json y en thread_created; un pedido vacío o de más de 64 KiB se rechaza antes de grabar. Sin --pedido, ork prompt render usa el pedido guardado, comprobado por el sha256 (thread.pedido.divergente cuando el archivo se editó fuera del núcleo); una thread sin pedido guardado sigue con el texto de ejemplo."
             ],
             "code": "ork thread new \"<nome>\" --modo auto --dry-run\nork thread new \"<nome>\" --modo auto --sem-worktree\nork thread new \"<nome>\" --modo auto --pedido \"<texto>\"\nork prompt render <thread> --fase GO\nork worktree sync <thread> --dry-run"
+          },
+          {
+            "id": "conducao",
+            "title": "Quién conduce la thread",
+            "paragraphs": [
+              "ork conducao status <thread> indica quién conduce la thread ahora (el canal, la sesión o el proceso, la fase y desde cuándo) y libera, con prueba, la conducción que quedó sin dueño. ork conducao assumir <thread> hace el handoff: termina la conducción actual mediante el runtime, registra quién la asumió, desde qué canal y por qué, y reserva el turno para ese canal; --por y --motivo son obligatorios.",
+              "En la main del núcleo, todavía fuera de una versión publicada, ork conducao también tiene los tres comandos de la Centinela del Conductor, en el bloque de abajo. El primero indica si la Centinela está activa en esta máquina, con la sesión, el último latido y el plazo, y da el paso del conductor en cada thread abierta, calculado por el núcleo; con --json, en el contrato ork.conducao-sentinela/v1, es lo que lee el conductor externo para ceder el despacho. El segundo es el latido: renueva la presencia de la sesión por 3 min, o la toma cuando no hay otra viva; con otra sesión viva en la máquina, sale con 3 y no ocupa su lugar. El tercero quita la presencia de la propia sesión, y el conductor externo vuelve a conducir. El mod ork-sentinela envía el latido y quita la presencia por sí solo."
+            ],
+            "links": [
+              {
+                "label": "Conduzca desde Claude Code",
+                "href": "/docs/claude-code/#sentinela"
+              }
+            ],
+            "code": "ork conducao status <thread> --json\nork conducao assumir <thread> --por <quién> --motivo \"<por qué>\"\nork conducao sentinela status --json\nork conducao sentinela bater --sessao <id>\nork conducao sentinela desligar --sessao <id>"
           },
           {
             "id": "integracoes",
