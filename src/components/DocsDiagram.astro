@@ -14,12 +14,15 @@ const height=d.nodes.length*112-28;
  <figcaption><strong>{d.title}.</strong> {d.description}</figcaption>
 </figure>
 <style>
-.docs-diagram{margin:2rem 0;padding:1.25rem;background:var(--doc-panel,var(--painel,var(--fundo-3)));border:1px solid var(--linha-forte);border-radius:12px;}
-svg{width:100%;max-width:540px;display:block;margin:auto;color:var(--doc-text,var(--tinta,var(--texto)));}
-rect{fill:transparent;stroke:currentColor;stroke-width:1.2;}
-text{fill:currentColor;font:24px var(--f-texto,var(--fonte-texto));}
-.edge-label{font-size:21px;}
-.connector{fill:none;stroke:currentColor;stroke-width:1.5;}
-figcaption{font-size:.9rem;line-height:1.65;margin-top:1rem;}
-@media(max-width:550px){.docs-diagram{padding:.75rem;}text,.edge-label{font-size:24px;}}
+/* Diagrama das docs no design system: cartão branco, caixas em papel, texto em Hanken e mono. */
+.docs-diagram{margin:28px 0;padding:20px;background:var(--branco);border:1px solid var(--linha-cartao);border-radius:var(--raio-20)}
+svg{width:100%;max-width:540px;display:block;margin:auto;color:var(--tinta)}
+rect{fill:var(--papel-3);stroke:rgba(18,22,28,.18);stroke-width:1.2}
+text{fill:currentColor;font:500 23px var(--fonte-texto)}
+.node-detail{fill:var(--tinta-3);font:400 19px var(--fonte-mono)}
+.edge-label{fill:var(--tinta-3);font:400 19px var(--fonte-mono)}
+.connector{fill:none;stroke:var(--tinta-5);stroke-width:1.5}
+figcaption{margin-top:14px;font:400 14px/1.6 var(--fonte-texto);color:var(--tinta-3)}
+figcaption strong{color:var(--tinta);font-weight:600}
+@media(max-width:550px){.docs-diagram{padding:12px}}
 </style>
