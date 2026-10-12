@@ -15,7 +15,7 @@
   "secao": "Global",
   "tipo": "token",
   "item": "Fontes: Geist 400 a 700 (variável), Hanken Grotesk 400, 500 e 600, IBM Plex Mono 400 e 500, com os subconjuntos latin, latin-ext, vietnamese, cyrillic e cyrillic-ext",
-  "destino": "src/styles/fonts.css, src/data/design-system.json (identidade.fontes)",
+  "destino": "src/styles/fonts.css (gerado por scripts/fontes.mjs com as famílias do kit) e os tokens --f-titulo, --f-texto e --f-mono da Partitura",
   "site": ".hero-titulo",
   "design": "#topo h1",
   "largura": 1440
@@ -36,7 +36,7 @@
   "secao": "Global",
   "tipo": "token",
   "item": "Corpo: fundo #EEF0F2, texto #12161C, Hanken Grotesk, antialiasing e optimizeLegibility",
-  "destino": "src/styles/base.css (body), tokens papel e tinta",
+  "destino": "src/styles/base.css (body), tokens --chao (névoa) e --texto (tinta) da Partitura",
   "site": ".runtimes",
   "design": "section:nth-of-type(2)",
   "largura": 1440
@@ -57,7 +57,7 @@
   "secao": "Global",
   "tipo": "token",
   "item": "Seleção de texto em #F1E2C4",
-  "destino": "src/styles/base.css (::selection), token selecao",
+  "destino": "src/styles/base.css (::selection no --linha-forte da Partitura; o latão claro do design sai, D18)",
   "site": ".hero-lead",
   "design": "#topo h1 + p",
   "largura": 1440
@@ -67,7 +67,7 @@
   "secao": "Global",
   "tipo": "token",
   "item": "Keyframes orkPulse, orkSpin (com @property --orkA), orkFlow e orkFlowX",
-  "destino": "src/styles/base.css (@keyframes, @property --orkA)",
+  "destino": "src/styles/base.css (@keyframes orkSpin, orkFlow e orkFlowX, @property --orkA); o orkPulse sai com o pulso do selo (D18)",
   "site": ".instalar-giro",
   "design": "#instalar > span",
   "largura": 1440
@@ -99,7 +99,7 @@
   "secao": "Global",
   "tipo": "token",
   "item": "Contêiner: largura máxima 1200px, calha clamp(20px,4vw,40px)",
-  "destino": "src/styles/base.css (.container), tokens largura-maxima e calha",
+  "destino": "src/styles/base.css (.container), tokens --largura (1280 px) e --calha da Partitura (D19)",
   "site": "#escala",
   "design": "#escala",
   "largura": 1440
@@ -170,7 +170,7 @@
   "secao": "Cabeçalho",
   "tipo": "imagem",
   "item": "Assinatura escura (26px) com link para #topo",
-  "destino": "src/components/SiteHeader.astro (.cabecalho-marca), public/marca/assinatura-fundo-claro.svg",
+  "destino": "src/components/SiteHeader.astro (.cabecalho-marca), public/marca/svg/assinatura-fundo-claro.svg; abaixo de 480 px, public/marca/svg/simbolo-fundo-claro.svg",
   "site": ".cabecalho-marca",
   "design": "header a[href=\"#topo\"]",
   "largura": 1440
@@ -833,7 +833,7 @@
   "secao": "Imagens",
   "tipo": "imagem",
   "item": "Assinatura para fundo claro (cabeçalho)",
-  "destino": "public/marca/assinatura-fundo-claro.svg",
+  "destino": "public/marca/svg/assinatura-fundo-claro.svg (kit)",
   "site": ".cabecalho-marca img",
   "design": "header img",
   "largura": 1440
@@ -843,7 +843,7 @@
   "secao": "Imagens",
   "tipo": "imagem",
   "item": "Assinatura para fundo escuro (rodapé)",
-  "destino": "public/marca/assinatura-fundo-escuro.svg",
+  "destino": "public/marca/svg/assinatura.svg (kit, a versão para o noite)",
   "site": ".rodape-marca img",
   "design": "footer img",
   "largura": 1440
@@ -853,7 +853,7 @@
   "secao": "Imagens",
   "tipo": "imagem",
   "item": "Símbolo para fundo claro (Você, de uma conversa e resumo do ork)",
-  "destino": "public/marca/simbolo-fundo-claro.svg",
+  "destino": "public/marca/svg/simbolo-fundo-claro.svg (kit)",
   "site": ".voce img",
   "design": "#escala img",
   "largura": 1440
@@ -863,7 +863,7 @@
   "secao": "Imagens",
   "tipo": "imagem",
   "item": "Símbolo para fundo escuro (chamada final)",
-  "destino": "public/marca/simbolo-fundo-escuro.svg",
+  "destino": "public/marca/svg/simbolo.svg (kit, a versão para o noite)",
   "site": ".chamada img",
   "design": "section:nth-of-type(11) img",
   "largura": 1440
@@ -895,7 +895,7 @@
   "secao": "Responsivo",
   "tipo": "responsivo",
   "item": "Título e textos com clamp por largura",
-  "destino": "clamp nos tokens de tipografia (design-system.json)",
+  "destino": "escala --t-* da Partitura (clamp em public/partitura/partitura.css) e papéis --tipo-* em src/styles/base.css (D16)",
   "site": ".hero-titulo",
   "design": "#topo h1",
   "largura": 390
@@ -905,7 +905,7 @@
   "secao": "Responsivo",
   "tipo": "responsivo",
   "item": "Cabeçalho: grupo da direita sem encolher; em 390 e 320 os botões ficam cortados",
-  "destino": "src/components/SiteHeader.astro (@media 660 e 480)",
+  "destino": "src/components/SiteHeader.astro (@media: abaixo de 768 px, menu; abaixo de 480 px, o símbolo; D19)",
   "site": ".cabecalho",
   "design": "header",
   "largura": 390
