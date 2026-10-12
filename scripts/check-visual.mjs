@@ -1,7 +1,7 @@
 import {readFileSync,writeFileSync,mkdirSync,existsSync,statSync} from 'node:fs';
 import {resolve,extname} from 'node:path';
 import {pathToFileURL} from 'node:url';
-const widths=[1280,700,390],routes=['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/varias-maquinas/'];
+const widths=[1280,700,390],routes=['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/varias-maquinas/','/docs/confianca/'];
 const args=process.argv.slice(2);
 if(args.includes('--plan')){console.log(JSON.stringify({locales:['pt','en','es'],widths,themes:['dark','light'],routes,reducedMotion:['reduce','no-preference'],screenshots:3*widths.length*2*(routes.length+1),checks:['overflow','keyboard','themeNameAndPersistence','receiptLayout','copySuccessAndRefusal','falseReportLabel','collisionEntry','panels','reducedMotion','inlineCodeAtomic','adjacentTextWithCode','oneCodeScalePerBlock','linkUnderlineOnCode','tracksClearOfWrappedChips','oneContentEdge','motionCaptureOfViewport'],network:'blocked',requires:['PLAYWRIGHT_MODULE','CHROMIUM_EXECUTABLE','--output']},null,2));process.exit(0);}
 const output=args.includes('--output')?resolve(args[args.indexOf('--output')+1]):null;

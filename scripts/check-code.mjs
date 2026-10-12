@@ -10,6 +10,11 @@ export const proseExceptions = [
  'ork a','ork abre','ork abrió','ork abriu','ork aplica','ork as','ork brings','ork chamado','ork chega','ork com','ork con','ork core','ork e','ork é','ork elige','ork entry','ork es','ork escolhe','ork exige','ork fica','ork goes','ork is','ork itself','ork llega','ork nas','ork never','ork nunca','ork opens','ork package','ork picks','ork por','ork se','ork state','ork version','ork with','ork y','ork requires',
 ];
 const exceptions=new Set(proseExceptions);
+// Subcomando do ork citado sem o ork: o comando é "ork claims add", nunca "claims add".
+// Lista fechada de verbos e subcomandos reais da referência do CLI; o par com o ork antes é outra regra.
+const bareVerbs='accounts|adapter|audit|board|brain|ci|claims|conducao|decisao|docs|doctor|experiencia|fabrica|gate|grafo|handoff|lease|ledger|master|memory|network|onboarding|phase|portfolio|prompt|pulse|retry|roadmap|sessions|setup|ship|thread|worktree';
+const bareSubcommands='add|acquire|adopt|approve|assumir|conferir|confirmar|context|dossie|ensure|entrar|esgotamentos|export|indexar|install|new|pedir|placar|prepare|publicar|registrar-pr|registrar|release|retirar|run|sair|search|sincronizar|status|verificar';
+export const bareCommand=new RegExp(`(?<![\\p{L}\\d_./@-])(?<!ork\\s)(?:${bareVerbs}) (?:${bareSubcommands})(?![\\p{L}\\d_-])`,'gu');
 const blocks=new Set(['address','article','aside','blockquote','br','div','dl','dt','dd','figcaption','figure','footer','h1','h2','h3','h4','h5','h6','header','hr','li','main','nav','ol','p','section','svg','text','tspan','table','td','th','tr','ul']);
 const excluded=new Set(['head','script','style','template','code','pre']);
 // Keep hidden panels/details: they can become visible on interaction. aria-hidden is
@@ -30,6 +35,7 @@ export function violations(html) {
   const candidate=m[0].replace(/\s+/g,' ');
   if(!exceptions.has(candidate))found.push(candidate);
  }
+ for(const m of text.matchAll(bareCommand))found.push('ork? '+m[0]);
  for(const m of text.matchAll(/(?<![\w-])--[a-z][\w-]*|\b(?:[A-Z][A-Z0-9]*_)+[A-Z0-9_]+\b|\b(?:mcp__\w+|ork_\w+)\b|\b[\w.-]+\.(?:jsonl?|ya?ml|md|toml|mjs|cjs|ts|py|sh)\b|\bork\.[\w.-]+\/v\d+/g))found.push(m[0]);
  for(const m of text.matchAll(/\b[a-z][\w-]*(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b|\b[a-z][\w]*(?:_[a-z\d]+)+\b|(?:~\/|\.[a-z][\w-]*\/|\/(?:usr|tmp)\/|\b(?:origin|tools|plugins|pgvector)\/)(?:[\w@*-]+|<[^<>]+>|\/|\.[\w-]+)+|@[a-z][\w-]*\/[\w.-]+/g)){
   // Public contact/domain is prose. This does not exempt any command or path.

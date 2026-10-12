@@ -163,3 +163,11 @@ test('three-level ork commands, git rm with a path and node with an ork subcomma
  assert.equal(technicalHtml('Abra /torre no Claude Code; e/ou siga.'),'Abra <code>/torre</code> no Claude Code; e/ou siga.');
  assert.equal(technicalHtml('Use ork thread status para ver.'),'Use <code>ork thread status</code> para ver.');
 });
+
+test('an ork subcommand quoted without ork fails the code audit, in prose of any language',()=>{
+ assert.deepEqual(violations('<p>O lint avisa em claims add e ci prepare recusa.</p>'),['ork? claims add','ork? ci prepare']);
+ assert.deepEqual(violations('<p>Then phase run dispatches; thread status shows it.</p>'),['ork? phase run','ork? thread status']);
+ assert.deepEqual(violations('<p>'+technicalHtml('O lint avisa em ork claims add e ork ci prepare recusa.')+'</p>'),[]);
+ assert.deepEqual(violations('<p>a thread nova, o status da thread e o pacote de contexto</p>'),[]);
+ assert.deepEqual(violations('<p>ork <em>claims</em> add</p>'),['ork claims']);
+});

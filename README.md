@@ -40,6 +40,18 @@ remota durante o build. `docs-schema.ts` descreve o formato; o verificador valid
 os módulos usados pelas rotas. Os arquivos `.ts` editoriais exportam dados JSON
 por default para permitir leitura pelo Astro e por Node sem executar conteúdo.
 
+Uma seção pode ter `highlight` (título, parágrafos, itens e links): o que muda
+para quem já usa, renderizado logo abaixo do título da seção com borda e sinal na
+cor de alerta. Ele existe na mesma seção das três línguas, ou em nenhuma; o
+`docs:check` reprova destaque vazio ou só numa língua. Link interno do catálogo
+começa com `/docs/` e vai para a mesma língua, dentro do `base` da prévia.
+
+A versão do CLI que o site descreve fica só em `src/data/release.mjs`. O texto
+editorial escreve `{versao}`, que a renderização troca pelo número: para outra
+release, troque o número ali e rode `npm run build`, sem revisar texto. O
+`check:content` reprova o marcador que sobrar no HTML e procura na home o rótulo
+`@orkastery/cli` com a versão.
+
 `src/data/docs-sources.json` contém caminhos relativos, SHA-256, classificação,
 tratamento e destinos das fontes. Cada revisão registra hash das fontes, hash
 do texto, autor editorial e data. O inventário inclui documentação e metadados de
@@ -85,12 +97,18 @@ as traduções nem seus hashes. Ele escapa texto simples; `richTechnicalHtml` é
 reservado às traduções HTML locais já existentes, nunca a conteúdo remoto.
 Para uma sintaxe nova, acrescente um caso explícito ao reconhecedor e um teste,
 ou marque o trecho com `<code>` no componente. Não envolva a frase inteira.
+O identificador vai inteiro para o código: o `$` de `$CODEX_HOME`, a atribuição de
+`ORK_PROJETO_EXPLICITO=1`, a chamada de `semPostgres()`, o curinga de `ork_grafo_*`,
+o membro de `runtime_profiles.distribuir` e o comando do `ork` com até dois níveis de
+subcomando e os argumentos (`ork setup sandbox confirmar danger-full-access`).
 
 `npm run build` executa `test:code` e `check:code`. O auditor usa o DOM do HTML
 final, independentemente do reconhecedor. Reprova comandos soltos de `ork`, `npm`,
 `npx`, `git` e `pip`, flags e identificadores técnicos, inclusive em painéis ainda
 fechados, entidades HTML e comandos divididos por tags inline. Não há exceção por
 pedaço de comando: `ork <code>doctor</code>` também reprova; marque o comando inteiro.
+Subcomando do `ork` citado sem o `ork` (“claims add”, “ci prepare”) também reprova:
+o texto diz `ork claims add`.
 `Node.js`, `projeto-alvo` e “resources unavailable in CI” são prosa; arquivos como
 `index.js`, caminhos e contratos com ponto continuam distintos.
 Não há exceção por
@@ -104,7 +122,7 @@ O código inline é atômico (`inline-block` limitado à largura do texto): um c
 curto nunca se parte entre linhas, e um longo quebra dentro do próprio chip. Como o
 navegador abre quebra junto de um elemento atômico mesmo colado a outro caractere, o
 `TechnicalText` e o HTML rico põem a sequência não branca que encosta no chip
-(parênteses, pontuação, `=1`, `/sessions`, `()`) numa unidade sem quebra
+(parênteses e pontuação) numa unidade sem quebra
 (`.code-unit`) com ele. A folga do chip dentro da unidade (`--folga`) acompanha o que
 foi colado (pontuação estreita pesa menos que letra ou símbolo), e `check:code` reprova
 unidade com mais de 12 caracteres colados, porque ela não encolhe e estouraria a coluna
@@ -172,9 +190,10 @@ npm run check:visual -- --output /diretorio/privado/screenshots
 
 O verificador intercepta todas as requisições, serve somente `dist` em memória e
 bloqueia destinos externos. Exercita home, páginas de produto, índice, arquitetura,
-contribuição e rede nos três idiomas e em 1280, 700 e 390 px, com os dois temas
-selecionados de verdade. São 126 capturas de página inteira com movimento reduzido,
-feitas a partir do topo, e mais 18 da home com movimento normal: 144 capturas
+contribuição, rede e fronteira de confiança (a página com o destaque do que muda para
+quem já usa) nos três idiomas e em 1280, 700 e 390 px, com os dois temas
+selecionados de verdade. São 144 capturas de página inteira com movimento reduzido,
+feitas a partir do topo, e mais 18 da home com movimento normal: 162 capturas
 previstas. A captura com movimento é só da janela visível, com a cena no centro: a de
 página inteira, com a página rolada, pintava o link de pular (fixo) no meio da imagem
 e numa rodada saiu com a cena fora do estado final. O estilo do estado final (nó de
