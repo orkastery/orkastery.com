@@ -63,6 +63,13 @@ test('full command placeholders, single flags and rich markup stay intact',()=>{
  assert.equal(technicalHtml('<dir>/plugins/orkastery'),'<code>&lt;dir&gt;/plugins/orkastery</code>');
 });
 
+test('commands and identifiers from the quickstart text are whole code',()=>{
+ for(const token of ['ork accounts esgotamentos --desde 7d','ork lease acquire','ork ship registrar-pr','npm --prefix core ci','prs.sem-leitura','estado.worktree-nao-registrada']){
+  assert.equal(technicalHtml(token),`<code>${token}</code>`,token);
+  assert.deepEqual(violations(`<p>${technicalHtml(token)}</p>`),[],token);
+ }
+ assert.equal(technicalHtml('com o ork chamado da raiz'),'com o ork chamado da raiz');
+});
 test('rendered-directory audit rejects a regression then accepts the semantic repair',()=>{
  const dir=mkdtempSync(join(tmpdir(),'site-code-'));
  try{

@@ -2,12 +2,12 @@
 // The independent HTML auditor in scripts/check-code.mjs checks the rendered result.
 import {parseFragment, serialize} from 'parse5';
 
-const verbs = 'adapter|audit|board|fix|brain|ci|claims|collections|demo|docs|doctor|experiencia|fabrica|gate|grafo|init|ledger|master|memory|modos|monitor|network|onboarding|phase|projetos|prompt|pulse|retry|roadmap|sessions|setup|ship|thread|verify|worktree';
-const subcommands = 'context|dossie|sincronizar|verificar|show|indexar|roadmap|lint|policy|feat|hitl|limpar-fantasmas|registrar|esquecer|acquire|add|adopt|approve|audit|build|check|classic|config|deny|entrar|ensure|export|gc|get|import|index|install|inspect|join|leave|list|new|next|pedir|prepare|query|reindex|release|reset|resume|review|run|sair|search|set|start|stats|status|sync|validate|view|warmup';
+const verbs = 'accounts|activation|adapter|audit|board|fix|brain|ci|ciclos|claims|collections|conducao|creation|decisao|demo|docs|doctor|eval|experiencia|fabrica|gate|grafo|handoff|init|lease|ledger|licoes|maestro|master|mcp|memory|modos|monitor|network|objective|onboarding|orquestracao|phase|portfolio|projetos|prompt|pulse|recall|receipt-verifiers|retry|roadmap|sessions|setup|ship|thread|verify|worktree';
+const subcommands = 'context|contexto|dossie|sincronizar|verificar|show|indexar|roadmap|lint|policy|feat|hitl|limpar-fantasmas|limpar|registrar-pr|registrar|esquecer|esgotamentos|acquire|add|adopt|amostra|answer|approve|assumir|attach|audit|batch|build|cadencia|caminho|cancel|chamadores|check|classic|close|conferir|config|confirmar|create|deny|digest|divida|enable|entrar|entrega|ensure|estimate|export|gc|get|import|importadores|index|ingest|init|inspect|install|inventory|join|leave|list|migrar|migrate|new|next|open|packs|pedir|placar|plan|prepare|process|propor|publicar|query|ratificar|reconcile|reindex|release|remove|render|report|request|reservas|reset|responder|resume|retirar|reverify|review|run|sair|sandbox|search|serve|set|soltar|start|stats|status|stop|supersede|sync|uninstall|validate|versionar|view|vizinhos|warmup|watch';
 const argument = String.raw`(?:<[^<>\n]+>|--[a-z][\w-]*(?:=[\w./:-]+)?|@orkastery/[\w.-]+(?:@[\w.-]+)?|\d+(?:[dhm])?|auto|classic|codex|claude-bg|maestro|GOAL|PLAN|GO|CHECK|SHIP|MASTER|N)`;
 const patterns = [
   new RegExp(String.raw`\bork\s+(?:${verbs})(?:\s+(?:${subcommands}))?(?:\s+${argument})*(?![\w-])`, 'g'),
-  /\b(?:npm|npx)\s+(?:(?:--prefix\s+\w+\s+)?(?:run\s+[\w:-]+|install(?:\s+-g)?(?:\s+@[\w/-]+)?|view\s+@[\w/-]+(?:\s+version)?|test)|@[\w/-]+)(?:\s+--[\w-]+)*/g,
+  /\b(?:npm|npx)\s+(?:(?:--prefix\s+\w+\s+)?(?:run\s+[\w:-]+|install(?:\s+-g)?(?:\s+@[\w/-]+)?|view\s+@[\w/-]+(?:\s+version)?|test|ci)|@[\w/-]+)(?:\s+--[\w-]+)*/g,
   /\bnode\s+[\w./-]+\.(?:[cm]?js|ts)(?:\s+(?:ci|prepare|origin\/main))*/g,
   /\.(?:git|env|gitignore|orkastery|agents|claude|codex)\b/g,
   /\b(?:git\s+(?:ls-remote|rebase|remote(?:\s+-v)?|status|diff|log|clone|fetch|pull|push|commit|checkout|switch)|pip3?\s+install)(?:\s+<[^<>]+>)?/g,
@@ -21,6 +21,9 @@ const patterns = [
   /\b[a-z][a-z0-9]*(?:[A-Z][a-z0-9]+)+\b/g,
   /\b(?:ork|orkastery|claims|verify|artifact|tree|lease|runtime|policy|human|cost|project|projeto|conduction|worktree|memory|remoto|roadmap|board|ship|retry|prompt|capabilities|snapshot|doc|docs|onboarding|network|fabrica|gate|maestro|ci|providers|skills|security|performance|browser|git)(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b/g,
   /(?<![\w@])(?:orkmind|owner|grafo|hitl|init|rede|master|brain|alternativas|resposta|maquina|citacao|concurrency|changelog)(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b/g,
+  // Todo identificador minusculo com ponto e codigo, como o auditor exige (prs.sem-leitura,
+  // estado.link, runtime_profiles.distribuir); os dois dominios publicos de contato seguem prosa.
+  /(?<![\w@./-])(?!(?:orkastery|orkmind)\.com\b)[a-z][a-z0-9]*(?:[_-][a-z0-9]+)*(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b/g,
   /(?:<[^<>\n]+>\/|\/[a-z][\w-]*\/|\.[a-z][\w-]*\/|\b(?:origin|tools|plugins|pgvector)\/)(?:[\w@*-]+|<[^<>]+>|\/|\.[\w-]+)+(?:[:][\w.-]+)?/g,
   /@[a-z][\w-]*\/[\w.-]+(?:@[\w.-]+)?/g,
   /(?<![\w-])-[gvCh](?![\w-])/g,
