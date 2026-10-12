@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-28",
-  "nextReview": "2026-10-28",
+  "updatedAt": "2026-10-12",
+  "nextReview": "2026-11-12",
   "source": "https://github.com/orkastery/orkastery/tree/main/docs/roadmap",
   "summary": {
-    "pt": "Acompanhe no repositório a evolução das integrações, da documentação e da memória governada. Itens planejados são intenções; a documentação de uso descreve o comportamento disponível nas fontes revisadas.",
-    "en": "Follow integration, documentation and governed memory work in the repository. Planned items express intent; the usage documentation describes behavior available in the reviewed sources.",
-    "es": "Siga en el repositorio la evolución de las integraciones, la documentación y la memoria gobernada. Los planes expresan intenciones; la documentación de uso describe el comportamiento disponible en las fuentes revisadas."
+    "pt": "Em outubro, entraram no roadmap o modo #Noctum, ainda em refinamento, a condução dentro do Claude Code, o site como produto e o CLI em inglês e pt-BR. Itens planejados são intenções; a documentação de uso descreve o comportamento disponível nas fontes revisadas.",
+    "en": "In October, #Noctum mode, still in refinement, conduction inside Claude Code, the site as a product and the CLI in English and pt-BR entered the roadmap. Planned items express intent; the usage documentation describes behavior available in the reviewed sources.",
+    "es": "En octubre entraron en el roadmap el modo #Noctum, aún en refinamiento, la conducción dentro de Claude Code, el sitio como producto y el CLI en inglés y pt-BR. Los planes expresan intenciones; la documentación de uso describe el comportamiento disponible en las fuentes revisadas."
   }
 }
