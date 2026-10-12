@@ -11,9 +11,11 @@ script que leva também o fragmento. `check:redirecionamentos` confere cada uma 
 e `test:redirecionamentos` tem os canários (sem `noindex`, destino errado, página em
 espanhol de volta, link ou `hreflang` para `/es/`).
 
-O visual é o design que o dono fez no Claude Design ("Orkastery Home"): a home o
-reproduz seção por seção, e o resto do site (docs, contribuir, páginas de produto e as
-duas línguas) usa o mesmo design system, descrito em "Design system".
+O visual é o design que o dono fez no Claude Design ("Orkastery Home") sobre a Partitura,
+o design system do kit do dono: a home reproduz o HTML dele seção por seção, e o resto do
+site (docs, contribuir, páginas de produto, a página da marca e as duas línguas) usa os
+mesmos componentes. Onde o HTML da home e o kit discordam, vale o kit (ver "Design
+system: a Partitura do kit").
 
 ## Desenvolvimento e prova local
 
@@ -28,79 +30,130 @@ npm run build
 npm run docs:check
 npm run check:links
 npm run check:i18n
+npm run check:redirecionamentos
 npm run check:public
 npm run check:content
 npm run check:code
 npm run check:design
 npm run test:docs
+npm run test:redirecionamentos
 npm run test:code
 npm run test:design
+npm run fontes
+npm run kit -- --de /caminho/do/kit
 ```
 
 O prebuild confere o snapshot e a revisão editorial. O postbuild confere HTML,
 links, fragmentos, idiomas, metadados, padrões públicos, semântica, texto técnico
-formatado como código, o design system (tokens, contraste e CSS gerado) e a lógica
-da home contra a do design, e executa canários negativos. Build aprovado não é
+formatado como código, o vocabulário do kit, os redirecionamentos do espanhol, a
+Partitura (cópia do kit, cor solta, latão, foco, contraste e fontes) e a lógica da home
+contra a do design, e executa canários negativos. Build aprovado não é
 revisão visual nem prova de naturalidade da tradução: a prova visual é o
 `check:visual` e o `check:fidelity`, com navegador. Links externos são
 inventariados, mas não consultados pela prova offline. `parse5` já integra a árvore
 do Astro; a mesma versão do lockfile é declarada diretamente para os auditores de
 HTML, sem adicionar outro parser.
 
-## Design system
+## Design system: a Partitura do kit
 
-A fonte única dos tokens é `src/data/design-system.json`, com os valores tirados do
-HTML do design do dono. `npm run tokens` (`scripts/design-tokens.mjs`) gera
-`src/styles/tokens.css` a partir dele; não edite o CSS à mão. O `check:design`
-reprova o CSS fora de sincronia, confere o contraste AA de 42 pares de texto dos
-tokens, a ausência de asset externo e de fonte do visual antigo, as licenças das
-fontes, a regra do código inline inteiro no CSS gerado e o orçamento de JS e fontes.
+O design system é a Partitura, do kit do dono no Claude Design (o `DESIGN.md` e o
+`CLAUDE.md` do kit). Ela vence os tokens do HTML da home e o `tokens.css` legado (decisão
+D14 da thread): onde os dois discordam, vale o kit.
 
-O JSON tem duas camadas:
+Os arquivos do kit entram sem mudança por `npm run kit -- --de <pasta do kit>`
+(`scripts/kit.mjs`), que grava o sha256 de cada um em `src/data/kit-partitura.json`:
 
-- `identidade`: o que muda de uma marca para outra. Cores por papel (`tinta`,
-  `papel`, `acento`, `ok`, `info`, `alerta`, `noite` e as variantes), as três
-  famílias tipográficas e os arquivos de marca em `public/marca/`.
-- `estrutura`: o que vale para qualquer marca da família. Escala tipográfica
-  (`--tipo-*`, com o `tracking` de cada uma), espaço, padding das seções, raios,
-  sombras, linhas, movimento, contêiner (1200 px de conteúdo com a calha
-  `clamp(20px,4vw,40px)`) e as larguras de referência (1440, 1280, 1024, 768, 390 e 320).
+- `public/partitura/partitura.css`: os tokens, ligados no `<head>` de
+  `src/layouts/Base.astro` e também publicados em `/partitura/partitura.css`, como no
+  exemplo do `DESIGN.md`;
+- `public/partitura/partitura.json`: os mesmos tokens em JSON;
+- `public/partitura/DESIGN.md`: as regras para agentes;
+- `public/marca/svg/`, `public/marca/png/` e `public/marca/templates/`: logos retingidos
+  para a Partitura, ícones, favicons e templates. `public/favicon.ico` é o
+  `favicon-32.png` do kit dentro de um ICO.
 
-Os componentes saem dos blocos do design e usam só os tokens:
+`npm run fontes` (`scripts/fontes.mjs`) gera `src/styles/fonts.css` com os nomes de
+família que o `partitura.css` usa ('Geist', 'Hanken Grotesk' e 'IBM Plex Mono'), a partir
+dos pacotes `@fontsource` fixados em 5.3.0. As licenças OFL ficam em `public/licenses/`.
 
-| Componente | Arquivo | Bloco do design |
+Regras do kit, onde valem e a guarda de cada uma:
+
+| Regra do kit | Onde | Guarda |
 | --- | --- | --- |
-| `SiteHeader` | `src/components/SiteHeader.astro` | cabeçalho fixo, translúcido, com navegação de prioridade |
-| `LanguageSelector` | `src/components/LanguageSelector.astro` | seletor de língua em pílula |
-| `SiteFooter` | `src/components/SiteFooter.astro` | rodapé escuro com frase, colunas e linha final |
-| `Eyebrow` e `SectionHead` | `src/components/ds/` | sobretítulo, h2 com continuação em cinza e parágrafo |
-| `Divider` | `src/components/ds/Divider.astro` | fio em degradê com o ponto de latão |
-| `InstallButton` | `src/components/ds/InstallButton.astro` | botão que copia o comando, nas variantes hero, cartão e noite |
+| Só `var(--…)` da Partitura (e `color-mix` deles), nenhuma cor solta | estilos de todos os componentes, `src/lib/home-state.mjs` e o canvas da partitura, que lê os tokens no próprio canvas | `check:design` (fonte, CSS da build e estilos inline) |
+| Latão só em espera você, ponto de HITL, recomendada, separador e na borda de luz do comando de instalação | `Divider`, `InstallButton`, board e resumo da atenção, matriz de modos e pergunta | `check:design` (CSS), `test:design` (lógica da home) e `check:visual` (cor calculada de cada elemento) |
+| Texto com 4,5:1 nos dois temas; texto de estado pela variante `-texto` | semânticos do `partitura.css` | `check:design` (35 pares) e `check:visual` (contraste real de cada texto) |
+| Foco por `box-shadow: var(--anel-foco)`, nunca recortado nem sob o cabeçalho | `src/styles/base.css`, respiro de 4 px nos contêineres com recorte e `scroll-padding-top` | `check:design` e `check:visual` (todo focável, na ordem do Tab) |
+| Alvo de toque de 44 x 44 px | botões, navegação, seletor de língua e listas de links | `check:visual` |
+| Bloco de código e comando copiável sempre noite | `data-tema="noite"` no `InstallButton`, nos `<pre>` e no terminal | revisão visual |
+| Logos dos arquivos do kit, sem mudança; assinatura com 120 px ou mais | `public/marca/svg/`; abaixo de 480 px o cabeçalho mostra o símbolo | `check:design` (sha256) |
+| Movimento andante (`--curva`, 160, 280 e 600 ms), brilho neutro só com mouse, entrada ao rolar de 600 ms, 16 px e 80 ms entre irmãos | `base.css` e `src/scripts/moldura.ts` | `check:visual` (só as animações do kit; nada anda com movimento reduzido) |
+| Vocabulário sem afrouxar, batuta, metrônomo, Bernstein, disruptivo e "pausa" no sentido de HITL | dados das docs e das páginas | `check:content` |
+| PT em `/` e EN em `/en/` | `src/data/i18n.ts` | `check:i18n` e `check:redirecionamentos` |
 
-Classes globais em `src/styles/base.css`: `.container`, `.sobretitulo`, `.secao-padrao`,
-`.holofote` (o brilho que segue o mouse, com `data-holofote`), `.codigo-liso` (código
-sem chip, na letra de quem o contém) e o código inline no estilo do chip.
+Tipografia: os papéis de texto ficam em `src/styles/base.css` como composições da escala
+do kit (`--tipo-display` sobre `--t-display`, `--tipo-titulo-1` a `--tipo-titulo-3`,
+`--tipo-corpo`, `--tipo-apoio`, `--tipo-rotulo` e `--tipo-codigo`), com o peso, a
+entrelinha e o tracking das notas do `partitura.css` (`--trk-*`). O tema noite vem do
+atributo `data-tema="noite"`, como no kit; o `base.css` declara de novo o `--anel-foco`
+nesse tema, porque o `partitura.css` o resolve só no `:root`.
 
-Para outro site da família (por exemplo, o do OrkMind) reaproveitar a estrutura e
-trocar só a identidade: copie `src/data/design-system.json`, `scripts/design-tokens.mjs`,
-`src/styles/base.css`, `src/styles/fonts.css` e os componentes acima; troque os
-valores de `identidade.cores` (os nomes são papéis, não cores: `acento` pode deixar
-de ser latão), as famílias de `identidade.fontes` (e os pacotes em `fonts.css` e em
-`package.json`, com as licenças em `public/licenses/`) e os SVGs de `identidade.marca`;
-rode `npm run tokens`. A estrutura, os componentes e as checagens seguem iguais, e o
-`check:design` já confere o contraste dos pares com as cores novas.
+| Componente do kit | No site |
+| --- | --- |
+| Comando copiável | `src/components/ds/InstallButton.astro` (hero com a borda de luz girando, cartão e noite) e `src/scripts/copiar.ts` |
+| Botões primário e secundário | cabeçalho, hero, páginas de produto, chamada final e `/marca/`, com 44 px e raio 12 |
+| Separador | `src/components/ds/Divider.astro` |
+| Barra de 6 fases, chip de estado e ork board | `src/components/home/Atencao.astro` (abaixo de 768 px, lista de cartões) |
+| Pergunta a–d e resumo horário | `Atencao.astro`: a escolhida com borda `--texto`, a recomendada com o ponto de latão |
+| Número de prova e lacuna | `src/components/home/Prova.astro` |
+| Matriz de modos | `src/components/home/Modos.astro` |
+| Topologia | `src/components/home/Paralelismo.astro` (instrução em tracejado regência, evidência em pátina contínua) |
+| Header e menu de 390 px | `src/components/SiteHeader.astro` (abaixo de 768 px vira menu) |
+| Alerta | o destaque das docs, em `src/styles/docs.css` |
 
-As fontes são Geist, Hanken Grotesk e IBM Plex Mono, pelos pacotes
-`@fontsource-variable/geist`, `@fontsource-variable/hanken-grotesk` e
-`@fontsource/ibm-plex-mono` na versão 5.3.0, fixada: são os mesmos arquivos, byte a
-byte, que o HTML do design embutia. As licenças OFL ficam em `public/licenses/`.
+Para outro site da família (o do OrkMind) reaproveitar a estrutura e trocar só a
+identidade: traga o kit dele com `npm run kit -- --de <pasta do kit>` (o `partitura.css`
+dele troca os primitivos e mantém os nomes dos semânticos), rode `npm run fontes` se as
+famílias mudarem e troque os SVGs. `base.css`, os componentes de `src/components/ds/` e as
+guardas (`check:design` e `check:visual`) seguem iguais, e o `check:design` confere o
+contraste dos pares com as cores novas.
 
-Desvios do design, cada um com motivo (lista em `desvios`, no JSON): rótulo pequeno
-no cinza `tinta-4-aa` em vez de `tinta-4` (contraste AA); comando inteiro no botão de
-instalação, com a pílula descendo de linha no estreito (regra do código inteiro);
-botões do cabeçalho que somem inteiros no estreito em vez de ficar cortados; PT, EN e
-ES no seletor; comando e identificador na prosa como código; o endereço de contato
-institucional; e grades que no estreito estourariam a tela passam a refluir.
+Desvios do HTML da home, cada um com motivo (decisões da thread):
+
+- O kit vence (D14, D16 e D18): tipografia na escala do kit (h1 até 72 px, h2 até 44 px)
+  com tracking entre -0,01 e -0,035em e rótulos com +0,06em; cores pelos semânticos; o
+  latão que o HTML punha em links, setas, botões de contato, rótulo da camada, progresso e
+  decisão da noite, função ativa, rotação de perfil e alternativa escolhida passa a
+  regência, ação ou neutro; o ponto do selo deixa de pulsar (pulso só no que está vivo);
+  foco pelo anel do kit; alvos de 44 px (rodapé e listas de links ficam mais altos);
+  contêiner de 1280 px com a calha do kit; espaços e raios do kit.
+- Responsividade do kit (D19): menu abaixo de 768 px, board em cartões e, abaixo de
+  480 px, o símbolo no lugar da assinatura.
+- Regra do código inteiro (D6, de 03/10): o comando inteiro no botão de instalação, com a
+  pílula descendo de linha; o chip nunca quebra por dentro (rola quando não cabe nem
+  sozinho na coluna); números da prova em uma coluna quando o comando não cabe na célula.
+- Conteúdo (D7, D8 e D13): o contato institucional; rodapé com destinos reais, Contribuir
+  e Marca; números e lacuna do README do núcleo.
+- Idiomas (D15): PT e EN, como no seletor do próprio HTML da home.
+- Acessibilidade (revisão independente): botão de pausar o movimento da home (WCAG
+  2.2.2), nome acessível do seletor de língua com o rótulo visível, foco nunca sob o
+  cabeçalho, diagrama que rola como região focável, link da navegação que não cabe
+  sumindo inteiro e o resumo das 09:00 em 2 x 2 no cartão estreito.
+- Os glifos →, ✓, ✕ e ∞ saem da fonte de reserva, porque as fontes embutidas no HTML da
+  home não os têm.
+
+## A marca
+
+`/marca/` e `/en/marca/` são o Brand Kit do kit (a capa do manual e as diretrizes rápidas
+apontam `orkastery.com/marca`): logos com downloads em SVG e PNG, ícones de app, a paleta
+(cada amostra copia o hex), as fontes com o trecho do `<head>`, os templates, as
+diretrizes rápidas e os arquivos para devs e agentes. Os botões de documento abrem PDFs
+feitos dos documentos do kit por `scripts/documentos-da-marca.mjs`, que precisa de
+Playwright e de rede (fontes e runtime do Claude Design) e não faz parte do build; o
+sha256 de cada PDF fica em `src/data/kit-partitura.json`, e o `check:design` o confere. O
+link "editar os templates" do Brand Kit não entra: ele abre o editor do Claude Design,
+sem endereço público. O inventário dos itens do kit, com o destino de cada um no site,
+está em `scripts/fidelidade/inventario-kit.json`.
 
 ## A home
 
@@ -119,9 +172,13 @@ que o script do design em 25 tiques, na noite, nos modos, nas fases e nas altern
 (`scripts/fidelidade/estado-do-design.json`).
 
 Com movimento reduzido, nada se move sozinho: animações paradas, partitura parada, sem
-revelação ao rolar e sem o relógio de 2,4 s. Os modos são botões com `aria-pressed`, as
-fases são abas (com setas, Home e End), a alternativa escolhida tem `aria-pressed`, e o
-botão de instalação anuncia o resultado da cópia para leitor de tela.
+revelação ao rolar e sem o relógio de 2,4 s. Sem a preferência, o botão "pausar
+movimento", no cartão da partitura, para a partitura, o relógio e as animações (WCAG
+2.2.2). Os modos são botões com `aria-pressed`, as fases são abas (com setas, Home e
+End), a alternativa escolhida tem `aria-pressed`, e o botão de instalação anuncia o
+resultado da cópia para leitor de tela. `test:design` compara as cores da lógica com as
+do design pelo papel (tinta, linha, executando, verificado...), com as trocas do kit
+listadas no próprio teste.
 
 ## Conteúdo e fontes
 
@@ -183,8 +240,11 @@ sobrar no HTML e procura na home o rótulo `@orkastery/cli` com a versão.
 Comando, caminho, flag e identificador técnico ficam sempre como código e inteiros, sem
 quebrar no meio da linha. O reconhecedor `src/lib/technical-text.mjs`, usado pelo
 componente `TechnicalText`, põe esse texto em `<code>` no build; o que encosta no código
-(parêntese, ponto, sufixo colado) viaja junto numa unidade sem quebra. O `check:code`
-audita o HTML gerado: reprova comando, flag, caminho ou identificador fora de código, e
+(parêntese, ponto, sufixo colado) viaja junto numa unidade sem quebra. O chip nunca
+quebra por dentro: desce de linha como um bloco e, se for mais largo que a coluna inteira,
+rola nele mesmo. O `check:code` audita o HTML gerado: reprova comando, flag, caminho
+(inclusive diretório com a barra no fim, como `core/`) ou identificador fora de código,
+identificador partido entre código e texto (como `claude-bg` seguido de `/pessoal`), e
 subcomando do `ork` sem o `ork`. As poucas frases em que `ork` é o sujeito da frase
 (como "o ork reserva") estão numa lista exata de exceções de prosa. No visual, o código
 inline é o chip do design; o código que o design já mostra em mono (terminal, rótulos)
@@ -192,15 +252,16 @@ usa `.codigo-liso`, sem chip.
 
 ## Tipografia, caixa e diagramas
 
-Títulos em Geist, texto em Hanken Grotesk e código em IBM Plex Mono, com a escala dos
-tokens `--tipo-*`. Títulos, menus, links, botões e rótulos usam caixa de frase; o
-sobretítulo em mono maiúsculo é desenho do design. Siglas, comandos e nomes próprios
+Títulos em Geist 600, texto em Hanken Grotesk 400 e 500 e prova (comandos, SHAs,
+horários, rótulos e números) em IBM Plex Mono, na escala do kit (`--tipo-*`). Títulos,
+menus, links e botões usam caixa de frase; o rótulo em mono maiúsculo, com +0,06em, é
+desenho do kit. Siglas, comandos e nomes próprios
 conservam a grafia original.
 
 O layout documental tem trilha, sumário, navegação por assunto e anterior/próximo, em
-cartões brancos sobre o papel. SVGs têm title, desc, relações numeradas e legenda
-textual; a leitura não depende só da cor. O site tem um tema só, o claro do design, com
-as seções escuras que o próprio design desenha.
+cartões em papel sobre a névoa. SVGs têm title, desc, relações numeradas e legenda
+textual; a leitura não depende só da cor. O site tem o tema dia do kit, com as seções e
+os blocos em tema noite que o HTML da home e o kit desenham.
 
 ## Prova visual sem rede
 
@@ -214,13 +275,19 @@ npm run check:visual -- --output /diretorio/privado/screenshots
 ```
 
 O verificador intercepta todas as requisições, serve somente `dist` em memória e
-bloqueia destinos externos. Exercita home, `/ork/`, `/orkmind/`, o índice das docs e três
-artigos nas três línguas, a 1440, 768 e 390 px: 63 capturas de página inteira. Em cada uma
-confere o link de pular, o seletor de língua pelo teclado, o foco visível, nenhuma sobra
-horizontal e o código inline inteiro e colado ao vizinho; na home, também copiar (com
-sucesso e com recusa da área de transferência), os modos, as fases com setas, as
-alternativas, o relógio da noite pela rolagem, a revelação ao rolar e nenhuma animação
-rodando com movimento reduzido. `node scripts/check-visual.mjs --plan` mostra a matriz.
+bloqueia destinos externos. Exercita a home, `/ork/`, `/orkmind/`, o índice das docs, três
+artigos e `/marca/` em PT e EN, a 1440, 768, 390 e 320 px: 64 capturas de página inteira.
+Em cada uma confere o link de pular e o seletor de língua pelo teclado; em todo focável,
+na ordem do Tab, o anel do kit visível, sem recorte e fora do cabeçalho fixo; nenhuma
+sobra horizontal; o contraste real de cada texto; texto que não vaza da própria caixa; o
+código inline inteiro, colado ao vizinho, dentro do bloco e rolando só quando não cabe; o
+alvo de 44 px fora do texto corrido; o latão só nos lugares do kit; e, abaixo de 768 px,
+o menu do cabeçalho (abre, fecha com Esc e devolve o foco). Na home, também copiar ("✓
+copiado" por 1,6 s e a recusa), o board em cartões no estreito, os modos, as fases com
+setas, a alternativa escolhida com 4,5:1, o relógio da noite pela rolagem, a entrada ao
+rolar, só as animações do kit, o botão de pausar o movimento e, com movimento reduzido,
+nenhuma animação, partitura nem relógio andando. `node scripts/check-visual.mjs --plan`
+mostra a matriz; `--linguas`, `--larguras`, `--rotas` e `--dist` recortam a matriz.
 Os PNGs e `report.json` ficam fora do repositório público. Se o navegador não puder
 iniciar, o comando falha e registra o impedimento; não muda sandbox nem permissões.
 
@@ -238,8 +305,9 @@ igual), e mede a diferença de pixels na página e em cada seção, alinhada pel
 topo. Também captura cada item do inventário do design (`scripts/fidelidade/inventario.json`,
 um id por seção, bloco, texto, botão, imagem, interação e variação responsiva, com o
 arquivo de destino no site) dos dois lados. O relatório (`fidelidade.json`) traz os
-números; quem lê compara com os desvios registrados no design system. O HTML do design
-não fica no repositório.
+números; quem lê compara com os desvios registrados em "Design system: a Partitura do
+kit". Como o kit vence o HTML da home na tipografia, nas cores e nas regras, a
+diferença medida inclui essas trocas. O HTML do design não fica no repositório.
 
 ## Privacidade e publicação
 
