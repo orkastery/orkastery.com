@@ -1,119 +1,124 @@
-/* Tokens do portal Orkastery. Tema unico, escuro, deliberado: "a fundicao regida".
-   Um chao de carvao morno, latao como acento de conducao, brasa como calor e falha,
-   patina como o contrapeso frio do que e deterministico. Identidade propria. */
-
+/* AI Software Factory: a single source for both themes and all components.
+   Legacy token names remain aliases so diagrams use the same semantic palette. */
 :root {
-  /* ---------- Superficies: do poco ao palco ----------
-     Carvao morno, croma baixissimo. O latao nasce dentro dessa familia,
-     em vez de brigar com um preto azulado. */
-  --poco: #0a0908;
-  --palco: #100f0d;
-  --painel: #171512;
-  --relevo: #211d19;
-  --aresta: #2e2823;
+  color-scheme: dark;
+  --poco: #090f18;
+  --palco: #0f1825;
+  --painel: #142131;
+  --relevo: #1b2a3c;
+  --aresta: #3c526a;
+  --tinta: #edf5ff;
+  --tinta-2: #bacbdd;
+  --tinta-3: #9cadc0;
+  --tinta-4: #9cadc0;
+  --acento: #67e8f9;
+  --acento-forte: #a5f3fc;
+  --acento-base: #24778a;
+  --sobre-acento: #09202a;
+  --prova: #6ee7b7;
+  --prova-forte: #a7f3d0;
+  --sobre-prova: #09261d;
+  --alerta: #fda4af;
+  --alerta-forte: #fecdd3;
+  --sobre-alerta: #32131b;
+  --linha: #2c4056;
+  --linha-forte: #647d96;
+  --linha-viva: #7389a2;
+  --sombra-cor: #03080f;
+  --marca: #e0b264;
+  --grade: color-mix(in srgb, var(--tinta) 5%, transparent);
 
-  /* compatibilidade de nome com a escala antiga */
+  --f-display: 'Instrument Sans Variable', system-ui, sans-serif;
+  --f-texto: 'Instrument Sans Variable', system-ui, sans-serif;
+  --f-mono: 'Geist Mono Variable', ui-monospace, monospace;
+  /* The approved wordmark keeps its original typography and accent. */
+  --f-marca: 'Fraunces Variable', Georgia, serif;
+  --t-hero: clamp(2.65rem, 6.4vw, 5.5rem);
+  --t-h2: clamp(1.9rem, 3.9vw, 3.2rem);
+  --t-h3: clamp(1.2rem, 2vw, 1.5rem);
+  --t-body: 1.0625rem;
+  --t-small: .9rem;
+  --t-micro: .75rem;
+  --t-nano: .6875rem;
+  --tracking-label: .04em;
+  --raio-superficie: 12px;
+  --raio-campo: 8px;
+  --raio-pilula: 6px;
+  --raio-painel: var(--raio-superficie);
+  --secao: clamp(4.5rem, 9vw, 8rem);
+  --calha: clamp(1.25rem, 4vw, 2.75rem);
+  --largura: 78rem;
+  --largura-texto: 62ch;
+  --e-1: .4rem;
+  --e-2: .75rem;
+  --e-3: 1.125rem;
+  --e-4: 1.75rem;
+  --e-5: 2.75rem;
+  --e-6: 4rem;
+  --curva: cubic-bezier(.16, 1, .3, 1);
+  --curva-suave: cubic-bezier(.33, 1, .68, 1);
+  --curva-mola: cubic-bezier(.34, 1.56, .64, 1);
+  --dur-1: .16s;
+  --dur-2: .24s;
+  --dur-3: .4s;
+  --dur-4: .7s;
+  --dur: var(--dur-3);
+
   --fundo-0: var(--poco);
   --fundo-1: var(--palco);
   --fundo-2: var(--painel);
   --fundo-3: var(--relevo);
-
-  /* ---------- Tinta: branco morno, nunca #fff ----------
-     Tres degraus legiveis, todos acima de 4.5:1 sobre qualquer superficie da
-     paleta. O quarto degrau existe so para traco, borda e parada de gradiente:
-     abaixo de --tinta-3 nao ha contraste suficiente para texto neste fundo. */
-  --tinta: #f5f1ea;
-  --tinta-2: #b3aaa0;
-  --tinta-3: #968e84;
-  --tinta-4: #5d564f;
-
-  /* ---------- Latao: o acento da conducao ----------
-     Ouro de instrumento, dessaturado. E o "sim, verificado, conduzido". */
-  --latao: #e0b264;
-  --latao-claro: #f4d9a4;
-  --latao-fundo: #8a6a2f;
-  --latao-fraco: rgba(224, 178, 100, 0.12);
-  --latao-linha: rgba(224, 178, 100, 0.3);
-  --latao-forte: rgba(224, 178, 100, 0.55);
-  --sobre-latao: #17110a;
-
-  /* ---------- Brasa: calor, alerta, falha ----------
-     Usada com parcimonia. Onde o metal ainda queima. */
-  --brasa: #e2603c;
-  --brasa-clara: #ff8a63;
-  --brasa-fraca: rgba(226, 96, 60, 0.12);
-  --brasa-linha: rgba(226, 96, 60, 0.32);
-  --sobre-brasa: #1b0d07;
-
-  /* ---------- Patina: o contrapeso frio ----------
-     Cobre oxidado. Marca o que e deterministico, medido, subindo como evidencia. */
-  --patina: #6fb9a8;
-  --patina-clara: #a5dbcf;
-  --patina-fraca: rgba(111, 185, 168, 0.11);
-  --patina-linha: rgba(111, 185, 168, 0.28);
-  --sobre-patina: #061814;
-
-  /* ---------- Linhas e vidro ---------- */
-  --linha: rgba(245, 241, 234, 0.07);
-  --linha-forte: rgba(245, 241, 234, 0.14);
-  --linha-viva: rgba(245, 241, 234, 0.24);
-  --vidro: rgba(16, 15, 13, 0.62);
-  --vidro-denso: rgba(16, 15, 13, 0.86);
-
-  /* Brilho interno que faz a superficie parecer usinada, nao pintada */
-  --lustro: inset 0 1px 0 rgba(245, 241, 234, 0.06);
-  --lustro-forte: inset 0 1px 0 rgba(245, 241, 234, 0.1);
-
-  /* ---------- Sombras: quentes, nunca cinzas ---------- */
-  --sombra-1: 0 1px 2px rgba(6, 4, 2, 0.5), 0 4px 14px rgba(6, 4, 2, 0.28);
-  --sombra-2: 0 2px 6px rgba(6, 4, 2, 0.5), 0 14px 40px rgba(6, 4, 2, 0.38);
-  --sombra-3: 0 4px 12px rgba(6, 4, 2, 0.5), 0 32px 80px rgba(6, 4, 2, 0.5);
-  --aura-latao: 0 0 0 1px var(--latao-linha), 0 12px 44px rgba(224, 178, 100, 0.16);
-  --aura-brasa: 0 12px 44px rgba(226, 96, 60, 0.18);
-
-  /* ---------- Tipografia ----------
-     Um so display, Fraunces, em toda a superficie. Tamanho optico variavel:
-     texto pequeno recebe formas robustas, titulo grande recebe alto contraste. */
-  --f-display: 'Fraunces Variable', 'Fraunces', Georgia, serif;
-  --f-texto: 'Instrument Sans Variable', 'Instrument Sans', system-ui, sans-serif;
-  --f-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
-
-  --t-hero: clamp(2.7rem, 7.2vw, 5.6rem);
-  --t-h2: clamp(1.9rem, 4vw, 3.1rem);
-  --t-h3: clamp(1.2rem, 2vw, 1.45rem);
-  --t-body: 1.0625rem;
-  --t-small: 0.9rem;
-  --t-micro: 0.75rem;
-  --t-nano: 0.6875rem;
-
-  /* ---------- Forma ---------- */
-  --raio-superficie: 18px;
-  --raio-campo: 11px;
-  --raio-pilula: 999px;
-
-  /* ---------- Ritmo ---------- */
-  --secao: clamp(6rem, 13vh, 10rem);
-  --calha: clamp(1.25rem, 4vw, 2.75rem);
-  --largura: 78rem;
-  --largura-texto: 62ch;
-
-  --e-1: 0.4rem;
-  --e-2: 0.7rem;
-  --e-3: 1.1rem;
-  --e-4: 1.8rem;
-  --e-5: 2.8rem;
-  --e-6: 4.4rem;
-
-  /* ---------- Movimento ---------- */
-  --curva: cubic-bezier(0.16, 1, 0.3, 1);
-  --curva-suave: cubic-bezier(0.33, 1, 0.68, 1);
-  --curva-mola: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --dur-1: 0.16s;
-  --dur-2: 0.28s;
-  --dur-3: 0.5s;
-  --dur-4: 0.85s;
-  --dur: var(--dur-3);
-
-  color-scheme: dark;
-  accent-color: var(--latao);
+  --latao: var(--acento);
+  --latao-claro: var(--acento-forte);
+  --latao-fundo: var(--acento-base);
+  --sobre-latao: var(--sobre-acento);
+  --latao-fraco: color-mix(in srgb, var(--acento) 9%, transparent);
+  --latao-linha: color-mix(in srgb, var(--acento) 35%, transparent);
+  --latao-forte: color-mix(in srgb, var(--acento) 60%, transparent);
+  --patina: var(--prova);
+  --patina-clara: var(--prova-forte);
+  --sobre-patina: var(--sobre-prova);
+  --patina-fraca: color-mix(in srgb, var(--prova) 9%, transparent);
+  --patina-linha: color-mix(in srgb, var(--prova) 40%, transparent);
+  --brasa: var(--alerta);
+  --brasa-clara: var(--alerta-forte);
+  --sobre-brasa: var(--sobre-alerta);
+  --brasa-fraca: color-mix(in srgb, var(--alerta) 9%, transparent);
+  --brasa-linha: color-mix(in srgb, var(--alerta) 40%, transparent);
+  --vidro: color-mix(in srgb, var(--poco) 85%, transparent);
+  --vidro-denso: color-mix(in srgb, var(--poco) 95%, transparent);
+  --lustro: inset 0 1px 0 var(--grade);
+  --lustro-forte: inset 0 1px 0 var(--linha);
+  --sombra-1: 0 4px 16px color-mix(in srgb, var(--sombra-cor) 18%, transparent);
+  --sombra-2: 0 16px 40px color-mix(in srgb, var(--sombra-cor) 24%, transparent);
+  --sombra-3: 0 24px 64px color-mix(in srgb, var(--sombra-cor) 32%, transparent);
+  --aura-latao: 0 0 0 1px var(--latao-linha), var(--sombra-2);
+  --aura-brasa: 0 0 0 1px var(--brasa-linha), var(--sombra-2);
+  accent-color: var(--acento);
+}
+:root[data-theme='light'] {
+  color-scheme: light;
+  --poco: #f6f9fd;
+  --palco: #edf2f8;
+  --painel: #ffffff;
+  --relevo: #e4edf6;
+  --aresta: #a3b5c8;
+  --tinta: #101e30;
+  --tinta-2: #334d65;
+  --tinta-3: #486079;
+  --tinta-4: #486079;
+  --acento: #086477;
+  --acento-forte: #084f62;
+  --acento-base: #086477;
+  --sobre-acento: #ffffff;
+  --prova: #146343;
+  --prova-forte: #0d5237;
+  --sobre-prova: #ffffff;
+  --alerta: #a02540;
+  --alerta-forte: #881b35;
+  --sobre-alerta: #ffffff;
+  --linha: #c7d4e2;
+  --linha-forte: #6e839b;
+  --linha-viva: #5d738b;
+  --sombra-cor: #6c8098;
 }

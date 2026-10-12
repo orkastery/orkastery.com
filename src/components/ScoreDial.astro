@@ -1,4 +1,5 @@
 ---
+import {richTechnicalHtml} from '../lib/technical-text.mjs';
 import {localeFor, localize} from '../data/i18n';
 const locale=localeFor(Astro.url.pathname);
 const translations={
@@ -8,9 +9,9 @@ const translations={
     "es": "De 0 a 5, ¿con cuánto <em>criterio</em> se entregó?"
   },
   "t1": {
-    "pt": "Arraste a batuta",
-    "en": "Move the baton",
-    "es": "Mueva la batuta"
+    "pt": "Ajuste a nota",
+    "en": "Adjust the score",
+    "es": "Ajuste la valoración"
   },
   "t2": {
     "pt": "entregou limpo, no caminho previsto",
@@ -58,7 +59,7 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
 
 <div class="score grade-flexivel" data-score data-leituras={JSON.stringify({"pt": ["não entregou o que valia, e o caminho foi caro", "entregou torto, e deu retrabalho", "entregou, com atrito conhecido", "entregou limpo, no caminho previsto", "entregou limpo e mais barato que o previsto", "entregou e ensinou algo para a próxima thread"], "en": ["missed the goal at high cost", "delivered with problems and rework", "delivered with known friction", "clean delivery along the planned route", "clean delivery below the expected cost", "delivered and taught something for the next thread"], "es": ["no cumplió el objetivo y el camino fue costoso", "entregó con problemas y retrabajo", "entregó con dificultades conocidas", "entrega limpia por el camino previsto", "entrega limpia con menor coste del previsto", "entregó y dejó una lección para la siguiente thread"]}[locale])}>
   <div class="dial">
-    <p class="dial-pergunta display"><Fragment set:html={t("t0")} /></p>
+    <p class="dial-pergunta display"><Fragment set:html={richTechnicalHtml(t("t0"))} /></p>
 
     <div class="dial-palco">
       <svg viewBox="0 0 240 142" aria-hidden="true">
@@ -85,10 +86,10 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
           />
         ))}
 
-        <g class="dial-batuta">
+        <g class="dial-ponteiro">
           <line x1="120" y1="124" x2="120" y2="46" />
-          <circle class="batuta-pivo" cx="120" cy="124" r="7" />
-          <circle class="batuta-joia" cx="120" cy="124" r="3" />
+          <circle class="ponteiro-pivo" cx="120" cy="124" r="7" />
+          <circle class="ponteiro-joia" cx="120" cy="124" r="3" />
         </g>
       </svg>
 
@@ -101,7 +102,7 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
       <p class="dial-leitura mono" data-leitura aria-live="polite">{t("t2")}</p>
     </div>
 
-    <p class="dial-nota paragrafo"><Fragment set:html={t("t3")} /></p>
+    <p class="dial-nota paragrafo"><Fragment set:html={richTechnicalHtml(t("t3"))} /></p>
   </div>
 
   <div class="postmortem">
@@ -109,7 +110,7 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
     <p class="paragrafo postmortem-sub">{t("t5")}</p>
     <ul class="classes escalona">
       {classes.map((classe) => (
-        <li class="classe mono">{classe}</li>
+        <li class="classe mono"><code>{classe}</code></li>
       ))}
     </ul>
   </div>
@@ -156,7 +157,7 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
     stroke-dasharray: 100;
     stroke-dashoffset: calc(100 - var(--fracao, 60));
     transition: stroke-dashoffset 0.55s var(--curva);
-    filter: drop-shadow(0 0 10px rgba(224, 178, 100, 0.3));
+    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--acento) 30%, transparent));
   }
 
   .dial-marca {
@@ -172,30 +173,30 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
     stroke: var(--latao);
   }
 
-  .dial-batuta {
+  .dial-ponteiro {
     transform-origin: 120px 124px;
     transform: rotate(var(--angulo, 18deg));
     transition: transform 0.6s var(--curva-mola);
   }
 
-  .dial-batuta line {
+  .dial-ponteiro line {
     stroke: var(--tinta);
     stroke-width: 2.5;
     stroke-linecap: round;
   }
 
-  .batuta-pivo {
+  .ponteiro-pivo {
     fill: var(--relevo);
     stroke: var(--linha-forte);
     stroke-width: 1;
   }
 
-  .batuta-joia {
+  .ponteiro-joia {
     fill: var(--latao);
-    filter: drop-shadow(0 0 8px rgba(224, 178, 100, 0.8));
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--acento) 80%, transparent));
   }
 
-  /* O valor mora abaixo do pivo, e nao debaixo da batuta */
+  /* O valor mora abaixo do pivo, e nao debaixo da ponteiro */
   .dial-valor {
     position: absolute;
     left: 50%;
@@ -255,8 +256,8 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
     margin-top: -7.5px;
     border-radius: 50%;
     background: linear-gradient(160deg, var(--latao-claro), var(--latao));
-    border: 1px solid rgba(6, 4, 2, 0.5);
-    box-shadow: 0 2px 10px rgba(6, 4, 2, 0.7), 0 0 16px rgba(224, 178, 100, 0.45);
+    border: 1px solid color-mix(in srgb, var(--sombra-cor) 50%, transparent);
+    box-shadow: 0 2px 10px color-mix(in srgb, var(--sombra-cor) 70%, transparent), 0 0 16px color-mix(in srgb, var(--acento) 45%, transparent);
     transition: transform var(--dur-1) var(--curva);
   }
 
@@ -265,8 +266,8 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
     height: 20px;
     border-radius: 50%;
     background: linear-gradient(160deg, var(--latao-claro), var(--latao));
-    border: 1px solid rgba(6, 4, 2, 0.5);
-    box-shadow: 0 2px 10px rgba(6, 4, 2, 0.7), 0 0 16px rgba(224, 178, 100, 0.45);
+    border: 1px solid color-mix(in srgb, var(--sombra-cor) 50%, transparent);
+    box-shadow: 0 2px 10px color-mix(in srgb, var(--sombra-cor) 70%, transparent), 0 0 16px color-mix(in srgb, var(--acento) 45%, transparent);
   }
 
   input[type='range']:hover::-webkit-slider-thumb {
@@ -312,7 +313,7 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
     padding: 0.42rem 1rem;
     font-size: var(--t-micro);
     color: var(--tinta-2);
-    background: linear-gradient(180deg, rgba(245, 241, 234, 0.03), transparent), var(--palco);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--tinta) 3%, transparent), transparent), var(--palco);
     box-shadow: var(--lustro);
     transition: border-color var(--dur-2) var(--curva), color var(--dur-2) var(--curva),
       transform var(--dur-2) var(--curva);
@@ -342,7 +343,7 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .dial-batuta,
+    .dial-ponteiro,
     .dial-arco-vivo {
       transition: none;
     }
@@ -356,7 +357,7 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
     const LEITURAS: string[]=JSON.parse(raiz.dataset.leituras || '[]');
     const faixa = raiz.querySelector<HTMLInputElement>('input[type="range"]');
     const valor = raiz.querySelector<HTMLElement>('.dial-valor');
-    const batuta = raiz.querySelector<SVGGElement>('.dial-batuta');
+    const ponteiro = raiz.querySelector<SVGGElement>('.dial-ponteiro');
     const arco = raiz.querySelector<SVGPathElement>('.dial-arco-vivo');
     const leitura = raiz.querySelector<HTMLElement>('[data-leitura]');
     const marcas = Array.from(raiz.querySelectorAll<SVGLineElement>('[data-marca]'));
@@ -368,7 +369,7 @@ const marcas = [0, 1, 2, 3, 4, 5].map((nota) => ({
       if (valor) valor.textContent = String(nota);
       if (leitura) leitura.textContent = LEITURAS[nota] ?? '';
 
-      batuta?.style.setProperty('--angulo', `${-90 + fracao * 180}deg`);
+      ponteiro?.style.setProperty('--angulo', `${-90 + fracao * 180}deg`);
       arco?.style.setProperty('--fracao', String(fracao * 100));
       faixa?.setAttribute('aria-valuetext', `${nota}/5: ${LEITURAS[nota] ?? ''}`);
 

@@ -1,9 +1,14 @@
 import {fileURLToPath} from 'node:url';
-import {pages,attrs,content,distArg} from './check-links.mjs';
+import {pages,attrs,content,walk,distArg} from './check-links.mjs';
 export function checkContent(dist=distArg()){
  const all=pages(dist);let diagrams=0;
  for(const p of all){
   if(p.nodes.filter(n=>n.tagName==='main').length!==1||p.nodes.filter(n=>n.tagName==='h1').length!==1)throw Error('Expected one main and h1: '+p.path);
+  const toggles=p.nodes.filter(n=>'data-theme-toggle' in attrs(n));
+  const themeLabel=p.path.startsWith('/en/')?'Light theme':'Tema claro';
+  if(toggles.length!==1||toggles.some(n=>n.tagName!=='button'||content(n).trim()!==themeLabel||
+    ('aria-label' in attrs(n)&&!attrs(n)['aria-label'].includes(themeLabel))||
+    !['true','false'].includes(attrs(n)['aria-pressed'])))throw Error('Theme label/state mismatch: '+p.path);
   for(const n of p.nodes){const a=attrs(n);
    if(n.tagName==='img'&&!('alt' in a))throw Error('Missing alt: '+p.path);
    if(n.tagName==='svg'&&a.role==='img'){
@@ -23,7 +28,14 @@ export function checkContent(dist=distArg()){
   const required={"pt": ["Aponte três agentes para o mesmo repositório", "Seis fases que nenhum agente pula", "Quanta pausa você quer? Escreva uma #TAG.", "Não peça para acreditar. Rode.", "O ecossistema Orkastery"], "en": ["Point three agents at the same repository", "Six phases no agent skips", "How much pause do you want? Write a #TAG.", "Don’t take our word for it. Run it.", "The Orkastery ecosystem"], "es": ["Apunte tres agentes al mismo repositorio", "Seis fases que ningún agente se salta", "¿Cuánta pausa quiere? Escriba una #TAG.", "No le pedimos que lo crea. Ejecútelo.", "El ecosistema Orkastery"]}[locale];
   for(const heading of required)if(!home.nodes.some(n=>n.tagName==='h2'&&content(n).includes(heading)))throw Error('Missing restored home section: '+locale);
   if(!home.nodes.some(n=>'data-ciclo' in attrs(n))||!home.nodes.some(n=>'data-modos' in attrs(n)))throw Error('Missing interactive cycle or modes: '+locale);
-  if(!content(home.nodes.find(n=>n.tagName==='main')).includes('@orkastery/cli 0.5.0'))throw Error('Missing release label');
+  if(!content(home.nodes.find(n=>n.tagName==='main')).includes('@orkastery/cli 0.5.3'))throw Error('Missing release label');
+  const falseLabel=locale==='en'?'(false)':'(falso)';
+  if(!home.nodes.some(n=>n.tagName==='s'&&content(n).includes(falseLabel)))throw Error('Missing false report label: '+locale);
+  const receipt=home.nodes.find(n=>(attrs(n).class||'').split(/\s+/).includes('verification-receipt'));
+  const receiptNodes=receipt?walk(receipt):[],command='npm install -g @orkastery/cli';
+  if(!receiptNodes.some(n=>n.tagName==='code'&&content(n)===command)||
+     !receiptNodes.some(n=>n.tagName==='button'&&attrs(n)['data-command']===command&&content(n).trim())||
+     !receiptNodes.some(n=>n.tagName==='figcaption'&&/SHA fictício|fictional SHA|SHA ficticio/.test(content(n))))throw Error('Missing honest install receipt: '+locale);
   const product=all.find(p=>p.path===prefix+'/ork/');if(!product||!product.nodes.some(n=>n.tagName==='h2'&&/dia cheio|full day|día lleno/.test(content(n))))throw Error('Missing approved decision card: '+locale);
   const contribution=all.find(p=>p.path===prefix+'/docs/contribuir/');
   if(!contribution)throw Error('Missing contribution page: '+locale);

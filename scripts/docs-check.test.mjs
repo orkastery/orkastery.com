@@ -36,6 +36,7 @@ import {checkLinks,root as siteRoot} from './check-links.mjs';
 import {checkI18n} from './check-i18n.mjs';
 import {checkPublic} from './check-public.mjs';
 import {checkContent} from './check-content.mjs';
+import {layoutCanaries} from './check-design.mjs';
 function outputFixture(run){
  const dir=mkdtempSync(resolve(tmpdir(),'docs-output-canary-'));
  try{cpSync(resolve(siteRoot,'dist'),dir,{recursive:true});run(dir);}finally{rmSync(dir,{recursive:true,force:true});}
@@ -63,6 +64,18 @@ test('wrong language fails',()=>outputFixture(dir=>{
 test('missing selector fails',()=>outputFixture(dir=>{
  edit(dir,'es/index.html',s=>s.replace('data-language-selector','data-missing-selector'));
  assert.throws(()=>checkI18n(dir),/Missing language selector/);
+}));
+test('theme label mismatch fails the content audit',()=>outputFixture(dir=>{
+ edit(dir,'index.html',s=>s.replace('data-theme-toggle','aria-label="Escuro" data-theme-toggle'));
+ assert.throws(()=>checkContent(dir),/Theme label\/state mismatch/);
+}));
+test('removing the screen reader false label fails the content audit',()=>outputFixture(dir=>{
+ edit(dir,'en/index.html',s=>s.replace('(false)',''));
+ assert.throws(()=>checkContent(dir),/Missing false report label/);
+}));
+test('removing the illustrative receipt warning fails the content audit',()=>outputFixture(dir=>{
+ edit(dir,'es/index.html',s=>s.replace('SHA ficticio','SHA'));
+ assert.throws(()=>checkContent(dir),/Missing honest install receipt/);
 }));
 test('personal data canary is rejected without printing its value',()=>outputFixture(dir=>{
  edit(dir,'index.html',s=>s.replace('</main>','<p>sample.person@example.invalid</p></main>'));
@@ -110,3 +123,10 @@ test('missing contribution navigation fails the content audit',()=>outputFixture
  edit(dir,'en/index.html',s=>s.replaceAll('href="/en/docs/contribuir/"','href="/en/docs/"'));
  assert.throws(()=>checkContent(dir),/contribution navigation/);
 }));
+test('layout canaries reject tracks over wrapped chips and splittable inline code',()=>{
+ const css='@media(max-width:680px){.lacos[data-a],.trilha-envelope[data-a] .factory-tracks{display:none}}:not(pre)>code{display:inline-block;max-width:100%}.code-unit{white-space:nowrap}';
+ assert.equal(layoutCanaries(css).wrappedCycleRules,1);
+ assert.throws(()=>layoutCanaries(css.replace(',.trilha-envelope[data-a] .factory-tracks','')),/Decorative tracks over wrapped cycle chips/);
+ assert.throws(()=>layoutCanaries(css.replace('display:inline-block;','')),/Inline code can split across lines/);
+ assert.throws(()=>layoutCanaries(css.replace('.code-unit{white-space:nowrap}','')),/Adjacent text can detach from inline code/);
+});
