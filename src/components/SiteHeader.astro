@@ -12,7 +12,7 @@ const nasDocs=unlocalize(Astro.url.pathname).startsWith('/docs/');
 <header class="cabecalho">
  <div class="cabecalho-linha">
   <a class="cabecalho-marca" href={naHome?'#topo':home}><img src={withBase('/marca/assinatura-fundo-claro.svg')} alt="Orkastery" width="132" height="26"/></a>
-  <nav class="cabecalho-nav" aria-label={locale==='en'?'Main navigation':locale==='es'?'Navegación principal':'Navegação principal'} data-nav-prioridade>
+  <nav class="cabecalho-nav" aria-label={locale==='en'?'Main navigation':'Navegação principal'} data-nav-prioridade>
    {m.nav.map(([hash,label])=><a href={ancora(hash)}>{label}</a>)}
    <a href={localize('/docs/',locale)} aria-current={nasDocs?'page':undefined}>{m.docs}</a>
   </nav>

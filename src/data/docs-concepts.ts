@@ -145,72 +145,6 @@ export default [
             "code": "grafo:\n  mcp: true"
           }
         ]
-      },
-      "es": {
-        "title": "Arquitectura de Orkastery",
-        "description": "Entienda quién presenta, quién ejecuta y quién verifica cada cambio.",
-        "sections": [
-          {
-            "id": "camadas",
-            "title": "Tres capas con responsabilidades explícitas",
-            "paragraphs": [
-              "El host recibe la petición y presenta las decisiones. El núcleo ork aplica contratos, registra el estado y comprueba las pruebas. El runtime escribe el producto. Su informe no sustituye la ejecución de los verificadores.",
-              "El núcleo es un CLI determinista. Los adaptadores conectan hosts y runtimes; las reglas de negocio permanecen en el núcleo para que una decisión conserve su significado entre canales. No hay LLM dentro del núcleo, ni servidor o base de datos obligatorios; las dependencias de runtime son pocas y tienen versión fija."
-            ]
-          },
-          {
-            "id": "estado",
-            "title": "Estado y procedencia",
-            "paragraphs": [
-              "El manifiesto orkastery.yaml define el proyecto. Cada thread tiene estado, ledger, claims y prompts con hash en .orkastery. Consulte esos datos mediante los comandos del núcleo. Una conversación puede explicar el estado, pero no es su fuente de verdad."
-            ],
-            "code": "ork thread status <thread>\nork phase list <thread>\nork claims list <thread>"
-          },
-          {
-            "id": "isolamento",
-            "title": "Aislamiento y decisiones",
-            "paragraphs": [
-              "La worktree separa el código de una thread. Los leases coordinan recursos que pueden colisionar, como rutas de edición y el árbol de destino del merge. El trabajo paralelo sigue requiriendo una entrega serializada.",
-              "El modo controla las pausas previstas. Las políticas block, los fallos de verificación y los escalados tipados siguen vigentes. La memoria aporta contexto; no concede autorización."
-            ]
-          },
-          {
-            "id": "metricas",
-            "title": "Dos medidas con propósitos distintos",
-            "paragraphs": [
-              "El índice de conducción deriva de los eventos del ledger y describe cómo se condujo el ciclo. La nota humana registra la valoración del dueño sobre el resultado. Sus fuentes son distintas: ninguna debe inventarse ni usarse como medida de la otra.",
-              "Una tasa de entregas requiere un intervalo, una población definida y registros de origen. Esta página no presenta una tasa sin esa medición."
-            ]
-          },
-          {
-            "id": "kg1",
-            "title": "Grafo determinista: el contrato KG1",
-            "paragraphs": [
-              "KG1 define ork.code-artifact-graph/v1 y ork.graph-benchmark/v1, con validación pura y corpus sintético. La misma entrada, configuración y versión del extractor producen las mismas identidades y contenido canónico. Cada relación exige pruebas localizables y conserva las restricciones de acceso de las fuentes.",
-              "El grafo es una proyección local descartable. KG1 ofrece el contrato, la validación pura y el corpus; la extracción es KG2, el índice con la consulta mediante ork grafo es KG3, el índice incremental es KG4 y el consumo por las fases es KG5. No modifica orkmind.company-brain/v1 ni sustituye el estado de Ork o el Company Brain. Ningún benchmark medido demuestra ahorro en esta etapa."
-            ]
-          },
-          {
-            "id": "kg2-kg3",
-            "title": "Extracción, índice y consulta: KG2 y KG3",
-            "paragraphs": [
-              "KG2 extrae de un repositorio Git local un grafo con el mismo contrato: TypeScript y JavaScript mediante el compilador, Markdown con secciones, enlaces, frontmatter e IDs citados, y la procedencia de cada arista. Una arista solo existe con prueba; lo que no se demuestra queda fuera y se declara como diagnóstico o como laguna del informe de extracción. La misma entrada produce el mismo grafo y el mismo digest en cualquier orden de lectura.",
-              "KG3 guarda ese grafo en un índice local del HEAD limpio, fuera de git, y lo consulta por vecindad, llamadores, importadores y camino. La misma pregunta produce la misma salida, cada arista incluye extractor y prueba, y la respuesta se declara parcial. Los registros fuera de la concesión local no aparecen en respuestas, recuentos ni candidatos."
-            ],
-            "code": "ork grafo indexar --verificar\nork grafo vizinhos <nodo> --json"
-          },
-          {
-            "id": "kg4-kg5",
-            "title": "Índice incremental y consumo por las fases: KG4 y KG5",
-            "paragraphs": [
-              "KG4 construye el índice de una revisión a partir del índice ancestro y reextrae solo lo que el cambio alcanza, con los mismos bytes de la extracción completa; --verificar compara ambas. KG5 expone las consultas en el MCP del proyecto: las tools ork_grafo_* ejecutan ork grafo en la worktree de la thread, en un proceso hijo con plazo y cancelación, y la respuesta tiene un tope en bytes. El servidor MCP no carga el grafo.",
-              "El consumo queda detrás del flag grafo.mcp de orkastery.yaml, apagado por defecto; sin él, MCP lista las mismas tools de antes. Las tools necesitan los analizadores, typescript y micromark, que desde la corrección de empaquetado de la RM-031 son dependencias del paquete, con versión exacta: npm install -g los trae. Instalado dentro de un proyecto o mediante npx, ork se queda sin ellos, y el rechazo es grafo.parser.indisponivel, con la corrección en ork grafo status y en ork doctor. El grafo pide Node 20.19, 22.12 o posterior.",
-              "El paquete de contexto de la thread ya existe: ork grafo contexto <thread> y la tool ork_grafo_contexto entregan el JSON ork.thread-graph-context/v2, con las semillas del diff de la worktree, del GOAL, del PLAN y de las claims, la vecindad de un salto ordenada por relevancia y un tope de 32.768 bytes por defecto; con el flag activado, el pedido de la fase recibe una pista corta. En la versión {versao}, el índice gana aristas cites, de rutas citadas literalmente en Markdown y en cadenas de pruebas y scripts hacia archivos del índice, y el paquete usa lo que sobra del tope para vecinos a dos saltos, marcados con salto: 2. Un índice grabado antes de las citas pide ork grafo indexar. En una fixture sintética, el paquete bajó de 22.973 a 3.119 bytes, y da 3.137 con el segundo salto; en dos casos reales, la cobertura del paquete subió del 23% al 69% y del 41% al 65%, con menor precisión y un paquete casi del doble. Nada de esto demuestra ahorro de tokens.",
-              "También en la versión {versao}, la procedencia se comprueba contra el árbol de la thread: las consultas por nodo (vecinos, llamadores, importadores y camino, en ork grafo con --json y en las tools ork_grafo_*) traen las fuentes, con el sha256 y el blob de Git de cada archivo citado y su situación en el árbol (igual, modificada o ausente), y cada arista dice si su origen, su destino o una de sus pruebas cambió después del HEAD. En el paquete de contexto, solo el grupo con una fuente cambiada recibe esa marca, y con el árbol limpio el paquete sale byte a byte igual que antes. El árbol solo se lee cuando git status dice que cambió, y ningún índice tiene que rehacerse por ello. En el mismo índice, la respuesta sin corte crece entre un 15% y un 29% en bytes, y la cortada por el tope trae 34 aristas en lugar de 41. La federación (KG6), la paridad entre hosts (KG7) y la ronda pagada del benchmark aún no existen."
-            ],
-            "code": "grafo:\n  mcp: true"
-          }
-        ]
       }
     }
   },
@@ -275,34 +209,6 @@ export default [
             "title": "SHIP and MASTER: deliver and learn",
             "paragraphs": [
               "SHIP passes gates, serializes the merge and proves the push against the remote. A local commit is not a published delivery. MASTER records the postmortem, lessons and ledger-derived index; a later human score replaces the displayed index."
-            ]
-          }
-        ]
-      },
-      "es": {
-        "title": "El ciclo de una thread",
-        "description": "Del objetivo a la evaluación de la entrega, con límites claros entre fases.",
-        "sections": [
-          {
-            "id": "preparar",
-            "title": "GOAL y PLAN: defina el trabajo",
-            "paragraphs": [
-              "GOAL define un objetivo verificable, el impacto y los criterios de éxito. PLAN divide las tareas, registra decisiones y asocia rutas con comandos de verificación. Ninguna de estas fases implementa el producto."
-            ]
-          },
-          {
-            "id": "construir",
-            "title": "GO y CHECK: implemente y compruebe",
-            "paragraphs": [
-              "GO implementa en la worktree vinculada, con una baseline previa y commits pequeños. CHECK compara las pruebas con esa baseline y revisa corrección, seguridad, rendimiento, mantenibilidad y estilo. Los hallazgos que requieren código vuelven a GO.",
-              "La worktree del GO nace con la thread cuando orkastery.yaml tiene worktree.por_thread: true, lo que graba ork init. Con --sem-worktree, la thread corre en la raíz del proyecto, y en la rama base el SHIP queda bloqueado por la policy push_direto_na_base."
-            ]
-          },
-          {
-            "id": "entregar",
-            "title": "SHIP y MASTER: entregue y aprenda",
-            "paragraphs": [
-              "SHIP pasa por los gates, serializa el merge y demuestra el push en el remoto. Un commit local no es una entrega publicada. MASTER registra el postmortem, las lecciones y el índice derivado del ledger; una nota humana posterior sustituye el índice presentado."
             ]
           }
         ]

@@ -95,51 +95,6 @@ export default [
             "code": "ork thread new \"corrigir o filtro\" --modo classic --dry-run\nork thread new \"corrigir o filtro\" --modo classic --sem-worktree\nork worktree ensure <thread>"
           }
         ]
-      },
-      "es": {
-        "title": "Elija un modo de conducción",
-        "description": "Compare las pausas previstas y los límites de cada modo.",
-        "sections": [
-          {
-            "id": "escolher",
-            "title": "Elija según la decisión necesaria",
-            "paragraphs": [
-              "#Classic ofrece tres pausas para el objetivo, el plan y las pruebas. #Maestro concentra la pausa en las premisas y el plan. #Auto recorre el ciclo completo sin pausas previstas. Los bloqueos y escalados siguen activos en los tres."
-            ],
-            "code": "ork modos\nork modos --do-pedido \"revisar a documentação #Maestro\""
-          },
-          {
-            "id": "fast",
-            "title": "Los límites de #Fast",
-            "paragraphs": [
-              "#Fast ejecuta solo GO, con pruebas proporcionales a una petición pequeña. No concede permiso automático de push ni permite cambiar contratos públicos protegidos. Los cambios en la matriz de modos, schemas o contratos de integración requieren un modo de ciclo completo."
-            ]
-          },
-          {
-            "id": "validar",
-            "title": "Compruebe el manifiesto",
-            "paragraphs": [
-              "Sin etiqueta se aplica conduction.default_mode. El núcleo comprueba la elección con conduction.allowed_modes. Una etiqueta no autoriza a ignorar el alcance explícito del dueño."
-            ]
-          },
-          {
-            "id": "so-codex",
-            "title": "Solo con Codex",
-            "paragraphs": [
-              "La configuración predeterminada despacha los bloques por claude-bg. Para usar solo Codex, pase cada bloque de los modos permitidos a él; ork setup <modo> lista los bloques. ork doctor falla por la ausencia de claude solo mientras algún bloque de un modo permitido despache por claude-bg; un fallback que caiga en él solo genera un aviso."
-            ],
-            "code": "ork setup classic\nork setup classic --bloco 1 --runtime codex --model <modelo>"
-          },
-          {
-            "id": "worktree",
-            "title": "La worktree de la thread",
-            "paragraphs": [
-              "El modo define cuántas pausas tiene la thread; la worktree define dónde escribe. Con worktree.por_thread: true, el valor que graba ork init, ork thread new crea la worktree y la rama ork/<slug> en cualquier modo, sin flag, y ork ship entrega esa rama. Con la clave en false o ausente, la worktree solo se crea con --worktree auto o con un ciclo que la exige.",
-              "--worktree <DIR> reutiliza un directorio existente. --sem-worktree crea la thread en la raíz del proyecto: en la rama base, ork ship queda bloqueado por push_direto_na_base: block, el valor por defecto de ork init, y antes del GO ork worktree ensure <thread> todavía puede crear la worktree. --dry-run muestra la worktree y la rama que se crearían, o por qué se rechazaría la creación. Los ciclos greenfield, merge-branch y feature-xl-faseada exigen worktree y rechazan --sem-worktree. En un repositorio sin commits, la thread nace en la raíz, con aviso."
-            ],
-            "code": "ork thread new \"corrigir o filtro\" --modo classic --dry-run\nork thread new \"corrigir o filtro\" --modo classic --sem-worktree\nork worktree ensure <thread>"
-          }
-        ]
       }
     }
   },
@@ -207,36 +162,6 @@ export default [
               "The maestro stage also offers to activate the experience pack with detected values, configure it or turn it off. An answer with the owner object stores language, timezone, depth and activation in the manifest, preserving other sections and answers. Reading preferences creates no answer, authorship or approval. ork doctor warns when the interview time zone differs from the manifest; with owner.timezone in the same maestro answer, the warning compares that value, and the legacy fuso field applies only without it."
             ],
             "code": "ork experiencia show --json\nork onboarding set maestro --conteudo '{\"owner\":{\"language\":\"en-US\",\"timezone\":\"UTC\",\"depth\":\"curta\",\"experience\":true}}' --por equipe"
-          }
-        ]
-      },
-      "es": {
-        "title": "Configure el proyecto",
-        "description": "Registre objetivos, productos, integraciones y preferencias públicas.",
-        "sections": [
-          {
-            "id": "pauta",
-            "title": "Retome la entrevista existente",
-            "paragraphs": [
-              "Consulte el estado antes de volver a preguntar. Las respuestas cubren conducción, credenciales por nombre de variable, bases de datos, memoria, productos, topología, arquitectura, skills y auditoría. Un proyecto configurado puede retomarse sin repetir la entrevista."
-            ],
-            "code": "ork onboarding\nork onboarding show --json"
-          },
-          {
-            "id": "respostas",
-            "title": "Registre información pública",
-            "paragraphs": [
-              "Use ork onboarding set para registrar una etapa con autoría. Revise la salida antes de publicar la entrevista en la memoria. Los DSN, tokens y contraseñas no pertenecen a las respuestas públicas; la configuración referencia variables protegidas. Sin --por, la autoría registrada es owner, lo que no demuestra la respuesta de una persona. Los valores secretos quedan en el entorno del proceso o en el almacén del host (en Hermes, ~/.hermes/.env); el onboarding guarda solo el nombre de la variable y nunca lee el valor."
-            ],
-            "code": "ork onboarding set produtos --conteudo '{\"produtos\":[\"meu-produto\"]}' --por operador"
-          },
-          {
-            "id": "experiencia",
-            "title": "Preferencias de la conversación",
-            "paragraphs": [
-              "La etapa maestro también ofrece activar el paquete de experiencia con los valores detectados, configurarlo o desactivarlo. Una respuesta con el objeto owner guarda idioma, zona horaria, profundidad y activación en el manifiesto, conservando las demás secciones y respuestas. Consultar las preferencias no crea respuesta, autoría ni aprobación. ork doctor avisa cuando la zona horaria de la entrevista difiere del manifiesto; con owner.timezone en la misma respuesta maestro, el aviso compara ese valor, y el campo fuso heredado solo vale sin él."
-            ],
-            "code": "ork experiencia show --json\nork onboarding set maestro --conteudo '{\"owner\":{\"language\":\"es-ES\",\"timezone\":\"UTC\",\"depth\":\"curta\",\"experience\":true}}' --por equipe"
           }
         ]
       }
@@ -344,55 +269,6 @@ export default [
             "title": "Evidence and limits",
             "paragraphs": [
               "Focused tests cover preferences, blocks, fresh clones without a receipt, conflicts, adapters and MCP contracts. Skill evals are static and do not prove real model behavior. A rehearsal from the product repository installs the local package into a temporary prefix and HOME and checks installation, reinstallation, opt-out, removal and restoration. The pack was released in @orkastery/cli 0.5.0. A local commit or local test is not a delivery."
-            ]
-          }
-        ]
-      },
-      "es": {
-        "title": "Experiencia de orquestación",
-        "description": "Defina idioma, zona horaria y profundidad de la conversación e instale o retire el paquete en cada host.",
-        "sections": [
-          {
-            "id": "configurar",
-            "title": "Configure las preferencias",
-            "paragraphs": [
-              "El paquete orienta cómo conversa el agente al conducir el proyecto. Doce reglas guían mensajes, decisiones, pruebas, documentación, coordinación y entrega. Los gates, los permisos y la identidad humana siguen en el núcleo.",
-              "owner.language recibe un locale BCP-47; owner.timezone, una zona horaria IANA; owner.depth, curta (breve) o detalhada (detallada); owner.experience, true o false. Sin valor, se aplican el locale del sistema (con C, POSIX o sin locale, pt-BR, el idioma de la CLI), la zona que resuelve el núcleo, curta y true. Los locales portugueses usan la variante pt-BR de las skills; los demás usan la inglesa y conservan el idioma de respuesta configurado. Una entrada inválida se rechaza antes de guardar; un valor inválido editado a mano genera un aviso y se aplica el valor predeterminado."
-            ],
-            "code": "ork onboarding\nork experiencia show --json"
-          },
-          {
-            "id": "instalar",
-            "title": "Instale en cada host",
-            "paragraphs": [
-              "ork adapter install escribe el catálogo y un bloque propio en CLAUDE.md, para Claude Code, o en AGENTS.md, para Codex; Hermes recibe las dos variantes junto a la skill existente. El bloque apunta al catálogo con una ruta relativa al proyecto, para que funcione en otro clon, y conserva el bloque de ork init y el contenido externo. En un clon sin comprobante, un bloque idéntico al generado se adopta sin duplicarse. --dir cambia la carpeta base del host (.claude en Claude Code, .agents en Codex): el catálogo va a <dir>/plugins/orkastery o <dir>/skills/orkastery, y el bloque sigue en la raíz del proyecto. Un catálogo fuera del proyecto omite el bloque con aviso.",
-              "Copiar archivos no demuestra el descubrimiento nativo ni el uso por el modelo: compruebe la preferencia efectiva en el chat del host. Claude Code también exige la activación del plugin que indica el instalador, y otra worktree necesita su propia instalación. OpenClaw todavía no distribuye estas skills."
-            ],
-            "code": "ork adapter install codex --dry-run\nork adapter install codex"
-          },
-          {
-            "id": "desativar",
-            "title": "Desactive o retire",
-            "paragraphs": [
-              "Con owner.experience en false, la reinstalación retira el bloque gestionado; repita ork adapter install en cada host con bloque. Hermes respeta la preferencia mediante la entrada de su skill. ork experiencia uninstall retira solo el bloque de codex o claude-code, conserva el adaptador y no cambia la preferencia global. Sin cambios externos, la retirada restaura los bytes anteriores.",
-              "Un bloque editado o duplicado, un comprobante incompatible o un archivo de instrucciones enlazado hacen que ork adapter install omita solo el paquete, con aviso, y que ork experiencia uninstall se niegue sin escribir. Corrija el archivo a mano; no borre el comprobante para forzar la instalación."
-            ],
-            "code": "ork onboarding set maestro --conteudo '{\"owner\":{\"experience\":false}}' --por equipe\nork adapter install codex\nork experiencia uninstall codex --dry-run"
-          },
-          {
-            "id": "coordenar",
-            "title": "Coordine antes de asumir un elemento",
-            "paragraphs": [
-              "Consulte reservas y fábrica antes de asumir trabajo. El dry-run de ork thread new no reserva; sin él, --roadmap usa la reserva del núcleo, y un RM-NNN solo en el nombre genera un aviso sin asociar el elemento.",
-              "En MCP, ork_roadmap_reservas y ork_fabrica usan el proyecto fijado por el servidor y responden atualizado (actualizado), desatualizado (desactualizado) o indisponivel (no disponible). La falta de disponibilidad trae datos nulos, nunca una lista vacía engañosa. Estas consultas no reservan, no publican, no hacen push ni firman gates."
-            ],
-            "code": "ork roadmap reservas\nork fabrica\nork thread new \"RM-012 ejemplo de mejora\" --modo auto --roadmap RM-012 --dry-run"
-          },
-          {
-            "id": "limites",
-            "title": "Pruebas y límites",
-            "paragraphs": [
-              "Las pruebas específicas cubren preferencias, bloques, clones sin comprobante, conflictos, adaptadores y contratos MCP. Los evals de las skills son estáticos y no demuestran el comportamiento real de un modelo. Un ensayo desde el repositorio del producto instala el paquete local en un prefijo y un HOME temporales y comprueba instalación, reinstalación, desactivación, retirada y restauración. El paquete se publicó en @orkastery/cli 0.5.0. Un commit local o una prueba local no son una entrega."
             ]
           }
         ]
@@ -543,75 +419,6 @@ export default [
             "title": "What comes next",
             "paragraphs": [
               "The rest of RM-059 is a plan, with no dates. Wave 0 (the foundation described above) and wave 1 (the Control Tower, the Quota Weather, the Batch Brake and the Collision Radar) already exist; from wave 2, the Owner’s Desk is in version {versao} and the Conductor’s Sentinel is on the core’s main branch, not yet in a published version; wave 3 brings the Pista de Entrega, the Ritual do MASTER, the Mensageiro de Sessões and the Portão de Tarefas, each waiting for the owner’s decision that releases it. For now, only the bridge, the Tower, the Quota Weather, the Batch Brake, the Collision Radar, the Owner’s Desk and the Sentinel exist as mods."
-            ]
-          }
-        ]
-      },
-      "es": {
-        "title": "Conduzca desde Claude Code",
-        "description": "Los mods de Orkastery en Claude Code: lo que ya existe, cómo cargarlos y lo que aún es un plan.",
-        "sections": [
-          {
-            "id": "o-que-existe",
-            "title": "Lo que ya existe",
-            "paragraphs": [
-              "La RM-059 busca llevar la conducción de la fábrica a la sesión de Claude Code en la que usted ya trabaja, mediante mods: plugins de function hooks de Claude Code que se ejecutan dentro del cliente, reaccionan a los eventos de la sesión y dibujan paneles, franjas y avisos. En la versión {versao} hay seis, y la main del núcleo ya tiene un séptimo, todavía fuera de una versión publicada:"
-            ],
-            "items": [
-              "El puente (ork-ponte), sobre el que se apoyan los demás mods: da a cada uno el papel de la sesión (dono en la sesión de quien conduce, fase en las sesiones de fase, o dormente), la instantánea del núcleo mediante ork_maestro, la franja sobre el prompt y el registro de lo que un mod mostró al dueño. Tiene los papeles dono y fase.",
-              "La Torre de Control (ork-torre): en la sesión del dueño, un panel con cada thread abierta en una línea, con el recorrido de las seis fases, el modo, quién la conduce y desde cuándo, el bloqueo tipado en una frase corta, los pedidos al dueño y la acción que pide el estado de la thread. El comando /torre abre el panel, y al pulsar una línea se abre el detalle de la thread. Depende del puente y solo tiene el papel dono.",
-              "El Clima de Cuota (ork-clima): en la sesión del dueño, lee las ventanas de límite de la cuenta en cada medición del motor (session.measure), guarda la serie y prevé cuándo se agota cada ventana al ritmo actual. Solo en la alerta, la franja del puente dice qué reanudación de la cola no cabe antes de que se agote la ventana, cuánto de ella ya se usó, cuándo se agota y cuándo se renueva; el comando /clima muestra cada ventana, la cola de reanudación, las threads abiertas detenidas por cuota y las cuentas del registro de ork accounts esgotamentos. Solo lee y avisa: cambiar de cuenta, de runtime o de modelo queda en manos del núcleo y del dueño. También depende del puente y solo tiene el papel dono.",
-              "El Freno de Lote (ork-freio), el primer mod con el papel fase: en la sesión de fase, después de cada lote de herramientas, encuentra los archivos que el lote tocó (por las rutas de las ediciones y por la diferencia del git status, que también capta la edición hecha con Bash) y las claims de la thread que los citan, pide al núcleo, en segundo plano, que las compruebe con ork claims conferir, en el sandbox del verify, y devuelve en el lote siguiente lo que se rompió: el id de la claim, el comando y el final de la salida. También avisa cuando el lote tocó archivos fuera de los touch_paths del plan. Llega solo a las sesiones de fase por el despacho, con el adaptador instalado (ork adapter install claude-code), y necesita un ork con ork claims conferir en el PATH de la sesión: sin él, avisa una vez que la comprobación no está disponible y sigue. También depende del puente.",
-              "El Radar de Colisión (ork-radar): en la sesión del dueño, cada 10 min y con el comando /radar, calcula el merge de cada thread abierta contra la origin/main local y entre las threads, antes del SHIP, sin worktree y sin grabar objetos en el repositorio (con git merge-tree --write-tree en un temporal). El panel muestra el mapa de calor, los archivos en conflicto, el lease que cubre cada uno y, como texto, el comando ork worktree sync <thread> --dry-run que lo resuelve; una colisión nueva se convierte en una línea en la franja del puente. El fetch sigue a cargo del núcleo. Solo lee, depende del puente y solo tiene el papel dono.",
-              "La Mesa del Dueño (ork-mesa): en la sesión del dueño, reúne en un panel lo que lo espera a usted. El comando /mesa abre el lote de hasta cinco preguntas, cada una con la alternativa recomendada al frente, el porqué y la consecuencia de las otras; las decisiones que la fábrica tomó por usted en la semana, con cómo cambiarlas y el costo de revertir ahora y después; y las paradas, solo de lectura. El botón Decidir solo pide al núcleo el diálogo nativo del host (ork_request_decision, con el threadId y el pedidoId), y el código y la letra para Telegram quedan siempre a la vista; la prueba de que el diálogo se abre cuando el pedido viene de un mod sigue pendiente del dueño. La Mesa solo decide por usted mediante la decisión autónoma del núcleo (ork_decision_record), y solo cuando el pedido declara que sigue la recomendada al vencer el plazo y pasa las cuatro condiciones del núcleo; hoy el núcleo no marca ningún pedido así, de modo que no decide nada por sí sola. Nunca responde un pedido. Depende del puente y solo tiene el papel dono.",
-              "La Centinela del Conductor (ork-sentinela), por ahora solo en la main: en la sesión del dueño, mantiene a través del núcleo su presencia en esta máquina, con un latido cada 60 s, y la retira cuando termina la sesión; mientras la presencia está vigente, el conductor externo cede el despacho. Cuando cambia el ledger de una thread, y en cada latido, vuelve a leer el paso del conductor en cada thread abierta y despacha la fase siguiente de las threads #Auto que el núcleo manda despachar, una vez por turno y solo mediante ork phase run; la reanudación solo ejecuta ork retry run cuando ork retry plan es automático. Cada 5 min, lo que solo el dueño resuelve en ork pulse se convierte en una notificación del sistema, con el siguiente paso del núcleo, una vez por texto, y entra en el registro del puente, para que Telegram no lo repita. La franja del puente muestra las threads en marcha y las detenidas, y el comando /sentinela muestra el paso de cada thread y el diario de lo que despachó, cedió y avisó, y también pausa y reanuda la Centinela. Depende del puente y solo tiene el papel dono."
-            ]
-          },
-          {
-            "id": "carregar",
-            "title": "Cárguelos en su sesión",
-            "paragraphs": [
-              "La Torre, el Clima de Cuota, el Radar de Colisión, la Mesa del Dueño y la Centinela solo se activan en la sesión del dueño (el Freno de Lote, con el papel fase, llega a las sesiones de fase por el despacho), que el puente reconoce por dos cosas: el orkastery.yaml en la raíz y el servidor MCP orkastery del proyecto conectado. Los comandos de abajo vienen en tres grupos: el servidor MCP del proyecto; el adaptador de Claude Code, que deja la copia de cada mod en .claude/plugins/orkastery/mods/<mod>, y su carga en la sesión con --plugin-dir; y, sin el adaptador local, la instalación desde el marketplace del repositorio, en el ámbito del proyecto. Los comandos de la Centinela están en la sección siguiente, porque necesita un ork con comandos que solo tiene la main del núcleo.",
-              "La API de mods pide Claude Code 2.1.287 o posterior. En el CI, el job mods instala Claude Code 2.1.296, valida y prueba cada mod y busca en el binario cada evento que usan; en esa búsqueda, las builds 2.1.288 y 2.1.289 fallan, sin ui.notify.",
-              "Los dos marketplaces se llaman orkastery, y el local, registrado a partir de .claude/plugins/orkastery al activar el adaptador, no lista los mods. No cambie uno por otro en un proyecto que usa el plugin del adaptador: quitar un marketplace desinstala los plugins que vinieron de él, y el plugin del marketplace del repositorio no trae el guard PreToolUse ni el MCP del adaptador."
-            ],
-            "code": "ork mcp install --project \"$PWD\" --host claude-code\n\nork adapter install claude-code\nclaude --plugin-dir .claude/plugins/orkastery/mods/ork-ponte --plugin-dir .claude/plugins/orkastery/mods/ork-torre --plugin-dir .claude/plugins/orkastery/mods/ork-clima --plugin-dir .claude/plugins/orkastery/mods/ork-radar --plugin-dir .claude/plugins/orkastery/mods/ork-mesa\n\nclaude plugin marketplace add orkastery/orkastery\nclaude plugin install ork-ponte@orkastery --scope project\nclaude plugin install ork-torre@orkastery --scope project\nclaude plugin install ork-clima@orkastery --scope project\nclaude plugin install ork-radar@orkastery --scope project\nclaude plugin install ork-mesa@orkastery --scope project"
-          },
-          {
-            "id": "sentinela",
-            "title": "Deje que la Centinela despache",
-            "paragraphs": [
-              "Con su sesión abierta en Claude Code y la Centinela activa y sin pausa, es ella quien despacha la fase siguiente de las threads #Auto y hace sus reintentos, y el conductor externo (por ejemplo, un cron en el gateway de Hermes) cede. Con la Centinela en pausa, o con la sesión cerrada (la presencia vence 3 min después del último latido), el conductor externo vuelve a conducir. La publicación de la branch, el merge del PR en verde y los avisos de Telegram quedan siempre con el conductor externo: la Centinela no publica branches, no abre ni fusiona PR y no envía mensajes por Telegram.",
-              "Necesita un ork con los comandos de presencia que solo tiene la main del núcleo, y se carga junto con el puente, desde la carpeta del adaptador o desde el marketplace del repositorio, como en el bloque de abajo. El script del conductor externo queda fuera del repositorio, y el cambio le corresponde a usted: una vez por ronda, antes del bucle de despacho, lee el estado de la Centinela con --json y, mientras presenca.ativa sea true, omite el despacho de la fase siguiente y el ork retry run de las threads #Auto. La publicación de la branch que solo espera el push, el merge del PR en verde y los avisos al dueño quedan como están; sin presencia viva, el conductor externo conduce como antes.",
-              "No hay despacho duplicado, porque los dos conductores despachan solo mediante el núcleo: ork phase run toma la conducción de la thread bajo un bloqueo del kernel. Con dos pedidos en el mismo instante, uno despacha y el otro sale sin sesión nueva; con la thread ya conducida, el pedido sale con 3, conducao.em-andamento, y graba conducao_recusada; y el mismo pedido de quien ya conduce graba despacho_idempotente y devuelve la sesión en curso. La Centinela además vuelve a leer la conducción justo antes de despachar, nunca usa ork conducao assumir y guarda el turno que ya despachó. Su despacho lleva el canal de Claude Code y su sesión en la correlación, y el phase_dispatch muestra de dónde vino.",
-              "La Centinela no elige la fase: sigue la acción que el núcleo da a cada thread en el estado. En #Auto, después de una fase concluida, sale la fase siguiente a la prueba más avanzada que dejó la sesión del bloque: el artefacto de la fase (goal.md, plan.md, check.md) grabado después del despacho, el producto en la branch, que muestra que hubo GO, o el ship_done y el master_done. Si el bloque ya pasó del CHECK, no sale nada: la entrega queda con el conductor externo y con el dueño. El CHECK que terminó sin exactamente un veredicto se vuelve a despachar, y el despacho que falló antes de abrir sesión va a ork retry plan. Lo que espera al dueño (thread en pausa, pregunta abierta, escalada) retiene cualquier paso y, sin pedido guardado al crear la thread (ork thread new --pedido), la Centinela no despacha y avisa.",
-              "Un rechazo pasajero (otro conductor, proyecto sin hueco, pedido abierto, fallo) no quema el turno: la Centinela lo intenta de nuevo después de 3 min, y el mismo rechazo seguido duplica la espera hasta 30 min; solo el despacho hecho, o el pedido repetido de quien ya conduce, queda en firme. Si su conductor externo despacha por la última línea del ledger, puede repetir una fase que la sesión del bloque ya hizo; leer la acción de cada thread en el mismo estado lo evita.",
-              "Para comprobarlo, el estado de la Centinela indica si está activa en esta máquina y el paso de cada thread, ork phase list <thread> muestra el despacho con el canal de Claude Code y, en la sesión del dueño, /sentinela muestra el diario; las dos últimas líneas del bloque pausan y reanudan la Centinela."
-            ],
-            "code": "claude --plugin-dir .claude/plugins/orkastery/mods/ork-ponte --plugin-dir .claude/plugins/orkastery/mods/ork-sentinela\nclaude plugin install ork-sentinela@orkastery --scope project\n\nork conducao sentinela status\nork phase list <thread>\n\n/sentinela\n/sentinela pausar\n/sentinela retomar"
-          },
-          {
-            "id": "sessoes-de-fase",
-            "title": "En las sesiones de fase",
-            "paragraphs": [
-              "El despacho claude-bg pasa un --plugin-dir por cada mod con el papel fase, después del plugin de Orkastery, cuando la carpeta instalada del mod tiene exactamente los archivos de INSTALADO.json y la versión de Claude Code cumple el mínimo del mod. Un mod que pide una versión más nueva queda fuera, junto con los que dependen de él, y el despacho sigue; un archivo de más, un enlace o una declaración inválida rechazan el despacho con runtime.context.installation. Hoy el puente y el Freno de Lote tienen el papel fase. El papel está en el orkastery-mod.json del mod (ork.mod/v1): para sacar un mod de las sesiones de fase, cambie el papel en el catálogo y reinstale el adaptador.",
-              "La prueba de la RM-059 midió, en Claude Code 2.1.296, que un mod cargado con --plugin-dir en una sesión de fase recibe los eventos de la sesión; el script core/scripts/prova-mods-sessao-de-fase.cjs repite esa prueba.",
-              "La base de los mods trae además dos piezas del núcleo. ork claims conferir vuelve a ejecutar, en el sandbox de ork_verify y sin grabar recibo, solo las claims pedidas (--claims) o el verify de una tarea del plan (--tarefa); una prueba que crea procesos puede fallar allí y pasar en ork verify. ork thread new --pedido guarda el pedido de la thread en pedido.md, con su sha256, y ork prompt render sin --pedido usa ese pedido."
-            ]
-          },
-          {
-            "id": "limites",
-            "title": "Lo que ningún mod hace",
-            "paragraphs": [
-              "Ningún mod aprueba gate, permiso, nota del MASTER, push ni tag en nombre del dueño, ni habla como el dueño. La regla está en adapters/claude-code/mods/autoridade.json y tiene dos guardas: node core/scripts/checar-mods.cjs rechaza el mod por su código fuente, y el puente lo rechaza en tiempo de ejecución. El Freno de Lote nunca ejecuta el comando de una claim, nunca graba estado de claim y nunca detiene el bucle: quien verifica sigue siendo ork verify. La Centinela lee solo mediante el núcleo, despacha y reanuda solo mediante ork phase run y ork retry run, y nunca usa ork conducao assumir. La Torre, el Clima de Cuota y el Radar de Colisión solo leen, y la Mesa del Dueño solo pide el diálogo al núcleo y nunca responde un pedido: una acción con efecto abre el mod que la tiene a cargo, cuando está cargado, o aparece como comando de ork, para que usted lo ejecute.",
-              "Los mods se ejecutan con los permisos de su usuario, sin sandbox, y la API de mods de Claude Code está en acceso anticipado y puede cambiar entre versiones. Nada en el núcleo depende de ellos: sin mods, el despacho y el ciclo siguen como antes, y Telegram sigue siendo un canal."
-            ]
-          },
-          {
-            "id": "plano",
-            "title": "Lo que viene después",
-            "paragraphs": [
-              "El resto de la RM-059 es un plan, sin fechas. La oleada 0 (la base descrita arriba) y la oleada 1 (la Torre de Control, el Clima de Cuota, el Freno de Lote y el Radar de Colisión) ya existen; de la oleada 2, la Mesa del Dueño está en la versión {versao} y la Centinela del Conductor, en la main del núcleo, todavía fuera de una versión publicada; la oleada 3 trae la Pista de Entrega, el Ritual do MASTER, el Mensageiro de Sessões y el Portão de Tarefas, cada uno a la espera de la decisión del dueño que lo libera. Por ahora, solo el puente, la Torre, el Clima de Cuota, el Freno de Lote, el Radar de Colisión, la Mesa del Dueño y la Centinela existen como mods."
             ]
           }
         ]
@@ -777,82 +584,6 @@ export default [
             "code": "policies:\n  claim_sem_prova_local: warn\n\nork eval --so-canarios"
           }
         ]
-      },
-      "es": {
-        "title": "Demuestre una alegación",
-        "description": "Utilice una baseline, comandos reproducibles y los resultados reales de ejecución.",
-        "sections": [
-          {
-            "id": "baseline",
-            "title": "Mida antes del cambio",
-            "paragraphs": [
-              "Registre la baseline antes de implementar. Permite distinguir una regresión de un fallo previo. Una claim vincula un archivo, una alegación y un comando; registrarla no ejecuta el comando ni demuestra la alegación."
-            ],
-            "code": "ork verify <thread> --baseline\nork claims add <thread> src/filtro.ts --claim \"o filtro respeita o fuso\" --verificar \"node --test test/filtro.test.js\""
-          },
-          {
-            "id": "reexecutar",
-            "title": "Vuelva a ejecutar sobre el estado actual",
-            "paragraphs": [
-              "ork verify vuelve a ejecutar las claims y los verificadores del manifiesto. Lea la causa, el código de salida y los comandos interrumpidos. Un timeout es una ejecución incompleta, no una aprobación ni una explicación automática del defecto."
-            ],
-            "code": "ork verify <thread>\nork retry plan <thread>"
-          },
-          {
-            "id": "corrigir",
-            "title": "Corrija y vuelva a verificar",
-            "paragraphs": [
-              "Un fallo abre trabajo de corrección con alcance explícito. Consulte la ronda antes de ejecutarla otra vez. Los cambios de comportamiento requieren una nueva verificación completa; el núcleo controla los límites de intentos y el escalado."
-            ],
-            "code": "ork fix open <thread>\nork fix list <thread>\nork fix reverify <thread>"
-          },
-          {
-            "id": "verificacao-confiavel",
-            "title": "Fallos, plazos y comandos específicos",
-            "paragraphs": [
-              "Verify registra causa, plazo y duración. El timeout tiene un motivo tipado y usa el plazo del manifiesto. Las claims deben ejecutar el comando más pequeño que demuestre el cambio. El lint avisa en ork claims add, y ork ci prepare rechaza la suite local completa: npm --prefix core test puede necesitar recursos ausentes en CI. En lugar de la suite completa, ejecute solo la prueba de la claim (node --test en el archivo de prueba) o un script hermético del proyecto.",
-              "La preparación del CI compila una vez, vincula la identidad del producto y registra executado para distinguir resultados reales de comandos no ejecutados. La contención puede agotar el plazo local; eso no exime del CI en el commit exacto ni convierte un fallo en aprobación."
-            ],
-            "code": "node --test test/filtro.test.js\nork ci prepare <thread>"
-          },
-          {
-            "id": "steal-da-cpu",
-            "title": "Pruebas de reloj bajo steal de la CPU",
-            "paragraphs": [
-              "En una VPS, el hipervisor puede quitar CPU (el steal), y una prueba que mide el reloj falla sin que el código haya cambiado. En la versión {versao}, ork verify, en el CLI, por MCP y en ork fix reverify, mide el steal en /proc/stat, en la ronda y en la ventana de cada comando, y graba la medida en el verify_run (steal, y stealPct en cada comando que falla).",
-              "Cuando un comando falla solo en pruebas de reloj y el steal en su ventana superó el 40%, el fallo pasa a verify.timeout: sin veredicto, el retry vuelve a ejecutarlo, y nunca es regresión. Una prueba de reloj es la que falló con la firma de plazo de node --test (la prueba agotó su plazo, o la canceló el padre que lo agotó) o la que tiene una entrada vigente en el registro de inestabilidad; los nombres vienen del testeQueCaiu del ledger, que también lee el reporter spec de node --test. Una aserción común con steal alto sigue siendo regresión, un comando sin prueba nombrada nunca se reclasifica y sin /proc/stat no se atenúa nada. ork ci run no mide ni atenúa: el CI sigue siendo la prueba independiente.",
-              "El registro es core/instabilidade.json, en el contrato ork.instabilidade/v1, leído de la worktree que se verifica. Nace vacío y solo acepta una entrada con la tasa medida (fallos en rondas, el comando que la midió y la fecha) y revalidación en un plazo de 30 días. Un archivo ausente vale como registro vacío; con un error de contrato, ninguna entrada vale; una entrada vencida no vale hasta que alguien mida de nuevo. El registro nunca atenúa por sí solo: solo dice que la prueba depende del reloj."
-            ],
-            "code": "{\n  \"contrato\": \"ork.instabilidade/v1\",\n  \"entradas\": []\n}"
-          },
-          {
-            "id": "skip-tipado",
-            "title": "Una dependencia opcional ausente es skip",
-            "paragraphs": [
-              "La suite local incluye integraciones que piden el codex del sandbox en /usr/bin/codex, el intérprete de OrkMind en el PATH o PostgreSQL mediante Docker con pgvector/pgvector:pg16. Cada prueba que depende de una de ellas sondea antes y, si falta, sale como skip con el motivo, en lugar de reprobar. La suite completa pasa con 0 fallos en una máquina sin ninguna de ellas, y el final del informe cuenta los skips; un fallo que queda es real.",
-              "ORK_TESTE_EXIGE_AMBIENTE=1 no omite nada: la dependencia que falte reprueba. test:ci activa la variable por sí solo. node core/scripts/suite-local.cjs corre la suite, sale con 0 solo con 0 fallos y lista cada skip con su motivo. Una prueba nueva que depende de una herramienta externa usa los atajos semCodexSandbox(), semOrkMind() y semPostgres()."
-            ],
-            "code": "npm --prefix core test\nORK_TESTE_EXIGE_AMBIENTE=1 npm --prefix core test\nnode core/scripts/suite-local.cjs"
-          },
-          {
-            "id": "runtime-e-sessoes",
-            "title": "Modelo no disponible y cuenta de sesión",
-            "paragraphs": [
-              "model_not_found produce runtime.model-unavailable. El retry prueba destinos autorizados con el mismo prompt, conserva el perfil para otros modelos y registra el cambio. Sin destino, escala con la corrección de setup; el rate limit habitual espera su ventana. ork sessions stop, logs y attach buscan la cuenta correcta entre los perfiles Claude configurados. El inventario global, ork doctor, ork pulse y el control nativo de HITL aún pueden limitarse a la cuenta del proceso. Un perfil pedido con --perfil que no existe o es de otro runtime se rechaza con runtime.profile-invalid y se escala a una persona, sin cambiar de perfil por su cuenta.",
-              "runtime.workspace-untrusted (el runtime rechazó el directorio de la worktree) y runtime.consent-pending (el CLI espera que se acepten términos nuevos) pasan a esperar al dueño, con el comando exacto; tras la aceptación, ork retry run vuelve a despachar la misma fase con el mismo prompt. En la versión {versao}, runtime.consent-pending cubre también el aviso del modo sin permisos y la activación del modo auto de --bg, y la prueba de que el dueño confió en el directorio sigue la regla que Claude Code aplica con --bg: valen el propio directorio y los de arriba hasta la raíz git, o el repositorio principal de la worktree vinculada, pero no el directorio por encima de la raíz git. El directorio que ya no existe y el directorio home no le tocan al dueño y quedan en runtime.unavailable, y el rechazo repetido por el mismo impedimento no gasta intento ni sube el esfuerzo."
-            ],
-            "code": "ork retry plan <thread>\nork retry run <thread> --dry-run"
-          },
-          {
-            "id": "prova-local",
-            "title": "Prueba local al registrar la claim",
-            "paragraphs": [
-              "La policy claim_sem_prova_local (alias claims_failed) viene desactivada y solo vale si el manifiesto la declara. Con ella, ork claims add ejecuta los comandos de la claim una vez, en la worktree de la thread y dentro de verify.timeout_ms. La claim se registra de todos modos: un comando que falla graba policy_warn con claims.failed, y un plazo agotado, con verify.timeout. Nunca detiene el registro, ni siquiera declarada como block. Como add se vuelve tan lento como el comando, quien decide activarla es el dueño del proyecto. Sin la worktree de la thread (borrada), no se ejecuta nada y el aviso lo dice. Por MCP (ork_claim_add), el registro nunca ejecuta el texto de la claim, con o sin la policy: allí la prueba es ork_verify, en el sandbox.",
-              "El canario fx-pedido-colado demuestra que un pedido del dueño pegado en #Auto, con push y merge autorizados, sigue sin detenerse: la duda se convierte en decisión informada y una confirmación en texto libre se rechaza sin grabar nada."
-            ],
-            "code": "policies:\n  claim_sem_prova_local: warn\n\nork eval --so-canarios"
-          }
-        ]
       }
     }
   },
@@ -902,28 +633,6 @@ export default [
             "title": "A finding needs evidence",
             "paragraphs": [
               "The auditor identifies the file, evidence, reproducible command and proposal. Auditors do not fix their own findings. The board preserves history and recurrence; promoting a warning to a blocking rule requires a decision, not just an agent recommendation."
-            ],
-            "code": "ork audit verify <rodada>"
-          }
-        ]
-      },
-      "es": {
-        "title": "Audite y siga la deuda",
-        "description": "Convierta los hallazgos en trabajo trazable, separando revisión y corrección.",
-        "sections": [
-          {
-            "id": "packs",
-            "title": "Elija el pack según la etapa",
-            "paragraphs": [
-              "La etapa del producto determina los packs activos: clean-code, reuse y process desde nascente; architecture, data-model y ux en crescendo; security-privacy en maduro. Consulte las reglas y las pruebas exigidas antes de la ronda."
-            ],
-            "code": "ork audit packs\nork audit packs --pack reuse"
-          },
-          {
-            "id": "achados",
-            "title": "Un hallazgo necesita pruebas",
-            "paragraphs": [
-              "El auditor identifica el archivo, la prueba, el comando reproducible y la propuesta. No corrige su propio hallazgo. El board conserva el historial y la recurrencia; convertir un aviso en una regla de bloqueo requiere una decisión, no solo la recomendación de un agente."
             ],
             "code": "ork audit verify <rodada>"
           }
@@ -1017,48 +726,6 @@ export default [
               "It stays off until the manifest declares the memory.embedding block, with provider, model, dimension and the name of the key variable, never its value. The vector index is local, derived from the tenant and kept out of git; reindexing unchanged content embeds nothing. Indexed text and every query go to the configured provider: use a dedicated key with a credit limit. The token and cost estimate is not an invoice. Without embeddings, the reason is embeddings.*, and the orkmind regime and tag recall stay the same.",
               "The index, the vectors, FTS and ork memory status use the same search universe: the tenant’s active entries in the collections of ork, minus those the library flags with injection_risk. An entry from another tenant or collection is a typed failure (memory.query.scope-violation), never a silent drop, and is not embedded. When the read window fills up, the answer is memory.query.window-saturated instead of truncating, and ork memory index exits 1 without embedding anything.",
               "status and index show the universe per collection and count, as numbers only, what stays out of search: entries flagged injection_risk, expired ones and those in other collections, such as session and semantic_log. Coverage compares the vectors with that universe; the reindex warning appears only when reindexing helps, and entries left out of the index by design are counted separately."
-            ],
-            "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory index\nork memory search --texto \"trocar de conta quando acaba a cota\" --json"
-          }
-        ]
-      },
-      "es": {
-        "title": "Memoria y continuidad",
-        "description": "Transfiera contexto con procedencia y recupere detalles cuando sean necesarios.",
-        "sections": [
-          {
-            "id": "medida",
-            "title": "Declare el origen de la medida",
-            "paragraphs": [
-              "El gate de tokens distingue uso reportado, estimado, informado y no disponible. La ausencia de medida no es cero. Consulte el gate antes del siguiente bloque; nunca decida la rotación con un número inventado."
-            ],
-            "code": "ork gate next <thread> --proximo GO"
-          },
-          {
-            "id": "handoff",
-            "title": "Tres niveles de contexto",
-            "paragraphs": [
-              "El contenido crítico entra directamente en el handoff. El importante se convierte en referencia con condición de recuperación. El resumible recibe un resumen con procedencia. Cada elemento conserva origen, ubicación y hash; los cambios de fuente deben detectarse antes de confiar en el contexto antiguo."
-            ],
-            "code": "ork handoff export <thread> --proxima-fase GO\nork recall <thread> --fase CHECK"
-          },
-          {
-            "id": "degradacao",
-            "title": "Memoria no disponible",
-            "paragraphs": [
-              "OrkMind es una integración de memoria, no una autoridad de gate. Cuando no está disponible, el modo efectivo y la degradación deben ser explícitos. Consulte ork memory status antes de afirmar que se guardó o recuperó contexto.",
-              "ork memory status muestra el régimen pedido en el manifiesto y el efectivo, el tenant, la variable de la base, si la DSN está en el entorno (sin imprimir su valor) y el CLI de OrkMind. En el régimen files, la degradación aparece como modo.files, con la corrección para activar la memoria semántica: memory.mode: orkmind y memory.database_url_env en el manifiesto. El ciclo no se detiene por eso: el handoff sigue clasificado en tres niveles, y ork recall sigue resolviendo los punteros."
-            ],
-            "code": "ork memory status"
-          },
-          {
-            "id": "significado",
-            "title": "Búsqueda por significado",
-            "paragraphs": [
-              "La búsqueda por etiqueta sigue siendo el camino determinista: es la que construye el prompt, el recall y el handoff. La búsqueda por significado es una superficie separada que encuentra por paráfrasis lo que la etiqueta y la palabra exacta no encuentran. Cada resultado se marca deterministico: false, y nada semántico entra solo en el prompt.",
-              "Permanece desactivada hasta que el manifiesto declare el bloque memory.embedding, con provider, modelo, dimensión y el nombre de la variable de la clave, nunca su valor. El índice vectorial es local, derivado del tenant y fuera de git; reindexar sin cambios no genera embeddings. El texto indexado y cada consulta salen hacia el provider configurado: use una clave dedicada con límite de crédito. La estimación de tokens y coste no es una factura. Sin embeddings, el motivo es embeddings.*, y el régimen orkmind y el recall por etiqueta no cambian.",
-              "El índice, los vectores, FTS y ork memory status usan el mismo universo de búsqueda: las entradas activas del tenant en las colecciones de ork, sin las que la biblioteca marca con injection_risk. Una entrada de otro tenant o de otra colección es un fallo tipado (memory.query.scope-violation), nunca un descarte silencioso, y no va al embed. Cuando la ventana de lectura se llena, la respuesta es memory.query.window-saturated en lugar de cortar, y ork memory index sale con 1 sin embeber nada.",
-              "status e index muestran el universo por colección y cuentan, solo en número, lo que queda fuera de la búsqueda: entradas con injection_risk, caducadas y de otras colecciones, como session y semantic_log. La cobertura compara los vectores con ese universo; el aviso de reindexar solo aparece cuando reindexar lo resuelve, y la entrada fuera del índice por diseño se cuenta aparte."
             ],
             "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory index\nork memory search --texto \"trocar de conta quando acaba a cota\" --json"
           }
@@ -1181,60 +848,6 @@ export default [
             "code": "ork network roadmap\nork network roadmap --projeto github:orkastery/orkastery\nork network roadmap --projeto meu-produto --json"
           }
         ]
-      },
-      "es": {
-        "title": "Trabaje en varias máquinas",
-        "description": "Coordine reservas y consulte estados compartidos sin transferir credenciales.",
-        "sections": [
-          {
-            "id": "adesao",
-            "title": "La adhesión es una operación explícita",
-            "highlight": {
-              "title": "Cambia para quien ya lo usa",
-              "paragraphs": [
-                "En la versión {versao}, fabrica.compartilhada: true en el manifiesto ya no activa la publicación de la instantánea de esta máquina ni la lectura de las demás. Solo la adhesión de la máquina la activa: ork fabrica entrar, guardada en ~/.orkastery/maquina.json, o ORK_FABRICA_COMPARTILHADA=1. Con el pedido en el manifiesto y sin la adhesión, ork doctor y ork fabrica avisan con fabrica.nao-confirmada. Si su equipo activaba la fábrica solo con el manifiesto, ejecute ork fabrica entrar una vez en cada máquina."
-              ],
-              "links": [
-                {
-                  "label": "Frontera de confianza",
-                  "href": "/docs/confianca/"
-                }
-              ]
-            },
-            "paragraphs": [
-              "La fábrica compartida usa ramas de estado en el remoto para reservas e instantáneas de máquinas. La adhesión es de la máquina, no del proyecto: ork fabrica entrar publica la primera instantánea; ejecútelo solo cuando la participación esté autorizada. El pedido del equipo en orkastery.yaml (fabrica.compartilhada: true) no activa la publicación: el manifiesto llega con el repositorio, y solo la máquina decide publicar su instantánea. Cada máquina inicia su propia sesión del runtime.",
-              "fabrica.remoto es el nombre de un remoto de git ya configurado en el clon, no una URL: solo letras, dígitos, punto, guion bajo y guion, sin guion al principio, sin .. y con hasta 64 caracteres. Lo mismo vale para --remoto de ork fabrica, ork roadmap, ork ship registrar-pr, ork ci status y ork ship --para. Fuera del formato, el valor nunca llega a git: el rechazo es tipado (fabrica.remoto-invalido, roadmap.remoto-invalido, ship.remoto-invalido o ci.remoto-invalido) y muestra el valor redactado. Para otro servidor, cree el remoto con git remote add y ponga el nombre en el manifiesto."
-            ]
-          },
-          {
-            "id": "leitura",
-            "title": "Consulte antes de asumir trabajo",
-            "paragraphs": [
-              "Las reservas evitan que dos máquinas asuman el mismo elemento. Sin red, consulte la última copia y tenga en cuenta su fecha. La instantánea pública excluye prompts, transcripciones, credenciales y rutas locales. Las decisiones pendientes deben responderse mediante el ingreso autenticado de la máquina responsable."
-            ],
-            "code": "ork board --sem-remoto\nork fabrica --sem-remoto"
-          },
-          {
-            "id": "pessoa",
-            "title": "La red de la persona: Orkastery Network",
-            "paragraphs": [
-              "La fábrica compartida vive en el remoto de un proyecto. La red reúne las máquinas de una persona, de todos los proyectos, en un repositorio privado suyo en la forja, <usuario>/orkastery-network. ork network entrar crea la casa cuando falta, publica la primera instantánea y solo entonces guarda la adhesión; después, la máquina publica sola en el latido del pulse y en los eventos de thread. La identidad viene de gh o glab ya autenticados; ork nunca lee un token. Quien ya hizo ork fabrica entrar es miembro sin rehacer nada.",
-              "La casa recibe nombre, hostname, forja y login, runtimes y hosts con su versión, proyectos con remoto sin credencial y el último latido. Nunca recibe token, contraseña, email de la cuenta, plan de pago, ruta de archivo de credenciales, prompt, transcript ni log. Publicar exige la casa privada, comprobada en la forja, y solo por HTTPS.",
-              "ork doctor tiene la línea rede: adhesión, casa, último latido y último fallo de rede.log. Solo lee archivos locales y nunca bloquea; pasa a aviso cuando el fallo es más reciente que el latido o cuando el latido supera las 3 horas. El REDE.md de la casa lista las máquinas con latido en los últimos 14 días; las detenidas desde hace más tiempo quedan en el pie y en ork network status. La red se publicó en la versión 0.5.3."
-            ],
-            "code": "ork network entrar --maquina pc-casa\nork network status\nork network publicar\nork network sair"
-          },
-          {
-            "id": "rede",
-            "title": "El roadmap de la red, desde cualquier directorio",
-            "paragraphs": [
-              "ork network roadmap reúne el informe de estado del roadmap, las reservas y las threads de cada máquina, con la fuente y la hora de cada parte. Funciona desde cualquier directorio, incluso fuera de un clon. El roadmap procede de la base remota, igual para todas las máquinas; esta máquina aporta su estado local, y las demás, su instantánea publicada.",
-              "Sin clon, la lectura usa la CLI de la forja ya autenticada, gh o glab, solo con consultas; ningún token sale de ella. Lo que no se leyó aparece como laguna tipada, con lo que hay que hacer: máquina sin latido desde hace más de 3 h, forja sin sesión iniciada, sin red. La respuesta nunca dice vacío por no haber leído.",
-              "La red de la persona también entra en el panorama, en la sección Red por persona: la casa y cada máquina, con el latido y los proyectos que declara. Un proyecto que solo declara una máquina de la red puede pedirse por nombre, sin clon ni registro en esta, y la máquina de la red que no publicó en la fábrica del proyecto aparece con las threads no leídas (laguna maquina.sem-fabrica), nunca con cero activas. ORK_REDE_LER=0 desactiva esa lectura."
-            ],
-            "code": "ork network roadmap\nork network roadmap --projeto github:orkastery/orkastery\nork network roadmap --projeto meu-produto --json"
-          }
-        ]
       }
     }
   },
@@ -1353,62 +966,6 @@ export default [
             "paragraphs": [
               "ork roadmap status is read-only: it groups the report, marks owner decisions with #HITL and shows the next step. Technical blockers remain the orchestrator’s responsibility, except those only the owner can clear in the terminal, such as trusting the worktree directory or accepting new CLI terms: these become a wait for the owner, with the exact command and ork retry run. In version {versao}, the pulse summary lists these blockers in their own block, and a new one goes out right away, without waiting for the cadence.",
               "ork master pedir requests a score from 0 to 5 and a reason through authenticated Telegram; the receipt accompanies the record. The MCP score dialog is not yet available. An agent-supplied --por cannot replace channel proof."
-            ],
-            "code": "ork roadmap status\nork master pedir <thread> --formato telegram"
-          }
-        ]
-      },
-      "es": {
-        "title": "Siga las pausas y decisiones",
-        "description": "Distinga una sesión viva de una sesión que puede avanzar.",
-        "sections": [
-          {
-            "id": "observar",
-            "title": "Observe threads y sesiones",
-            "paragraphs": [
-              "ork monitor sigue las threads; ork sessions hitl encuentra sesiones detenidas, incluso sin thread. El radar distingue espera humana, fallo y estado residual usando pruebas del runtime. Una sesión listada como viva puede estar esperando una respuesta.",
-              "El resumen del pulse sale por el transporte de .orkastery/monitor/pulse-host.json, un archivo de esta máquina. En la versión {versao}, versionado en git, o como enlace, no vale, y el barrido sale con transporte.rastreado sin ejecutar nada; lo mismo vale para el master-host.json del digest."
-            ],
-            "code": "ork monitor\nork sessions hitl\nork pulse --json"
-          },
-          {
-            "id": "responder",
-            "title": "Responda por el canal autorizado",
-            "paragraphs": [
-              "Sin --registrar, el radar es de solo lectura. La opción de registro escribe transiciones reales en el ledger. Las preguntas y opciones deben proceder de la sesión observada; un estado desconocido sigue siendo desconocido. Una sesión hija no puede hacerse pasar por el dueño para responder a un gate."
-            ]
-          },
-          {
-            "id": "pedido-curto",
-            "title": "Una pregunta breve con contexto",
-            "paragraphs": [
-              "ork.hitl-curto/v1 organiza título, pregunta en una frase, qué bloquea y desde cuándo, alternativas de una línea con consecuencia, recomendación justificada y una última línea que indica cómo responder. Las pruebas, claims, riesgos y diff se consultan con el código seguido de detalhes. El ingreso autenticado y su prueba HMAC siguen siendo obligatorios. Son hasta cinco alternativas, una con el sello Recomendación, en un máximo de 15 líneas."
-            ],
-            "code": "ork gate request <thread> --formato telegram"
-          },
-          {
-            "id": "alternativas",
-            "title": "Pedidos de ork por alternativas",
-            "paragraphs": [
-              "Todo pedido que ork abre al dueño es una selección de 3 a 5 alternativas, con exactamente una marcada como Recomendación. El registro rechaza, sin grabar nada, lo que no cumpla eso: hitl.selecao.fora-da-faixa, hitl.selecao.recomendada o hitl.selecao.texto-livre. Una respuesta en texto solo se acepta con una dependencia técnica: el comando exacto que el dueño ejecuta en la terminal y el motivo.",
-              "ork prompt lint rechaza la plantilla que pida una confirmación en texto libre o que el dueño pegue texto (regla hitl-texto-livre). El tiempo detenido por estas preguntas aparece en ork ledger stats, en el campo hitlDeConducao, con la mediana frente a la meta de 5 minutos. El mismo tiempo llega a ork pulse y a ork roadmap status: cada pregunta abierta, con cuánto tiempo lleva deteniendo la thread y desde qué hora, en la zona horaria del dueño, y la mediana de los últimos 7 días. El resumen del pulse gana una línea solo por encima de la meta, junto al resumen que ya sale, sin romper la cadencia. La pregunta nativa de una sesión del host conserva las opciones del propio host."
-            ],
-            "code": "ork prompt lint\nork ledger stats\nork pulse --json\nork roadmap status --json"
-          },
-          {
-            "id": "texto-e-linha",
-            "title": "Texto libre y códigos estables",
-            "paragraphs": [
-              "El texto libre inequívoco (el vocabulario cerrado, una letra de la a a la e o un dígito del 1 al 5) puede corresponder a la acción de una alternativa. La ambigüedad devuelve una pregunta. Una palabra aislada solo se acepta en la ventana de escucha abierta por el núcleo, con una única solicitud para el dueño en todas las threads, y nunca para un acto irreversible. El agente no responde por el dueño.",
-              "Reabrir el mismo gate en el mismo contexto conserva el código. Una respuesta vencida pasa a la solicitud renovada solo cuando contenido y contexto son idénticos; los cambios provocan rechazo. Los lotes vuelven a validar cada gate antes de registrar."
-            ]
-          },
-          {
-            "id": "status-e-nota",
-            "title": "Estado y valoración con procedencia",
-            "paragraphs": [
-              "ork roadmap status es de solo lectura: agrupa el informe, marca con #HITL lo que espera al dueño y muestra el siguiente paso. Los impedimentos técnicos siguen siendo responsabilidad del orquestador, salvo los que solo el dueño resuelve en la terminal, como confiar en el directorio de la worktree o aceptar términos nuevos del CLI: esos pasan a esperar al dueño, con el comando exacto y ork retry run. En la versión {versao}, el resumen del pulse trae esos impedimentos en un bloque propio, y el impedimento nuevo sale enseguida, sin esperar la cadencia.",
-              "ork master pedir solicita una nota de 0 a 5 y el motivo mediante Telegram autenticado; el recibo acompaña al registro. El diálogo MCP de valoración aún no está disponible. Un --por escrito por el agente no sustituye la prueba de canal."
             ],
             "code": "ork roadmap status\nork master pedir <thread> --formato telegram"
           }

@@ -7,6 +7,7 @@ import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {pages,attrs,content,distArg,siteBase} from './check-links.mjs';
 import {releaseDaBase,textoDaFaixa,temRegraDoRobots} from '../src/lib/previa.mjs';
+import {ehRedirecionamento} from './check-redirecionamentos.mjs';
 export function checkPrevia(dist=distArg(),base=siteBase(),{excluir=[],robots=true,texto:conferirTexto=true}={}){
  const release=releaseDaBase(base||'/');
  const versao=JSON.parse(readFileSync(resolve(dist,'versao.json'),'utf8'));
@@ -14,7 +15,9 @@ export function checkPrevia(dist=distArg(),base=siteBase(),{excluir=[],robots=tr
   if(versao.release!==release)throw Error('versao.json da prévia sem a release '+release);
   if(!/^[0-9a-f]{40}$/.test(versao.sha||''))throw Error('versao.json da prévia sem o SHA do commit');
  }else if('release' in versao)throw Error('versao.json da produção com release');
- const all=pages(dist,excluir);
+ // As páginas que levam as URLs /es/ antigas para /en/ são noindex de propósito e não têm faixa;
+ // a checagem delas (check-redirecionamentos.mjs) exige noindex, nofollow na prévia.
+ const all=pages(dist,excluir).filter(p=>!ehRedirecionamento(p));
  for(const p of all){
   const metas=p.nodes.filter(n=>n.tagName==='meta'&&(attrs(n).name||'').toLowerCase()==='robots');
   const faixas=p.nodes.filter(n=>'data-previa' in attrs(n));

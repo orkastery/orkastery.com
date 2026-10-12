@@ -9,7 +9,7 @@ import {readFileSync,writeFileSync,mkdirSync,existsSync,statSync} from 'node:fs'
 import {resolve,extname} from 'node:path';
 import {pathToFileURL} from 'node:url';
 
-const locales=['pt','en','es'],widths=[1440,768,390,320],routes=['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/claude-code/'];
+const locales=['pt','en'],widths=[1440,768,390,320],routes=['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/claude-code/'];
 const checks=['skipLink','languageKeyboard','focusVisible','overflow','inlineCodeWhole','adjacentTextWithCode','codeInsideBlock','copySuccessAndRefusal','modes','phaseTabsKeyboard','options','nightScroll','reveal','reducedMotion','scorePainted'];
 const args=process.argv.slice(2);
 if(args.includes('--plan')){console.log(JSON.stringify({locales,widths,routes,checks,screenshots:locales.length*widths.length*routes.length,network:'blocked',requires:['PLAYWRIGHT_MODULE','CHROMIUM_EXECUTABLE','--output']},null,2));process.exit(0);}

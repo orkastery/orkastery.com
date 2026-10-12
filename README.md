@@ -1,12 +1,19 @@
 # Orkastery: site e documentação
 
-Site estático Astro com português em `/`, inglês em `/en/` e espanhol em `/es/`.
-Todas as páginas HTML têm idioma, canonical, alternates recíprocos e seletor para
-a mesma página. Os slugs e IDs técnicos permanecem estáveis entre línguas.
+Site estático Astro com português em `/` e inglês em `/en/`. Todas as páginas HTML
+têm idioma, canonical, alternates recíprocos e seletor para a mesma página. Os slugs
+e IDs técnicos permanecem estáveis entre as duas línguas.
+
+O espanhol saiu do site por decisão do dono. Cada URL `/es/` que existia antes
+(lista em `src/data/es-legado.json`) continua respondendo com uma página estática que
+leva ao mesmo caminho em `/en/`: refresh, canonical para o destino e `noindex`, e um
+script que leva também o fragmento. `check:redirecionamentos` confere cada uma na build,
+e `test:redirecionamentos` tem os canários (sem `noindex`, destino errado, página em
+espanhol de volta, link ou `hreflang` para `/es/`).
 
 O visual é o design que o dono fez no Claude Design ("Orkastery Home"): a home o
 reproduz seção por seção, e o resto do site (docs, contribuir, páginas de produto e as
-três línguas) usa o mesmo design system, descrito em "Design system".
+duas línguas) usa o mesmo design system, descrito em "Design system".
 
 ## Desenvolvimento e prova local
 
@@ -99,8 +106,8 @@ institucional; e grades que no estreito estourariam a tela passam a refluir.
 
 `src/components/HomePage.astro` compõe as seções de `src/components/home/` na ordem do
 design: hero com a partitura, runtimes, 01 a 08 e a chamada final. O texto mora em
-`src/data/home.ts`: o PT é o do design, palavra por palavra; EN e ES são traduções no
-mesmo tom; comandos e identificadores ficam iguais nas três línguas. Os números da
+`src/data/home.ts`: o PT é o do design, palavra por palavra; o EN é tradução no
+mesmo tom; comandos e identificadores ficam iguais nas duas línguas. Os números da
 seção Prova e a lacuna publicada seguem o README do núcleo, não um valor solto.
 
 A lógica do script do design virou funções puras em `src/lib/home-state.mjs` (board,
@@ -119,7 +126,7 @@ botão de instalação anuncia o resultado da cópia para leitor de tela.
 ## Conteúdo e fontes
 
 `src/data/docs-catalog.ts` lista módulos editoriais. Cada artigo tem slug, grupo,
-fontes e texto explícito em PT, EN e ES. Não há fallback silencioso ou tradução
+fontes e texto explícito em PT e EN. Não há fallback silencioso ou tradução
 remota durante o build. `docs-schema.ts` descreve o formato; o verificador valida
 os módulos usados pelas rotas. Os arquivos `.ts` editoriais exportam dados JSON
 por default para permitir leitura pelo Astro e por Node sem executar conteúdo.

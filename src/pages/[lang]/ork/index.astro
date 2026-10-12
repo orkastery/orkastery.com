@@ -2,7 +2,7 @@
 import ProductPage from '../../../components/ProductPage.astro';
 import products from '../../../data/product-pages';
 import {localeFor} from '../../../data/i18n';
-export function getStaticPaths(){return ['en','es'].map(lang=>({params:{lang}}));}
+export function getStaticPaths(){return ['en'].map(lang=>({params:{lang}}));}
 const locale=localeFor(Astro.url.pathname);
 ---
 <ProductPage content={products.ork[locale]} product="Ork"/>
