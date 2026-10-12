@@ -409,25 +409,26 @@ export default [
     "translations": {
       "pt": {
         "title": "Conduza de dentro do Claude Code",
-        "description": "Carregue a ponte, a Torre de Controle e o Clima de Cota na sua sessão do Claude Code e saiba o que ainda é plano.",
+        "description": "Os mods do Orkastery no Claude Code: o que já existe, como carregar e o que ainda é plano.",
         "sections": [
           {
             "id": "o-que-existe",
             "title": "O que já existe",
             "paragraphs": [
-              "A RM-059 quer levar a condução da fábrica para dentro da sessão do Claude Code em que você já trabalha, por mods: plugins de function hooks do Claude Code, que rodam dentro do cliente, reagem a eventos da sessão e desenham painéis, faixas e avisos. Na versão {versao} existem três:"
+              "A RM-059 quer levar a condução da fábrica para dentro da sessão do Claude Code em que você já trabalha, por mods: plugins de function hooks do Claude Code, que rodam dentro do cliente, reagem a eventos da sessão e desenham painéis, faixas e avisos. Na versão {versao} existem quatro:"
             ],
             "items": [
               "A ponte (ork-ponte), a base dos outros mods: dá a cada um o papel da sessão (dono na sessão de quem conduz, fase nas sessões de fase, ou dormente), o retrato do núcleo pelo ork_maestro, a faixa acima do prompt e o registro do que um mod mostrou ao dono. Ela tem os papéis dono e fase.",
               "A Torre de Controle (ork-torre): na sessão do dono, um painel com cada thread aberta numa linha, com o trilho das seis fases, o modo, quem conduz e desde quando, o bloqueio tipado numa frase curta, os pedidos ao dono e a ação que o estado da thread pede. O comando /torre abre o painel, e apertar a linha abre o detalhe da thread. Ela depende da ponte e só tem o papel dono.",
-              "O Clima de Cota (ork-clima): na sessão do dono, lê as janelas de limite da conta a cada medição do motor (session.measure), guarda a série e prevê quando cada janela acaba no ritmo atual. Só no alerta, a faixa da ponte diz qual retomada da fila não cabe antes de a janela acabar, quanto dela já foi usado, quando ela acaba e quando renova; o comando /clima mostra cada janela, a fila de retomada, as threads abertas paradas por cota e as contas do registro do ork accounts esgotamentos. Ele só lê e avisa: trocar de conta, de runtime ou de modelo fica com o núcleo e com o dono. Também depende da ponte e só tem o papel dono."
+              "O Clima de Cota (ork-clima): na sessão do dono, lê as janelas de limite da conta a cada medição do motor (session.measure), guarda a série e prevê quando cada janela acaba no ritmo atual. Só no alerta, a faixa da ponte diz qual retomada da fila não cabe antes de a janela acabar, quanto dela já foi usado, quando ela acaba e quando renova; o comando /clima mostra cada janela, a fila de retomada, as threads abertas paradas por cota e as contas do registro do ork accounts esgotamentos. Ele só lê e avisa: trocar de conta, de runtime ou de modelo fica com o núcleo e com o dono. Também depende da ponte e só tem o papel dono.",
+              "O Freio de Lote (ork-freio), o primeiro mod de papel fase: na sessão de fase, depois de cada lote de ferramentas, ele acha os arquivos que o lote mexeu (pelos caminhos das edições e pela diferença do git status, que pega também a edição feita por Bash) e as claims da thread que os citam, pede ao núcleo, em segundo plano, a conferência delas com ork claims conferir, no sandbox do verify, e devolve no lote seguinte o que quebrou: o id da claim, o comando e o fim da saída. Também avisa quando o lote mexeu fora dos touch_paths do plano. Ele vai sozinho às sessões de fase pelo despacho e também depende da ponte."
             ]
           },
           {
             "id": "carregar",
             "title": "Carregue na sua sessão",
             "paragraphs": [
-              "A Torre e o Clima só ligam na sessão do dono, que a ponte reconhece por duas coisas: o orkastery.yaml na raiz e o servidor MCP orkastery do projeto conectado. Os comandos abaixo vêm em três grupos: o servidor MCP do projeto; o adaptador do Claude Code, que deixa a cópia de cada mod em .claude/plugins/orkastery/mods/<mod>, e a carga deles na sessão por --plugin-dir; e, sem o adaptador local, a instalação pelo marketplace do repositório, no escopo do projeto.",
+              "A Torre e o Clima só ligam na sessão do dono (o Freio, que é de sessão de fase, chega a ela pelo despacho), que a ponte reconhece por duas coisas: o orkastery.yaml na raiz e o servidor MCP orkastery do projeto conectado. Os comandos abaixo vêm em três grupos: o servidor MCP do projeto; o adaptador do Claude Code, que deixa a cópia de cada mod em .claude/plugins/orkastery/mods/<mod>, e a carga deles na sessão por --plugin-dir; e, sem o adaptador local, a instalação pelo marketplace do repositório, no escopo do projeto.",
               "A API de mods pede o Claude Code 2.1.287 ou mais novo. No CI, o job mods instala o Claude Code 2.1.296, valida e testa cada mod e procura no binário cada evento que eles usam; nessa busca, os builds 2.1.288 e 2.1.289 reprovam, sem ui.notify.",
               "Os dois marketplaces se chamam orkastery, e o local, registrado a partir de .claude/plugins/orkastery na ativação do adaptador, não lista os mods. Não troque um pelo outro num projeto que usa o plugin do adaptador: remover um marketplace desinstala os plugins que vieram dele, e o plugin do marketplace do repositório não traz o guard PreToolUse nem o MCP do adaptador."
             ],
@@ -437,7 +438,7 @@ export default [
             "id": "sessoes-de-fase",
             "title": "Nas sessões de fase",
             "paragraphs": [
-              "O despacho claude-bg passa um --plugin-dir por mod de papel fase, depois do plugin do Orkastery, quando a pasta instalada do mod tem exatamente os arquivos do INSTALADO.json e a versão do Claude Code atende o mínimo do mod. Mod que pede versão mais nova fica de fora, com os que dependem dele, e o despacho segue; arquivo a mais, link ou declaração inválida recusa o despacho com runtime.context.installation. Hoje, só a ponte tem o papel fase. O papel fica no orkastery-mod.json do mod (ork.mod/v1): para tirar um mod das sessões de fase, mude o papel no catálogo e reinstale o adaptador.",
+              "O despacho claude-bg passa um --plugin-dir por mod de papel fase, depois do plugin do Orkastery, quando a pasta instalada do mod tem exatamente os arquivos do INSTALADO.json e a versão do Claude Code atende o mínimo do mod. Mod que pede versão mais nova fica de fora, com os que dependem dele, e o despacho segue; arquivo a mais, link ou declaração inválida recusa o despacho com runtime.context.installation. Hoje, a ponte e o Freio de Lote têm o papel fase. O papel fica no orkastery-mod.json do mod (ork.mod/v1): para tirar um mod das sessões de fase, mude o papel no catálogo e reinstale o adaptador.",
               "A prova da RM-059 mediu, no Claude Code 2.1.296, que um mod carregado por --plugin-dir numa sessão de fase recebe os eventos da sessão; o script core/scripts/prova-mods-sessao-de-fase.cjs refaz essa prova.",
               "A fundação dos mods traz também duas peças do núcleo. O ork claims conferir reexecuta, no sandbox do ork_verify e sem gravar recibo, só as claims pedidas (--claims) ou o verify de uma tarefa do plano (--tarefa); um teste que cria processo pode reprovar ali e passar no ork verify. O ork thread new --pedido guarda o pedido da thread em pedido.md, com o sha256, e o ork prompt render sem --pedido usa esse pedido."
             ]
@@ -446,7 +447,7 @@ export default [
             "id": "limites",
             "title": "O que nenhum mod faz",
             "paragraphs": [
-              "Nenhum mod aprova gate, permissão, nota do MASTER, push ou tag pelo dono, nem fala como o dono. A regra mora em adapters/claude-code/mods/autoridade.json e tem duas guardas: node core/scripts/checar-mods.cjs reprova o mod pelo fonte, e a ponte recusa em tempo de execução. A Torre e o Clima só leem: ação com efeito abre o mod dono dela, quando ele está carregado, ou aparece como comando do ork, para você rodar.",
+              "Nenhum mod aprova gate, permissão, nota do MASTER, push ou tag pelo dono, nem fala como o dono. A regra mora em adapters/claude-code/mods/autoridade.json e tem duas guardas: node core/scripts/checar-mods.cjs reprova o mod pelo fonte, e a ponte recusa em tempo de execução. O Freio nunca roda o comando de uma claim, nunca grava estado de claim e nunca para o laço: quem verifica continua sendo o ork verify. A Torre e o Clima só leem: ação com efeito abre o mod dono dela, quando ele está carregado, ou aparece como comando do ork, para você rodar.",
               "Os mods rodam com as permissões do seu usuário, sem sandbox, e a API de mods do Claude Code está em acesso antecipado e pode mudar entre versões. Nada no núcleo depende deles: sem mod, o despacho e o ciclo seguem como antes, e o Telegram continua como canal."
             ]
           },
@@ -454,32 +455,33 @@ export default [
             "id": "plano",
             "title": "O que vem depois",
             "paragraphs": [
-              "O resto da RM-059 é plano, sem data: dez mods em ondas. A onda 0 é a fundação descrita acima. Na onda 1, com a Torre e o Clima de Cota, vêm o Freio de Lote e o Radar de Colisão; na onda 2, a Mesa do Dono e a Sentinela do Condutor; na onda 3, a Pista de Entrega, o Ritual do MASTER, o Mensageiro de Sessões e o Portão de Tarefas, cada um à espera da decisão do dono que o libera. Por enquanto, só a ponte, a Torre e o Clima existem como mods."
+              "O resto da RM-059 é plano, sem data: dez mods em ondas. A onda 0 é a fundação descrita acima. Na onda 1, com a Torre, o Clima de Cota e o Freio de Lote, vem o Radar de Colisão; na onda 2, a Mesa do Dono e a Sentinela do Condutor; na onda 3, a Pista de Entrega, o Ritual do MASTER, o Mensageiro de Sessões e o Portão de Tarefas, cada um à espera da decisão do dono que o libera. Por enquanto, só a ponte, a Torre, o Clima e o Freio existem como mods."
             ]
           }
         ]
       },
       "en": {
         "title": "Run the factory from Claude Code",
-        "description": "Load the bridge, the Control Tower and the Quota Weather into your Claude Code session, and see what is still planned.",
+        "description": "The Orkastery mods in Claude Code: what exists today, how to load them and what is still planned.",
         "sections": [
           {
             "id": "o-que-existe",
             "title": "What exists today",
             "paragraphs": [
-              "RM-059 aims to let you run the factory from inside the Claude Code session you already work in, through mods: Claude Code function-hook plugins that run inside the client, react to session events and draw panels, bars and notices. In version {versao}, there are three:"
+              "RM-059 aims to let you run the factory from inside the Claude Code session you already work in, through mods: Claude Code function-hook plugins that run inside the client, react to session events and draw panels, bars and notices. In version {versao}, there are four:"
             ],
             "items": [
               "The bridge (ork-ponte), which the other mods build on: it gives each one the session role (dono for the owner’s session, fase for phase sessions, or dormente), the core snapshot through ork_maestro, the bar above the prompt and the record of what a mod showed the owner. It has both the dono and fase roles.",
               "The Control Tower (ork-torre): in the owner’s session, a panel with one line per open thread, showing the six-phase track, the mode, who is running it and since when, the typed blocker in a short sentence, requests to the owner and the action the thread’s state calls for. The /torre command opens the panel, and pressing a line opens the thread’s detail. It depends on the bridge and has only the dono role.",
-              "The Quota Weather (ork-clima): in the owner’s session, it reads the account’s limit windows at each engine measurement (session.measure), keeps the series and predicts when each window runs out at the current pace. Only on an alert, the bridge’s bar says which queued resume will not fit before the window runs out, how much of the window is used, when it runs out and when it resets; the /clima command shows each window, the resume queue, the open threads stopped by quota and the accounts in the ork accounts esgotamentos record. It only reads and warns: switching account, runtime or model stays with the core and the owner. It also depends on the bridge and has only the dono role."
+              "The Quota Weather (ork-clima): in the owner’s session, it reads the account’s limit windows at each engine measurement (session.measure), keeps the series and predicts when each window runs out at the current pace. Only on an alert, the bridge’s bar says which queued resume will not fit before the window runs out, how much of the window is used, when it runs out and when it resets; the /clima command shows each window, the resume queue, the open threads stopped by quota and the accounts in the ork accounts esgotamentos record. It only reads and warns: switching account, runtime or model stays with the core and the owner. It also depends on the bridge and has only the dono role.",
+              "The Batch Brake (ork-freio), the first mod with the fase role: in a phase session, after each batch of tool calls, it finds the files the batch touched (from the edit paths and the git status difference, which also catches edits made through Bash) and the thread’s claims that cite them, asks the core in the background to check them with ork claims conferir, in the verify sandbox, and returns what broke in the next batch: the claim id, the command and the end of the output. It also warns when the batch touched files outside the plan’s touch_paths. It reaches phase sessions on its own through the dispatch and also depends on the bridge."
             ]
           },
           {
             "id": "carregar",
             "title": "Load them into your session",
             "paragraphs": [
-              "The Tower and the Quota Weather only turn on in the owner’s session, which the bridge recognizes by two things: orkastery.yaml at the root and the project’s orkastery MCP server being connected. The commands below come in three groups: the project’s MCP server; the Claude Code adapter, which puts each mod’s copy in .claude/plugins/orkastery/mods/<mod>, and loading them into the session with --plugin-dir; and, without the local adapter, installing from the repository’s marketplace at project scope.",
+              "The Tower and the Quota Weather only turn on in the owner’s session (the Batch Brake, a phase-session mod, reaches phase sessions through the dispatch), which the bridge recognizes by two things: orkastery.yaml at the root and the project’s orkastery MCP server being connected. The commands below come in three groups: the project’s MCP server; the Claude Code adapter, which puts each mod’s copy in .claude/plugins/orkastery/mods/<mod>, and loading them into the session with --plugin-dir; and, without the local adapter, installing from the repository’s marketplace at project scope.",
               "The mods API needs Claude Code 2.1.287 or newer. In CI, the mods job installs Claude Code 2.1.296, validates and tests each mod and searches the binary for every event they use; in that search, builds 2.1.288 and 2.1.289 fail, lacking ui.notify.",
               "Both marketplaces are named orkastery, and the local one, registered from .claude/plugins/orkastery when the adapter is activated, does not list the mods. Do not swap one for the other in a project that uses the adapter’s plugin: removing a marketplace uninstalls the plugins that came from it, and the plugin from the repository’s marketplace does not include the adapter’s PreToolUse guard or MCP server."
             ],
@@ -489,7 +491,7 @@ export default [
             "id": "sessoes-de-fase",
             "title": "In phase sessions",
             "paragraphs": [
-              "The claude-bg dispatch passes one --plugin-dir per mod with the fase role, after the Orkastery plugin, when the mod’s installed folder has exactly the files in INSTALADO.json and the Claude Code version meets the mod’s minimum. A mod that needs a newer version is left out, along with the mods that depend on it, and the dispatch goes on; an extra file, a link or an invalid declaration refuses the dispatch with runtime.context.installation. Today only the bridge has the fase role. The role lives in the mod’s orkastery-mod.json (ork.mod/v1): to take a mod out of phase sessions, change its role in the catalog and reinstall the adapter.",
+              "The claude-bg dispatch passes one --plugin-dir per mod with the fase role, after the Orkastery plugin, when the mod’s installed folder has exactly the files in INSTALADO.json and the Claude Code version meets the mod’s minimum. A mod that needs a newer version is left out, along with the mods that depend on it, and the dispatch goes on; an extra file, a link or an invalid declaration refuses the dispatch with runtime.context.installation. Today the bridge and the Batch Brake have the fase role. The role lives in the mod’s orkastery-mod.json (ork.mod/v1): to take a mod out of phase sessions, change its role in the catalog and reinstall the adapter.",
               "The RM-059 proof measured, on Claude Code 2.1.296, that a mod loaded with --plugin-dir in a phase session receives the session’s events; the core/scripts/prova-mods-sessao-de-fase.cjs script repeats that proof.",
               "The mods foundation also brings two core pieces. ork claims conferir reruns, in the ork_verify sandbox and without recording a receipt, only the requested claims (--claims) or the verify of one plan task (--tarefa); a test that spawns a process may fail there and pass in ork verify. ork thread new --pedido stores the thread’s request in pedido.md, with its sha256, and ork prompt render without --pedido uses that request."
             ]
@@ -498,7 +500,7 @@ export default [
             "id": "limites",
             "title": "What no mod does",
             "paragraphs": [
-              "No mod approves a gate, permission, MASTER score, push or tag on the owner’s behalf, or speaks as the owner. The rule lives in adapters/claude-code/mods/autoridade.json and has two guards: node core/scripts/checar-mods.cjs fails a mod from its source, and the bridge refuses at run time. The Tower and the Quota Weather only read: an action with an effect opens the mod that owns it, when that mod is loaded, or shows up as a command for you to run with ork.",
+              "No mod approves a gate, permission, MASTER score, push or tag on the owner’s behalf, or speaks as the owner. The rule lives in adapters/claude-code/mods/autoridade.json and has two guards: node core/scripts/checar-mods.cjs fails a mod from its source, and the bridge refuses at run time. The Batch Brake never runs a claim’s command, never records claim state and never stops the loop: ork verify is still the one that verifies. The Tower and the Quota Weather only read: an action with an effect opens the mod that owns it, when that mod is loaded, or shows up as a command for you to run with ork.",
               "Mods run with your user’s permissions, without a sandbox, and the Claude Code mods API is in early access and may change between versions. Nothing in the core depends on them: without mods, dispatch and the cycle go on as before, and Telegram remains a channel."
             ]
           },
@@ -506,32 +508,33 @@ export default [
             "id": "plano",
             "title": "What comes next",
             "paragraphs": [
-              "The rest of RM-059 is a plan, with no dates: ten mods in waves. Wave 0 is the foundation described above. Wave 1 adds, alongside the Tower and the Quota Weather, the Freio de Lote and the Radar de Colisão; wave 2, the Mesa do Dono and the Sentinela do Condutor; wave 3, the Pista de Entrega, the Ritual do MASTER, the Mensageiro de Sessões and the Portão de Tarefas, each waiting for the owner’s decision that releases it. For now, only the bridge, the Tower and the Quota Weather exist as mods."
+              "The rest of RM-059 is a plan, with no dates: ten mods in waves. Wave 0 is the foundation described above. Wave 1 adds, alongside the Tower, the Quota Weather and the Batch Brake, the Radar de Colisão; wave 2, the Mesa do Dono and the Sentinela do Condutor; wave 3, the Pista de Entrega, the Ritual do MASTER, the Mensageiro de Sessões and the Portão de Tarefas, each waiting for the owner’s decision that releases it. For now, only the bridge, the Tower, the Quota Weather and the Batch Brake exist as mods."
             ]
           }
         ]
       },
       "es": {
         "title": "Conduzca desde Claude Code",
-        "description": "Cargue el puente, la Torre de Control y el Clima de Cuota en su sesión de Claude Code y vea lo que aún es un plan.",
+        "description": "Los mods de Orkastery en Claude Code: lo que ya existe, cómo cargarlos y lo que aún es un plan.",
         "sections": [
           {
             "id": "o-que-existe",
             "title": "Lo que ya existe",
             "paragraphs": [
-              "La RM-059 busca llevar la conducción de la fábrica a la sesión de Claude Code en la que usted ya trabaja, mediante mods: plugins de function hooks de Claude Code que se ejecutan dentro del cliente, reaccionan a los eventos de la sesión y dibujan paneles, franjas y avisos. En la versión {versao} hay tres:"
+              "La RM-059 busca llevar la conducción de la fábrica a la sesión de Claude Code en la que usted ya trabaja, mediante mods: plugins de function hooks de Claude Code que se ejecutan dentro del cliente, reaccionan a los eventos de la sesión y dibujan paneles, franjas y avisos. En la versión {versao} hay cuatro:"
             ],
             "items": [
               "El puente (ork-ponte), sobre el que se apoyan los demás mods: da a cada uno el papel de la sesión (dono en la sesión de quien conduce, fase en las sesiones de fase, o dormente), la instantánea del núcleo mediante ork_maestro, la franja sobre el prompt y el registro de lo que un mod mostró al dueño. Tiene los papeles dono y fase.",
               "La Torre de Control (ork-torre): en la sesión del dueño, un panel con cada thread abierta en una línea, con el recorrido de las seis fases, el modo, quién la conduce y desde cuándo, el bloqueo tipado en una frase corta, los pedidos al dueño y la acción que pide el estado de la thread. El comando /torre abre el panel, y al pulsar una línea se abre el detalle de la thread. Depende del puente y solo tiene el papel dono.",
-              "El Clima de Cuota (ork-clima): en la sesión del dueño, lee las ventanas de límite de la cuenta en cada medición del motor (session.measure), guarda la serie y prevé cuándo se agota cada ventana al ritmo actual. Solo en la alerta, la franja del puente dice qué reanudación de la cola no cabe antes de que se agote la ventana, cuánto de ella ya se usó, cuándo se agota y cuándo se renueva; el comando /clima muestra cada ventana, la cola de reanudación, las threads abiertas detenidas por cuota y las cuentas del registro de ork accounts esgotamentos. Solo lee y avisa: cambiar de cuenta, de runtime o de modelo queda en manos del núcleo y del dueño. También depende del puente y solo tiene el papel dono."
+              "El Clima de Cuota (ork-clima): en la sesión del dueño, lee las ventanas de límite de la cuenta en cada medición del motor (session.measure), guarda la serie y prevé cuándo se agota cada ventana al ritmo actual. Solo en la alerta, la franja del puente dice qué reanudación de la cola no cabe antes de que se agote la ventana, cuánto de ella ya se usó, cuándo se agota y cuándo se renueva; el comando /clima muestra cada ventana, la cola de reanudación, las threads abiertas detenidas por cuota y las cuentas del registro de ork accounts esgotamentos. Solo lee y avisa: cambiar de cuenta, de runtime o de modelo queda en manos del núcleo y del dueño. También depende del puente y solo tiene el papel dono.",
+              "El Freno de Lote (ork-freio), el primer mod con el papel fase: en la sesión de fase, después de cada lote de herramientas, encuentra los archivos que el lote tocó (por las rutas de las ediciones y por la diferencia del git status, que también capta la edición hecha con Bash) y las claims de la thread que los citan, pide al núcleo, en segundo plano, que las compruebe con ork claims conferir, en el sandbox del verify, y devuelve en el lote siguiente lo que se rompió: el id de la claim, el comando y el final de la salida. También avisa cuando el lote tocó archivos fuera de los touch_paths del plan. Llega solo a las sesiones de fase por el despacho y también depende del puente."
             ]
           },
           {
             "id": "carregar",
             "title": "Cárguelos en su sesión",
             "paragraphs": [
-              "La Torre y el Clima de Cuota solo se activan en la sesión del dueño, que el puente reconoce por dos cosas: el orkastery.yaml en la raíz y el servidor MCP orkastery del proyecto conectado. Los comandos de abajo vienen en tres grupos: el servidor MCP del proyecto; el adaptador de Claude Code, que deja la copia de cada mod en .claude/plugins/orkastery/mods/<mod>, y su carga en la sesión con --plugin-dir; y, sin el adaptador local, la instalación desde el marketplace del repositorio, en el ámbito del proyecto.",
+              "La Torre y el Clima de Cuota solo se activan en la sesión del dueño (el Freno de Lote, que es de sesión de fase, llega a ella por el despacho), que el puente reconoce por dos cosas: el orkastery.yaml en la raíz y el servidor MCP orkastery del proyecto conectado. Los comandos de abajo vienen en tres grupos: el servidor MCP del proyecto; el adaptador de Claude Code, que deja la copia de cada mod en .claude/plugins/orkastery/mods/<mod>, y su carga en la sesión con --plugin-dir; y, sin el adaptador local, la instalación desde el marketplace del repositorio, en el ámbito del proyecto.",
               "La API de mods pide Claude Code 2.1.287 o posterior. En el CI, el job mods instala Claude Code 2.1.296, valida y prueba cada mod y busca en el binario cada evento que usan; en esa búsqueda, las builds 2.1.288 y 2.1.289 fallan, sin ui.notify.",
               "Los dos marketplaces se llaman orkastery, y el local, registrado a partir de .claude/plugins/orkastery al activar el adaptador, no lista los mods. No cambie uno por otro en un proyecto que usa el plugin del adaptador: quitar un marketplace desinstala los plugins que vinieron de él, y el plugin del marketplace del repositorio no trae el guard PreToolUse ni el MCP del adaptador."
             ],
@@ -541,7 +544,7 @@ export default [
             "id": "sessoes-de-fase",
             "title": "En las sesiones de fase",
             "paragraphs": [
-              "El despacho claude-bg pasa un --plugin-dir por cada mod con el papel fase, después del plugin de Orkastery, cuando la carpeta instalada del mod tiene exactamente los archivos de INSTALADO.json y la versión de Claude Code cumple el mínimo del mod. Un mod que pide una versión más nueva queda fuera, junto con los que dependen de él, y el despacho sigue; un archivo de más, un enlace o una declaración inválida rechazan el despacho con runtime.context.installation. Hoy solo el puente tiene el papel fase. El papel está en el orkastery-mod.json del mod (ork.mod/v1): para sacar un mod de las sesiones de fase, cambie el papel en el catálogo y reinstale el adaptador.",
+              "El despacho claude-bg pasa un --plugin-dir por cada mod con el papel fase, después del plugin de Orkastery, cuando la carpeta instalada del mod tiene exactamente los archivos de INSTALADO.json y la versión de Claude Code cumple el mínimo del mod. Un mod que pide una versión más nueva queda fuera, junto con los que dependen de él, y el despacho sigue; un archivo de más, un enlace o una declaración inválida rechazan el despacho con runtime.context.installation. Hoy el puente y el Freno de Lote tienen el papel fase. El papel está en el orkastery-mod.json del mod (ork.mod/v1): para sacar un mod de las sesiones de fase, cambie el papel en el catálogo y reinstale el adaptador.",
               "La prueba de la RM-059 midió, en Claude Code 2.1.296, que un mod cargado con --plugin-dir en una sesión de fase recibe los eventos de la sesión; el script core/scripts/prova-mods-sessao-de-fase.cjs repite esa prueba.",
               "La base de los mods trae además dos piezas del núcleo. ork claims conferir vuelve a ejecutar, en el sandbox de ork_verify y sin grabar recibo, solo las claims pedidas (--claims) o el verify de una tarea del plan (--tarefa); una prueba que crea procesos puede fallar allí y pasar en ork verify. ork thread new --pedido guarda el pedido de la thread en pedido.md, con su sha256, y ork prompt render sin --pedido usa ese pedido."
             ]
@@ -550,7 +553,7 @@ export default [
             "id": "limites",
             "title": "Lo que ningún mod hace",
             "paragraphs": [
-              "Ningún mod aprueba gate, permiso, nota del MASTER, push ni tag en nombre del dueño, ni habla como el dueño. La regla está en adapters/claude-code/mods/autoridade.json y tiene dos guardas: node core/scripts/checar-mods.cjs rechaza el mod por su código fuente, y el puente lo rechaza en tiempo de ejecución. La Torre y el Clima de Cuota solo leen: una acción con efecto abre el mod que la tiene a cargo, cuando está cargado, o aparece como comando de ork, para que usted lo ejecute.",
+              "Ningún mod aprueba gate, permiso, nota del MASTER, push ni tag en nombre del dueño, ni habla como el dueño. La regla está en adapters/claude-code/mods/autoridade.json y tiene dos guardas: node core/scripts/checar-mods.cjs rechaza el mod por su código fuente, y el puente lo rechaza en tiempo de ejecución. El Freno de Lote nunca ejecuta el comando de una claim, nunca graba estado de claim y nunca detiene el bucle: quien verifica sigue siendo ork verify. La Torre y el Clima de Cuota solo leen: una acción con efecto abre el mod que la tiene a cargo, cuando está cargado, o aparece como comando de ork, para que usted lo ejecute.",
               "Los mods se ejecutan con los permisos de su usuario, sin sandbox, y la API de mods de Claude Code está en acceso anticipado y puede cambiar entre versiones. Nada en el núcleo depende de ellos: sin mods, el despacho y el ciclo siguen como antes, y Telegram sigue siendo un canal."
             ]
           },
@@ -558,7 +561,7 @@ export default [
             "id": "plano",
             "title": "Lo que viene después",
             "paragraphs": [
-              "El resto de la RM-059 es un plan, sin fechas: diez mods en oleadas. La oleada 0 es la base descrita arriba. La oleada 1 trae, con la Torre y el Clima de Cuota, el Freio de Lote y el Radar de Colisão; la oleada 2, la Mesa do Dono y la Sentinela do Condutor; la oleada 3, la Pista de Entrega, el Ritual do MASTER, el Mensageiro de Sessões y el Portão de Tarefas, cada uno a la espera de la decisión del dueño que lo libera. Por ahora, solo el puente, la Torre y el Clima de Cuota existen como mods."
+              "El resto de la RM-059 es un plan, sin fechas: diez mods en oleadas. La oleada 0 es la base descrita arriba. La oleada 1 trae, con la Torre, el Clima de Cuota y el Freno de Lote, el Radar de Colisão; la oleada 2, la Mesa do Dono y la Sentinela do Condutor; la oleada 3, la Pista de Entrega, el Ritual do MASTER, el Mensageiro de Sessões y el Portão de Tarefas, cada uno a la espera de la decisión del dueño que lo libera. Por ahora, solo el puente, la Torre, el Clima de Cuota y el Freno de Lote existen como mods."
             ]
           }
         ]

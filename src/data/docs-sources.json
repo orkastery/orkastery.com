@@ -1654,19 +1654,19 @@
     "roadmap": {
       "pt": {
         "sourceHash": "e81f76090b2ca520396087590773b997c60c4b3087dc3d23d4ac58e6ce8dbbae",
-        "contentHash": "76d1b0cb292086557854ee4366bdd14d36560a233e36ee75f5f3460d497294d9",
+        "contentHash": "0f18ca50223e292bf6ae06c50e4be562a0af279c163aaecd701f341f164f1668",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "en": {
         "sourceHash": "e81f76090b2ca520396087590773b997c60c4b3087dc3d23d4ac58e6ce8dbbae",
-        "contentHash": "7a0c051e9bf2610ac7018bca58167a3a6131e4d85da3ac001b1b851db64c90ff",
+        "contentHash": "b679ed624b6044d5c1612e95553661f2f4101ed1a5eb9f83eb3821228f058f9a",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "es": {
         "sourceHash": "e81f76090b2ca520396087590773b997c60c4b3087dc3d23d4ac58e6ce8dbbae",
-        "contentHash": "8d7c3f5865f8d711929efc11df2ba16a463c7e49d15d2634a257342610363746",
+        "contentHash": "577b1b91107df0f318ad3e95f6ba391b6191bb7a7b0a939077aae8463b74f3fd",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       }
@@ -1854,19 +1854,19 @@
     "claude-code": {
       "pt": {
         "sourceHash": "57dbafb599f6ddae1c6ac879418ee37dff73885f4506081af0492a3fa0600ceb",
-        "contentHash": "3f2d5ee7b2a55f926e24f686606937c2dd03a12c6eff9976b1609b73ccaed609",
+        "contentHash": "f0de9816c0734972c40f535ed95f074cb1bfa32651b5ae06e103903c7497cdc3",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "en": {
         "sourceHash": "57dbafb599f6ddae1c6ac879418ee37dff73885f4506081af0492a3fa0600ceb",
-        "contentHash": "ad4537bfa3e4d4cc2ad98a735e20a5e9caf6a5245ddb49e21138e5f67b430cdf",
+        "contentHash": "6259b6670bd37298e915e031a647f3877793464e3633e0ffa9368fc7dbbc6a14",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "es": {
         "sourceHash": "57dbafb599f6ddae1c6ac879418ee37dff73885f4506081af0492a3fa0600ceb",
-        "contentHash": "452029540cae6646b88a4ee91fbebd1ed1b779a46a7f51e4f64d9c86c922615a",
+        "contentHash": "28acc4364c791209010ec78f9dbf908e5b35f65d15c5285485672c1ad4961468",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       }
