@@ -119,9 +119,9 @@ test('contribution guide is included in source inventory',()=>fixture(({root})=>
  for(const product of ['orkastery','orkmind']) assert.ok(inventory(source,product).some(s=>s.path==='CONTRIBUTING.md'));
 }));
 
-test('removing a restored home section fails the content audit',()=>outputFixture(dir=>{
+test('removing a section of the design home fails the content audit',()=>outputFixture(dir=>{
  edit(dir,'en/index.html',s=>s.replace('Six phases no agent skips','A removed section'));
- assert.throws(()=>checkContent(dir),/restored home section/);
+ assert.throws(()=>checkContent(dir),/design home section: en: Six phases/);
 }));
 test('missing contribution navigation fails the content audit',()=>outputFixture(dir=>{
  edit(dir,'en/index.html',s=>s.replaceAll('href="'+B+'/en/docs/contribuir/"','href="'+B+'/en/docs/"'));

@@ -1,0 +1,103 @@
+---
+// Páginas de produto (/ork/ e /orkmind/), que o design não desenha: o mesmo design system da home
+// (selo, título, cartões com holofote, cabeça de seção, terminal e chamada final). O texto vem de
+// src/data/product-pages.ts. As âncoras antigas dessas páginas continuam como alvos.
+import Base from '../layouts/Base.astro';
+import Divider from './ds/Divider.astro';
+import TechnicalText from './TechnicalText.astro';
+import DocsDiagram from './DocsDiagram.astro';
+import ChamadaFinal from './home/ChamadaFinal.astro';
+import home from '../data/home';
+import {localeFor,localize,localizedPath,ui} from '../data/i18n';
+import {versao} from '../data/release.mjs';
+import catalog from '../data/docs-catalog';
+interface Props { content: any; product: 'Ork'|'OrkMind'; docsBase?: string; repository?: string; diagram?: boolean; }
+const {content:copy,product,docsBase,repository,diagram=true}=Astro.props;
+const locale=localeFor(Astro.url.pathname),text=ui(locale),t=home[locale];
+// docsBase aponta para o outro site (OrkMind): lá vai o caminho sem o base desta prévia.
+const docsHref=(path:string)=>docsBase?docsBase+localizedPath(path,locale):localize(path,locale);
+const legacy:Record<string,string[]>={topo:['manifesto-titulo'],metodo:['ciclo-titulo','ork-ciclo-titulo','ork-threads-titulo','ork-estado-titulo'],modos:['modos-titulo','ork-modos-titulo','ork-radar-titulo'],evidencia:['numeros-titulo','ork-verify-titulo','ork-gate-titulo','ork-audit-titulo','ork-score-titulo'],memoria:['ecossistema-titulo'],arquitetura:['camadas-titulo','ork-adapt-titulo','ork-comp-titulo']};
+const ancoras=(id:string)=>legacy[id]||[];
+const selo=product==='Ork'?['AI Software Factory','@orkastery/cli',versao,text.license]:['OrkMind','Python',text.license];
+---
+<Base titulo={product+' · '+copy.description} descricao={copy.description}>
+ <section id="topo" class="produto-hero">
+  <div class="produto-pontos" aria-hidden="true"></div>
+  <div class="container produto-hero-conteudo">
+   {ancoras('topo').map(a=><span id={a} class="ancora-antiga" aria-hidden="true"></span>)}
+   <div class="produto-selo"><span class="produto-pulso" aria-hidden="true"></span>{product==='Ork'?<><span>{selo[0]}</span><span class="produto-barra" aria-hidden="true">/</span><span><code class="codigo-liso">{selo[1]}</code> <code class="codigo-liso">{selo[2]}</code></span><span class="produto-barra" aria-hidden="true">/</span><span>{selo[3]}</span></>:<><span>{selo[0]}</span><span class="produto-barra" aria-hidden="true">/</span><span>{selo[1]}</span><span class="produto-barra" aria-hidden="true">/</span><span>{selo[2]}</span></>}</div>
+   <h1 class="produto-titulo"><TechnicalText text={copy.title}/></h1>
+   <p class="produto-lead"><TechnicalText text={copy.lead}/></p>
+   <div class="produto-acoes">
+    <a class="produto-primario" href={docsHref('/docs/comecar/')}>{text.start} <span aria-hidden="true">→</span></a>
+    <a class="produto-secundario" href={repository||catalog.repository}>GitHub <span class="produto-seta" aria-hidden="true">↗</span></a>
+   </div>
+  </div>
+ </section>
+ <Divider/>
+ <section class="secao-padrao">
+  <div class="container">
+   <div class="produto-cartoes">
+    {copy.sections.map((s:any)=><section class="produto-cartao holofote" data-holofote id={s.id}>
+     {ancoras(s.id).map(a=><span id={a} class="ancora-antiga" aria-hidden="true"></span>)}
+     <h2 class="produto-cartao-titulo"><TechnicalText text={s.title}/></h2>
+     <p class="produto-cartao-texto"><TechnicalText text={s.text}/></p>
+     <a class="produto-cartao-link" href={s.href.startsWith('https:')?s.href:docsHref(s.href)}>{text.read} <span aria-hidden="true">→</span></a>
+    </section>)}
+   </div>
+  </div>
+ </section>
+ <Divider/>
+ <section id="arquitetura" class="secao-padrao">
+  <div class="container produto-mecanismo">
+   {ancoras('arquitetura').map(a=><span id={a} class="ancora-antiga" aria-hidden="true"></span>)}
+   <div>
+    <div class="sobretitulo">{text.concepts}</div>
+    <h2 class="produto-h2"><TechnicalText text={copy.mechanism}/></h2>
+    <p class="produto-texto"><TechnicalText text={copy.mechanismText}/></p>
+    <a class="produto-cartao-link" href={docsHref('/docs/arquitetura/')}>{text.read} <span aria-hidden="true">→</span></a>
+   </div>
+   {diagram&&<div class="produto-diagrama"><DocsDiagram name="layers" {locale}/></div>}
+  </div>
+ </section>
+ <Divider/>
+ <section id="instalar" class="secao-padrao">
+  <div class="container produto-instalar">
+   <div>
+    <div class="sobretitulo">{text.start}</div>
+    <h2 class="produto-h2"><TechnicalText text={copy.install}/></h2>
+    <p class="produto-texto"><TechnicalText text={copy.installText}/></p>
+    <a class="produto-cartao-link" href={docsHref('/docs/comecar/')}>{text.docs} <span aria-hidden="true">→</span></a>
+   </div>
+   <pre class="produto-terminal" tabindex="0"><code>{copy.command}</code></pre>
+  </div>
+ </section>
+ {product==='Ork'&&<ChamadaFinal titulo={t.cta.title} texto={t.cta.text} falar={t.cta.talk}/>}
+</Base>
+<style>
+.produto-hero{position:relative;padding:clamp(64px,10vw,120px) 0 72px}
+.produto-pontos{position:absolute;left:0;right:0;top:0;height:560px;background-image:radial-gradient(rgba(18,22,28,.10) 1px,transparent 1.3px);background-size:24px 24px;-webkit-mask-image:radial-gradient(70% 62% at 28% 18%,#000 15%,transparent 72%);mask-image:radial-gradient(70% 62% at 28% 18%,#000 15%,transparent 72%);pointer-events:none}
+.produto-hero-conteudo{position:relative}
+.produto-selo{display:inline-flex;align-items:center;gap:10px;padding:7px 12px 7px 10px;border-radius:var(--raio-pilula);background:var(--branco);border:1px solid var(--linha-media);font:var(--tipo-selo);color:var(--tinta-2)}
+.produto-pulso{width:7px;height:7px;border-radius:50%;background:var(--ok);animation:orkPulse 2.8s ease-in-out infinite}
+.produto-barra{color:var(--tinta-7)}
+.produto-titulo{margin:28px 0 0;font:600 clamp(40px,6vw,80px)/1 var(--fonte-display);letter-spacing:-0.04em;max-width:18ch;text-wrap:balance}
+.produto-lead{margin:30px 0 0;max-width:58ch;font:var(--tipo-lead-hero);color:var(--tinta-2);text-wrap:pretty}
+.produto-acoes{margin-top:36px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.produto-primario{display:flex;align-items:center;gap:8px;height:52px;padding:0 20px;border-radius:var(--raio-12);background:var(--tinta);color:var(--papel);font:500 15px/1 var(--fonte-texto)}
+.produto-primario:hover{background:var(--grafite-4);color:var(--branco)}
+.produto-secundario{display:flex;align-items:center;gap:8px;height:52px;padding:0 20px;border-radius:var(--raio-12);background:var(--branco);border:1px solid var(--linha-forte);font:500 15px/1 var(--fonte-texto);color:var(--tinta)}
+.produto-secundario:hover{border-color:var(--linha-hover);color:var(--tinta)}
+.produto-seta{color:var(--acento-texto)}
+.produto-cartoes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:12px}
+.produto-cartao{padding:28px;border-radius:var(--raio-20);background-color:var(--branco);border:1px solid var(--linha-cartao);display:flex;flex-direction:column;gap:12px}
+.produto-cartao-titulo{margin:0;font:600 22px/1.2 var(--fonte-display);letter-spacing:-0.015em;text-wrap:balance}
+.produto-cartao-texto{margin:0;flex:1;font:var(--tipo-corpo-cartao);color:var(--tinta-2);text-wrap:pretty}
+.produto-cartao-link{align-self:flex-start;font:500 14px/1 var(--fonte-texto);color:var(--acento-texto)}
+.produto-cartao-link:hover{color:var(--tinta)}
+.produto-mecanismo,.produto-instalar{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:40px 64px;align-items:center}
+.produto-h2{margin:20px 0 0;font:600 clamp(30px,3.6vw,46px)/1.05 var(--fonte-display);letter-spacing:-0.03em;text-wrap:balance}
+.produto-texto{margin:20px 0 24px;max-width:56ch;font:var(--tipo-lead);color:var(--tinta-2);text-wrap:pretty}
+.produto-diagrama{background:var(--branco);border:1px solid var(--linha-cartao);border-radius:var(--raio-24);box-shadow:var(--sombra-cartao-largo);padding:20px;overflow-x:auto}
+.produto-terminal{margin:0;background:var(--noite);color:var(--sobre-noite);border-radius:var(--raio-20);padding:22px 24px;font:var(--tipo-terminal);overflow-x:auto}
+</style>

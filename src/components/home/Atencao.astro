@@ -1,0 +1,117 @@
+---
+// 05 · Sua atenção (#manha): a janela do ork board que se atualiza sozinha, o resumo das 09:00, a
+// pergunta com alternativas a a d e as quatro camadas. No design o texto da alternativa escolhida
+// some (tinta sobre tinta); aqui ele fica claro, o único desvio desta seção (D6).
+import SectionHead from '../ds/SectionHead.astro';
+import TechnicalText from '../TechnicalText.astro';
+import {board,pulse,options,answerNote,ESTADO_INICIAL,cor} from '../../lib/home-state.mjs';
+import {withBase} from '../../data/i18n';
+const {t}=Astro.props;
+const a=t.attention,linhas=board(t,ESTADO_INICIAL.tick),kpis=pulse(t),opcoes=options(t,ESTADO_INICIAL.answer);
+---
+<section id="manha" class="secao-padrao">
+ <div class="container">
+  <SectionHead sobretitulo={a.eyebrow} titulo={a.title} continuacao={a.titleMuted} lead={a.lead} medidaTitulo="20ch" medidaLead="60ch"/>
+  <div class="atencao" data-reveal>
+   <div class="board">
+    <div class="board-topo">
+     <div class="board-luzes" aria-hidden="true"><span></span><span></span><span></span></div>
+     <span class="board-comando">$ <code class="codigo-liso">ork board</code></span>
+     <span class="estica"></span>
+     <span class="board-meta">{a.boardMeta}</span>
+    </div>
+    <div class="board-rolagem">
+     <div class="board-tabela" role="table" aria-label="ork board">
+      <div class="board-cabeca" role="row">{a.boardHead.map(h=><span role="columnheader">{h}</span>)}</div>
+      {linhas.map((l,i)=><div class="board-linha" role="row" data-board={i} style={`background:${cor(l.rowBg)}`}>
+       <div class="board-thread" role="cell"><div class="board-nome">{l.name}</div><div class="board-repo">{l.repo}</div></div>
+       <div class="board-onde" role="cell">{l.where}</div>
+       <div role="cell">
+        <div class="board-segmentos">{l.segs.map(s=><span style={`background:${cor(s)}`}></span>)}</div>
+        <div class="board-fase" data-board-fase>{l.phase}</div>
+       </div>
+       <div class="board-estado" role="cell" data-board-estado style={`color:${cor(l.fg)}`}><span style={`background:${cor(l.dot)}`}></span><span data-board-rotulo>{l.label}</span></div>
+      </div>)}
+     </div>
+    </div>
+   </div>
+   <div class="pulso holofote" data-holofote>
+    <div class="pulso-topo">
+     <img src={withBase('/marca/simbolo-fundo-claro.svg')} alt="" width="28" height="28"/>
+     <div><div class="pulso-nome">ork</div><div class="pulso-quando">{a.pulseWhen}</div></div>
+    </div>
+    <div class="pulso-numeros">{kpis.map(k=><div style={`background:${cor(k.bg)}`}><div class="pulso-n" style={`color:${cor(k.fg)}`}>{k.n}</div><div class="pulso-l">{k.l}</div></div>)}</div>
+    <div class="pulso-pergunta">{a.pulseAsk}</div>
+    <div class="pulso-botoes"><span class="pulso-sim">{a.pulseYes}</span><span class="pulso-depois">{a.pulseLater}</span></div>
+   </div>
+   <div class="pergunta holofote" data-holofote>
+    <div class="pergunta-meta"><span>{a.questionMeta}</span><span>{a.questionKeys}</span></div>
+    <div class="pergunta-titulo">{a.question}</div>
+    <div class="pergunta-opcoes">
+     {opcoes.map((o,i)=><button type="button" class="opcao" data-opcao={i} aria-pressed="false" aria-controls="pergunta-nota" style={`background:${cor(o.bg)};border-color:${cor(o.bd)}`}>
+      <span class="opcao-chave" style={`background:${cor(o.kbg)};color:${cor(o.kfg)}`}>{o.k}</span>
+      <span class="opcao-texto">{o.t}</span>
+      {o.rec&&<span class="opcao-rec">{a.recommended}</span>}
+     </button>)}
+    </div>
+    <div class="pergunta-nota" id="pergunta-nota" aria-live="polite">
+     <span data-nota="-1"><TechnicalText text={answerNote(t,null)}/></span>
+     {a.options.map((_,i)=><span data-nota={i} hidden><TechnicalText text={answerNote(t,i)}/></span>)}
+    </div>
+   </div>
+  </div>
+  <div class="camadas" data-reveal>
+   {a.layers.map(l=><div><div class="camada-n">{l.n}</div><div class="camada-t">{l.t}</div><p class="camada-d"><TechnicalText text={l.d}/></p></div>)}
+  </div>
+ </div>
+</section>
+<style>
+.atencao{margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:20px;align-items:start}
+.board{grid-column:1/-1;background:var(--branco);border:1px solid var(--linha-cartao);border-radius:var(--raio-20);overflow:hidden;box-shadow:var(--sombra-cartao-baixo)}
+.board-topo{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--linha-suave)}
+.board-luzes{display:flex;gap:6px}
+.board-luzes span{width:10px;height:10px;border-radius:50%;background:var(--tinta-8)}
+.board-comando{font:500 13px/1 var(--fonte-mono);color:var(--tinta-2)}
+.estica{flex:1}
+.board-meta{font:400 12px/1 var(--fonte-mono);color:var(--tinta-3)}
+.board-rolagem{overflow-x:auto}
+.board-tabela{min-width:720px}
+.board-cabeca{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1.1fr) 150px 120px;gap:18px;padding:12px 20px;font:500 11px/1 var(--fonte-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-4-aa)}
+.board-linha{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1.1fr) 150px 120px;gap:18px;align-items:center;padding:13px 20px;border-top:1px solid var(--linha-suave);transition:background 1.4s ease}
+.board-thread{min-width:0}
+.board-nome{font:500 14.5px/1.3 var(--fonte-texto);color:var(--tinta);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.board-repo{margin-top:3px;font:400 12px/1.3 var(--fonte-mono);color:var(--tinta-3)}
+.board-onde{font:400 12.5px/1.4 var(--fonte-mono);color:var(--tinta-2)}
+.board-segmentos{display:grid;grid-template-columns:repeat(6,1fr);gap:3px}
+.board-segmentos span{height:6px;border-radius:3px;transition:background .6s ease}
+.board-fase{margin-top:6px;font:500 10.5px/1 var(--fonte-mono);letter-spacing:.06em;color:var(--tinta-4-aa)}
+.board-estado{display:flex;align-items:center;gap:7px;font:500 13px/1 var(--fonte-texto)}
+.board-estado>span:first-child{width:7px;height:7px;border-radius:50%}
+.pulso,.pergunta{background-color:var(--branco);border:1px solid var(--linha-cartao);border-radius:var(--raio-20);padding:24px}
+.pulso-topo{display:flex;align-items:center;gap:10px}
+.pulso-topo img{width:28px;height:28px}
+.pulso-nome{font:600 14px/1.2 var(--fonte-texto)}
+.pulso-quando{font:400 12px/1.2 var(--fonte-mono);color:var(--tinta-3)}
+.pulso-numeros{margin-top:20px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.pulso-numeros>div{padding:14px 12px;border-radius:var(--raio-12)}
+.pulso-n{font:600 28px/1 var(--fonte-display)}
+.pulso-l{margin-top:8px;font:500 12px/1.25 var(--fonte-texto);color:var(--tinta-2)}
+.pulso-pergunta{margin-top:20px;font:500 16px/1.45 var(--fonte-texto)}
+.pulso-botoes{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+.pulso-sim{padding:11px 16px;border-radius:var(--raio-10);background:var(--tinta);color:var(--papel);font:500 14px/1 var(--fonte-texto)}
+.pulso-depois{padding:11px 16px;border-radius:var(--raio-10);border:1px solid var(--linha-controle);font:500 14px/1 var(--fonte-texto)}
+.pergunta-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;font:500 12px/1 var(--fonte-mono);color:var(--tinta-3)}
+.pergunta-titulo{margin-top:14px;font:600 20px/1.3 var(--fonte-display);letter-spacing:-0.015em}
+.pergunta-opcoes{margin-top:18px;display:flex;flex-direction:column;gap:8px}
+.opcao{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;border-radius:var(--raio-12);cursor:pointer;border:1px solid;transition:background .2s ease,border-color .2s ease}
+.opcao:hover{border-color:rgba(18,22,28,.28)!important}
+.opcao-chave{flex:none;width:26px;height:26px;border-radius:var(--raio-8);display:grid;place-items:center;font:500 13px/1 var(--fonte-mono)}
+.opcao-texto{flex:1;font:500 14.5px/1.4 var(--fonte-texto);color:var(--tinta)}
+.opcao[aria-pressed='true'] .opcao-texto{color:var(--papel)}
+.opcao-rec{flex:none;font:500 11px/1 var(--fonte-mono);padding:5px 7px;border-radius:var(--raio-6);background:var(--acento-suave);color:var(--acento-texto)}
+.pergunta-nota{margin-top:14px;font:400 13px/1.5 var(--fonte-texto);color:var(--tinta-3)}
+.camadas{margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:32px;border-top:1px solid var(--linha-forte);padding-top:32px}
+.camada-n{font:500 12px/1 var(--fonte-mono);color:var(--acento-texto)}
+.camada-t{margin-top:12px;font:600 18px/1.3 var(--fonte-display);letter-spacing:-0.01em}
+.camada-d{margin:8px 0 0;font:var(--tipo-corpo-cartao);color:var(--tinta-2);text-wrap:pretty}
+</style>

@@ -1,0 +1,51 @@
+---
+// 08 · Prova (#prova): os quatro números com o comando que prova cada um, o terminal do ork demo e
+// a lacuna publicada como lacuna. Números e lacuna seguem o README do núcleo (D13).
+import SectionHead from '../ds/SectionHead.astro';
+import TechnicalText from '../TechnicalText.astro';
+const {t}=Astro.props;
+const p=t.proof;
+---
+<section id="prova" class="prova secao-padrao">
+ <div class="container">
+  <span id="evidencia" class="ancora-antiga" aria-hidden="true"></span><span id="numeros-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-verify-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-gate-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-audit-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-score-titulo" class="ancora-antiga" aria-hidden="true"></span>
+  <SectionHead sobretitulo={p.eyebrow} titulo={p.title} lead={p.lead} medidaTitulo="18ch" medidaLead="60ch"/>
+  <div class="prova-grade" data-reveal>
+   <div class="numeros">
+    {p.proofs.map(n=><div class="numero holofote" data-holofote>
+     <div class="numero-n">{n.n}</div>
+     <div class="numero-l">{n.l}</div>
+     <code class="numero-c">$ {n.c}</code>
+    </div>)}
+   </div>
+   <div class="terminal sobre-escuro" role="figure" aria-label="ork demo">
+    <div class="terminal-topo"><code class="codigo-liso">ork demo</code><span>{p.demoMeta}</span></div>
+    {p.demo.map(d=><div class="terminal-linha"><span style={`color:var(--${d.kc})`}>{d.k}</span><span style={`color:var(--${d.vc})`}>{d.code?<code class="codigo-liso">{d.v}</code>:<TechnicalText text={d.v}/>}</span></div>)}
+   </div>
+  </div>
+  <div class="lacunas">
+   <div class="lacunas-titulo">{p.gapsTitle}</div>
+   {p.gaps.map(g=><div class="lacuna"><span class="lacuna-s" style={`color:var(--${g.c})`}>{g.s}</span><br/><TechnicalText text={g.t}/></div>)}
+  </div>
+ </div>
+</section>
+<style>
+.prova{background:var(--branco)}
+.prova-grade{margin-top:52px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:24px;align-items:stretch}
+.numeros{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(262px,100%),1fr));gap:1px;background:var(--linha-media);border:1px solid var(--linha-media);border-radius:var(--raio-20);overflow:hidden}
+.numero{background-color:var(--branco);padding:26px 24px;display:flex;flex-direction:column;gap:10px}
+.numero-n{font:var(--tipo-numero-prova);letter-spacing:var(--tracking-numero-prova)}
+.numero-l{flex:1;font:400 14.5px/1.45 var(--fonte-texto);color:var(--tinta-2)}
+.numero-c{display:block;font:500 11.5px/1.4 var(--fonte-mono);color:var(--ok-texto);background:none;padding:0;border-radius:0;white-space:nowrap}
+/* Duas colunas como no design enquanto o comando cabe inteiro na célula (regra de 03/10); se não
+   couber, uma coluna. A 1440 e 1280 a grade é a 2x2 do design. */
+.terminal{background:var(--noite);border-radius:var(--raio-20);padding:22px 24px;color:var(--sobre-noite-2);font:var(--tipo-terminal);overflow-x:auto}
+.terminal-topo{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--sobre-noite-4);font-size:12px;margin-bottom:16px}
+.terminal-linha{display:grid;grid-template-columns:84px minmax(0,1fr);gap:12px;white-space:pre-wrap}
+/* Identificador dentro do terminal: é código, mas com a letra do próprio terminal, sem chip. */
+.terminal-linha :global(code){display:inline;font:inherit;color:inherit;background:none;padding:0;border-radius:0;white-space:nowrap}
+.lacunas{margin-top:24px;padding:22px 24px;border-radius:var(--raio-16);background:var(--papel);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px 32px}
+.lacunas-titulo{font:600 17px/1.35 var(--fonte-display)}
+.lacuna{font:400 14.5px/1.55 var(--fonte-texto);color:var(--tinta-2)}
+.lacuna-s{font:500 12px/1 var(--fonte-mono)}
+</style>

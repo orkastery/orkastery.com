@@ -1,0 +1,54 @@
+---
+// 07 · Como funciona (#ciclo): as seis fases como abas (CHECK no início, como no design), os dois
+// cartões da fase escolhida e a nota do GO-FIX. Cada fase sai pronta do build; só a escolhida aparece.
+import SectionHead from '../ds/SectionHead.astro';
+import TechnicalText from '../TechnicalText.astro';
+import {phases,phaseDetail,ESTADO_INICIAL,PH,cor} from '../../lib/home-state.mjs';
+const {t}=Astro.props;
+const c=t.cycle,abas=phases(t,ESTADO_INICIAL.phase);
+---
+<section id="ciclo" class="ciclo secao-padrao">
+ <div class="container">
+  <span id="metodo" class="ancora-antiga" aria-hidden="true"></span><span id="ciclo-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-ciclo-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-threads-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-estado-titulo" class="ancora-antiga" aria-hidden="true"></span>
+  <SectionHead sobretitulo={c.eyebrow} titulo={c.title} lead={c.lead} medidaTitulo="18ch" medidaLead="60ch"/>
+  <div class="fases" data-reveal data-ciclo role="tablist" aria-label={c.title}>
+   {abas.map((f,i)=><button type="button" class="fase" role="tab" id={'fase-'+i} data-fase={i} aria-selected={f.on?'true':'false'} aria-controls="ciclo-painel" tabindex={f.on?'0':'-1'} style={`background:${cor(f.bg)};border-color:${cor(f.bd)};color:${cor(f.fg)}`}>
+    <span class="fase-n">{f.n}</span>
+    <span class="fase-nome">{f.name}</span>
+   </button>)}
+  </div>
+  <div class="ciclo-detalhe" id="ciclo-painel" role="tabpanel" aria-labelledby={'fase-'+ESTADO_INICIAL.phase} aria-live="polite">
+   {PH.map((_,i)=>{const d=phaseDetail(t,i);return <div class="ciclo-par" data-detalhe={i} hidden={i!==ESTADO_INICIAL.phase}>
+    <div class="ciclo-cartao">
+     <div class="ciclo-rotulo">{d.gives}</div>
+     <div class="ciclo-texto"><TechnicalText text={d.givesText}/></div>
+    </div>
+    <div class="ciclo-cartao ciclo-exige">
+     <div class="ciclo-rotulo">{c.needsLabel}</div>
+     <div class="ciclo-texto"><TechnicalText text={d.needs}/></div>
+     <div class="ciclo-codigo"><code class="codigo-liso">{d.code}</code></div>
+    </div>
+   </div>;})}
+  </div>
+  <div class="ciclo-nota"><span class="ciclo-chip">{c.failChip}</span><span><TechnicalText text={c.failNote}/></span></div>
+ </div>
+</section>
+<style>
+.ciclo{background:var(--branco);border-top:1px solid var(--linha-suave);border-bottom:1px solid var(--linha-suave)}
+.fases{margin-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:8px}
+.fase{text-align:left;padding:18px 18px 20px;border-radius:var(--raio-14);cursor:pointer;border:1px solid;transition:background .25s ease,color .25s ease}
+.fase:hover{border-color:rgba(18,22,28,.3)!important}
+.fase-n{display:block;font:500 12px/1 var(--fonte-mono);opacity:.7}
+.fase-nome{display:block;margin-top:22px;font:600 22px/1 var(--fonte-display);letter-spacing:-0.01em}
+.ciclo-detalhe{margin-top:12px}
+.ciclo-par{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:12px}
+.ciclo-par[hidden]{display:none}
+.ciclo-cartao{padding:28px;border-radius:var(--raio-16);background:var(--papel)}
+.ciclo-exige{background:var(--ok-fundo);border:1px solid var(--ok-suave)}
+.ciclo-rotulo{font:500 12px/1 var(--fonte-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-3)}
+.ciclo-exige .ciclo-rotulo{color:var(--ok-texto)}
+.ciclo-texto{margin-top:14px;font:var(--tipo-titulo-detalhe);letter-spacing:var(--tracking-titulo-detalhe);text-wrap:pretty}
+.ciclo-codigo{margin-top:16px;font:500 13px/1 var(--fonte-mono);color:var(--ok-texto)}
+.ciclo-nota{margin-top:20px;display:flex;align-items:center;gap:12px;font:400 14.5px/1.5 var(--fonte-texto);color:var(--tinta-2)}
+.ciclo-chip{font:500 12px/1 var(--fonte-mono);padding:6px 9px;border-radius:var(--raio-7);background:var(--alerta-suave);color:var(--alerta-texto)}
+</style>

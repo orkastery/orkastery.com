@@ -1,0 +1,43 @@
+---
+// 02 · O problema: a frase dos três agentes, as três dores e a tabela Sem ork / Com ork.
+import TechnicalText from '../TechnicalText.astro';
+const {t}=Astro.props;
+const p=t.problem;
+---
+<section id="problema" class="secao-padrao">
+ <div class="container">
+  <div class="sobretitulo">{p.eyebrow}</div>
+  <h2 class="problema-titulo" data-reveal>{p.title}</h2>
+  <div class="problema-grade" data-reveal>
+   <div>
+    <p class="problema-frase">{p.quote} <span class="problema-continuacao">{p.quoteMuted}</span></p>
+    <div class="dores">
+     {p.pains.map(d=><div class="dor"><span class="dor-n">{d.n}</span><span class="dor-t">{d.t}</span></div>)}
+    </div>
+   </div>
+   <div class="comparacao holofote" data-holofote role="table" aria-label={p.without+' / '+p.with}>
+    <div class="comparacao-cabeca" role="row"><span role="columnheader">{p.without}</span><span role="columnheader" class="comparacao-com">{p.with}</span></div>
+    {p.compare.map(c=><div class="comparacao-linha" role="row"><span role="cell" class="comparacao-sem-texto"><TechnicalText text={c.sem}/></span><span role="cell" class="comparacao-com-texto"><TechnicalText text={c.com}/></span></div>)}
+   </div>
+  </div>
+ </div>
+</section>
+<style>
+.problema-titulo{margin:20px 0 0;font:var(--tipo-h2);letter-spacing:var(--tracking-h2);max-width:18ch;text-wrap:balance}
+.problema-grade{margin-top:56px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:48px 64px;align-items:start}
+.problema-frase{margin:0;font:var(--tipo-citacao);letter-spacing:var(--tracking-citacao);color:var(--tinta);text-wrap:pretty}
+.problema-continuacao{color:var(--tinta-4)}
+/* Abaixo de 24 px a continuação vira texto pequeno: usa o cinza que passa AA (D5). */
+@media (max-width:1043px){.problema-continuacao{color:var(--tinta-4-aa)}}
+.dores{margin-top:40px;display:flex;flex-direction:column;gap:0;border-top:1px solid var(--linha-forte)}
+.dor{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;padding:18px 0;border-bottom:1px solid var(--linha-forte)}
+.dor-n{font:500 13px/1.6 var(--fonte-mono);color:var(--alerta-texto)}
+.dor-t{font:400 17px/1.55 var(--fonte-texto);color:var(--tinta-2)}
+.comparacao{background-color:var(--branco);border:1px solid var(--linha-cartao);border-radius:var(--raio-20);overflow:hidden}
+.comparacao-cabeca{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);font:500 12px/1 var(--fonte-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-3);border-bottom:1px solid var(--linha-cartao)}
+.comparacao-cabeca span{padding:16px 20px}
+.comparacao-cabeca .comparacao-com{color:var(--ok-texto);background:var(--ok-fundo)}
+.comparacao-linha{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);border-bottom:1px solid var(--linha-suave)}
+.comparacao-sem-texto{padding:16px 20px;font:400 14.5px/1.5 var(--fonte-texto);color:var(--tinta-3)}
+.comparacao-com-texto{padding:16px 20px;font:500 14.5px/1.5 var(--fonte-texto);color:var(--tinta);background:var(--ok-fundo-2)}
+</style>

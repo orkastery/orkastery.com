@@ -1,0 +1,147 @@
+---
+// 01 · Paralelismo: o diagrama do design (você, a camada do ork, três máquinas e a fila de merge),
+// o roadmap reservado por máquina e os quatro cartões de escala. O estado inicial é o do design
+// (tick 0); o script da home avança o relógio de 2,4 s e repinta os mesmos elementos.
+import SectionHead from '../ds/SectionHead.astro';
+import TechnicalText from '../TechnicalText.astro';
+import {topo,cor,preencher} from '../../lib/home-state.mjs';
+import {withBase} from '../../data/i18n';
+const {t}=Astro.props;
+const p=t.parallel,v=topo(t,0);
+let fio=0;
+---
+<section id="escala" class="secao-padrao">
+ <div class="container">
+  <span id="arquitetura" class="ancora-antiga" aria-hidden="true"></span><span id="camadas-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-adapt-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-comp-titulo" class="ancora-antiga" aria-hidden="true"></span>
+  <SectionHead sobretitulo={p.eyebrow} titulo={p.title} lead={p.lead} medidaTitulo="20ch" medidaLead="62ch"/>
+  <div class="diagrama" data-reveal>
+   <div class="diagrama-palco">
+    <div class="centro">
+     <div class="voce">
+      <img src={withBase('/marca/simbolo-fundo-claro.svg')} alt="" width="36" height="36"/>
+      <div><div class="voce-titulo">{p.you}</div><div class="voce-sub">{p.youSub}</div></div>
+      <div class="voce-hosts">{t.runtimes.list.map(n=><span>{n}</span>)}</div>
+     </div>
+    </div>
+    <div class="centro"><span class="fluxo-v" style="height:34px"></span></div>
+    <div class="camada">
+     <div>
+      <div class="camada-rotulo">{p.layer}</div>
+      <div class="camada-nome">ork</div>
+      <div class="camada-sub">{p.layerSub}</div>
+     </div>
+     <div class="camada-fns">{v.coreFns.map((f,i)=><span data-fn={i} style={`background:${cor(f.bg)};color:${cor(f.fg)};border-color:${cor(f.bd)}`}>{f.t}</span>)}</div>
+    </div>
+    <div class="ligacao">
+     <span class="fluxo-v ligacao-tronco"></span>
+     <span class="fluxo-h ligacao-trave"></span>
+     <span class="fluxo-v ligacao-ramo"></span><span class="fluxo-v ligacao-ramo"></span><span class="fluxo-v ligacao-ramo"></span>
+    </div>
+    <div class="maquinas">
+     {v.machines.map((m,mi)=><div class="maquina holofote" data-holofote>
+      <div class="maquina-topo"><span class="quadrado" style={`background:${cor(m.color)}`}></span><span class="maquina-nome">{m.name}</span><span class="estica"></span><span class="maquina-amb">{m.env}</span></div>
+      {m.runtimes.map((r,ri)=><div class="runtime">
+       <div class="runtime-topo"><span class="runtime-nome">{r.rt}</span><span class="runtime-perfil" data-rt-perfil={mi+'-'+ri}>{preencher(p.profile,{p:r.prof})}</span><span class="estica"></span><span class="runtime-estado" data-rt-estado={mi+'-'+ri} style={`background:${cor(r.sbg)};color:${cor(r.sfg)}`}>{r.state}</span></div>
+       <div class="runtime-threads">{r.threads.map(th=>{const id=fio++;return <div class="thread"><span class="thread-nome">{th.n}</span><span class="segmentos" data-fio={id}>{th.segs.map(sg=><span style={`background:${cor(sg)}`}></span>)}</span></div>;})}</div>
+      </div>)}
+      <div class="maquina-pe">{m.foot}</div>
+     </div>)}
+    </div>
+    <div class="ligacao ligacao-baixo">
+     <span class="fluxo-v ligacao-ramo-baixo"></span><span class="fluxo-v ligacao-ramo-baixo"></span><span class="fluxo-v ligacao-ramo-baixo"></span>
+     <span class="fluxo-h ligacao-trave-baixo"></span>
+     <span class="fluxo-v ligacao-tronco-baixo"></span>
+    </div>
+    <div class="centro">
+     <div class="fila">
+      <code class="codigo-liso fila-main">main</code>
+      <span class="fila-rotulo">{p.mergeLabel}</span>
+      {v.mergeQueue.map((q,k)=><span class="fila-item" data-fila={k} style={`background:${cor(q.bg)};color:${cor(q.fg)}`}>{q.t}</span>)}
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="roadmap" data-reveal>
+   <div class="roadmap-topo">
+    <div>
+     <div class="roadmap-titulo">{p.roadmapTitle}</div>
+     <div class="roadmap-sub">$ <code class="codigo-liso">ork roadmap pegar</code> · {p.roadmapSub}</div>
+    </div>
+    <div class="roadmap-legenda">
+     {v.machineLegend.map(l=><span><span class="quadrado" style={`background:${cor(l.c)}`}></span>{l.n}</span>)}
+     <span><span class="quadrado quadrado-livre"></span>{p.free}</span>
+    </div>
+   </div>
+   <div class="roadmap-itens">{v.roadmap.map((it,i)=><span data-rm={i} style={`background:${cor(it.bg)};color:${cor(it.fg)};border:1px ${it.bs} ${cor(it.bd)}`}>{it.id}</span>)}</div>
+  </div>
+  <div class="escala" data-reveal>
+   {p.scale.map(s=><div class="escala-cartao holofote" data-holofote>
+    <div class="escala-titulo">{s.t}</div>
+    <p class="escala-texto"><TechnicalText text={s.d}/></p>
+    <code class="escala-codigo">{s.c}</code>
+   </div>)}
+  </div>
+ </div>
+</section>
+<style>
+.diagrama{margin-top:52px;background:var(--branco);border:1px solid var(--linha-cartao);border-radius:var(--raio-24);box-shadow:var(--sombra-cartao-largo);overflow-x:auto}
+.diagrama-palco{min-width:920px;padding:28px}
+.centro{display:flex;justify-content:center}
+.voce{display:flex;align-items:center;gap:16px;padding:12px 14px 12px 12px;border-radius:var(--raio-16);background:var(--papel)}
+.voce img{width:36px;height:36px}
+.voce-titulo{font:600 15px/1.2 var(--fonte-texto)}
+.voce-sub{margin-top:4px;font:400 12px/1.2 var(--fonte-mono);color:var(--tinta-3)}
+.voce-hosts{display:flex;gap:6px;margin-left:6px}
+.voce-hosts span{padding:6px 8px;border-radius:var(--raio-7);background:var(--branco);font:500 11.5px/1 var(--fonte-mono);color:var(--tinta-2)}
+.fluxo-v{width:2px;background-image:repeating-linear-gradient(to bottom,var(--tinta-5) 0 4px,transparent 4px 9px);background-size:2px 9px;animation:orkFlow 1.1s linear infinite}
+.fluxo-h{height:2px;background-image:repeating-linear-gradient(to right,var(--tinta-5) 0 4px,transparent 4px 9px);background-size:9px 2px;animation:orkFlowX 1.1s linear infinite}
+.camada{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr);gap:24px;align-items:center;padding:20px 22px;border-radius:var(--raio-18);background:var(--tinta);color:var(--sobre-noite);box-shadow:var(--sombra-anel-escuro)}
+.camada-rotulo{font:500 11px/1 var(--fonte-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--acento)}
+.camada-nome{margin-top:10px;font:600 24px/1.1 var(--fonte-display);letter-spacing:-0.02em}
+.camada-sub{margin-top:6px;font:400 12.5px/1.4 var(--fonte-mono);color:var(--sobre-noite-3)}
+.camada-fns{display:flex;flex-wrap:wrap;gap:8px}
+.camada-fns span{padding:9px 12px;border-radius:var(--raio-10);font:500 13px/1 var(--fonte-texto);border:1px solid;transition:background .5s ease,color .5s ease,border-color .5s ease}
+.ligacao{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;height:46px}
+.ligacao-tronco{position:absolute;left:calc(50% - 1px);top:0;height:14px}
+.ligacao-trave{position:absolute;top:14px;left:calc(16.666% - 5.33px);right:calc(16.666% - 5.33px)}
+.ligacao-ramo{justify-self:center;margin-top:14px;height:32px}
+.ligacao-ramo-baixo{justify-self:center;height:32px}
+.ligacao-trave-baixo{position:absolute;top:32px;left:calc(16.666% - 5.33px);right:calc(16.666% - 5.33px)}
+.ligacao-tronco-baixo{position:absolute;left:calc(50% - 1px);top:32px;height:14px}
+.maquinas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.maquina{border-radius:var(--raio-18);border:1px solid rgba(18,22,28,.09);background-color:var(--branco);padding:16px;display:flex;flex-direction:column;gap:10px}
+.maquina-topo{display:flex;align-items:center;gap:10px}
+.quadrado{width:10px;height:10px;border-radius:3px}
+.quadrado-livre{border:1px dashed rgba(18,22,28,.35);box-sizing:border-box}
+.maquina-nome{font:600 15px/1 var(--fonte-texto)}
+.estica{flex:1}
+.maquina-amb{font:400 11.5px/1 var(--fonte-mono);color:var(--tinta-3)}
+.runtime{border-radius:var(--raio-12);background:var(--papel-3);padding:12px}
+.runtime-topo{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.runtime-nome{font:500 12.5px/1 var(--fonte-mono);color:var(--tinta)}
+.runtime-perfil{font:400 11.5px/1 var(--fonte-mono);color:var(--tinta-3)}
+.runtime-estado{padding:5px 8px;border-radius:var(--raio-pilula);font:500 11px/1 var(--fonte-texto);transition:background .5s ease,color .5s ease}
+.runtime-threads{margin-top:10px;display:flex;flex-direction:column;gap:7px}
+.thread{display:grid;grid-template-columns:minmax(0,1fr) 72px;gap:10px;align-items:center}
+.thread-nome{font:500 13px/1.2 var(--fonte-texto);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.segmentos{display:grid;grid-template-columns:repeat(6,1fr);gap:2px}
+.segmentos span{height:5px;border-radius:2px;transition:background .6s ease}
+.maquina-pe{font:400 11.5px/1.4 var(--fonte-mono);color:var(--tinta-3)}
+.fila{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:14px 18px;border-radius:var(--raio-16);background:var(--ok-fundo);border:1px solid var(--ok-suave)}
+.fila-main.codigo-liso{font:600 15px/1 var(--fonte-mono);color:var(--ok-texto)}
+.fila-rotulo{font:400 13px/1 var(--fonte-texto);color:var(--tinta-2)}
+.fila-item{padding:7px 10px;border-radius:var(--raio-9);font:500 12px/1 var(--fonte-mono)}
+.roadmap{margin-top:16px;padding:22px 24px;border-radius:var(--raio-20);background:var(--branco);border:1px solid var(--linha-cartao)}
+.roadmap-topo{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px}
+.roadmap-titulo{font:600 18px/1.3 var(--fonte-display);letter-spacing:-0.01em}
+.roadmap-sub{margin-top:6px;font:400 13px/1.4 var(--fonte-mono);color:var(--tinta-3)}
+.roadmap-legenda{display:flex;flex-wrap:wrap;gap:8px 16px;font:500 12.5px/1 var(--fonte-texto);color:var(--tinta-2)}
+.roadmap-legenda>span{display:flex;align-items:center;gap:7px}
+.roadmap-itens{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px}
+.roadmap-itens span{padding:10px 6px;border-radius:var(--raio-9);font:500 11.5px/1 var(--fonte-mono);text-align:center;transition:background .6s ease,color .6s ease,border-color .6s ease}
+.escala{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:12px}
+.escala-cartao{padding:24px;border-radius:var(--raio-16);background-color:var(--branco);border:1px solid var(--linha-cartao);display:flex;flex-direction:column;gap:10px}
+.escala-titulo{font:var(--tipo-titulo-cartao);letter-spacing:var(--tracking-titulo-cartao)}
+.escala-texto{margin:0;flex:1;font:var(--tipo-corpo-cartao);color:var(--tinta-2);text-wrap:pretty}
+.escala-codigo{align-self:flex-start;margin-top:6px;font:var(--tipo-codigo-chip);padding:7px 9px;border-radius:var(--raio-7);background:var(--papel);color:var(--tinta)}
+</style>

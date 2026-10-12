@@ -7,7 +7,7 @@ import {pages,distArg,walk,attrs,content} from './check-links.mjs';
 export const proseExceptions = [
  'git a','git aos','git both','git call','git com','git con','git en','git facts','git has','git já','git nos','git repository','git sem','git sin','git without','git ya',
  'npm hoists','npm los','npm os',
- 'ork a','ork abre','ork abrió','ork abriu','ork aplica','ork as','ork brings','ork chamado','ork chega','ork com','ork con','ork core','ork e','ork é','ork elige','ork entry','ork es','ork escolhe','ork exige','ork fica','ork goes','ork is','ork itself','ork llega','ork nas','ork never','ork nunca','ork opens','ork package','ork picks','ork por','ork se','ork state','ork version','ork with','ork y','ork requires',
+ 'ork a','ork abre','ork abrió','ork abriu','ork aplica','ork arrives','ork as','ork brings','ork chamado','ork chega','ork com','ork con','ork core','ork e','ork é','ork elige','ork entry','ork es','ork escolhe','ork exige','ork fica','ork goes','ork is','ork itself','ork llega','ork nas','ork never','ork nunca','ork opens','ork package','ork picks','ork por','ork reserva','ork reserves','ork se','ork state','ork version','ork with','ork y','ork requires',
 ];
 const exceptions=new Set(proseExceptions);
 // Subcomando do ork citado sem o ork: o comando é "ork claims add", nunca "claims add".
