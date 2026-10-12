@@ -64,7 +64,9 @@ const auditoria=()=>{
  const naFrase=el=>getComputedStyle(el).display==='inline'&&!!doBloco(el)&&doBloco(el).textContent.replace(el.textContent,'').trim().length>0;
  const pequeno=[...document.querySelectorAll('a[href],button,[role="tab"],summary')].filter(el=>visivel(el)&&!el.closest('[hidden],[inert],.so-leitor')&&!el.matches('.pular')&&!naFrase(el)).filter(el=>{const r=el.getBoundingClientRect();return r.width<43.5||r.height<43.5;}).map(el=>{const r=el.getBoundingClientRect();return `${el.tagName.toLowerCase()}.${el.className} "${el.textContent.trim().slice(0,24)}" ${Math.round(r.width)}x${Math.round(r.height)}`;});
  // Latão (regra dura 1): nenhuma cor calculada da família do latão fora dos lugares do kit.
- const doLatao=v=>[...String(v).matchAll(/rgba?\(([^)]+)\)/g)].some(m=>{const [r,g,b,a=1]=m[1].split(/[\s,\/]+/).filter(Boolean).map(Number);if(a<0.05)return false;const R=r/255,G=g/255,B=b/255,mx=Math.max(R,G,B),mn=Math.min(R,G,B),d=mx-mn,l=(mx+mn)/2;if(d<0.06)return false;const sat=d/(1-Math.abs(2*l-1));let h=mx===R?60*(((G-B)/d)%6):mx===G?60*((B-R)/d+2):60*((R-G)/d+4);if(h<0)h+=360;return h>=28&&h<=48&&sat>=0.25;});
+ // Cor calculada: rgb()/rgba() (0 a 255) ou color(srgb ...) (0 a 1), que é como o Chrome devolve o color-mix.
+ const coresDe=v=>[...String(v).matchAll(/rgba?\(([^)]+)\)|color\(srgb\s+([^)]+)\)/g)].map(m=>{if(m[1]){const [r,g,b,a=1]=m[1].split(/[\s,\/]+/).filter(Boolean).map(Number);return [r,g,b,a];}const [r,g,b,a=1]=m[2].split(/[\s\/]+/).filter(Boolean).map(Number);return [r*255,g*255,b*255,a];});
+ const doLatao=v=>coresDe(v).some(([r,g,b,a])=>{if(a<0.05)return false;const R=r/255,G=g/255,B=b/255,mx=Math.max(R,G,B),mn=Math.min(R,G,B),d=mx-mn,l=(mx+mn)/2;if(d<0.06)return false;const sat=d/(1-Math.abs(2*l-1));let h=mx===R?60*(((G-B)/d)%6):mx===G?60*((B-R)/d+2):60*((R-G)/d+4);if(h<0)h+=360;return h>=28&&h<=48&&sat>=0.25;});
  const permitido='.divisor-fio span,.instalar-giro,.instalar-caixa,.hero-ponto-espera,.opcao-rec,.opcao-rec-ponto,.ponto-hitl,[data-board-estado],[data-board-estado]>span,.board-segmentos>span,.pulso-numeros>div,.pulso-n,[data-amostra],[data-amostra] *';
  const props=['color','backgroundColor','borderTopColor','borderRightColor','borderBottomColor','borderLeftColor','boxShadow','backgroundImage','outlineColor','fill','stroke','textDecorationColor'];
  const latao=[...document.querySelectorAll('body *')].filter(el=>el.getClientRects().length&&!el.matches(permitido)).filter(el=>{const cs=getComputedStyle(el);return props.some(p=>doLatao(cs[p]));}).map(el=>el.tagName.toLowerCase()+'.'+el.className);
@@ -75,7 +77,7 @@ const auditoria=()=>{
  // Contraste real do texto (regra dura 3): cor do texto contra o fundo efetivo, misturando as
  // camadas translúcidas; 4,5:1, ou 3:1 em texto grande. Texto sob opacidade (eventos da noite
  // ainda apagados, que acendem antes do centro da tela) fica de fora.
- const cor=v=>{const m=/rgba?\(([^)]+)\)/.exec(v||'');if(!m)return null;const [r,g,b,a=1]=m[1].split(/[\s,\/]+/).filter(Boolean).map(Number);return [r,g,b,a];};
+ const cor=v=>coresDe(v)[0]||null;
  const sobre=(f,b)=>[0,1,2].map(i=>f[i]*f[3]+b[i]*(1-f[3])).concat(1);
  const lum=c=>c.slice(0,3).map(n=>n/255).map(n=>n<=.04045?n/12.92:((n+.055)/1.055)**2.4).reduce((s,n,i)=>s+n*[.2126,.7152,.0722][i],0);
  const razao=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
@@ -202,7 +204,7 @@ try{
     if(!await page.locator('[data-nota="1"]').isVisible())throw Error('Answer note missing '+onde);
     // Depois da transição, o texto da escolhida tem 4,5:1 contra o fundo dela.
     await page.waitForTimeout(450);
-    const legivel=await page.evaluate(()=>{const cor=v=>/rgba?\(([^)]+)\)/.exec(v)[1].split(/[\s,\/]+/).filter(Boolean).map(Number);const lum=c=>c.slice(0,3).map(n=>n/255).map(n=>n<=.04045?n/12.92:((n+.055)/1.055)**2.4).reduce((s,n,i)=>s+n*[.2126,.7152,.0722][i],0);const b=document.querySelector('[data-opcao="1"]'),t=b.querySelector('.opcao-texto'),x=lum(cor(getComputedStyle(t).color)),y=lum(cor(getComputedStyle(b).backgroundColor));return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);});
+    const legivel=await page.evaluate(()=>{const cor=v=>{const m=/rgba?\(([^)]+)\)|color\(srgb\s+([^)]+)\)/.exec(v);return m[1]?m[1].split(/[\s,\/]+/).filter(Boolean).map(Number):m[2].split(/[\s\/]+/).filter(Boolean).map(Number).map((n,i)=>i<3?n*255:n);};const lum=c=>c.slice(0,3).map(n=>n/255).map(n=>n<=.04045?n/12.92:((n+.055)/1.055)**2.4).reduce((s,n,i)=>s+n*[.2126,.7152,.0722][i],0);const b=document.querySelector('[data-opcao="1"]'),t=b.querySelector('.opcao-texto'),x=lum(cor(getComputedStyle(t).color)),y=lum(cor(getComputedStyle(b).backgroundColor));return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);});
     if(legivel<4.5)throw Error('Chosen answer text below 4.5:1 ('+legivel.toFixed(2)+') '+onde);
     // Noite: o relógio anda com a rolagem e o resumo da manhã aparece no fim.
     const relogio=page.locator('[data-noite-relogio]');
