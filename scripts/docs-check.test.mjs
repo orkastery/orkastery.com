@@ -21,6 +21,21 @@ function fixture(run) {
 test('reviewed, translated content passes',()=>fixture(({root})=>assert.equal(validate(root).articles,1)));
 test('missing translation fails even schema validation',()=>fixture(({root,article,save})=>{delete article.translations.es;save();assert.throws(()=>validate(root,{schemaOnly:true}),/locale/);}));
 test('editing text invalidates editorial review',()=>fixture(({root,article,save})=>{article.translations.en.sections[0].paragraphs=['New unreviewed meaning'];save();assert.throws(()=>validate(root),/stale/);}));
+test('a highlight must exist in every language and have text',()=>fixture(({root,article,save})=>{
+ article.translations.pt.sections[0].highlight={title:'Muda para quem já usa',paragraphs:['Rode o comando uma vez.']};save();
+ assert.throws(()=>validate(root,{schemaOnly:true}),/highlight parity/);
+ for(const locale of ['en','es'])article.translations[locale].sections[0].highlight={title:locale,paragraphs:[locale+' text']};save();
+ assert.equal(validate(root,{schemaOnly:true}).articles,1);
+ article.translations.es.sections[0].highlight.paragraphs=[' '];save();
+ assert.throws(()=>validate(root,{schemaOnly:true}),/empty highlight/);
+ article.translations.es.sections[0].highlight.paragraphs=['es text'];article.translations.es.sections[0].highlight.links=[{label:'',href:'/docs/start/'}];save();
+ assert.throws(()=>validate(root,{schemaOnly:true}),/empty highlight/);
+ for(const locale of ['pt','en'])article.translations[locale].sections[0].highlight.links=[{label:locale,href:'/docs/start/'}];
+ article.translations.es.sections[0].highlight.links=[{label:'es',href:'/docs/start/'}];save();
+ assert.equal(validate(root,{schemaOnly:true}).articles,1);
+ article.translations.en.sections[0].highlight.items=['one more item in English only'];save();
+ assert.throws(()=>validate(root,{schemaOnly:true}),/highlight parity/);
+}));
 test('source revision invalidates all affected translations',()=>fixture(({root,snapshot,save})=>{snapshot.sources[0].sha256=hash('changed');snapshot.inventoryHash=hash(JSON.stringify(snapshot.sources));save();assert.throws(()=>validate(root),/stale/);}));
 test('snapshot corruption is detected',()=>fixture(({root,snapshot,save})=>{snapshot.sources[0].sha256='invalid';save();assert.throws(()=>validate(root),/integrity/);}));
 test('new upstream document requires synchronization',()=>fixture(({root})=>{
@@ -111,4 +126,8 @@ test('removing a restored home section fails the content audit',()=>outputFixtur
 test('missing contribution navigation fails the content audit',()=>outputFixture(dir=>{
  edit(dir,'en/index.html',s=>s.replaceAll('href="'+B+'/en/docs/contribuir/"','href="'+B+'/en/docs/"'));
  assert.throws(()=>checkContent(dir),/contribution navigation/);
+}));
+test('an unreplaced version marker fails the content audit',()=>outputFixture(dir=>{
+ edit(dir,'en/docs/comecar/index.html',s=>s.replace('</main>','<p>{versao}</p></main>'));
+ assert.throws(()=>checkContent(dir),/Unreplaced version marker/);
 }));

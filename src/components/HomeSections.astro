@@ -1,5 +1,6 @@
 ---
 import copy from '../data/home-sections';
+import {versao} from '../data/release.mjs';
 import {localeFor,localize,localizedPath} from '../data/i18n';
 import CicloFases from './CicloFases.astro';
 import ModosConducao from './ModosConducao.astro';
@@ -32,7 +33,7 @@ ork modos</code></pre><MaquinaVerificacao />
 </div></section>
 <section class="secao" aria-labelledby="ecossistema-titulo" data-home-section="ecosystem"><div class="container">
  <div class="cabeca-secao"><h2 class="display" id="ecossistema-titulo">{t.ecosystem}</h2></div>
- <div class="bento"><a class="painel painel-latao cartao-link" href={localize('/ork/',locale)}><h3>Ork · AI Software Factory</h3><p>{t.ork}</p><code>@orkastery/cli 0.5.0</code></a><a class="painel cartao-link" href={'https://orkmind.com'+localizedPath('/',locale)}><h3>OrkMind</h3><p>{t.mind}</p></a></div>
+ <div class="bento"><a class="painel painel-latao cartao-link" href={localize('/ork/',locale)}><h3>Ork · AI Software Factory</h3><p>{t.ork}</p><code>@orkastery/cli {versao}</code></a><a class="painel cartao-link" href={'https://orkmind.com'+localizedPath('/',locale)}><h3>OrkMind</h3><p>{t.mind}</p></a></div>
 </div></section>
 <style>
 .manifesto-titulo{max-width:100%;font-size:clamp(1.6rem,3.6vw,2.8rem);line-height:1.14;}
