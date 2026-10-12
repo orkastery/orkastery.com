@@ -45,7 +45,7 @@ export default [
             "title": "Prepare uma mudança verificável",
             "paragraphs": [
               "O PR explica o problema, a mudança, a prova, a baseline e o risco. Cole a saída real dos comandos. Separe regressões de falhas que já existiam; mudança de comportamento pede teste que reproduza o defeito. Usar o ork é recomendado e opcional. O mantenedor integra com CI verde no commit exato e conduz a publicação.",
-              "Rode os comandos a partir da raiz do checkout. O guia de testes traz a lista completa de checks.",
+              "Rode os comandos a partir da raiz do checkout. O guia de testes traz a lista completa de checks. Os checks obrigatórios são documentacao (markdownlint e paridade), nucleo ork (build, testes, canarios), um por versão do Node, e ork-verify.",
               "A suíte inteira (npm --prefix core test) roda em qualquer máquina. Sem o codex em /usr/bin, sem PostgreSQL com a imagem pgvector/pgvector:pg16 ou sem o interpretador do OrkMind, os testes que precisam deles saem como skip com o motivo, e a suíte termina com 0 falhas. Com ORK_TESTE_EXIGE_AMBIENTE=1, nada é pulado e a dependência que faltar reprova; o test:ci liga essa variável sozinho.",
               "Com o ork, ci prepare grava .ork-ci/<thread>.json, só da sua thread; faça dele o último commit do PR, e o check ork-verify o acha pelo nome da branch.",
               "Mexeu em skills, references, nos adaptadores do Claude Code ou do Codex ou na versão do core/package.json? Rode node core/scripts/gerar-marketplaces.cjs e comite o resultado; o CI confere com --verificar. Mudou o frontmatter de um item? Regere só as tabelas dele com docs sincronizar --escrever --so RM-NNN.",
@@ -58,7 +58,8 @@ export default [
             "id": "guias",
             "title": "Um guia por tarefa",
             "paragraphs": [
-              "Os guias-fonte estão em português do Brasil, como o restante da pasta docs. Contribuições técnicas claras em inglês são bem-vindas e nunca são recusadas só pela língua."
+              "Os guias-fonte estão em português do Brasil, como o restante da pasta docs. Contribuições técnicas claras em inglês são bem-vindas e nunca são recusadas só pela língua.",
+              "O CONTRIBUTING.md abre com o caminho curto em inglês, a partir da raiz do checkout: clone, npm --prefix core ci, build, node core/dist/index.js --version e npm --prefix core run test:ci, que é hermético (sem rede, Docker nem runtime de agente). Os guias pedem título do PR, mensagens de commit e linha do CHANGELOG em pt-BR; inglês também é aceito."
             ],
             "links": [
               {
@@ -144,7 +145,7 @@ export default [
             "title": "Prepare a verifiable change",
             "paragraphs": [
               "A PR explains the problem, change, evidence, baseline and risk. Include actual command output. Separate regressions from existing failures; behavior changes need a test that reproduces the problem. Using ork is recommended and optional. The maintainer integrates with passing CI at the exact commit and handles publishing.",
-              "Run commands from the checkout root. The testing guide lists the complete checks.",
+              "Run commands from the checkout root. The testing guide lists the complete checks. The required checks are documentacao (markdownlint e paridade), nucleo ork (build, testes, canarios), one per Node version, and ork-verify.",
               "The full suite (npm --prefix core test) runs on any machine. Without codex in /usr/bin, without PostgreSQL with the pgvector/pgvector:pg16 image or without the OrkMind interpreter, the tests that need them are skipped with the reason, and the suite ends with 0 failures. With ORK_TESTE_EXIGE_AMBIENTE=1, nothing is skipped and a missing dependency fails; test:ci sets that variable on its own.",
               "With ork, ci prepare writes .ork-ci/<thread>.json for your thread only; make it the PR’s last commit, and the ork-verify check finds it by branch name.",
               "Changed skills, references, the Claude Code or Codex adapters, or the version in core/package.json? Run node core/scripts/gerar-marketplaces.cjs and commit the result; CI checks it with --verificar. Changed an item’s frontmatter? Regenerate only its tables with docs sincronizar --escrever --so RM-NNN.",
@@ -157,7 +158,8 @@ export default [
             "id": "guias",
             "title": "One guide per task",
             "paragraphs": [
-              "Source guides are in Brazilian Portuguese, like the rest of the docs folder. Clear technical contributions in English are welcome and are never turned away for language alone."
+              "Source guides are in Brazilian Portuguese, like the rest of the docs folder. Clear technical contributions in English are welcome and are never turned away for language alone.",
+              "CONTRIBUTING.md opens with the short path in English, from the checkout root: clone, npm --prefix core ci, build, node core/dist/index.js --version and npm --prefix core run test:ci, which is hermetic (no network, no Docker, no agent runtime). The guides ask for the PR title, commit messages and CHANGELOG line in pt-BR; English is accepted too."
             ],
             "links": [
               {
@@ -243,7 +245,7 @@ export default [
             "title": "Prepare un cambio verificable",
             "paragraphs": [
               "El PR explica el problema, el cambio, las pruebas, la baseline y el riesgo. Incluya la salida real de los comandos. Separe las regresiones de los fallos previos; un cambio de comportamiento requiere una prueba que reproduzca el defecto. Usar ork es recomendable y opcional. El mantenedor integra con CI aprobado en el commit exacto y se encarga de publicar.",
-              "Ejecute los comandos desde la raíz del checkout. La guía de pruebas incluye la lista completa de comprobaciones.",
+              "Ejecute los comandos desde la raíz del checkout. La guía de pruebas incluye la lista completa de comprobaciones. Los checks obligatorios son documentacao (markdownlint e paridade), nucleo ork (build, testes, canarios), uno por versión de Node, y ork-verify.",
               "La suite completa (npm --prefix core test) corre en cualquier máquina. Sin codex en /usr/bin, sin PostgreSQL con la imagen pgvector/pgvector:pg16 o sin el intérprete de OrkMind, las pruebas que los necesitan salen como skip con el motivo, y la suite termina con 0 fallos. Con ORK_TESTE_EXIGE_AMBIENTE=1, no se omite nada y la dependencia que falte reprueba; test:ci activa esa variable por sí solo.",
               "Con ork, ci prepare escribe .ork-ci/<thread>.json, solo de su thread; conviértalo en el último commit del PR, y el check ork-verify lo encuentra por el nombre de la branch.",
               "¿Cambió skills, references, los adaptadores de Claude Code o Codex o la versión de core/package.json? Ejecute node core/scripts/gerar-marketplaces.cjs y haga commit del resultado; el CI lo comprueba con --verificar. ¿Cambió el frontmatter de un elemento? Regenere solo sus tablas con docs sincronizar --escrever --so RM-NNN.",
@@ -256,7 +258,8 @@ export default [
             "id": "guias",
             "title": "Una guía por tarea",
             "paragraphs": [
-              "Las guías fuente están en portugués de Brasil, como el resto de la carpeta docs. Las contribuciones técnicas claras en inglés son bienvenidas y nunca se rechazan solo por el idioma."
+              "Las guías fuente están en portugués de Brasil, como el resto de la carpeta docs. Las contribuciones técnicas claras en inglés son bienvenidas y nunca se rechazan solo por el idioma.",
+              "CONTRIBUTING.md empieza con el camino corto en inglés, desde la raíz del checkout: clone, npm --prefix core ci, build, node core/dist/index.js --version y npm --prefix core run test:ci, que es hermético (sin red, sin Docker y sin runtime de agente). Las guías piden el título del PR, los mensajes de commit y la línea del CHANGELOG en pt-BR; el inglés también se acepta."
             ],
             "links": [
               {

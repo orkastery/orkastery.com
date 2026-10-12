@@ -166,7 +166,8 @@ export default [
             "id": "feat-029",
             "title": "FEAT-029 · Condução multicanal",
             "paragraphs": [
-              "Os canais compartilham a autoridade do núcleo. Uma segunda execução concorrente na mesma worktree é recusada com a identificação de quem conduz."
+              "Os canais compartilham a autoridade do núcleo. Uma segunda execução concorrente na mesma worktree é recusada com a identificação de quem conduz.",
+              "Os leases e a fila por colisão moram no estado canônico do projeto: a raiz e as worktrees disputam os mesmos arquivos."
             ]
           },
           {
@@ -245,7 +246,8 @@ export default [
             "id": "feat-029",
             "title": "FEAT-029 · Multichannel conduction",
             "paragraphs": [
-              "Channels share core authority. A second concurrent execution in the same worktree is rejected with the current conductor identified."
+              "Channels share core authority. A second concurrent execution in the same worktree is rejected with the current conductor identified.",
+              "Leases and the collision queue live in the project’s canonical state: the root and the worktrees contend for the same files."
             ]
           },
           {
@@ -324,7 +326,8 @@ export default [
             "id": "feat-029",
             "title": "FEAT-029 · Conducción multicanal",
             "paragraphs": [
-              "Los canales comparten la autoridad del núcleo. Una segunda ejecución simultánea en la misma worktree se rechaza identificando a quien conduce."
+              "Los canales comparten la autoridad del núcleo. Una segunda ejecución simultánea en la misma worktree se rechaza identificando a quien conduce.",
+              "Los leases y la cola por colisión viven en el estado canónico del proyecto: la raíz y las worktrees compiten por los mismos archivos."
             ]
           },
           {
@@ -381,7 +384,8 @@ export default [
             "id": "feat-006",
             "title": "FEAT-006 · Entrega com push comprovado",
             "paragraphs": [
-              "SHIP serializa o merge por lease e confere o remoto. Dry-run e commit local não são recibos de publicação."
+              "SHIP serializa o merge por lease e confere o remoto. Dry-run e commit local não são recibos de publicação.",
+              "O recibo ship_done traz o commit que incorporou a branch da thread (mergeSha) separado da ponta da base provada no remoto (pontaDaBase e shaRemoto)."
             ]
           },
           {
@@ -389,7 +393,8 @@ export default [
             "title": "FEAT-007 · Worktrees e leases",
             "paragraphs": [
               "Cada thread edita sua worktree. Leases de árvore, caminhos, cards e serviços coordenam recursos; a auditoria recusa divergência entre Git e registro.",
-              "A worktree nasce com a thread quando o manifesto tem worktree.por_thread: true, o padrão do ork init, ou com --worktree auto; depois, ork worktree ensure a cria. ork worktree sync recusa com tree.blocked, causa base-reescrita, quando a base foi reescrita, e mostra o git rebase --onto que reaplica só os commits da thread."
+              "A worktree nasce com a thread quando o manifesto tem worktree.por_thread: true, o padrão do ork init, ou com --worktree auto; depois, ork worktree ensure a cria. ork worktree sync recusa com tree.blocked, causa base-reescrita, quando a base foi reescrita, e mostra o git rebase --onto que reaplica só os commits da thread.",
+              "Os leases e a fila moram no .orkastery/leases da raiz do projeto, com o ork chamado da raiz ou de qualquer worktree. Um lease legado de worktree só é considerado numa janela de 30 minutos, nunca é apagado nem prova posse; ork lease list mostra leases, famílias e filas."
             ]
           }
         ]
@@ -417,7 +422,8 @@ export default [
             "id": "feat-006",
             "title": "FEAT-006 · Delivery with verified push",
             "paragraphs": [
-              "SHIP serializes the merge through a lease and checks the remote. Dry runs and local commits are not publication receipts."
+              "SHIP serializes the merge through a lease and checks the remote. Dry runs and local commits are not publication receipts.",
+              "The ship_done receipt records the commit that incorporated the thread branch (mergeSha) separately from the base tip proven on the remote (pontaDaBase and shaRemoto)."
             ]
           },
           {
@@ -425,7 +431,8 @@ export default [
             "title": "FEAT-007 · Worktrees and leases",
             "paragraphs": [
               "Each thread edits its own worktree. Tree, path, card and service leases coordinate resources; auditing rejects disagreement between Git and recorded state.",
-              "The worktree is created with the thread when the manifest has worktree.por_thread: true, the ork init default, or with --worktree auto; later, ork worktree ensure creates it. ork worktree sync refuses with tree.blocked, cause base-reescrita, when the base was rewritten, and shows the git rebase --onto that replays only the thread’s commits."
+              "The worktree is created with the thread when the manifest has worktree.por_thread: true, the ork init default, or with --worktree auto; later, ork worktree ensure creates it. ork worktree sync refuses with tree.blocked, cause base-reescrita, when the base was rewritten, and shows the git rebase --onto that replays only the thread’s commits.",
+              "Leases and the queue live in .orkastery/leases at the project root, whether ork is called from the root or from any worktree. A legacy worktree lease is only considered within a 30-minute window, is never deleted and never proves ownership; ork lease list shows leases, families and queues."
             ]
           }
         ]
@@ -453,7 +460,8 @@ export default [
             "id": "feat-006",
             "title": "FEAT-006 · Entrega con push demostrado",
             "paragraphs": [
-              "SHIP serializa el merge mediante un lease y comprueba el remoto. Un dry-run o commit local no es un comprobante de publicación."
+              "SHIP serializa el merge mediante un lease y comprueba el remoto. Un dry-run o commit local no es un comprobante de publicación.",
+              "El comprobante ship_done registra el commit que incorporó la rama de la thread (mergeSha) por separado de la punta de la base probada en el remoto (pontaDaBase y shaRemoto)."
             ]
           },
           {
@@ -461,7 +469,8 @@ export default [
             "title": "FEAT-007 · Worktrees y leases",
             "paragraphs": [
               "Cada thread edita su worktree. Los leases de árbol, rutas, tarjetas y servicios coordinan recursos; la auditoría rechaza divergencias entre Git y el registro.",
-              "La worktree nace con la thread cuando el manifiesto tiene worktree.por_thread: true, el valor por defecto de ork init, o con --worktree auto; después, ork worktree ensure la crea. ork worktree sync rechaza con tree.blocked, causa base-reescrita, cuando la base fue reescrita, y muestra el git rebase --onto que reaplica solo los commits de la thread."
+              "La worktree nace con la thread cuando el manifiesto tiene worktree.por_thread: true, el valor por defecto de ork init, o con --worktree auto; después, ork worktree ensure la crea. ork worktree sync rechaza con tree.blocked, causa base-reescrita, cuando la base fue reescrita, y muestra el git rebase --onto que reaplica solo los commits de la thread.",
+              "Los leases y la cola viven en .orkastery/leases de la raíz del proyecto, tanto si ork se llama desde la raíz como desde cualquier worktree. Un lease heredado de worktree solo se considera en una ventana de 30 minutos, nunca se borra ni prueba la posesión; ork lease list muestra leases, familias y colas."
             ]
           }
         ]
@@ -488,7 +497,8 @@ export default [
             "id": "feat-008",
             "title": "FEAT-008 · Rodízio de contas",
             "paragraphs": [
-              "Cota esgotada pode seguir a política de rotação ou fallback. Rate limit curto aguarda na fila; a operação não copia credenciais entre perfis."
+              "Cota esgotada pode seguir a política de rotação ou fallback. Rate limit curto aguarda na fila; a operação não copia credenciais entre perfis.",
+              "O perfil esgotado fica indisponível até o prazo da cota; o próximo despacho ou retry permitido o pula, e a troca grava runtime_profile_rotated. ork accounts esgotamentos mede os esgotamentos do período (--desde 7d)."
             ]
           },
           {
@@ -531,7 +541,8 @@ export default [
             "id": "feat-008",
             "title": "FEAT-008 · Account rotation",
             "paragraphs": [
-              "Exhausted quota can follow rotation or fallback policy. Short rate limits wait in the queue; the operation does not copy credentials between profiles."
+              "Exhausted quota can follow rotation or fallback policy. Short rate limits wait in the queue; the operation does not copy credentials between profiles.",
+              "An exhausted profile stays unavailable until its quota resets; the next allowed dispatch or retry skips it, and the switch records runtime_profile_rotated. ork accounts esgotamentos measures exhaustions over a period (--desde 7d)."
             ]
           },
           {
@@ -574,7 +585,8 @@ export default [
             "id": "feat-008",
             "title": "FEAT-008 · Rotación de cuentas",
             "paragraphs": [
-              "Una cuota agotada puede seguir la política de rotación o fallback. Los límites breves esperan en la cola; la operación no copia credenciales entre perfiles."
+              "Una cuota agotada puede seguir la política de rotación o fallback. Los límites breves esperan en la cola; la operación no copia credenciales entre perfiles.",
+              "El perfil agotado queda no disponible hasta el reinicio de su cuota; el siguiente despacho o retry permitido lo omite, y el cambio registra runtime_profile_rotated. ork accounts esgotamentos mide los agotamientos del período (--desde 7d)."
             ]
           },
           {
@@ -654,7 +666,8 @@ export default [
             "paragraphs": [
               "O estado vem de threads, ledger e filas. ork roadmap status é leitura pura: agrupa o relatório no fuso do dono, marca #HITL no que espera decisão e mostra próximos passos. O orquestrador assume os impedimentos técnicos; sessão encerrada não vira pedido como se ainda pudesse receber resposta.",
               "O trabalho parado no condutor depois da entrega, além de 30 minutos, sai numa linha por thread no pulse, com o próximo passo e fora de “Esperando você”: branch sem push, branch sem PR, PR verde sem merge ou merge sem registro. ork roadmap status diz o estado real da entrega da thread de cada item e, com fábrica compartilhada, avisa a máquina sem batida há mais de 3 horas.",
-              "O ork pulse e o ork roadmap status trazem o tempo parado por HITL de condução (hitlDeConducao): as perguntas abertas, com há quanto tempo cada uma para a thread, no fuso do dono, e a mediana dos últimos 7 dias contra a meta de 5 minutos. O resumo ganha uma linha só acima da meta, sem virar novidade que fure a cadência."
+              "O ork pulse e o ork roadmap status trazem o tempo parado por HITL de condução (hitlDeConducao): as perguntas abertas, com há quanto tempo cada uma para a thread, no fuso do dono, e a mediana dos últimos 7 dias contra a meta de 5 minutos. O resumo ganha uma linha só acima da meta, sem virar novidade que fure a cadência.",
+              "No #Auto, um CHECK concluído sem veredito fica com o condutor, que despacha de novo a fase CHECK; fora do #Auto, segue com o dono. A forja sem leitura de PR, como GitLab, remoto local ou host sem login do gh, gera o aviso prs.sem-leitura uma vez por remoto, e o próximo passo manda conferir o PR na forja."
             ],
             "code": "ork roadmap status"
           },
@@ -700,7 +713,8 @@ export default [
             "paragraphs": [
               "State comes from threads, the ledger and queues. ork roadmap status is read-only: it groups the report in the owner’s timezone, marks pending decisions with #HITL and shows next steps. The orchestrator handles technical blockers; ended sessions are not presented as able to receive a response.",
               "Work stalled with the conductor after delivery, for more than 30 minutes, appears as one line per thread in the pulse, with the next step and outside “Waiting for you”: an unpushed branch, a branch without a PR, a green PR not merged, or a merge not recorded. ork roadmap status states the real delivery state of each item’s thread and, with a shared factory, flags a machine with no heartbeat for more than 3 hours.",
-              "ork pulse and ork roadmap status show the time blocked by conduction HITL (hitlDeConducao): the open questions, with how long each one has been blocking the thread, in the owner’s timezone, and the median over the last 7 days against the 5-minute target. The summary gains a line only above the target, without becoming news that breaks the cadence."
+              "ork pulse and ork roadmap status show the time blocked by conduction HITL (hitlDeConducao): the open questions, with how long each one has been blocking the thread, in the owner’s timezone, and the median over the last 7 days against the 5-minute target. The summary gains a line only above the target, without becoming news that breaks the cadence.",
+              "In #Auto, a CHECK finished without a verdict stays with the conductor, which dispatches the CHECK phase again; outside #Auto, it goes to the owner. A forge whose PRs cannot be read, such as GitLab, a local remote or a host without a gh login, raises the prs.sem-leitura warning once per remote, and the next step says to check the PR on the forge."
             ],
             "code": "ork roadmap status"
           },
@@ -746,7 +760,8 @@ export default [
             "paragraphs": [
               "El estado procede de threads, ledger y colas. ork roadmap status es de lectura: agrupa el informe en el huso del dueño, marca #HITL en lo que espera decisión y muestra próximos pasos. El orquestador se ocupa de los impedimentos técnicos; las sesiones terminadas no se presentan como capaces de recibir respuesta.",
               "El trabajo detenido en el conductor después de la entrega, por más de 30 minutos, aparece en una línea por thread en el pulse, con el siguiente paso y fuera de “Esperándote”: rama sin push, rama sin PR, PR en verde sin merge o merge sin registro. ork roadmap status indica el estado real de la entrega de la thread de cada ítem y, con fábrica compartida, avisa de la máquina sin latido desde hace más de 3 horas.",
-              "ork pulse y ork roadmap status muestran el tiempo detenido por HITL de conducción (hitlDeConducao): las preguntas abiertas, con cuánto tiempo lleva cada una deteniendo la thread, en la zona horaria del dueño, y la mediana de los últimos 7 días frente a la meta de 5 minutos. El resumen gana una línea solo por encima de la meta, sin convertirse en novedad que rompa la cadencia."
+              "ork pulse y ork roadmap status muestran el tiempo detenido por HITL de conducción (hitlDeConducao): las preguntas abiertas, con cuánto tiempo lleva cada una deteniendo la thread, en la zona horaria del dueño, y la mediana de los últimos 7 días frente a la meta de 5 minutos. El resumen gana una línea solo por encima de la meta, sin convertirse en novedad que rompa la cadencia.",
+              "En #Auto, un CHECK terminado sin veredicto queda con el conductor, que vuelve a despachar la fase CHECK; fuera de #Auto, pasa al dueño. Una forja sin lectura de PR, como GitLab, un remoto local o un host sin sesión de gh, genera el aviso prs.sem-leitura una vez por remoto, y el siguiente paso indica revisar el PR en la forja."
             ],
             "code": "ork roadmap status"
           },
