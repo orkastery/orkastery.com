@@ -144,3 +144,12 @@ test('the CLI version lives in one module and the editorial marker becomes that 
  assert.equal(comVersao('outro marcador {versão} fica'),'outro marcador {versão} fica');
  assert.equal(technicalHtml(comVersao('Instale @orkastery/cli e use a {versao}.')),`Instale <code>@orkastery/cli</code> e use a ${versao}.`);
 });
+
+test('three-level ork commands, git rm with a path and node with an ork subcommand stay whole',()=>{
+ for(const token of ['ork setup sandbox confirmar danger-full-access','ork setup worktree confirmar','ork claims conferir --claims C3,C7','ork claims conferir --tarefa T2.1','ork docs sincronizar --escrever --so RM-059','git rm -r --cached .orkastery','node core/dist/index.js eval','ork master ork-rm059torre --aceitar-omissao']){
+  assert.equal(technicalHtml(token),`<code>${token}</code>`,token);
+ }
+ assert.equal(technicalHtml('Rode git status e veja.'),'Rode <code>git status</code> e veja.');
+ assert.equal(technicalHtml('crie o remoto com git remote add e ponha'),'crie o remoto com <code>git remote add</code> e ponha');
+ assert.equal(technicalHtml('Use ork thread status para ver.'),'Use <code>ork thread status</code> para ver.');
+});
