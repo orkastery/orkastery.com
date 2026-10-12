@@ -10,7 +10,7 @@ import {resolve,extname} from 'node:path';
 import {pathToFileURL} from 'node:url';
 
 const locales=['pt','en','es'],widths=[1440,768,390],routes=['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/claude-code/'];
-const checks=['skipLink','languageKeyboard','focusVisible','overflow','inlineCodeWhole','adjacentTextWithCode','copySuccessAndRefusal','modes','phaseTabsKeyboard','options','nightScroll','reveal','reducedMotion'];
+const checks=['skipLink','languageKeyboard','focusVisible','overflow','inlineCodeWhole','adjacentTextWithCode','copySuccessAndRefusal','modes','phaseTabsKeyboard','options','nightScroll','reveal','reducedMotion','scorePainted'];
 const args=process.argv.slice(2);
 if(args.includes('--plan')){console.log(JSON.stringify({locales,widths,routes,checks,screenshots:locales.length*widths.length*routes.length,network:'blocked',requires:['PLAYWRIGHT_MODULE','CHROMIUM_EXECUTABLE','--output']},null,2));process.exit(0);}
 const output=args.includes('--output')?resolve(args[args.indexOf('--output')+1]):null;
@@ -122,11 +122,15 @@ try{
     await p2.waitForFunction(()=>Number(getComputedStyle(document.querySelector('#problema [data-reveal]')).opacity)>.99,null,{timeout:4000});
     await livre.close();
     await page.reload({waitUntil:'networkidle'});await page.evaluate(()=>document.fonts.ready);
-    Object.assign(r,{reducedMotion:true,copySuccessAndRefusal:true,modes:true,phaseTabsKeyboard:true,options:true,nightScroll:true,reveal:true});
+    // A partitura fica desenhada mesmo fora da tela e depois de recarregar (canvas vazio reprova).
+    await page.waitForTimeout(300);
+    const pintado=await page.evaluate(()=>{const c=document.querySelector('[data-partitura]');const d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=3;i<d.length;i+=4)if(d[i])n++;return n;});
+    if(pintado<1000)throw Error('Score canvas blank '+onde);
+    Object.assign(r,{reducedMotion:true,copySuccessAndRefusal:true,modes:true,phaseTabsKeyboard:true,options:true,nightScroll:true,reveal:true,scorePainted:true});
    }
    const shot=`${locale}-${path==='/'?'home':path.slice(1,-1).replaceAll('/','-')}-${width}.png`;
    // Página inteira a partir do topo: o link de pular é fixo e apareceria no meio da imagem.
-   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+   await page.evaluate(()=>{window.scrollTo({top:0,behavior:'instant'});document.activeElement?.blur();});
    await page.screenshot({path:resolve(output,shot),fullPage:true});
    if(errors.length)throw Error(errors.join('; '));
    results.push({...r,screenshot:shot});await page.close();

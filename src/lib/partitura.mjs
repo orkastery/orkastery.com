@@ -16,15 +16,15 @@ export function iniciarPartitura(canvas, {nomes, etiqueta, reduzir, densidade = 
  const ctx = canvas.getContext('2d');
  if (!ctx) return {parar() {}, retomar() {}, encerrar() {}};
  let w = 0, h = 0, last = 0, lastCount = -1000, raf = 0, ro = null, vivo = {run: -1, wait: -1, ok: -1}, parado = false, pedirParada = false;
- // Mudar o tamanho do canvas apaga o quadro: parado (fora da tela), ele é redesenhado na hora.
+ // Mudar o tamanho do canvas apaga o quadro: ele é repintado na hora, parado ou não (sem abrir outro laço).
  const size = () => {
   const d = Math.min(window.devicePixelRatio || 1, 2);
   w = canvas.clientWidth; h = canvas.clientHeight; canvas.width = Math.round(w * d); canvas.height = Math.round(h * d); ctx.setTransform(d, 0, 0, d, 0, 0);
-  if (parado && notes.length) draw(last);
+  if (notes.length) pintar(last);
  };
  const mk = () => ({x: Math.random() * 0.92, v: 0.008 + Math.random() * 0.016, hold: 0, brass: Math.random() < 0.22, flash: 0});
  let notes = [];
- const draw = (t) => {
+ const pintar = (t) => {
   const N = Math.max(4, Math.min(40, densidade));
   const speed = tempo;
   while (notes.length < N) notes.push(mk());
@@ -85,22 +85,25 @@ export function iniciarPartitura(canvas, {nomes, etiqueta, reduzir, densidade = 
    lastCount = t;
    if (vivo.run !== run || vivo.wait !== wait || vivo.ok !== ok) { vivo = {run, wait, ok}; aoContar?.(vivo); }
   }
-  // A pausa só vale depois de um quadro desenhado: fora da tela desde o início, o canvas ainda
-  // mostra as notas onde nasceram, como no design.
+ };
+ // A pausa só vale depois de um quadro desenhado: fora da tela desde o início, o canvas ainda
+ // mostra as notas onde nasceram, como no design.
+ const quadro = (t) => {
+  pintar(t);
   if (pedirParada) { parado = true; pedirParada = false; return; }
-  if (!parado) raf = requestAnimationFrame(draw);
+  if (!parado) raf = requestAnimationFrame(quadro);
  };
  const comecar = () => {
   if (!canvas.clientWidth) { raf = requestAnimationFrame(comecar); return; }
   size(); ro = new ResizeObserver(size); ro.observe(canvas);
-  raf = requestAnimationFrame(draw);
+  raf = requestAnimationFrame(quadro);
  };
  comecar();
  // Fora da tela o quadro não é redesenhado (economia de CPU); ao voltar, o intervalo é limitado
  // a 50 ms pelo próprio desenho, como no design.
  return {
   parar() { if (parado) return; if (notes.length) { parado = true; cancelAnimationFrame(raf); } else pedirParada = true; },
-  retomar() { pedirParada = false; if (parado) { parado = false; last = 0; cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); } },
+  retomar() { pedirParada = false; if (parado) { parado = false; last = 0; cancelAnimationFrame(raf); raf = requestAnimationFrame(quadro); } },
   encerrar() { cancelAnimationFrame(raf); ro?.disconnect(); }
  };
 }
