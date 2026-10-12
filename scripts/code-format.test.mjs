@@ -166,8 +166,30 @@ test('three-level ork commands, git rm with a path and node with an ork subcomma
 
 test('an ork subcommand quoted without ork fails the code audit, in prose of any language',()=>{
  assert.deepEqual(violations('<p>O lint avisa em claims add e ci prepare recusa.</p>'),['ork? claims add','ork? ci prepare']);
- assert.deepEqual(violations('<p>Then phase run dispatches; thread status shows it.</p>'),['ork? phase run','ork? thread status']);
+ assert.deepEqual(violations('<p>Then retry run dispatches; ship registrar-pr records it.</p>'),['ork? retry run','ork? ship registrar-pr']);
+ assert.deepEqual(violations('<p>Then retry  run, again.</p>'),['ork? retry  run']);
+ // Par que uma frase comum forma fica de fora; letra colada antes ou depois não é o comando.
+ assert.deepEqual(violations('<p>Check the thread status. Antes de a thread entrar no GO. Each phase run, the memory search, a lease release, la worktree status.</p>'),[]);
+ assert.deepEqual(violations('<p>xclaims add, claims addx, ci preparex.</p>'),[]);
  assert.deepEqual(violations('<p>'+technicalHtml('O lint avisa em ork claims add e ork ci prepare recusa.')+'</p>'),[]);
  assert.deepEqual(violations('<p>a thread nova, o status da thread e o pacote de contexto</p>'),[]);
  assert.deepEqual(violations('<p>ork <em>claims</em> add</p>'),['ork claims']);
+});
+
+test('a command split between code and prose fails the code audit',()=>{
+ assert.deepEqual(violations('<p>Use <code>ork claims</code> add.</p>'),['partido: ork claims + add']);
+ assert.deepEqual(violations('<p>Rode <code>ork docs sincronizar --escrever --so</code> RM-NNN.</p>'),['partido: ork docs sincronizar --escrever --so + RM-NNN']);
+ assert.deepEqual(violations('<p>Rode node <code>--test</code> no arquivo.</p>'),['partido: node + --test']);
+ assert.deepEqual(violations('<p>Use <span class="code-unit">(<code>ork claims</code></span> add).</p>'),['partido: ork claims + add']);
+ assert.deepEqual(violations('<p>Use <code>ork claims add</code> agora e <code>ork verify</code> depois.</p>'),[]);
+ assert.deepEqual(violations('<p>e '+technicalHtml('ork ship')+' entrega essa branch</p>'),[]);
+ assert.deepEqual(violations('<p>'+technicalHtml('Rode node --test no arquivo e ork docs sincronizar --escrever --so RM-NNN.')+'</p>'),[]);
+});
+
+test('identifiers from the review stay whole, and prose abbreviations stay prose for the auditor',()=>{
+ for(const token of ['ork thread entrega <id>','ork setup sandbox revogar','ork setup worktree revogar','ork master digest preview','ork sessions logs <id>','ork roadmap pegar RM-031','ork docs sincronizar --escrever --so RM-NNN','node --test','node --test-reporter=tap scripts/x.test.mjs','.orkastery/','$HOME','PATH','LANG','/orkastery:goal','$ork','runtime_profile_x()']){
+  assert.equal(technicalHtml(token),`<code>${token.replace('<','&lt;').replace('>','&gt;')}</code>`,token);
+ }
+ assert.equal(technicalHtml('e ork ship entrega essa branch'),'e <code>ork ship</code> entrega essa branch');
+ for(const text of ['Use a short name, e.g. demo','that is, i.e. now']){assert.equal(technicalHtml(text),text);assert.ok(violations(`<p>${text}</p>`).length,text);}
 });

@@ -68,8 +68,9 @@ export function validate(dir=root,{schemaOnly=false,section,source}={}) {
    if(ids && JSON.stringify(ids)!==JSON.stringify(current)) throw Error('section parity');
    ids=current;
    for(const s of t.sections) if(!s.title?.trim() || !s.paragraphs?.length || s.paragraphs.some(x=>typeof x!=='string'||!x.trim())) throw Error('empty section');
-   for(const s of t.sections) if(s.highlight && (!s.highlight.title?.trim() || !s.highlight.paragraphs?.length || [...s.highlight.paragraphs,...(s.highlight.items||[])].some(x=>typeof x!=='string'||!x.trim()))) throw Error('empty highlight');
-   const marks=t.sections.map(s=>Boolean(s.highlight));
+   for(const s of t.sections) if(s.highlight && (!s.highlight.title?.trim() || !s.highlight.paragraphs?.length || [...s.highlight.paragraphs,...(s.highlight.items||[])].some(x=>typeof x!=='string'||!x.trim()) || (s.highlight.links||[]).some(l=>typeof l?.label!=='string'||!l.label.trim()||typeof l?.href!=='string'||!l.href.trim()))) throw Error('empty highlight');
+   // Paridade: o destaque está na mesma seção nas três línguas, com o mesmo número de itens e de links.
+   const marks=t.sections.map(s=>s.highlight?[(s.highlight.items||[]).length,(s.highlight.links||[]).length]:null);
    if(highlights && JSON.stringify(highlights)!==JSON.stringify(marks)) throw Error('highlight parity');
    highlights=marks;
    if(!schemaOnly && selected.includes(a)) {

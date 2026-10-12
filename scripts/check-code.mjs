@@ -11,10 +11,35 @@ export const proseExceptions = [
 ];
 const exceptions=new Set(proseExceptions);
 // Subcomando do ork citado sem o ork: o comando é "ork claims add", nunca "claims add".
-// Lista fechada de verbos e subcomandos reais da referência do CLI; o par com o ork antes é outra regra.
-const bareVerbs='accounts|adapter|audit|board|brain|ci|claims|conducao|decisao|docs|doctor|experiencia|fabrica|gate|grafo|handoff|lease|ledger|master|memory|network|onboarding|phase|portfolio|prompt|pulse|retry|roadmap|sessions|setup|ship|thread|worktree';
-const bareSubcommands='add|acquire|adopt|approve|assumir|conferir|confirmar|context|dossie|ensure|entrar|esgotamentos|export|indexar|install|new|pedir|placar|prepare|publicar|registrar-pr|registrar|release|retirar|run|sair|search|sincronizar|status|verificar';
-export const bareCommand=new RegExp(`(?<![\\p{L}\\d_./@-])(?<!ork\\s)(?:${bareVerbs}) (?:${bareSubcommands})(?![\\p{L}\\d_-])`,'gu');
+// Lista fechada de pares que não são prosa em nenhuma das três línguas. Ficam de fora os que
+// uma frase comum forma ("the thread status", "each phase run", "the memory search", "a thread
+// entrar"): esses ficam com a revisão editorial, e o par com o ork antes é outra regra.
+export const bareCommandPairs=['claims add','claims conferir','claims retirar','ci prepare','ci run','ci status','ship registrar-pr','decisao registrar','decisao placar','docs sincronizar','docs verificar','adapter install','network entrar','network sair','network publicar','fabrica entrar','fabrica publicar','grafo indexar','master pedir','brain context','brain dossie','retry run','projetos registrar','projetos esquecer','sessions limpar-fantasmas','accounts esgotamentos','roadmap reservas','worktree ensure','lease acquire','setup sandbox','setup worktree'];
+export const bareCommand=new RegExp(`(?<![\\p{L}\\d_./@-])(?<!ork\\s)(?:${bareCommandPairs.map(p=>p.replace(' ','\\s+')).join('|')})(?![\\p{L}\\d_-])`,'gu');
+// Comando partido: o código termina antes do comando acabar e o resto ficou na prosa
+// (<code>ork claims</code> add, <code>ork docs sincronizar --so</code> RM-NNN, node <code>--test</code>).
+const restOfCommand=/^\s+(?:add|conferir|retirar|prepare|run|status|registrar-pr|registrar|placar|sincronizar|verificar|install|entrar|sair|publicar|indexar|pedir|context|dossie|esquecer|limpar-fantasmas|esgotamentos|reservas|ensure|acquire|release|list|new|show|revogar|confirmar)(?![\p{L}\d_-])/u;
+const valueAfterFlag=/^\s+(?:RM-[\dN]+|C\d+|T\d|<[^<>]+>|ork-[a-z])/;
+const isUnitNode=n=>n?.tagName==='span'&&(attrs(n).class||'').split(/\s+/).includes('code-unit');
+const textOf=n=>!n?'':n.nodeName==='#text'?n.value:content(n);
+export function splitCommands(html) {
+ const dom=typeof html==='string'?parse(html):html,found=[];
+ const visit=node=>{
+  const kids=node.childNodes||[];
+  kids.forEach((child,i)=>{
+   if(child.tagName==='code'){
+    const code=content(child).trim();
+    let after=textOf(kids[i+1]),before=textOf(kids[i-1]);
+    if(i===kids.length-1&&isUnitNode(node)){const up=node.parentNode?.childNodes||[];after=textOf(up[up.indexOf(node)+1]);}
+    if(i===0&&isUnitNode(node)){const up=node.parentNode?.childNodes||[];before=textOf(up[up.indexOf(node)-1]);}
+    if(/^ork(?:\s+[a-z][\w-]*){1,2}$/.test(code)&&restOfCommand.test(after))found.push(`partido: ${code} + ${after.trim().split(/\s+/)[0].replace(/[.,;:)]+$/,'')}`);
+    else if(/^ork\s.*\s--[a-z][\w-]*$/.test(code)&&valueAfterFlag.test(after))found.push(`partido: ${code} + ${after.trim().split(/\s+/)[0].replace(/[.,;:)]+$/,'')}`);
+    if(/^--/.test(code)&&/\bnode\s+$/.test(before))found.push(`partido: node + ${code}`);
+   }else if(!excluded.has(child.tagName))visit(child);
+  });
+ };
+ visit(dom);return found;
+}
 const blocks=new Set(['address','article','aside','blockquote','br','div','dl','dt','dd','figcaption','figure','footer','h1','h2','h3','h4','h5','h6','header','hr','li','main','nav','ol','p','section','svg','text','tspan','table','td','th','tr','ul']);
 const excluded=new Set(['head','script','style','template','code','pre']);
 // Keep hidden panels/details: they can become visible on interaction. aria-hidden is
@@ -27,7 +52,7 @@ export function prose(node) {
  return blocks.has(node.tagName)?'\u0000'+value+'\u0000':value;
 }
 export function violations(html) {
- const text=prose(typeof html==='string'?parse(html):html),found=[];
+ const dom=typeof html==='string'?parse(html):html,text=prose(dom),found=[...splitCommands(dom)];
  // Preserve the inline-code boundary: an executable left in prose is still
  // unformatted even when its subcommand is inside code (possibly nested).
  for(const m of text.matchAll(/\b(?:ork|npm|npx|git|pip3?)\s*(?=\u0001)/g))found.push(m[0].trim());

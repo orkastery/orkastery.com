@@ -2,15 +2,16 @@
 // The independent HTML auditor in scripts/check-code.mjs checks the rendered result.
 import {parseFragment, serialize} from 'parse5';
 
-const verbs = 'accounts|activation|adapter|audit|board|fix|brain|ci|ciclos|claims|collections|conducao|creation|decisao|demo|docs|doctor|eval|experiencia|fabrica|gate|grafo|handoff|init|lease|ledger|licoes|maestro|master|mcp|memory|modos|monitor|network|objective|onboarding|orquestracao|phase|portfolio|projetos|prompt|pulse|recall|receipt-verifiers|retry|roadmap|sessions|setup|ship|thread|verify|worktree';
+const verbs = 'thread entrega|accounts|activation|adapter|audit|board|fix|brain|ci|ciclos|claims|collections|conducao|creation|decisao|demo|docs|doctor|eval|experiencia|fabrica|gate|grafo|handoff|init|lease|ledger|licoes|maestro|master|mcp|memory|modos|monitor|network|objective|onboarding|orquestracao|phase|portfolio|projetos|prompt|pulse|recall|receipt-verifiers|retry|roadmap|sessions|setup|ship|thread|verify|worktree';
 // Os de tres palavras sao so os que a referencia do CLI tem; um segundo nivel generico engoliria a prosa (show, run, list).
-const subcommands = 'sandbox confirmar|worktree confirmar|digest enviar|digest responder|finding add|finding estado|context|contexto|dossie|sincronizar|verificar|show|indexar|roadmap|lint|policy|feat|hitl|limpar-fantasmas|limpar|registrar-pr|registrar|esquecer|esgotamentos|acquire|add|adopt|amostra|answer|apply|approve|bind|rollback|assumir|attach|audit|batch|build|cadencia|caminho|cancel|chamadores|check|classic|close|conferir|config|confirmar|create|deny|digest|divida|enable|entrar|ensure|estimate|export|gc|get|import|importadores|index|ingest|init|inspect|install|inventory|join|leave|list|migrar|migrate|new|next|open|packs|pedir|placar|plan|prepare|process|propor|publicar|query|ratificar|recall|reconcile|reindex|release|remove|render|report|request|reservas|reset|responder|resume|retirar|reverify|review|revogar|run|sair|sandbox|search|serve|set|soltar|start|stats|status|stop|supersede|sync|uninstall|validate|verify|versionar|view|vizinhos|warmup|watch|worktree';
-const argument = String.raw`(?:<[^<>\n]+>|--[a-z][\w-]*(?:=[\w./:-]+)?|@orkastery/[\w.-]+(?:@[\w.-]+)?|\d+(?:[dhm])?|auto|classic|codex|claude-bg|claude-code|hermes|openclaw|maestro|GOAL|PLAN|GO|CHECK|SHIP|MASTER|N|danger-full-access|workspace-write|read-only|C\d+(?:,C\d+)*|T\d+(?:\.\d+)*|RM-\d+|ork-[a-z0-9]+(?:-[a-z0-9]+)*)`;
+const subcommands = 'sandbox confirmar|sandbox revogar|worktree confirmar|worktree revogar|digest enviar|digest responder|digest preview|finding add|finding estado|ausente|logs|pegar|context|contexto|dossie|sincronizar|verificar|show|indexar|roadmap|lint|policy|feat|hitl|limpar-fantasmas|limpar|registrar-pr|registrar|esquecer|esgotamentos|acquire|add|adopt|amostra|answer|apply|approve|bind|rollback|assumir|attach|audit|batch|build|cadencia|caminho|cancel|chamadores|check|classic|close|conferir|config|confirmar|create|deny|digest|divida|enable|entrar|ensure|estimate|export|gc|get|import|importadores|index|ingest|init|inspect|install|inventory|join|leave|list|migrar|migrate|new|next|open|packs|pedir|placar|plan|prepare|process|propor|publicar|query|ratificar|recall|reconcile|reindex|release|remove|render|report|request|reservas|reset|responder|resume|retirar|reverify|review|revogar|run|sair|sandbox|search|serve|set|soltar|start|stats|status|stop|supersede|sync|uninstall|validate|verify|versionar|view|vizinhos|warmup|watch|worktree';
+const argument = String.raw`(?:<[^<>\n]+>|--[a-z][\w-]*(?:=[\w./:-]+)?|@orkastery/[\w.-]+(?:@[\w.-]+)?|\d+(?:[dhm])?|auto|classic|codex|claude-bg|claude-code|hermes|openclaw|maestro|GOAL|PLAN|GO|CHECK|SHIP|MASTER|N|danger-full-access|workspace-write|read-only|C\d+(?:,C\d+)*|T\d+(?:\.\d+)*|RM-(?:\d+|N+)|ork-[a-z0-9]+(?:-[a-z0-9]+)*)`;
 const patterns = [
   new RegExp(String.raw`\bork\s+(?:${verbs})(?:\s+(?:${subcommands}))?(?:\s+${argument})*(?![\w-])`, 'g'),
   /\b(?:npm|npx)\s+(?:(?:--prefix\s+\w+\s+)?(?:run\s+[\w:-]+|install(?:\s+-g)?(?:\s+@[\w/-]+)?|view\s+@[\w/-]+(?:\s+version)?|test|ci)|@[\w/-]+)(?:\s+--[\w-]+)*/g,
   /\bnode\s+[\w./-]+\.(?:[cm]?js|ts)(?:\s+(?:ci|prepare|eval|docs|verificar|sincronizar|origin\/main|--[a-z][\w-]*|<[^<>]+>))*/g,
-  /\.(?:git|env|gitignore|orkastery|agents|claude|codex)\b/g,
+  /\bnode\s+--test(?:-[a-z][\w-]*(?:=[\w-]+)?)?(?:\s+--test-[a-z][\w-]*(?:=[\w-]+)?)*(?:\s+[\w./*-]+\.(?:[cm]?js|ts))?/g,
+  /\.(?:git|env|gitignore|orkastery|agents|claude|codex)\b\/?/g,
   /\b(?:git\s+(?:ls-remote|rebase|remote(?:\s+(?:-v|add|remove|rename|set-url|get-url))?|status|diff|log|clone|fetch|pull|push|commit|checkout|switch|rm(?:\s+-r)?(?:\s+--cached)?)|pip3?\s+install)(?:\s+(?:<[^<>]+>|\.[\w.\/-]+|[\w-]+\/[\w.\/-]*))?/g,
   /(?<![\w-])--[a-z][\w-]*(?:[= ](?:<[^<>]+>|auto|block|true|false))?/g,
   /(?:~\/|\.{1,2}\/|\b(?:docs|core|src|scripts|maquinas|threads|skills|adapters|marketplaces|prompts)\/|\.orkastery\/|\bork\/)(?:[\w.@*{}-]+|<[^<>]+>|\/)+/g,
@@ -19,14 +20,16 @@ const patterns = [
   /\b(?!Node\.js\b)[\w.-]+\.(?:jsonl?|ya?ml|md|ts|mjs|cjs|js|py|toml|sh|svg|woff2|html|css)\b/g,
   // Variavel de ambiente inteira: com o $ da expansao, a atribuicao colada (=1) e o caminho que segue.
   /(?:\$|\b)(?:[A-Z][A-Z0-9]*_)+[A-Z0-9_]+\b(?:=[\w.:-]+)?(?:\/[\w.@*-]+)*/g,
+  /\$[A-Z][A-Z0-9]*\b(?:\/[\w.@*-]+)*|\b(?:PATH|HOME|LANG|TMPDIR|PWD)\b(?:=[\w.:-]+)?/g,
   // snake_case e camelCase levam a chamada vazia junto: semPostgres(), e nao semPostgres e ().
   /\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b(?:\(\))?/g,
   /\b[a-z][a-z0-9]*(?:[A-Z][a-z0-9]+)+\b(?:\(\))?/g,
   /\b(?:ork|orkastery|claims|verify|artifact|tree|lease|runtime|policy|human|cost|project|projeto|conduction|worktree|memory|remoto|roadmap|board|ship|retry|prompt|capabilities|snapshot|doc|docs|onboarding|network|fabrica|gate|maestro|ci|providers|skills|security|performance|browser|git)(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b/g,
   /(?<![\w@])(?:orkmind|owner|grafo|hitl|init|rede|master|brain|alternativas|resposta|maquina|citacao|concurrency|changelog)(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b/g,
   // Todo identificador minusculo com ponto e codigo, como o auditor exige (prs.sem-leitura,
-  // estado.link, runtime_profiles.distribuir); os dois dominios publicos de contato seguem prosa.
-  /(?<![\w@./-])(?!(?:orkastery|orkmind)\.com\b)[a-z][a-z0-9]*(?:[_-][a-z0-9]+)*(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b/g,
+  // estado.link, runtime_profiles.distribuir). Esta regra geral deixa de fora os dois dominios de contato
+  // (as listas acima ainda os formatam) e as abreviaturas de prosa, que o auditor reprova.
+  /(?<![\w@./-])(?!(?:orkastery|orkmind)\.com\b|(?:e\.g|i\.e|p\.ex|a\.k\.a|vs|etc)\b)[a-z][a-z0-9]*(?:[_-][a-z0-9]+)*(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b/g,
   /(?:<[^<>\n]+>\/|\/[a-z][\w-]*\/|\.[a-z][\w-]*\/|\b(?:origin|tools|plugins|pgvector)\/)(?:[\w@*-]+|<[^<>]+>|\/|\.[\w-]+)+(?:[:][\w.-]+)?/g,
   /@[a-z][\w-]*\/[\w.-]+(?:@[\w.-]+)?/g,
   /(?<![\w-])-[gvCh](?![\w-])/g,
@@ -41,6 +44,7 @@ const patterns = [
   // Posturas do runtime.sandbox citadas como valor.
   /\b(?:danger-full-access|workspace-write)\b/g,
   /(?<![\w/.:-])\/(?:torre|clima|freio|radar|mesa|sentinela|pista|ritual|mensageiro|portao|goal|plan|go|check|ship|master|onboarding)(?![\w/-])/g,
+  /(?<![\w/.:-])\/orkastery:[a-z][\w-]*|(?<![\w$])\$ork\b/g,
 ];
 
 export function technicalParts(text) {

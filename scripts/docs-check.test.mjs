@@ -28,6 +28,13 @@ test('a highlight must exist in every language and have text',()=>fixture(({root
  assert.equal(validate(root,{schemaOnly:true}).articles,1);
  article.translations.es.sections[0].highlight.paragraphs=[' '];save();
  assert.throws(()=>validate(root,{schemaOnly:true}),/empty highlight/);
+ article.translations.es.sections[0].highlight.paragraphs=['es text'];article.translations.es.sections[0].highlight.links=[{label:'',href:'/docs/start/'}];save();
+ assert.throws(()=>validate(root,{schemaOnly:true}),/empty highlight/);
+ for(const locale of ['pt','en'])article.translations[locale].sections[0].highlight.links=[{label:locale,href:'/docs/start/'}];
+ article.translations.es.sections[0].highlight.links=[{label:'es',href:'/docs/start/'}];save();
+ assert.equal(validate(root,{schemaOnly:true}).articles,1);
+ article.translations.en.sections[0].highlight.items=['one more item in English only'];save();
+ assert.throws(()=>validate(root,{schemaOnly:true}),/highlight parity/);
 }));
 test('source revision invalidates all affected translations',()=>fixture(({root,snapshot,save})=>{snapshot.sources[0].sha256=hash('changed');snapshot.inventoryHash=hash(JSON.stringify(snapshot.sources));save();assert.throws(()=>validate(root),/stale/);}));
 test('snapshot corruption is detected',()=>fixture(({root,snapshot,save})=>{snapshot.sources[0].sha256='invalid';save();assert.throws(()=>validate(root),/integrity/);}));
