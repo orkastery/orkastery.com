@@ -28,5 +28,23 @@
     "public/marca/templates/github-banner-1280x640.png": "47974e09ff3e5274de39df121f87af84d78358fe64950c2f0ed5c1ef87af85fd",
     "public/marca/templates/og-1200x630.png": "6400d1a410083fb0bf53aafc3ba4c034fd9cc16b9ccf2d66d65ff5706433edc8",
     "public/marca/templates/social-1080x1080.png": "acb3fba21598aef30ba09f5a4b96b9970e47a3dd6e40ad081515ba386074ffd1"
+  },
+  "derivados": {
+    "descricao": "PDFs gerados por scripts/documentos-da-marca.mjs a partir dos documentos do kit.",
+    "public/marca/documentos/manual-de-marca.pdf": {
+      "de": "Manual de Marca-print.dc.html",
+      "origemSha256": "7896f888cd49f08461c49b26e0397e6f21ef6ab63d7fd2edc596ca3cc5532a20",
+      "sha256": "0560721749cf70fec5e6960a27385ad911a3a433b9f47162039dd21f935e2397"
+    },
+    "public/marca/documentos/diretrizes-rapidas.pdf": {
+      "de": "Diretrizes Rapidas.dc.html",
+      "origemSha256": "dc5100df6930618dadf72318785fefb93afcc2dd248d3146822b6c71f55c930f",
+      "sha256": "66b9bef79569f1723bbf6d7f1f6544daff585360b0e018c291dc2ab18cc18ed3"
+    },
+    "public/marca/documentos/partitura-componentes.pdf": {
+      "de": "Partitura Componentes.dc.html",
+      "origemSha256": "d1ceedb17ef7fedae24f20bb8aecc248ac2e49fb338772d774002e6bb76fd02b",
+      "sha256": "22436ce58bb4293cb455c6df1f8bc43dc4a326968fe908528a2cc6c25d4a2f48"
+    }
   }
 }

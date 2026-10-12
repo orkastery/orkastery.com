@@ -14,7 +14,7 @@ import {pathToFileURL} from 'node:url';
 
 const opcao=(k,padrao)=>process.argv.includes(k)?process.argv[process.argv.indexOf(k)+1].split(','):padrao;
 // --linguas, --larguras e --rotas recortam a matriz (para canário e depuração); --dist troca a build.
-const locales=opcao('--linguas',['pt','en']),widths=opcao('--larguras',['1440','768','390','320']).map(Number),routes=opcao('--rotas',['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/claude-code/']);
+const locales=opcao('--linguas',['pt','en']),widths=opcao('--larguras',['1440','768','390','320']).map(Number),routes=opcao('--rotas',['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/claude-code/','/marca/']);
 const checks=['skipLink','languageKeyboard','focusRing','focusRingNotClipped','focusNotUnderHeader','textContrast','textInsideBox','overflow','inlineCodeWhole','inlineCodeScrollsOnlyIfWider','adjacentTextWithCode','codeInsideBlock','touchTarget','brassOnlyWhereAllowed','mobileMenu','boardCards','copySuccessAndRefusal','modes','phaseTabsKeyboard','options','nightScroll','reveal','kitMotionOnly','pauseMotion','reducedMotion','reducedMotionCanvasAndClock','scorePainted'];
 const args=process.argv.slice(2);
 if(args.includes('--plan')){console.log(JSON.stringify({locales,widths,routes,checks,screenshots:locales.length*widths.length*routes.length,network:'blocked',requires:['PLAYWRIGHT_MODULE','CHROMIUM_EXECUTABLE','--output']},null,2));process.exit(0);}
