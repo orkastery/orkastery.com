@@ -39,7 +39,7 @@ export default [
             "title": "Isolamento e decisões",
             "paragraphs": [
               "A worktree separa o código de uma thread. Leases coordenam recursos que podem colidir, como caminhos de edição e a árvore de destino do merge. Paralelismo não elimina a necessidade de serializar a entrega.",
-              "O modo controla pausas previstas. Policies block, falhas de verificação e escalações tipadas continuam valendo. Memória oferece contexto; não concede autorização."
+              "O modo define os pontos de HITL previstos. Policies block, falhas de verificação e escalações tipadas continuam valendo. Memória oferece contexto; não concede autorização."
             ]
           },
           {
@@ -72,7 +72,9 @@ export default [
             "title": "Incremental e consumo pelas fases: KG4 e KG5",
             "paragraphs": [
               "O KG4 constrói o índice de uma revisão a partir do índice ancestral e reextrai só o que a mudança alcança, com os mesmos bytes da extração completa; --verificar compara as duas. O KG5 expõe as consultas no MCP do projeto: as tools ork_grafo_* rodam o ork grafo na worktree da thread, num processo filho com prazo e cancelamento, e a resposta tem teto em bytes. O servidor MCP não carrega o grafo.",
-              "O consumo fica atrás da flag grafo.mcp do orkastery.yaml, desligada por padrão; sem ela, o MCP lista as mesmas tools de antes. As tools precisam dos analisadores, o typescript e o micromark, que desde a correção de empacotamento da RM-031 são dependências do pacote, com versão exata: o npm install -g os traz. Instalado dentro de um projeto ou pelo npx, o ork fica sem eles, e a recusa é grafo.parser.indisponivel, com a correção no ork grafo status e no ork doctor. O grafo pede Node 20.19, 22.12 ou mais novo. O pacote de contexto da thread, a federação (KG6), a paridade entre hosts (KG7) e a rodada medida do benchmark ainda não existem: o protocolo está fixado, sem medida de economia."
+              "O consumo fica atrás da flag grafo.mcp do orkastery.yaml, desligada por padrão; sem ela, o MCP lista as mesmas tools de antes. As tools precisam dos analisadores, o typescript e o micromark, que desde a correção de empacotamento da RM-031 são dependências do pacote, com versão exata: o npm install -g os traz. Instalado dentro de um projeto ou pelo npx, o ork fica sem eles, e a recusa é grafo.parser.indisponivel, com a correção no ork grafo status e no ork doctor. O grafo pede Node 20.19, 22.12 ou mais novo.",
+              "O pacote de contexto da thread já existe: ork grafo contexto <thread> e a tool ork_grafo_contexto entregam o JSON ork.thread-graph-context/v2, com as sementes do diff da worktree, do GOAL, do PLAN e das claims, a vizinhança de um salto ordenada por relevância e teto de 32.768 bytes por padrão; com a flag ligada, o pedido da fase ganha uma dica curta. Na versão {versao}, o índice ganha arestas cites, de caminhos citados literalmente em Markdown e em strings de testes e scripts para arquivos do índice, e o pacote usa a sobra do teto para vizinhos a dois saltos, marcados com salto: 2. Um índice gravado antes das citações pede ork grafo indexar. Numa fixture sintética, o pacote caiu de 22.973 para 3.119 bytes, e dá 3.137 com o segundo salto; em dois casos reais, a cobertura do pacote subiu de 23% para 69% e de 41% para 65%, com precisão menor e o pacote quase dobrando. Nada disso demonstra economia de tokens.",
+              "Também na versão {versao}, a proveniência é conferida contra a árvore da thread: as consultas por nó (vizinhos, chamadores, importadores e caminho, no ork grafo com --json e nas tools ork_grafo_*) trazem as fontes, com o sha256 e o blob do Git de cada arquivo citado e a situação dele na árvore (igual, modificada ou ausente), e cada aresta diz se a origem, o alvo ou uma das evidências mudou depois do HEAD. No pacote de contexto, só o grupo de fonte mudada ganha essa marca, e, com a árvore limpa, o pacote sai byte a byte igual ao de antes. A árvore só é lida quando o git status diz que ela mudou, e nenhum índice precisa ser refeito por isso. No mesmo índice, a resposta sem corte cresce de 15% a 29% em bytes, e a cortada pelo teto traz 34 arestas em vez de 41. A federação (KG6), a paridade entre hosts (KG7) e a rodada paga do benchmark ainda não existem."
             ],
             "code": "grafo:\n  mcp: true"
           }
@@ -103,7 +105,7 @@ export default [
             "title": "Isolation and decisions",
             "paragraphs": [
               "A worktree separates a thread’s code. Leases coordinate resources that could collide, such as edited paths and the merge destination tree. Parallel work still requires serialized delivery.",
-              "The mode controls scheduled pauses. Blocking policies, verification failures and typed escalations still apply. Memory provides context; it does not grant authorization."
+              "The mode sets the scheduled HITL points. Blocking policies, verification failures and typed escalations still apply. Memory provides context; it does not grant authorization."
             ]
           },
           {
@@ -136,71 +138,9 @@ export default [
             "title": "Incremental index and phase consumption: KG4 and KG5",
             "paragraphs": [
               "KG4 builds a revision’s index from the ancestor index and re-extracts only what the change reaches, with the same bytes as a full extraction; --verificar compares both. KG5 exposes the queries in the project MCP server: the ork_grafo_* tools run ork grafo in the thread worktree, in a child process with a deadline and cancellation, and the answer has a byte cap. The MCP server does not load the graph.",
-              "Consumption sits behind the grafo.mcp flag in orkastery.yaml, off by default; without it, MCP lists the same tools as before. The tools need the analyzers, typescript and micromark, which have been package dependencies with exact versions since the RM-031 packaging fix: npm install -g brings them. Installed inside a project or through npx, ork goes without them, and the refusal is grafo.parser.indisponivel, with the fix in ork grafo status and ork doctor. The graph needs Node 20.19, 22.12 or later. The thread context package, federation (KG6), host parity (KG7) and the measured benchmark run do not exist yet: the protocol is fixed, with no savings measurement."
-            ],
-            "code": "grafo:\n  mcp: true"
-          }
-        ]
-      },
-      "es": {
-        "title": "Arquitectura de Orkastery",
-        "description": "Entienda quién presenta, quién ejecuta y quién verifica cada cambio.",
-        "sections": [
-          {
-            "id": "camadas",
-            "title": "Tres capas con responsabilidades explícitas",
-            "paragraphs": [
-              "El host recibe la petición y presenta las decisiones. El núcleo ork aplica contratos, registra el estado y comprueba las pruebas. El runtime escribe el producto. Su informe no sustituye la ejecución de los verificadores.",
-              "El núcleo es un CLI determinista. Los adaptadores conectan hosts y runtimes; las reglas de negocio permanecen en el núcleo para que una decisión conserve su significado entre canales. No hay LLM dentro del núcleo, ni servidor o base de datos obligatorios; las dependencias de runtime son pocas y tienen versión fija."
-            ]
-          },
-          {
-            "id": "estado",
-            "title": "Estado y procedencia",
-            "paragraphs": [
-              "El manifiesto orkastery.yaml define el proyecto. Cada thread tiene estado, ledger, claims y prompts con hash en .orkastery. Consulte esos datos mediante los comandos del núcleo. Una conversación puede explicar el estado, pero no es su fuente de verdad."
-            ],
-            "code": "ork thread status <thread>\nork phase list <thread>\nork claims list <thread>"
-          },
-          {
-            "id": "isolamento",
-            "title": "Aislamiento y decisiones",
-            "paragraphs": [
-              "La worktree separa el código de una thread. Los leases coordinan recursos que pueden colisionar, como rutas de edición y el árbol de destino del merge. El trabajo paralelo sigue requiriendo una entrega serializada.",
-              "El modo controla las pausas previstas. Las políticas block, los fallos de verificación y los escalados tipados siguen vigentes. La memoria aporta contexto; no concede autorización."
-            ]
-          },
-          {
-            "id": "metricas",
-            "title": "Dos medidas con propósitos distintos",
-            "paragraphs": [
-              "El índice de conducción deriva de los eventos del ledger y describe cómo se condujo el ciclo. La nota humana registra la valoración del dueño sobre el resultado. Sus fuentes son distintas: ninguna debe inventarse ni usarse como medida de la otra.",
-              "Una tasa de entregas requiere un intervalo, una población definida y registros de origen. Esta página no presenta una tasa sin esa medición."
-            ]
-          },
-          {
-            "id": "kg1",
-            "title": "Grafo determinista: el contrato KG1",
-            "paragraphs": [
-              "KG1 define ork.code-artifact-graph/v1 y ork.graph-benchmark/v1, con validación pura y corpus sintético. La misma entrada, configuración y versión del extractor producen las mismas identidades y contenido canónico. Cada relación exige pruebas localizables y conserva las restricciones de acceso de las fuentes.",
-              "El grafo es una proyección local descartable. KG1 ofrece el contrato, la validación pura y el corpus; la extracción es KG2, el índice con la consulta mediante ork grafo es KG3, el índice incremental es KG4 y el consumo por las fases es KG5. No modifica orkmind.company-brain/v1 ni sustituye el estado de Ork o el Company Brain. Ningún benchmark medido demuestra ahorro en esta etapa."
-            ]
-          },
-          {
-            "id": "kg2-kg3",
-            "title": "Extracción, índice y consulta: KG2 y KG3",
-            "paragraphs": [
-              "KG2 extrae de un repositorio Git local un grafo con el mismo contrato: TypeScript y JavaScript mediante el compilador, Markdown con secciones, enlaces, frontmatter e IDs citados, y la procedencia de cada arista. Una arista solo existe con prueba; lo que no se demuestra queda fuera y se declara como diagnóstico o como laguna del informe de extracción. La misma entrada produce el mismo grafo y el mismo digest en cualquier orden de lectura.",
-              "KG3 guarda ese grafo en un índice local del HEAD limpio, fuera de git, y lo consulta por vecindad, llamadores, importadores y camino. La misma pregunta produce la misma salida, cada arista incluye extractor y prueba, y la respuesta se declara parcial. Los registros fuera de la concesión local no aparecen en respuestas, recuentos ni candidatos."
-            ],
-            "code": "ork grafo indexar --verificar\nork grafo vizinhos <nodo> --json"
-          },
-          {
-            "id": "kg4-kg5",
-            "title": "Índice incremental y consumo por las fases: KG4 y KG5",
-            "paragraphs": [
-              "KG4 construye el índice de una revisión a partir del índice ancestro y reextrae solo lo que el cambio alcanza, con los mismos bytes de la extracción completa; --verificar compara ambas. KG5 expone las consultas en el MCP del proyecto: las tools ork_grafo_* ejecutan ork grafo en la worktree de la thread, en un proceso hijo con plazo y cancelación, y la respuesta tiene un tope en bytes. El servidor MCP no carga el grafo.",
-              "El consumo queda detrás del flag grafo.mcp de orkastery.yaml, apagado por defecto; sin él, MCP lista las mismas tools de antes. Las tools necesitan los analizadores, typescript y micromark, que desde la corrección de empaquetado de la RM-031 son dependencias del paquete, con versión exacta: npm install -g los trae. Instalado dentro de un proyecto o mediante npx, ork se queda sin ellos, y el rechazo es grafo.parser.indisponivel, con la corrección en ork grafo status y en ork doctor. El grafo pide Node 20.19, 22.12 o posterior. El paquete de contexto de la thread, la federación (KG6), la paridad entre hosts (KG7) y la ronda medida del benchmark aún no existen: el protocolo está fijado, sin medición de ahorro."
+              "Consumption sits behind the grafo.mcp flag in orkastery.yaml, off by default; without it, MCP lists the same tools as before. The tools need the analyzers, typescript and micromark, which have been package dependencies with exact versions since the RM-031 packaging fix: npm install -g brings them. Installed inside a project or through npx, ork goes without them, and the refusal is grafo.parser.indisponivel, with the fix in ork grafo status and ork doctor. The graph needs Node 20.19, 22.12 or later.",
+              "The context package for a thread now exists: ork grafo contexto <thread> and the ork_grafo_contexto tool return the ork.thread-graph-context/v2 JSON, seeded from the worktree diff, GOAL, PLAN and claims, with a one-hop neighborhood ranked by relevance and a 32,768-byte cap by default; with the flag on, the phase request gets a short hint. In version {versao}, the index gains cites edges, from paths cited literally in Markdown and in test and script strings to files in the index, and the package spends what is left of the cap on neighbors two hops away, marked with salto: 2. An index written before the citations needs ork grafo indexar. On a synthetic fixture the package dropped from 22,973 to 3,119 bytes, and it is 3,137 with the second hop; on two real cases, the package’s coverage rose from 23% to 69% and from 41% to 65%, with lower precision and a package almost twice as large. None of this demonstrates token savings.",
+              "Also in version {versao}, provenance is checked against the thread’s tree: node queries (neighbors, callers, importers and path, in ork grafo with --json and in the ork_grafo_* tools) bring the sources, with the sha256 and Git blob of each cited file and its state in the tree (igual, modificada or ausente: unchanged, modified or missing), and each edge says whether its origin, its target or a piece of its evidence changed after HEAD. In the context package, only a group whose source changed gets that mark, and with a clean tree the package is byte for byte the same as before. The tree is read only when git status says it changed, and no index has to be rebuilt for this. On the same index, an uncut answer grows 15% to 29% in bytes, and the one cut by the cap returns 34 edges instead of 41. Federation (KG6), host parity (KG7) and the paid benchmark run do not exist yet."
             ],
             "code": "grafo:\n  mcp: true"
           }
@@ -269,34 +209,6 @@ export default [
             "title": "SHIP and MASTER: deliver and learn",
             "paragraphs": [
               "SHIP passes gates, serializes the merge and proves the push against the remote. A local commit is not a published delivery. MASTER records the postmortem, lessons and ledger-derived index; a later human score replaces the displayed index."
-            ]
-          }
-        ]
-      },
-      "es": {
-        "title": "El ciclo de una thread",
-        "description": "Del objetivo a la evaluación de la entrega, con límites claros entre fases.",
-        "sections": [
-          {
-            "id": "preparar",
-            "title": "GOAL y PLAN: defina el trabajo",
-            "paragraphs": [
-              "GOAL define un objetivo verificable, el impacto y los criterios de éxito. PLAN divide las tareas, registra decisiones y asocia rutas con comandos de verificación. Ninguna de estas fases implementa el producto."
-            ]
-          },
-          {
-            "id": "construir",
-            "title": "GO y CHECK: implemente y compruebe",
-            "paragraphs": [
-              "GO implementa en la worktree vinculada, con una baseline previa y commits pequeños. CHECK compara las pruebas con esa baseline y revisa corrección, seguridad, rendimiento, mantenibilidad y estilo. Los hallazgos que requieren código vuelven a GO.",
-              "La worktree del GO nace con la thread cuando orkastery.yaml tiene worktree.por_thread: true, lo que graba ork init. Con --sem-worktree, la thread corre en la raíz del proyecto, y en la rama base el SHIP queda bloqueado por la policy push_direto_na_base."
-            ]
-          },
-          {
-            "id": "entregar",
-            "title": "SHIP y MASTER: entregue y aprenda",
-            "paragraphs": [
-              "SHIP pasa por los gates, serializa el merge y demuestra el push en el remoto. Un commit local no es una entrega publicada. MASTER registra el postmortem, las lecciones y el índice derivado del ledger; una nota humana posterior sustituye el índice presentado."
             ]
           }
         ]

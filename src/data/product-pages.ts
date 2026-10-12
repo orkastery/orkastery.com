@@ -19,7 +19,7 @@ export default {
         {
           "id": "modos",
           "title": "Sua atenção, no ponto certo",
-          "text": "Escolha #Classic, #Maestro ou #Auto para o ciclo completo. #Fast atende ajustes pequenos dentro de seus limites. Os modos controlam pausas; permissões e provas continuam explícitas.",
+          "text": "Escolha #Classic, #Maestro ou #Auto para o ciclo completo. #Fast atende ajustes pequenos dentro de seus limites. O modo ajusta a autonomia; permissões e provas continuam explícitas.",
           "href": "/docs/modos/"
         },
         {
@@ -61,7 +61,7 @@ export default {
         {
           "id": "modos",
           "title": "Your attention, where it matters",
-          "text": "Choose #Classic, #Maestro or #Auto for the full cycle. #Fast handles small changes within its limits. Modes control pauses; permissions and evidence remain explicit.",
+          "text": "Choose #Classic, #Maestro or #Auto for the full cycle. #Fast handles small changes within its limits. The mode sets the autonomy; permissions and evidence remain explicit.",
           "href": "/docs/modos/"
         },
         {
@@ -80,48 +80,6 @@ export default {
           "id": "memoria",
           "title": "Context with provenance",
           "text": "OrkMind connects governed memory and Company Brain. Context informs decisions; it does not replace thread state or grant authorization.",
-          "href": "/docs/memoria/"
-        }
-      ]
-    },
-    "es": {
-      "title": "Ork, la fábrica que verifica su trabajo.",
-      "description": "Desarrollo de software con agentes, pruebas verificables y memoria gobernada.",
-      "lead": "Un núcleo determinista conecta peticiones, runtimes y pruebas. Conduzca cambios aislados en threads y siga cada decisión hasta la entrega.",
-      "mechanism": "Cómo se conectan las piezas",
-      "mechanismText": "El host presenta, el núcleo verifica y el runtime implementa. Conozca los límites antes de conducir el primer ciclo.",
-      "install": "Empiece por el entorno",
-      "installText": "Instale el CLI y compruebe los requisitos del proyecto. La documentación cubre configuración, fases y verificación.",
-      "command": "npm install -g @orkastery/cli\nork doctor",
-      "sections": [
-        {
-          "id": "metodo",
-          "title": "Un ciclo con responsabilidades claras",
-          "text": "Defina objetivo y plan, implemente en la worktree, compruebe las pruebas y entregue mediante el núcleo. Cada fase tiene un contrato; el resultado no depende de creer el informe del agente.",
-          "href": "/docs/ciclo/"
-        },
-        {
-          "id": "modos",
-          "title": "Su atención, donde importa",
-          "text": "Elija #Classic, #Maestro o #Auto para el ciclo completo. #Fast atiende ajustes pequeños dentro de sus límites. Los modos controlan pausas; los permisos y las pruebas siguen siendo explícitos.",
-          "href": "/docs/modos/"
-        },
-        {
-          "id": "decisoes",
-          "title": "Decisiones a la medida de un día lleno",
-          "text": "Quien conduce agentes también lleva decenas de otros frentes. Cada pregunta de ork llega breve y ordenada, con alternativas y una recomendación, para que usted decida en segundos. Esa ligereza es un objetivo de diseño, pensado también para personas con TDAH.",
-          "href": "/docs/hitl/"
-        },
-        {
-          "id": "evidencia",
-          "title": "Pruebas antes que confianza",
-          "text": "Las claims llevan comandos reproducibles. La baseline distingue fallos previos de regresiones. CHECK independiente y push demostrado separan implementación de entrega.",
-          "href": "/docs/verificacao/"
-        },
-        {
-          "id": "memoria",
-          "title": "Contexto con procedencia",
-          "text": "OrkMind conecta memoria gobernada y Company Brain. El contexto ayuda a decidir; no sustituye el estado de la thread ni concede autorización.",
           "href": "/docs/memoria/"
         }
       ]
@@ -196,42 +154,6 @@ export default {
           "id": "armazenamento",
           "title": "Durable history, bounded context",
           "text": "The native provider maintains Core, Recall and Wiki over PostgreSQL. The turn view is bounded; intact history remains available for retrieval and auditing.",
-          "href": "/docs/memory-provider/"
-        }
-      ]
-    },
-    "es": {
-      "title": "La memoria que acompaña al trabajo.",
-      "description": "Memoria tipada, recuperación determinista y gobernanza para sistemas agénticos.",
-      "lead": "OrkMind organiza memoria tipada y gobernada para agentes y personas. Recupere reglas, decisiones y documentos con procedencia, acceso e historial explícitos.",
-      "mechanism": "Cómo se conectan las piezas",
-      "mechanismText": "De la integración al almacenamiento: contexto, recuperación, gobernanza y persistencia tienen responsabilidades distintas.",
-      "install": "Empiece por el entorno",
-      "installText": "Instale el paquete y configure el backend. Las fuentes revisadas describen OrkMind 0.4.0, alpha, bajo licencia MIT.",
-      "command": "pip install \"orkmind>=0.4.0\"\norkmind store info",
-      "sections": [
-        {
-          "id": "memoria",
-          "title": "Tipos que describen qué es una memoria",
-          "text": "Reglas, hechos, decisiones y documentos tienen sus propias colecciones. Las etiquetas describen contexto y acceso; el portafolio conecta productos, proyectos e iniciativas sin ampliar permisos.",
-          "href": "/docs/ontologia/"
-        },
-        {
-          "id": "busca",
-          "title": "Recupere por contexto, con límites claros",
-          "text": "La búsqueda por etiquetas es determinista. La búsqueda semántica es complementaria. ACL, protección, caducidad y presupuesto determinan lo que puede llegar al agente.",
-          "href": "/docs/recuperacao/"
-        },
-        {
-          "id": "produto",
-          "title": "Integración con garantías explícitas",
-          "text": "Los plugins de construcción de prompts para Hermes y OpenClaw inyectan gobernanza por turno. MCP y CLI consultan bajo demanda. Elija la integración por el comportamiento que necesita.",
-          "href": "/docs/integracoes/"
-        },
-        {
-          "id": "armazenamento",
-          "title": "Historial duradero, contexto limitado",
-          "text": "El provider nativo mantiene Core, Recall y Wiki sobre PostgreSQL. La vista del turno es limitada; el historial íntegro sigue disponible para recuperación y auditoría.",
           "href": "/docs/memory-provider/"
         }
       ]

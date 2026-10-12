@@ -1,0 +1,34 @@
+---
+// Rodapé do HTML da home, no tema noite do kit: a assinatura (versão padrão, a do fundo noite),
+// a frase, três colunas e a linha final. No HTML da home os links são "#"; aqui cada um tem
+// destino real (D8) e é um alvo de 44 px.
+import {localeFor,localize,moldura,destinosExternos,withBase} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname),m=moldura(locale);
+const destino=(alvo:string)=>alvo.startsWith('/')?localize(alvo,locale):destinosExternos[alvo];
+---
+<footer class="rodape" data-tema="noite">
+ <div class="rodape-grade">
+  <div class="rodape-marca">
+   <img src={withBase('/marca/svg/assinatura.svg')} alt="Orkastery" width="142" height="28"/>
+   <p>{m.tagline}</p>
+  </div>
+  {m.columns.map((col,i)=><nav class="rodape-coluna" aria-labelledby={'rodape-'+i}>
+   <span class="rodape-titulo" id={'rodape-'+i}>{col.title}</span>
+   {col.links.map(([label,alvo])=><a href={destino(alvo)}>{label}</a>)}
+  </nav>)}
+ </div>
+ <div class="rodape-base"><span>{m.rights}</span><span lang="en">{m.pronunciation}</span></div>
+</footer>
+<style>
+.rodape{background:var(--chao);color:var(--texto-2);border-top:1px solid var(--linha)}
+.rodape-grade{max-width:var(--largura);margin:0 auto;padding:var(--e-8) var(--calha) var(--e-7);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:var(--e-6)}
+.rodape-marca{grid-column:span 2;min-width:260px}
+.rodape-marca img{display:block;height:28px;width:auto}
+.rodape-marca p{margin:var(--e-5) 0 0;max-width:40ch;font:var(--tipo-apoio);color:var(--texto-2)}
+.rodape-coluna{display:flex;flex-direction:column;font:var(--tipo-apoio)}
+.rodape-titulo{margin-bottom:var(--e-2);font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-2)}
+.rodape-coluna a{display:inline-flex;align-items:center;align-self:flex-start;min-height:var(--alvo);min-width:var(--alvo);color:var(--texto);transition:color var(--dur-curta) var(--curva)}
+.rodape-coluna a:hover{color:var(--texto-2)}
+.rodape-base{max-width:var(--largura);margin:0 auto;padding:var(--e-5) var(--calha) var(--e-6);display:flex;flex-wrap:wrap;gap:var(--e-3);justify-content:space-between;font:var(--peso-texto) var(--t-rotulo)/1.4 var(--f-mono);color:var(--texto-2);border-top:1px solid var(--linha)}
+@media (max-width:420px){.rodape-marca{min-width:0;grid-column:auto}}
+</style>

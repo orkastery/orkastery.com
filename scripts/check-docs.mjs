@@ -36,7 +36,7 @@ export const sourceHash = (a,snapshot) => hash(JSON.stringify(a.sources.map(p=>{
 export function reviewArticles(all, snapshot, {slugs, locales, reviewer}) {
  if(!reviewer?.trim()) throw Error('An explicit reviewer is required');
  if(!slugs?.length || slugs.some(slug=>!all.some(a=>a.slug===slug))) throw Error('Select existing article slugs with --articles');
- if(!locales?.length || locales.some(locale=>!['pt','en','es'].includes(locale))) throw Error('Invalid review locale');
+ if(!locales?.length || locales.some(locale=>!['pt','en'].includes(locale))) throw Error('Invalid review locale');
  for(const a of all.filter(a=>slugs.includes(a.slug))) for(const locale of locales) {
   snapshot.reviews[a.slug]??={};
   snapshot.reviews[a.slug][locale]={sourceHash:sourceHash(a,snapshot),contentHash:hash(JSON.stringify(a.translations[locale])),reviewer,date:new Date().toISOString().slice(0,10)};
@@ -58,9 +58,9 @@ export function validate(dir=root,{schemaOnly=false,section,source}={}) {
   if(!/^[a-z0-9-]+$/.test(a.slug) || slugs.has(a.slug)) throw Error('invalid or duplicate slug');
   slugs.add(a.slug);
   if(!a.group || !a.sources?.length) throw Error('article without provenance');
-  if(Object.keys(a.translations).sort().join(',')!=='en,es,pt') throw Error('missing locale');
-  let ids;
-  for(const locale of ['pt','en','es']) {
+  if(Object.keys(a.translations).sort().join(',')!=='en,pt') throw Error('missing locale');
+  let ids, highlights;
+  for(const locale of ['pt','en']) {
    const t=a.translations[locale];
    if(!t.title?.trim() || !t.description?.trim() || !t.sections?.length) throw Error('missing text');
    const current=t.sections.map(s=>s.id);
@@ -68,12 +68,17 @@ export function validate(dir=root,{schemaOnly=false,section,source}={}) {
    if(ids && JSON.stringify(ids)!==JSON.stringify(current)) throw Error('section parity');
    ids=current;
    for(const s of t.sections) if(!s.title?.trim() || !s.paragraphs?.length || s.paragraphs.some(x=>typeof x!=='string'||!x.trim())) throw Error('empty section');
+   for(const s of t.sections) if(s.highlight && (!s.highlight.title?.trim() || !s.highlight.paragraphs?.length || [...s.highlight.paragraphs,...(s.highlight.items||[])].some(x=>typeof x!=='string'||!x.trim()) || (s.highlight.links||[]).some(l=>typeof l?.label!=='string'||!l.label.trim()||typeof l?.href!=='string'||!l.href.trim()))) throw Error('empty highlight');
+   // Paridade: o destaque está na mesma seção nas duas línguas, com o mesmo número de itens e de links.
+   const marks=t.sections.map(s=>s.highlight?[(s.highlight.items||[]).length,(s.highlight.links||[]).length]:null);
+   if(highlights && JSON.stringify(highlights)!==JSON.stringify(marks)) throw Error('highlight parity');
+   highlights=marks;
    if(!schemaOnly && selected.includes(a)) {
     const review=snapshot.reviews?.[a.slug]?.[locale];
     if(!review?.reviewer || !review?.date || review.sourceHash!==sourceHash(a,snapshot) || review.contentHash!==hash(JSON.stringify(t))) throw Error('stale editorial review: '+a.slug+'/'+locale);
    }
   }
-  if(new Set(Object.values(a.translations).map(t=>t.description)).size!==3) throw Error('untranslated description');
+  if(new Set(Object.values(a.translations).map(t=>t.description)).size!==2) throw Error('untranslated description');
  }
  if(!schemaOnly && !section) for(const s of snapshot.sources) {
   if(!s.targets?.length || s.targets.some(t=>!slugs.has(t))) throw Error('uncovered source: '+s.path);
@@ -83,7 +88,7 @@ export function validate(dir=root,{schemaOnly=false,section,source}={}) {
   const live=inventory(source,snapshot.product);
   if(JSON.stringify(live)!==JSON.stringify(snapshot.sources.map(({path,sha256})=>({path,sha256})))) throw Error('upstream changed: synchronize and review');
  }
- return {articles:selected.length,sources:snapshot.sources.length,locales:3,sourceCompared:Boolean(source),schemaOnly};
+ return {articles:selected.length,sources:snapshot.sources.length,locales:2,sourceCompared:Boolean(source),schemaOnly};
 }
 if(process.argv[1]===fileURLToPath(import.meta.url)) {
  try {const args=process.argv.slice(2);console.log(JSON.stringify(validate(root,{schemaOnly:args.includes('--validate-schema'),section:args[args.indexOf('--section')+1] && args.includes('--section')?args[args.indexOf('--section')+1]:undefined,source:args.includes('--source')?args[args.indexOf('--source')+1]:undefined})));}

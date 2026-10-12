@@ -1,0 +1,42 @@
+---
+// 03 · Para quem (#contato): o cartão claro de quem constrói, com o comando, e o cartão no tema
+// noite de times, com o contato por e-mail (endereço institucional publicado, D7). O botão de
+// contato é o primário do kit, nunca latão (D18).
+import InstallButton from '../ds/InstallButton.astro';
+import TechnicalText from '../TechnicalText.astro';
+import {contato} from '../../data/i18n';
+const {t}=Astro.props;
+const a=t.audience;
+---
+<section id="contato" class="secao-padrao">
+ <div class="container">
+  <span id="memoria" class="ancora-antiga" aria-hidden="true"></span><span id="ecossistema-titulo" class="ancora-antiga" aria-hidden="true"></span>
+  <div class="sobretitulo">{a.eyebrow}</div>
+  <div class="publico">
+   <div class="publico-cartao holofote" data-holofote>
+    <div class="publico-rotulo">{a.builders.label}</div>
+    <h2 class="publico-titulo">{a.builders.title}</h2>
+    <p class="publico-texto"><TechnicalText text={a.builders.text}/></p>
+    <InstallButton variante="cartao"/>
+   </div>
+   <div class="publico-cartao publico-escuro holofote" data-holofote data-tema="noite">
+    <div class="publico-rotulo">{a.teams.label}</div>
+    <h2 class="publico-titulo">{a.teams.title}</h2>
+    <p class="publico-texto"><TechnicalText text={a.teams.text}/></p>
+    <a class="publico-contato" href={'mailto:'+contato}>{a.teams.cta+' →'}</a>
+   </div>
+  </div>
+ </div>
+</section>
+<style>
+.publico{margin-top:var(--e-5);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:var(--e-4)}
+.publico-cartao{container-type:inline-size;padding:clamp(var(--e-5),3.4vw,var(--e-7));border-radius:var(--raio-palco);background-color:var(--superficie);border:1px solid var(--linha);display:flex;flex-direction:column;gap:var(--e-4)}
+.publico-escuro{border:0}
+.publico-rotulo{font:var(--peso-destaque) var(--t-rotulo)/1.3 var(--f-mono);color:var(--texto-3)}
+.publico-titulo{margin:0;font:var(--tipo-titulo-1);letter-spacing:var(--trk-titulo-1);text-wrap:balance}
+.publico-texto{margin:0;flex:1;font:var(--tipo-corpo);color:var(--texto-2);text-wrap:pretty}
+.publico-contato{align-self:flex-start;display:inline-flex;align-items:center;gap:var(--e-2);min-height:var(--alvo);padding:0 var(--e-5);border-radius:var(--raio-botao);background:var(--acao);color:var(--sobre-acao);font:var(--tipo-botao);box-sizing:border-box;transition:background-color var(--dur-curta) var(--curva)}
+.publico-contato:hover{background:color-mix(in srgb,var(--acao) 86%,var(--chao))}
+/* Abaixo de 360 px o respiro do cartão cede para o comando caber inteiro (regra de 03/10). */
+@media (max-width:360px){.publico-cartao{padding:var(--e-5) 20px}}
+</style>

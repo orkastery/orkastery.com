@@ -7,10 +7,10 @@ import { validate, hash, sourceHash, reviewArticles, inventory } from './check-d
 function fixture(run) {
  const root=mkdtempSync(resolve(tmpdir(),'docs-contract-'));
  const data=resolve(root,'src/data');mkdirSync(data,{recursive:true});
- const article={slug:'start',group:'start',sources:['docs/start.md'],translations:Object.fromEntries(['pt','en','es'].map(locale=>[locale,{title:locale,description:locale+' documentation',sections:[{id:'begin',title:locale,paragraphs:[locale+' content']}]}]))};
+ const article={slug:'start',group:'start',sources:['docs/start.md'],translations:Object.fromEntries(['pt','en'].map(locale=>[locale,{title:locale,description:locale+' documentation',sections:[{id:'begin',title:locale,paragraphs:[locale+' content']}]}]))};
  const sources=[{path:'docs/start.md',sha256:hash('source'),category:'docs',treatment:'article',targets:['start']}];
  const snapshot={schemaVersion:1,product:'orkmind',sources,inventoryHash:hash(JSON.stringify(sources)),reviews:{start:{}}};
- for(const locale of ['pt','en','es']) snapshot.reviews.start[locale]={sourceHash:sourceHash(article,snapshot),contentHash:hash(JSON.stringify(article.translations[locale])),reviewer:'fixture',date:'2026-09-28'};
+ for(const locale of ['pt','en']) snapshot.reviews.start[locale]={sourceHash:sourceHash(article,snapshot),contentHash:hash(JSON.stringify(article.translations[locale])),reviewer:'fixture',date:'2026-09-28'};
  const save=()=>{
   writeFileSync(resolve(data,'docs-catalog.ts'),'export default '+JSON.stringify({schemaVersion:1,modules:['docs-start.ts']})+';');
   writeFileSync(resolve(data,'docs-start.ts'),'export default '+JSON.stringify([article])+';');
@@ -19,8 +19,25 @@ function fixture(run) {
  save();try{run({root,article,snapshot,save});}finally{rmSync(root,{recursive:true,force:true});}
 }
 test('reviewed, translated content passes',()=>fixture(({root})=>assert.equal(validate(root).articles,1)));
-test('missing translation fails even schema validation',()=>fixture(({root,article,save})=>{delete article.translations.es;save();assert.throws(()=>validate(root,{schemaOnly:true}),/locale/);}));
+test('missing translation fails even schema validation',()=>fixture(({root,article,save})=>{delete article.translations.en;save();assert.throws(()=>validate(root,{schemaOnly:true}),/locale/);}));
+// O espanhol saiu do site (decisão E1 a do dono): um texto ES nos dados volta a reprovar.
+test('a Spanish translation in the data fails schema validation',()=>fixture(({root,article,save})=>{article.translations.es=structuredClone(article.translations.en);article.translations.es.description='es documentation';save();assert.throws(()=>validate(root,{schemaOnly:true}),/locale/);}));
 test('editing text invalidates editorial review',()=>fixture(({root,article,save})=>{article.translations.en.sections[0].paragraphs=['New unreviewed meaning'];save();assert.throws(()=>validate(root),/stale/);}));
+test('a highlight must exist in every language and have text',()=>fixture(({root,article,save})=>{
+ article.translations.pt.sections[0].highlight={title:'Muda para quem já usa',paragraphs:['Rode o comando uma vez.']};save();
+ assert.throws(()=>validate(root,{schemaOnly:true}),/highlight parity/);
+ article.translations.en.sections[0].highlight={title:'en',paragraphs:['en text']};save();
+ assert.equal(validate(root,{schemaOnly:true}).articles,1);
+ article.translations.en.sections[0].highlight.paragraphs=[' '];save();
+ assert.throws(()=>validate(root,{schemaOnly:true}),/empty highlight/);
+ article.translations.en.sections[0].highlight.paragraphs=['en text'];article.translations.en.sections[0].highlight.links=[{label:'',href:'/docs/start/'}];save();
+ assert.throws(()=>validate(root,{schemaOnly:true}),/empty highlight/);
+ article.translations.pt.sections[0].highlight.links=[{label:'pt',href:'/docs/start/'}];
+ article.translations.en.sections[0].highlight.links=[{label:'en',href:'/docs/start/'}];save();
+ assert.equal(validate(root,{schemaOnly:true}).articles,1);
+ article.translations.en.sections[0].highlight.items=['one more item in English only'];save();
+ assert.throws(()=>validate(root,{schemaOnly:true}),/highlight parity/);
+}));
 test('source revision invalidates all affected translations',()=>fixture(({root,snapshot,save})=>{snapshot.sources[0].sha256=hash('changed');snapshot.inventoryHash=hash(JSON.stringify(snapshot.sources));save();assert.throws(()=>validate(root),/stale/);}));
 test('snapshot corruption is detected',()=>fixture(({root,snapshot,save})=>{snapshot.sources[0].sha256='invalid';save();assert.throws(()=>validate(root),/integrity/);}));
 test('new upstream document requires synchronization',()=>fixture(({root})=>{
@@ -44,7 +61,7 @@ function outputFixture(run){
 }
 function edit(dir,path,change){const file=resolve(dir,path);writeFileSync(file,change(readFileSync(file,'utf8')));}
 test('built output passes links, locale, content and public checks',()=>{
- assert.ok(checkLinks().checked>0);assert.equal(checkI18n().locales,3);assert.equal(checkPublic().findings,0);assert.ok(checkContent().accessibleDiagrams>0);
+ assert.ok(checkLinks().checked>0);assert.equal(checkI18n().locales,2);assert.equal(checkPublic().findings,0);assert.ok(checkContent().accessibleDiagrams>0);
 });
 test('missing internal destination fails',()=>outputFixture(dir=>{
  edit(dir,'index.html',s=>s.replace('</main>','<a href="'+B+'/missing-canary/">Broken</a></main>'));
@@ -63,7 +80,7 @@ test('wrong language fails',()=>outputFixture(dir=>{
  assert.throws(()=>checkI18n(dir),/Wrong html language/);
 }));
 test('missing selector fails',()=>outputFixture(dir=>{
- edit(dir,'es/index.html',s=>s.replace('data-language-selector','data-missing-selector'));
+ edit(dir,'en/index.html',s=>s.replace('data-language-selector','data-missing-selector'));
  assert.throws(()=>checkI18n(dir),/Missing language selector/);
 }));
 test('personal data canary is rejected without printing its value',()=>outputFixture(dir=>{
@@ -104,11 +121,22 @@ test('contribution guide is included in source inventory',()=>fixture(({root})=>
  for(const product of ['orkastery','orkmind']) assert.ok(inventory(source,product).some(s=>s.path==='CONTRIBUTING.md'));
 }));
 
-test('removing a restored home section fails the content audit',()=>outputFixture(dir=>{
+test('removing a section of the design home fails the content audit',()=>outputFixture(dir=>{
  edit(dir,'en/index.html',s=>s.replace('Six phases no agent skips','A removed section'));
- assert.throws(()=>checkContent(dir),/restored home section/);
+ assert.throws(()=>checkContent(dir),/design home section: en: Six phases/);
 }));
 test('missing contribution navigation fails the content audit',()=>outputFixture(dir=>{
  edit(dir,'en/index.html',s=>s.replaceAll('href="'+B+'/en/docs/contribuir/"','href="'+B+'/en/docs/"'));
  assert.throws(()=>checkContent(dir),/contribution navigation/);
+}));
+test('prohibited kit vocabulary fails the content audit',()=>outputFixture(dir=>{
+ for(const termo of ['batuta','afrouxa o sandbox','uma pausa humana','metronome','Bernstein','a thread fica pausada','a paused thread']){
+  edit(dir,'en/docs/comecar/index.html',s=>s.replace('</main>','<p>'+termo+'</p></main>'));
+  assert.throws(()=>checkContent(dir),/Vocabulário proibido/,termo);
+  edit(dir,'en/docs/comecar/index.html',s=>s.replace('<p>'+termo+'</p></main>','</main>'));
+ }
+}));
+test('an unreplaced version marker fails the content audit',()=>outputFixture(dir=>{
+ edit(dir,'en/docs/comecar/index.html',s=>s.replace('</main>','<p>{versao}</p></main>'));
+ assert.throws(()=>checkContent(dir),/Unreplaced version marker/);
 }));

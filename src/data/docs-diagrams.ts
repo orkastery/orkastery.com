@@ -25,19 +25,6 @@ export default {
         "Request → core",
         "Dispatch → runtime"
       ]
-    },
-    "es": {
-      "title": "Quién conduce, ejecuta y comprueba",
-      "description": "El host presenta la intención al núcleo. El núcleo despacha el runtime y recibe código y pruebas para verificar. Los gates y el ledger permanecen en el núcleo.",
-      "nodes": [
-        "Host · peticiones y decisiones",
-        "Núcleo ork · contratos y estado",
-        "Runtime · código y pruebas"
-      ],
-      "edges": [
-        "Petición → núcleo",
-        "Despacho → runtime"
-      ]
     }
   },
   "cycle": {
@@ -78,25 +65,6 @@ export default {
         "Gates",
         "Result"
       ]
-    },
-    "es": {
-      "title": "Del objetivo a la evaluación",
-      "description": "GOAL y PLAN definen el trabajo; GO implementa; CHECK verifica; SHIP entrega con prueba remota; MASTER registra evaluación y lecciones. Los fallos de CHECK vuelven a GO.",
-      "nodes": [
-        "GOAL · objetivo",
-        "PLAN · plan",
-        "GO · implementación",
-        "CHECK · pruebas",
-        "SHIP · entrega",
-        "MASTER · aprendizaje"
-      ],
-      "edges": [
-        "Criterios",
-        "Tareas",
-        "Pruebas",
-        "Gates",
-        "Resultado"
-      ]
     }
   },
   "isolation": {
@@ -128,21 +96,6 @@ export default {
         "Bounds editing",
         "Coordinates access",
         "Rechecks delivery"
-      ]
-    },
-    "es": {
-      "title": "Aislamiento y autorización",
-      "description": "La thread define alcance y permisos. La worktree aísla el código. Los leases coordinan colisiones. El gate de entrega comprueba autorización y pruebas antes del merge.",
-      "nodes": [
-        "Thread · alcance",
-        "Worktree · código aislado",
-        "Lease · recurso compartido",
-        "Gate · entrega autorizada"
-      ],
-      "edges": [
-        "Limita la edición",
-        "Coordina acceso",
-        "Comprueba la entrega"
       ]
     }
   }

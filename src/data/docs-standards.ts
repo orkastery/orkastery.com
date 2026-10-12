@@ -48,7 +48,7 @@ export default [
             "id": "contratos-kg1",
             "title": "Contrato não é resultado medido",
             "paragraphs": [
-              "Os contratos KG1 fixam grafo e benchmark separadamente. O grafo conserva proveniência e restrições de acesso e recalcula identidades pelo conteúdo. O benchmark fixa pares A/B, tarefas, controles, tentativas e fontes de medida. Corpus sintético valida o contrato; não demonstra economia de tokens, latência ou significância. Uma medida ausente fica null com motivo. A extração do KG2, o índice com consulta do KG3 e o índice incremental do KG4, com os mesmos bytes da extração completa, vieram sem mudar o contrato. O KG4 também mediu a parte determinística e fixou o protocolo da rodada paga como not-run; a rodada paga continua pendente, e nenhum número publicado é economia medida. Os analisadores do KG3, o typescript e o micromark, passaram a ser dependências do pacote, com versão exata, sem mudar os rótulos ork.ts-ast e ork.md-structure."
+              "Os contratos KG1 fixam grafo e benchmark separadamente. O grafo conserva proveniência e restrições de acesso e recalcula identidades pelo conteúdo. O benchmark fixa pares A/B, tarefas, controles, tentativas e fontes de medida. Corpus sintético valida o contrato; não demonstra economia de tokens, latência ou significância. Uma medida ausente fica null com motivo. A extração do KG2, o índice com consulta do KG3 e o índice incremental do KG4, com os mesmos bytes da extração completa, vieram sem mudar o contrato. O KG4 também mediu a parte determinística e fixou o protocolo da rodada paga como not-run; a rodada paga continua pendente, e nenhum número publicado é economia medida. Os analisadores do KG3, o typescript e o micromark, passaram a ser dependências do pacote, com versão exata, sem mudar os rótulos ork.ts-ast e ork.md-structure. Na versão {versao}, a consulta por nó do KG3 passou a trazer o sha256 e o blob do Git de cada fonte citada, que o contrato KG1 já põe em cada evidência, e, em cada aresta, se as fontes dela conferem com a árvore, sem mudar o contrato."
             ]
           }
         ]
@@ -86,45 +86,7 @@ export default [
             "id": "contratos-kg1",
             "title": "A contract is not a measured result",
             "paragraphs": [
-              "KG1 defines separate graph and benchmark contracts. The graph preserves provenance and access restrictions and recomputes content-derived identities. The benchmark fixes A/B pairs, tasks, controls, attempts and measurement sources. A synthetic corpus validates the contract; it demonstrates neither token savings, latency nor significance. Missing measurements remain null with a reason. KG2 extraction, the KG3 index and queries and the KG4 incremental index, with the same bytes as a full extraction, arrived without changing the contract. KG4 also measured the deterministic part and fixed the paid-run protocol as not-run; the paid run is still pending, and no published number is a measured saving. The KG3 analyzers, typescript and micromark, became package dependencies with exact versions, without changing the ork.ts-ast and ork.md-structure labels."
-            ]
-          }
-        ]
-      },
-      "es": {
-        "title": "Estándares y mantenimiento de la documentación",
-        "description": "Mantenga identidad, comportamiento, pruebas y planificación en su lugar.",
-        "sections": [
-          {
-            "id": "produto",
-            "title": "Documente comportamiento verificable",
-            "paragraphs": [
-              "La jerarquía PLAT → SYS → MOD → FEAT organiza el producto. Cada página identifica finalidad, estado, fuentes y relaciones. Una feature describe precondiciones, flujo, alternativas, postcondiciones, reglas y criterios de aceptación. Los datos, APIs y operaciones necesitan límites explícitos. En Orkastery, el número de una FEAT nueva sale de ork roadmap feat, reservado entre máquinas; nunca del mayor número de su branch. Las decisiones de arquitectura quedan en ADR numerados, con contexto, criterios, opciones comparadas y la decisión; la ADR-001 indica dónde vive la red de las máquinas de una persona."
-            ],
-            "code": "ork roadmap feat --thread <thread>\nork docs verificar\nork docs sincronizar"
-          },
-          {
-            "id": "planejamento",
-            "title": "Separe los planes de la disponibilidad",
-            "paragraphs": [
-              "El roadmap registra problema, objetivo, alcance, dependencias, decisiones y criterios de validación. Código fusionado, pruebas aprobadas, despliegue y exposición al usuario son hechos distintos. En estos sitios, el roadmap aparece solo como resumen mensual con enlace a su fuente.",
-              "El estado del código sigue a git en ambos sentidos: codigo: Mesclado exige el commit del merge en la base, y el merge ship(<thread>) de la thread del elemento exige codigo: Mesclado. ork docs verificar falla ante la divergencia (docs.paridade.merge) y ante el índice que no coincide con el frontmatter (docs.paridade.indice); en el PR, con --pr, ambos solo avisan, porque la divergencia pertenece a main. ork docs sincronizar --escrever, en un PR de documentación tras el merge, corrige ambos.",
-              "En Orkastery, ork docs sincronizar actualiza el estado del código desde el ledger y git, y la sección sdlc desde la thread; nunca modifica ciclo, documentación, despliegue, exposición o habilitación. En la worktree de una thread solo toca su elemento; --so elige los elementos y --todos vuelve a cubrirlos todos. Cerrar la thread libera la reserva del elemento o la pasa a otra thread abierta del mismo elemento."
-            ]
-          },
-          {
-            "id": "editorial",
-            "title": "Revisión editorial y visual",
-            "paragraphs": [
-              "Use mayúscula inicial en títulos y etiquetas; conserve siglas, comandos y nombres propios. Los diagramas tienen título, descripción y una secuencia legible sin depender del color. Los índices y modelos orientan la edición; los recursos de marca permanecen en la fuente y no representan funcionalidades adicionales.",
-              "La instantánea pública registra rutas relativas y hashes. Sincronizar una fuente modificada invalida las revisiones afectadas. Los tres idiomas requieren revisión explícita y el build usa la instantánea versionada sin obtener contenido remoto."
-            ]
-          },
-          {
-            "id": "contratos-kg1",
-            "title": "Un contrato no es un resultado medido",
-            "paragraphs": [
-              "KG1 define contratos separados de grafo y benchmark. El grafo conserva procedencia y restricciones de acceso y recalcula las identidades por contenido. El benchmark fija pares A/B, tareas, controles, intentos y fuentes de medida. El corpus sintético valida el contrato; no demuestra ahorro de tokens, latencia ni significancia. Una medida ausente queda null con motivo. La extracción de KG2, el índice con consulta de KG3 y el índice incremental de KG4, con los mismos bytes que la extracción completa, llegaron sin cambiar el contrato. KG4 también midió la parte determinista y fijó el protocolo de la ronda de pago como not-run; la ronda de pago sigue pendiente, y ningún número publicado es un ahorro medido. Los analizadores del KG3, typescript y micromark, pasaron a ser dependencias del paquete, con versión exacta, sin cambiar las etiquetas ork.ts-ast y ork.md-structure."
+              "KG1 defines separate graph and benchmark contracts. The graph preserves provenance and access restrictions and recomputes content-derived identities. The benchmark fixes A/B pairs, tasks, controls, attempts and measurement sources. A synthetic corpus validates the contract; it demonstrates neither token savings, latency nor significance. Missing measurements remain null with a reason. KG2 extraction, the KG3 index and queries and the KG4 incremental index, with the same bytes as a full extraction, arrived without changing the contract. KG4 also measured the deterministic part and fixed the paid-run protocol as not-run; the paid run is still pending, and no published number is a measured saving. The KG3 analyzers, typescript and micromark, became package dependencies with exact versions, without changing the ork.ts-ast and ork.md-structure labels. In version {versao}, KG3 node queries also return the sha256 and Git blob of each cited source, which the KG1 contract already puts in every piece of evidence, and, for each edge, whether its sources match the tree, without changing the contract."
             ]
           }
         ]
@@ -135,7 +97,21 @@ export default [
     "slug": "roadmap",
     "group": "standards",
     "sources": [
-      "docs/roadmap/README.md"
+      "docs/roadmap/README.md",
+      "docs/roadmap/RM-026-workspace-empresarial.md",
+      "docs/roadmap/RM-031-grafo-de-codigo.md",
+      "docs/roadmap/RM-037-verify-rapido-e-confiavel.md",
+      "docs/roadmap/RM-038-busca-semantica-na-memoria.md",
+      "docs/roadmap/RM-047-fabrica-em-varias-maquinas.md",
+      "docs/roadmap/RM-052-projeto-alvo-explicito.md",
+      "docs/roadmap/RM-055-impedimento-do-dono-vira-hitl.md",
+      "docs/roadmap/RM-056-perfil-por-thread-e-carga.md",
+      "docs/roadmap/RM-057-hitl-por-alternativas.md",
+      "docs/roadmap/RM-058-modo-noctum.md",
+      "docs/roadmap/RM-059-conducao-dentro-do-claude-code.md",
+      "docs/roadmap/RM-060-site-como-produto.md",
+      "docs/roadmap/RM-061-cli-em-ingles-e-pt-br.md",
+      "docs/roadmap/RM-062-repositorio-publico-sem-dado-privado.md"
     ],
     "translations": {
       "pt": {
@@ -146,14 +122,29 @@ export default [
             "id": "resumo",
             "title": "Resumo de outubro de 2026",
             "paragraphs": [
-              "O planejamento reúne condução, integração com hosts, memória governada e qualidade da documentação. Em outubro, a prioridade do topo é o HITL de condução por alternativas: todo pedido que o ork abre ao dono vira uma escolha entre 3 e 5 opções, uma delas recomendada, sem texto colado. Também estão em desenvolvimento o impedimento que só o dono resolve no terminal, que passa a ser um pedido a ele com o comando exato, e o perfil por despacho, com divisão pela carga entre contas. Consulte o roadmap no repositório para ver o estado de cada iniciativa. Esta página não replica tickets nem transforma uma intenção em promessa de disponibilidade."
+              "O planejamento reúne condução, integração com hosts, memória governada e qualidade da documentação. A prioridade do topo continua sendo o HITL de condução por alternativas: todo pedido que o ork abre ao dono vira uma escolha entre 3 e 5 opções, uma delas recomendada, sem texto colado. Também seguem em desenvolvimento o impedimento que só o dono resolve no terminal, que vira um pedido a ele com o comando exato, e o perfil por despacho, com divisão pela carga entre contas. Esta página não replica tickets nem transforma uma intenção em promessa de disponibilidade.",
+              "Desde a revisão anterior, cinco itens novos entraram no roadmap, e outros avançaram sem mudar de estágio:"
+            ],
+            "items": [
+              "Modo #Noctum, arcos autônomos de 6 a 12 horas com muitas threads e máquinas: em desenvolvimento, com o modo ainda desligado. A primeira das seis fatias, a N1, está implementada, com testes: o envelope de autorização do dono (janela, destinos, tetos e exclusões) e o estado do arco; #Noctum ainda não é aceito como modo, nenhum comando abre arco, e a próxima fatia é a N2, a fila local e a capacidade. O dono já tomou as quatro decisões de produto; a posição 5 na prioridade é uma proposta, e o primeiro piloto espera a autorização dele e os valores que só ele define: o teto, o horário e o canal do relatório da manhã.",
+              "Condução dentro do Claude Code, com dez mods em quatro ondas: em desenvolvimento; a fundação, a onda 1 (Torre de Controle, Clima de Cota, Freio de Lote e Radar de Colisão) e a Mesa do Dono, da onda 2, estão na versão {versao}. A Sentinela do Condutor, que completa a onda 2, já está na main do núcleo, ainda fora de uma versão publicada, e os mods da onda 3 seguem como plano.",
+              "Site como produto, os dois sites públicos com o rigor do núcleo: em desenvolvimento, e nada é publicado sem a aprovação do dono.",
+              "CLI em inglês e pt-BR: em desenvolvimento. Na versão {versao}, o caminho da primeira experiência (de ork doctor e ork init a ork thread new e ork phase run), ork verify, ork ship, ork pulse, ork master, ork retry plan, ork retry run, ork roadmap status e a ajuda falam inglês quando owner.language ou o locale pedem en. A cobertura medida é de 23,0% dos textos de saída do CLI; o restante segue em português.",
+              "Repositório público sem dado privado: em desenvolvimento. O nome do arquivo de evidência da RM-040, que levava o nome de uma máquina, já foi trocado por um nome genérico, e a correção está mesclada. A barreira automática no CI, no ork verify e no ork ci prepare ainda é plano, e a próxima fatia é a barreira no CI.",
+              "Busca por significado na memória: o dono escolheu os pares da prova, que passou em todas as execuções medidas; o item segue em validação.",
+              "Grafo de código: o consumo pelas fases ganhou citações, segundo salto e proveniência conferida contra a árvore, com a flag grafo.mcp ainda desligada.",
+              "Verify rápido e confiável: avançou no registro de instabilidade e no ork verify que leva em conta o steal da CPU.",
+              "Impedimento que só o dono resolve: reconhece as frases atuais dos runtimes e chega ao dono no resumo, com o comando.",
+              "Projeto-alvo explícito: a segunda fatia da resposta honesta foi entregue por PR, e o item espera o piloto do dono.",
+              "Fábrica em várias máquinas: ganhou a auditoria da fronteira de confiança do repositório clonado.",
+              "Company Brain: o conhecimento escrito espera a escolha do dono entre quatro alternativas, e nenhum código entra antes dela."
             ]
           },
           {
             "id": "acompanhar",
             "title": "Consulte o status atual",
             "paragraphs": [
-              "O relatório do CLI agrupa iniciativas, sinaliza o que espera o dono com #HITL e mostra o próximo passo, sem alterar o roadmap. ork network roadmap traz o mesmo relatório com as threads de todas as máquinas e a fonte de cada parte. As fontes atuais incluem o HITL curto e o HITL de condução por alternativas, o impedimento do dono que vira pedido, o perfil por despacho, o pacote de contexto e o dossiê de decisão do Company Brain, o grafo de código, a busca por significado na memória, o projeto-alvo explícito, o roadmap da rede, a Orkastery Network das máquinas de uma pessoa, o pacote de experiência, o plugin nos marketplaces, as correções de condução e os guias de contribuição. Código mesclado ou numa branch não equivale a publicação; confira as dimensões de estado na origem."
+              "O relatório do CLI agrupa iniciativas, sinaliza o que espera o dono com #HITL e mostra o próximo passo, sem alterar o roadmap. ork network roadmap traz o mesmo relatório com as threads de todas as máquinas e a fonte de cada parte. As fontes atuais incluem o HITL curto e o HITL de condução por alternativas, o impedimento do dono que vira pedido, o perfil por despacho, o pacote de contexto e o dossiê de decisão do Company Brain, o grafo de código, a busca por significado na memória, o projeto-alvo explícito, o roadmap da rede, a Orkastery Network das máquinas de uma pessoa, o pacote de experiência, o plugin nos marketplaces, as correções de condução, os guias de contribuição e, desde outubro, o modo #Noctum, a condução dentro do Claude Code, o site como produto e o CLI em inglês e pt-BR. Consulte o roadmap no repositório para ver o estado de cada iniciativa: código mesclado ou numa branch não equivale a publicação, então confira as dimensões de estado na origem."
             ],
             "code": "ork roadmap status\nork network roadmap"
           }
@@ -167,35 +158,29 @@ export default [
             "id": "resumo",
             "title": "October 2026 summary",
             "paragraphs": [
-              "Planning covers conduction, host integration, governed memory and documentation quality. In October, the top priority is conduction HITL by alternatives: every request ork opens to the owner becomes a choice among 3 to 5 options, one of them recommended, with no pasted text. Also in development: a blocker only the owner can clear in the terminal becomes a request to them with the exact command, and a profile per dispatch, with load-based distribution across accounts. Consult the repository roadmap for each initiative’s state. This page neither replicates tickets nor turns intent into a promise of availability."
+              "Planning covers conduction, host integration, governed memory and documentation quality. The top priority is still conduction HITL by alternatives: every request ork opens to the owner becomes a choice among 3 to 5 options, one of them recommended, with no pasted text. Also still in development: a blocker only the owner can clear in the terminal becomes a request to them with the exact command, and a profile per dispatch, with load-based distribution across accounts. This page neither replicates tickets nor turns intent into a promise of availability.",
+              "Since the previous review, five new items entered the roadmap, and others moved forward without changing stage:"
+            ],
+            "items": [
+              "#Noctum mode, autonomous arcs of 6 to 12 hours across many threads and machines: in development, with the mode still off. The first of six slices, N1, is implemented, with tests: the owner’s authorization envelope (window, destinations, caps and exclusions) and the arc state; #Noctum is not yet accepted as a mode, no command opens an arc, and the next slice is N2, the local queue and capacity. The owner has made the four product decisions; position 5 in the priority list is a proposal, and the first pilot awaits the owner’s authorization and the values only the owner sets: the cap, and the time and channel of the morning report.",
+              "Conduction inside Claude Code, with ten mods in four waves: in development; the foundation, wave 1 (the Control Tower, the Quota Weather, the Batch Brake and the Collision Radar) and the Owner’s Desk, from wave 2, are in version {versao}. The Conductor’s Sentinel, which completes wave 2, is already on the core’s main branch, not yet in a published version, and the wave 3 mods remain planned.",
+              "Site as a product, the two public sites held to the core’s rigor: in development, and nothing is published without the owner’s approval.",
+              "CLI in English and pt-BR: in development. In version {versao}, the first-run path (from ork doctor and ork init to ork thread new and ork phase run), ork verify, ork ship, ork pulse, ork master, ork retry plan, ork retry run, ork roadmap status and the help print English when owner.language or the locale asks for en. The measured coverage is 23.0% of the CLI’s output texts; the rest still prints Portuguese.",
+              "Public repository without private data: in development. The RM-040 evidence file, whose name carried a machine name, has already been renamed to a generic one, and the fix is merged. The automatic barrier in CI, in ork verify and in ork ci prepare is still a plan, and the next slice is the CI barrier.",
+              "Search by meaning in memory: the owner chose the proof pairs, and the proof passed in every measured run; the item is still in validation.",
+              "Code graph: phase consumption gained citations, a second hop and provenance checked against the tree, with the grafo.mcp flag still off.",
+              "Fast and reliable verify: progress on the instability registry and on making ork verify aware of CPU steal.",
+              "Blocker only the owner can clear: it recognizes the runtimes’ current messages and reaches the owner in the summary, with the command.",
+              "Explicit target project: the second slice of the honest answer was delivered by PR, and the item awaits the owner’s pilot.",
+              "Factory on several machines: it gained an audit of the trust boundary of the cloned repository.",
+              "Company Brain: written knowledge awaits the owner’s choice among four alternatives, and no code goes in before it."
             ]
           },
           {
             "id": "acompanhar",
             "title": "Read the current status",
             "paragraphs": [
-              "The CLI report groups initiatives, marks owner decisions with #HITL and shows the next step without changing the roadmap. ork network roadmap provides the same report with threads from every machine and the source of each part. Current sources cover short HITL requests and conduction HITL by alternatives, owner blockers that become requests, profile per dispatch, the Company Brain context package and decision dossier, the code graph, search by meaning in memory, explicit target projects, the network roadmap, the Orkastery Network of a person’s machines, the experience pack, the marketplace plugin, conduction fixes and contribution guides. Merged or branch code does not establish publication; check the state dimensions at the source."
-            ],
-            "code": "ork roadmap status\nork network roadmap"
-          }
-        ]
-      },
-      "es": {
-        "title": "Dirección del producto",
-        "description": "Resumen mensual de la planificación y enlace a la fuente de seguimiento.",
-        "sections": [
-          {
-            "id": "resumo",
-            "title": "Resumen de octubre de 2026",
-            "paragraphs": [
-              "La planificación reúne conducción, integración con hosts, memoria gobernada y calidad de la documentación. En octubre, la prioridad principal es el HITL de conducción por alternativas: toda petición que ork abre al dueño se convierte en una elección entre 3 y 5 opciones, una de ellas recomendada, sin texto pegado. También están en desarrollo el impedimento que solo el dueño resuelve en la terminal, que pasa a ser una petición con el comando exacto, y el perfil por despacho, con reparto por carga entre cuentas. Consulte el roadmap del repositorio para conocer el estado de cada iniciativa. Esta página no replica tickets ni convierte una intención en promesa de disponibilidad."
-            ]
-          },
-          {
-            "id": "acompanhar",
-            "title": "Consulte el estado actual",
-            "paragraphs": [
-              "El informe del CLI agrupa iniciativas, marca con #HITL lo que espera al dueño y muestra el siguiente paso sin modificar el roadmap. ork network roadmap ofrece el mismo informe con las threads de todas las máquinas y la fuente de cada parte. Las fuentes actuales incluyen HITL breve y HITL de conducción por alternativas, el impedimento del dueño convertido en petición, el perfil por despacho, el paquete de contexto y el dosier de decisión del Company Brain, el grafo de código, la búsqueda por significado en la memoria, el proyecto objetivo explícito, el roadmap de la red, la Orkastery Network de las máquinas de una persona, el paquete de experiencia, el plugin en los marketplaces, las correcciones de conducción y las guías de contribución. El código fusionado o en una branch no equivale a publicación; consulte las dimensiones de estado en la fuente."
+              "The CLI report groups initiatives, marks owner decisions with #HITL and shows the next step without changing the roadmap. ork network roadmap provides the same report with threads from every machine and the source of each part. Current sources cover short HITL requests and conduction HITL by alternatives, owner blockers that become requests, profile per dispatch, the Company Brain context package and decision dossier, the code graph, search by meaning in memory, explicit target projects, the network roadmap, the Orkastery Network of a person’s machines, the experience pack, the marketplace plugin, conduction fixes, contribution guides and, since October, #Noctum mode, conduction inside Claude Code, the site as a product and the CLI in English and pt-BR. Consult the repository roadmap for each initiative’s state: merged or branch code does not establish publication, so check the state dimensions at the source."
             ],
             "code": "ork roadmap status\nork network roadmap"
           }

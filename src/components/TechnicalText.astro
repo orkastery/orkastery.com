@@ -1,0 +1,7 @@
+---
+import {technicalUnits,unitStyle} from '../lib/technical-text.mjs';
+import {comVersao} from '../data/release.mjs';
+interface Props {text: string;}
+const units=technicalUnits(comVersao(Astro.props.text));
+---
+{units.map(unit=>'text' in unit?unit.text:unit.open||unit.close?<span class="code-unit" style={unitStyle(unit.open,unit.close)}>{unit.open}<code>{unit.code}</code>{unit.close}</span>:<code>{unit.code}</code>)}

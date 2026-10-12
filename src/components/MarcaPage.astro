@@ -1,0 +1,190 @@
+---
+// Página da marca (/marca/ e /en/marca/): o Brand Kit do kit Partitura do dono, na ordem dele
+// (logos, paleta, fontes, templates, diretrizes, devs e agentes), com a moldura do site. Os
+// arquivos são os do kit, sem mudança (public/marca/, public/partitura/); os botões de documento
+// abrem os PDFs do manual, das diretrizes e da biblioteca de componentes. O link "editar os
+// templates" do Brand Kit não entra: ele abre o editor do Claude Design, que não tem endereço
+// público. O texto mora em src/data/marca.ts.
+import Base from '../layouts/Base.astro';
+import Divider from './ds/Divider.astro';
+import marca from '../data/marca';
+import {localeFor,withBase,ui} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname),t=marca[locale],a=marca.arquivos,text=ui(locale);
+// Trecho entre crases vira código; o resto é texto.
+const partes=(s:string)=>s.split('`').map((p,i)=>({codigo:i%2===1,p}));
+const arquivo=(p:string)=>withBase(p);
+---
+<Base titulo={t.titulo} descricao={t.descricao}>
+ <section class="marca-hero">
+  <div class="container marca-hero-grade">
+   <div class="marca-hero-titulo">
+    <div class="sobretitulo">{t.rotulo}</div>
+    <h1>{t.h1}</h1>
+   </div>
+   <p class="marca-lead">{t.lead}</p>
+  </div>
+  <nav class="container marca-nav" aria-label={t.navRotulo}>{t.nav.map(([id,rotulo])=><a href={'#'+id}>{rotulo}</a>)}</nav>
+ </section>
+ <Divider/>
+ <div class="container marca-corpo">
+  <section id="logos" class="marca-secao" aria-labelledby="logos-titulo">
+   <div class="marca-cabeca"><h2 id="logos-titulo">{t.logos.titulo}</h2><span class="marca-nota">{partes(t.logos.nota).map(x=>x.codigo?<code>{x.p}</code>:x.p)}</span></div>
+   <div class="logos">
+    {a.logos.map(([svg,png,tam,fundo,altura],i)=>{const [nome,uso]=t.logos.itens[i];return <div class="logo">
+     <div class="logo-palco" style={`background:var(--${fundo})`}><img src={arquivo('/marca/svg/'+svg)} alt={nome} style={`max-height:${altura}px`} loading="lazy"/></div>
+     <div class="logo-pe">
+      <div class="logo-nome"><span>{nome}</span><span class="logo-uso">{uso}</span></div>
+      <div class="logo-baixar">
+       <a class="baixar" href={arquivo('/marca/svg/'+svg)} download><span aria-hidden="true">↓</span> SVG<span class="so-leitor"> · {nome}, {uso}</span></a>
+       <a class="baixar" href={arquivo('/marca/png/'+png)} download><span aria-hidden="true">↓</span> PNG {tam} px<span class="so-leitor"> · {nome}, {uso}</span></a>
+      </div>
+     </div>
+    </div>;})}
+   </div>
+   <div class="marca-icones"><span>{t.logos.icones}</span>{a.icones.map(f=><a href={arquivo('/marca/png/'+f)} download><code class="codigo-liso">{f}</code></a>)}</div>
+  </section>
+
+  <section id="paleta" class="marca-secao" aria-labelledby="paleta-titulo">
+   <div class="marca-cabeca"><h2 id="paleta-titulo">{t.paleta.titulo}</h2><span class="marca-aviso" role="status" data-aviso data-padrao={t.paleta.aviso} data-copiado={t.paleta.copiado}>{t.paleta.aviso}</span></div>
+   {t.paleta.grupos.map(([nome,chave,usos])=><div class="paleta-grupo">
+    <span class="sobretitulo">{nome}</span>
+    <div class="paleta-grade">{a.cores[chave as 'dia'|'noite'|'estado'].map(([token,hex],i)=><button type="button" class="amostra" data-amostra data-hex={hex} data-ok={t.paleta.ok} data-falha={t.paleta.falha}>
+     <span class="amostra-cor" style={`background:var(${token})`}></span>
+     <span class="amostra-texto"><span class="so-leitor">{t.paleta.copiar} </span><code class="codigo-liso">{token}</code><span class="amostra-hex" data-rotulo>{hex}</span><span class="amostra-uso">{usos[i]}</span></span>
+    </button>)}</div>
+   </div>)}
+  </section>
+
+  <section id="fontes" class="marca-secao" aria-labelledby="fontes-titulo">
+   <h2 id="fontes-titulo">{t.fontes.titulo}</h2>
+   <div class="fontes">{t.fontes.itens.map(([amostra,nome,uso,familia],i)=><div class="fonte">
+    <span class={'fonte-amostra fonte-'+familia} aria-hidden="true">{amostra}</span>
+    <span class="fonte-nome">{nome}</span>
+    <span class="fonte-uso">{uso}</span>
+    <a class="fonte-link" href={a.fontesLinks[i]} target="_blank" rel="noopener">Google Fonts <span aria-hidden="true">↗</span><span class="so-leitor"> ({text.newTab})</span></a>
+   </div>)}</div>
+   <div class="trecho" data-tema="noite">
+    <div class="trecho-topo"><span>{t.fontes.cabeca}</span><button type="button" class="trecho-copiar" data-copiar-trecho data-rotulo={t.fontes.copiar} data-ok={t.fontes.ok} data-falha={t.fontes.falha} data-msg-ok={t.fontes.msgOk} data-msg-falha={t.fontes.msgFalha}>{t.fontes.copiar}</button><span class="so-leitor" role="status" data-status></span></div>
+    <pre tabindex="0"><code>{a.fontesSnippet}</code></pre>
+   </div>
+  </section>
+
+  <section id="templates" class="marca-secao" aria-labelledby="templates-titulo">
+   <h2 id="templates-titulo">{t.templates.titulo}</h2>
+   <div class="templates">{a.templates.map(([png,tam],i)=>{const [nome,tema]=t.templates.itens[i];return <div class="template">
+    <div class="template-vista"><img src={arquivo('/marca/templates/'+png)} alt={nome} decoding="async"/></div>
+    <div class="template-pe">
+     <div class="template-nome"><span>{nome}</span><span class="template-tam">{tam} · {tema}</span></div>
+     <a class="baixar" href={arquivo('/marca/templates/'+png)} download><span aria-hidden="true">↓</span> PNG<span class="so-leitor"> · {nome}</span></a>
+    </div>
+   </div>;})}</div>
+  </section>
+
+  <section id="diretrizes" class="marca-secao marca-diretrizes" aria-labelledby="diretrizes-titulo">
+   <div class="diretrizes-texto">
+    <h2 id="diretrizes-titulo">{t.diretrizes.titulo}</h2>
+    <p>{t.diretrizes.texto}</p>
+    <div class="diretrizes-botoes">
+     <a class="botao botao-primario" href={arquivo(a.documentos.diretrizes)}>{t.diretrizes.abrir}</a>
+     <a class="botao botao-secundario" href={arquivo(a.documentos.manual)}>{t.diretrizes.manual}</a>
+    </div>
+   </div>
+   <ol class="regras">{t.diretrizes.regras.map((r,i)=><li><span class="regra-n">{String(i+1).padStart(2,'0')}</span><span>{partes(r).map(x=>x.codigo?<code>{x.p}</code>:x.p)}</span></li>)}</ol>
+  </section>
+
+  <section id="devs" class="marca-secao" aria-labelledby="devs-titulo">
+   <h2 id="devs-titulo">{t.devs.titulo}</h2>
+   <div class="devs">{t.devs.itens.map(([titulo,texto],i)=>{const destino=[ '/partitura/partitura.css','/partitura/partitura.json','/partitura/DESIGN.md',a.documentos.componentes][i];return <a class="dev" href={arquivo(destino)} download={i<3?'':undefined}>
+    <span class="dev-titulo">{partes(titulo).map(x=>x.codigo?<code class="codigo-liso">{x.p}</code>:x.p)}</span>
+    <span class="dev-texto">{partes(texto).map(x=>x.codigo?<code>{x.p}</code>:x.p)}</span>
+   </a>;})}</div>
+  </section>
+ </div>
+</Base>
+<script>
+ import '../scripts/marca.ts';
+</script>
+<style>
+.marca-hero{padding:var(--e-8) 0 var(--e-6)}
+.marca-hero-grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:var(--e-6);align-items:end}
+.marca-hero-titulo{display:flex;flex-direction:column;gap:var(--e-3)}
+.marca-hero h1{margin:0;font:var(--tipo-display);letter-spacing:var(--trk-display)}
+.marca-lead{margin:0;max-width:52ch;font:var(--tipo-corpo);color:var(--texto-2);text-wrap:pretty}
+.marca-nav{display:flex;flex-wrap:wrap;gap:0 var(--e-4);margin-top:var(--e-5);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono)}
+.marca-nav a{display:inline-flex;align-items:center;min-height:var(--alvo);min-width:var(--alvo);color:var(--texto-2);text-decoration:underline;text-decoration-color:var(--linha-forte);text-underline-offset:3px;transition:text-decoration-color var(--dur-curta) var(--curva)}
+.marca-nav a:hover{text-decoration-color:var(--texto)}
+.marca-corpo{padding-bottom:var(--e-9)}
+.marca-secao{padding:var(--e-7) 0;display:flex;flex-direction:column;gap:var(--e-5);scroll-margin-top:calc(var(--altura-cabecalho) + var(--e-4))}
+.marca-secao+.marca-secao{border-top:1px solid var(--linha)}
+.marca-secao h2{margin:0;font:var(--tipo-titulo-1);letter-spacing:var(--trk-titulo-1)}
+.marca-cabeca{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:var(--e-3)}
+.marca-nota{font:var(--tipo-apoio);color:var(--texto-2)}
+.marca-aviso{font:var(--peso-texto) var(--t-rotulo)/1.4 var(--f-mono);color:var(--texto-2)}
+/* Logos: palco no fundo da versão (noite, névoa ou trilho) e os dois downloads. */
+.logos{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:var(--e-3)}
+.logo{display:flex;flex-direction:column;overflow:hidden;border-radius:var(--raio-cartao);border:1px solid var(--linha);background:var(--superficie)}
+.logo-palco{height:150px;display:flex;align-items:center;justify-content:center;padding:var(--e-5);box-sizing:border-box}
+.logo-palco img{display:block;width:auto;max-width:100%}
+.logo-pe{display:flex;flex-direction:column;gap:var(--e-3);padding:var(--e-3) var(--e-4) var(--e-4);border-top:1px solid var(--linha)}
+.logo-nome{display:flex;justify-content:space-between;align-items:baseline;gap:var(--e-2);font:var(--peso-titulo) var(--t-corpo)/1.2 var(--f-titulo)}
+.logo-uso,.template-tam{font:var(--peso-texto) var(--t-rotulo)/1.3 var(--f-mono);color:var(--texto-3)}
+.logo-baixar{display:flex;flex-wrap:wrap;gap:var(--e-2)}
+.baixar{display:inline-flex;align-items:center;gap:.4em;min-height:var(--alvo);padding:0 var(--e-3);border-radius:var(--raio-botao);border:1px solid var(--linha-forte);font:var(--peso-texto) var(--t-rotulo)/1 var(--f-mono);color:var(--texto);box-sizing:border-box;transition:border-color var(--dur-curta) var(--curva)}
+.baixar:hover{border-color:var(--texto-3)}
+.marca-icones{display:flex;flex-wrap:wrap;align-items:center;gap:0 var(--e-4);font:var(--peso-texto) var(--t-rotulo)/1.4 var(--f-mono);color:var(--texto-2)}
+.marca-icones a{display:inline-flex;align-items:center;min-height:var(--alvo);color:var(--texto);text-decoration:underline;text-decoration-color:var(--linha-forte);text-underline-offset:3px}
+.marca-icones a:hover{text-decoration-color:var(--texto)}
+/* Paleta: cada amostra copia o hex (rótulo "✓ copiado" por 1,6 s, como o comando copiável). */
+.paleta-grupo{display:flex;flex-direction:column;gap:var(--e-3)}
+.paleta-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:var(--e-2)}
+.amostra{display:flex;flex-direction:column;gap:var(--e-2);padding:var(--e-2) var(--e-2) var(--e-3);border-radius:var(--raio-cartao);border:1px solid var(--linha);background:var(--superficie);color:var(--texto);text-align:left;cursor:pointer;font:inherit;transition:border-color var(--dur-curta) var(--curva)}
+.amostra:hover{border-color:var(--texto-3)}
+.amostra-cor{height:64px;border-radius:var(--raio-botao);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tinta) 8%,transparent)}
+.amostra-texto{display:flex;flex-direction:column;gap:2px;padding:0 var(--e-1);font:var(--peso-texto) var(--t-rotulo)/1.35 var(--f-mono)}
+.amostra-hex{color:var(--texto-2)}
+.amostra-uso{font:var(--peso-texto) 13px/1.35 var(--f-texto);color:var(--texto-3)}
+/* Fontes: a amostra de cada família e o trecho do <head>, sempre noite. */
+.fontes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:var(--e-3)}
+.fonte{display:flex;flex-direction:column;gap:var(--e-2);padding:var(--e-5);border-radius:var(--raio-cartao);border:1px solid var(--linha);background:var(--superficie)}
+.fonte-amostra{font-size:var(--t-display);line-height:1}
+.fonte-titulo{font-family:var(--f-titulo);font-weight:var(--peso-titulo);letter-spacing:var(--trk-titulo-1)}
+.fonte-texto{font-family:var(--f-texto)}
+.fonte-mono{font-family:var(--f-mono)}
+.fonte-nome{font:var(--peso-titulo) var(--t-titulo-3)/1.2 var(--f-titulo)}
+.fonte-uso{font:var(--tipo-apoio);color:var(--texto-2)}
+.fonte-link{align-self:flex-start;display:inline-flex;align-items:center;min-height:var(--alvo);font:var(--peso-texto) var(--t-rotulo)/1 var(--f-mono);color:var(--texto);text-decoration:underline;text-decoration-color:var(--linha-forte);text-underline-offset:3px;transition:text-decoration-color var(--dur-curta) var(--curva)}
+.fonte-link:hover{text-decoration-color:var(--texto)}
+.trecho{border-radius:var(--raio-cartao);background:var(--superficie)}
+.trecho-topo{display:flex;justify-content:space-between;align-items:center;gap:var(--e-3);padding:var(--e-2) var(--e-2) var(--e-2) var(--e-4);border-bottom:1px solid var(--linha);font:var(--peso-texto) var(--t-rotulo)/1 var(--f-mono);color:var(--texto-2)}
+.trecho-copiar{display:inline-flex;align-items:center;min-height:var(--alvo);padding:0 var(--e-3);border-radius:9px;border:1px solid var(--linha-forte);background:var(--superficie-2);color:var(--texto);font:var(--peso-texto) var(--t-rotulo)/1 var(--f-mono);white-space:nowrap;cursor:pointer;box-sizing:border-box}
+.trecho-copiar:hover{background:var(--linha-forte)}
+.trecho-copiar[data-estado='ok']{color:var(--verificado-texto)}
+.trecho-copiar[data-estado='falha']{color:var(--falha-texto)}
+.trecho pre{margin:0;padding:var(--e-4);border-radius:0 0 var(--raio-cartao) var(--raio-cartao);overflow-x:auto;font:var(--peso-texto) 13px/1.7 var(--f-mono);color:var(--texto)}
+/* Templates: a prévia em 16:10 e o download. */
+.templates{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr));gap:var(--e-4)}
+.template{display:flex;flex-direction:column;gap:var(--e-3);padding:var(--e-3);border-radius:var(--raio-cartao);border:1px solid var(--linha);background:var(--superficie)}
+.template-vista{display:flex;align-items:center;justify-content:center;aspect-ratio:16/10;border-radius:var(--raio-botao);overflow:hidden;background:var(--trilho)}
+.template-vista img{display:block;max-width:100%;max-height:100%;object-fit:contain}
+.template-pe{display:flex;justify-content:space-between;align-items:center;gap:var(--e-3);padding:0 var(--e-1) var(--e-1)}
+.template-nome{display:flex;flex-direction:column;font:var(--peso-titulo) var(--t-corpo)/1.3 var(--f-titulo)}
+/* Diretrizes rápidas: o texto com os dois documentos e as seis regras. */
+.marca-diretrizes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:var(--e-6);align-items:start}
+.diretrizes-texto{display:flex;flex-direction:column;gap:var(--e-3)}
+.diretrizes-texto p{margin:0;max-width:44ch;font:var(--tipo-corpo);color:var(--texto-2)}
+.diretrizes-botoes{display:flex;flex-wrap:wrap;gap:var(--e-2)}
+.botao{display:inline-flex;align-items:center;min-height:var(--alvo);padding:0 var(--e-4);border-radius:var(--raio-botao);font:var(--tipo-botao);box-sizing:border-box;transition:background-color var(--dur-curta) var(--curva),border-color var(--dur-curta) var(--curva)}
+.botao-primario{background:var(--acao);color:var(--sobre-acao)}
+.botao-primario:hover{background:color-mix(in srgb,var(--acao) 86%,var(--chao))}
+.botao-secundario{border:1px solid var(--linha-forte);background:var(--superficie);color:var(--texto)}
+.botao-secundario:hover{border-color:var(--texto-3)}
+.regras{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;border-top:1px solid var(--texto)}
+.regras li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:var(--e-3);padding:var(--e-3) 0;border-bottom:1px solid var(--linha);font:var(--peso-texto) 16px/1.45 var(--f-texto)}
+.regra-n{font:var(--peso-texto) 13px/1.6 var(--f-mono);color:var(--texto-3)}
+/* Para devs e agentes: os três arquivos e a biblioteca de componentes. */
+.devs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:var(--e-3)}
+.dev{display:flex;flex-direction:column;gap:6px;padding:var(--e-5);border-radius:var(--raio-cartao);border:1px solid var(--linha);background:var(--superficie);color:var(--texto);transition:border-color var(--dur-curta) var(--curva)}
+.dev:hover{border-color:var(--texto-3)}
+.dev-titulo{font:var(--peso-texto) 15px/1.3 var(--f-mono)}
+.dev-texto{font:var(--tipo-apoio);color:var(--texto-2)}
+</style>

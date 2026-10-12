@@ -1,0 +1,100 @@
+---
+// Cabeçalho do HTML da home: fixo no topo, translúcido, com assinatura, navegação, seletor de
+// língua e dois botões (secundário e primário do kit). Abaixo de 768 px vira menu, como manda a
+// responsividade do DESIGN.md (D19): o botão de 44 px abre um painel com a navegação e os dois
+// destinos; Esc fecha e devolve o foco ao botão. Abaixo de 480 px a assinatura dá lugar ao
+// símbolo (o kit pede só o símbolo abaixo de 120 px de espaço para a marca).
+// Na home as âncoras são da própria página; nas outras, levam à home na língua.
+import LanguageSelector from './LanguageSelector.astro';
+import {localeFor,localize,moldura,unlocalize,ui,withBase} from '../data/i18n';
+const locale=localeFor(Astro.url.pathname),m=moldura(locale),text=ui(locale);
+const naHome=unlocalize(Astro.url.pathname)==='/';
+const home=localize('/',locale);
+const ancora=(hash:string)=>naHome?hash:home+hash;
+const nasDocs=unlocalize(Astro.url.pathname).startsWith('/docs/');
+const rotuloNav=locale==='en'?'Main navigation':'Navegação principal';
+---
+<header class="cabecalho" data-cabecalho>
+ <div class="cabecalho-linha">
+  <a class="cabecalho-marca" href={naHome?'#topo':home}><img class="marca-assinatura" src={withBase('/marca/svg/assinatura-fundo-claro.svg')} alt="Orkastery" width="132" height="26"/><img class="marca-simbolo" src={withBase('/marca/svg/simbolo-fundo-claro.svg')} alt="Orkastery" width="28" height="28"/></a>
+  <nav class="cabecalho-nav" aria-label={rotuloNav} data-nav-prioridade>
+   {m.nav.map(([hash,label])=><a href={ancora(hash)}>{label}</a>)}
+   <a href={localize('/docs/',locale)} aria-current={nasDocs?'page':undefined}>{m.docs}</a>
+  </nav>
+  <div class="cabecalho-espaco"></div>
+  <LanguageSelector/>
+  <a class="cabecalho-falar" href={ancora('#contato')}>{m.talk}</a>
+  <a class="cabecalho-instalar" href={ancora('#instalar')}>{m.install}</a>
+  <button type="button" class="cabecalho-menu" aria-expanded="false" aria-controls="menu-movel" data-menu-botao data-rotulo-abrir={text.menu} data-rotulo-fechar={text.close} aria-label={text.menu}><span aria-hidden="true"></span></button>
+ </div>
+ <div class="menu-movel" id="menu-movel" hidden data-menu-painel>
+  <nav aria-label={rotuloNav}>
+   {m.nav.map(([hash,label])=><a href={ancora(hash)}>{label}</a>)}
+   <a href={localize('/docs/',locale)} aria-current={nasDocs?'page':undefined}>{m.docs}</a>
+   <a href={ancora('#contato')}>{m.talk}</a>
+   <a href={ancora('#instalar')}>{m.install}</a>
+  </nav>
+ </div>
+</header>
+<script>
+ // Navegação de prioridade, como no HTML da home: o link que não cabe quebra para uma linha
+ // escondida ou ficaria cortado na borda; ele some inteiro e sai do teclado e do leitor de tela
+ // (inert), para o foco nunca cair no invisível nem num link pela metade.
+ const nav=document.querySelector<HTMLElement>('[data-nav-prioridade]');
+ if(nav){
+  const atualizar=()=>{
+   const links=[...nav.querySelectorAll('a')];links.forEach(a=>a.removeAttribute('inert'));
+   const caixa=nav.getBoundingClientRect(),topo=links[0]?.getBoundingClientRect().top??caixa.top,direita=caixa.right-4;
+   for(const a of links){const r=a.getBoundingClientRect();a.toggleAttribute('inert',nav.clientWidth===0||r.top-topo>2||r.right>direita+1);}
+  };
+  new ResizeObserver(atualizar).observe(nav);atualizar();
+ }
+ // Menu abaixo de 768 px: abre e fecha pelo botão, fecha com Esc (o foco volta ao botão), ao
+ // escolher um destino e quando a janela cresce de novo.
+ const botao=document.querySelector<HTMLButtonElement>('[data-menu-botao]');
+ const painel=document.querySelector<HTMLElement>('[data-menu-painel]');
+ if(botao&&painel){
+  const abrir=(aberto:boolean)=>{
+   botao.setAttribute('aria-expanded',String(aberto));
+   botao.setAttribute('aria-label',(aberto?botao.dataset.rotuloFechar:botao.dataset.rotuloAbrir)||'');
+   painel.hidden=!aberto;
+  };
+  botao.addEventListener('click',()=>abrir(botao.getAttribute('aria-expanded')!=='true'));
+  painel.addEventListener('click',e=>{if((e.target as HTMLElement).closest('a'))abrir(false);});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!painel.hidden){abrir(false);botao.focus();}});
+  matchMedia('(min-width:768px)').addEventListener('change',e=>{if(e.matches)abrir(false);});
+ }
+</script>
+<style>
+.cabecalho{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--chao) 82%,transparent);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--linha)}
+.cabecalho-linha{max-width:var(--largura);margin:0 auto;padding:0 var(--calha);height:var(--altura-cabecalho);display:flex;align-items:center;gap:var(--e-5)}
+.cabecalho-marca{display:flex;align-items:center;flex:none;min-height:var(--alvo);min-width:var(--alvo)}
+.cabecalho-marca img{display:block;width:auto}
+.marca-assinatura{height:26px}
+.marca-simbolo{height:28px;display:none!important}
+/* 4 px de respiro em volta dos links: o anel de foco (--anel-foco) cabe dentro do recorte. */
+.cabecalho-nav{display:flex;gap:var(--e-5);font:var(--peso-destaque) var(--t-apoio)/1 var(--f-texto);color:var(--texto-2);flex-wrap:wrap;white-space:nowrap;overflow:hidden;min-width:0;flex:0 1 auto;height:calc(var(--alvo) + 8px);padding:4px;margin:0 -4px;box-sizing:border-box;align-self:center}
+.cabecalho-nav a[inert]{visibility:hidden}
+.cabecalho-nav a{display:inline-flex;align-items:center;min-height:var(--alvo);min-width:var(--alvo);transition:color var(--dur-curta) var(--curva)}
+.cabecalho-nav a:hover,.cabecalho-nav a[aria-current]{color:var(--texto)}
+.cabecalho-espaco{flex:1}
+.cabecalho-falar,.cabecalho-instalar{display:inline-flex;align-items:center;min-height:var(--alvo);padding:0 var(--e-4);border-radius:var(--raio-botao);font:var(--tipo-botao);flex:none;transition:background-color var(--dur-curta) var(--curva),border-color var(--dur-curta) var(--curva);box-sizing:border-box}
+.cabecalho-falar{color:var(--texto);border:1px solid var(--linha-forte)}
+.cabecalho-falar:hover{border-color:var(--texto)}
+.cabecalho-instalar{color:var(--sobre-acao);background:var(--acao)}
+.cabecalho-instalar:hover{background:color-mix(in srgb,var(--acao) 86%,var(--chao))}
+.cabecalho-menu{display:none;align-items:center;justify-content:center;width:var(--alvo);height:var(--alvo);padding:0;border:1px solid var(--linha-forte);border-radius:var(--raio-botao);background:var(--superficie);cursor:pointer;flex:none}
+.cabecalho-menu span,.cabecalho-menu span::before{display:block;width:16px;height:1.5px;background:var(--texto);border-radius:1px;transition:transform var(--dur-media) var(--curva)}
+.cabecalho-menu span{position:relative;transform:translateY(-3px)}
+.cabecalho-menu span::before{content:'';position:absolute;left:0;top:6px}
+.cabecalho-menu[aria-expanded='true'] span{transform:rotate(45deg)}
+.cabecalho-menu[aria-expanded='true'] span::before{transform:translateY(-6px) rotate(-90deg)}
+.menu-movel{border-top:1px solid var(--linha);background:var(--superficie);box-shadow:var(--sombra-2)}
+.menu-movel nav{max-width:var(--largura);margin:0 auto;padding:var(--e-2) var(--calha) var(--e-4);display:flex;flex-direction:column}
+.menu-movel a{display:flex;align-items:center;min-height:52px;border-bottom:1px solid var(--linha);font:var(--tipo-destaque);color:var(--texto)}
+.menu-movel a:last-child{border-bottom:0}
+/* Abaixo de 768 px o cabeçalho vira menu (D19); abaixo de 480 px, só o símbolo. */
+@media (max-width:767.98px){.cabecalho-nav,.cabecalho-falar,.cabecalho-instalar{display:none}.cabecalho-menu{display:inline-flex}.cabecalho-linha{gap:var(--e-3)}}
+@media (min-width:768px){.menu-movel{display:none}}
+@media (max-width:479.98px){.marca-assinatura{display:none!important}.marca-simbolo{display:block!important}}
+</style>

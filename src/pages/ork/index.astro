@@ -1,7 +1,7 @@
 ---
-import HomePage from '../../components/HomePage.astro';
+import ProductPage from '../../components/ProductPage.astro';
 import products from '../../data/product-pages';
 import {localeFor} from '../../data/i18n';
 const locale=localeFor(Astro.url.pathname);
 ---
-<HomePage content={products.ork[locale]} product="Ork"/>
+<ProductPage content={products.ork[locale]} product="Ork"/>

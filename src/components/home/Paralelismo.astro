@@ -1,0 +1,152 @@
+---
+// 01 · Paralelismo: o diagrama do HTML da home (você, a camada do ork, três máquinas e a fila de
+// merge), o roadmap reservado por máquina e os quatro cartões de escala. O estado inicial é o do
+// design (tick 0); o script da home avança o relógio de 2,4 s e repinta os mesmos elementos.
+// Topologia do kit: instrução em tracejado regência que anda a 2,8 s, evidência em pátina
+// contínua até a main, a camada no tema noite e latão só no "você" (no símbolo da marca).
+import SectionHead from '../ds/SectionHead.astro';
+import TechnicalText from '../TechnicalText.astro';
+import {topo,cor,preencher} from '../../lib/home-state.mjs';
+import {withBase} from '../../data/i18n';
+const {t}=Astro.props;
+const p=t.parallel,v=topo(t,0);
+let fio=0;
+---
+<section id="escala" class="secao-padrao">
+ <div class="container">
+  <span id="arquitetura" class="ancora-antiga" aria-hidden="true"></span><span id="camadas-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-adapt-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-comp-titulo" class="ancora-antiga" aria-hidden="true"></span>
+  <SectionHead sobretitulo={p.eyebrow} titulo={p.title} lead={p.lead} medidaTitulo="20ch" medidaLead="62ch"/>
+  <div class="diagrama" data-reveal tabindex="0" role="region" aria-label={p.title}>
+   <div class="diagrama-palco">
+    <div class="centro">
+     <div class="voce">
+      <img src={withBase('/marca/svg/simbolo-fundo-claro.svg')} alt="" width="36" height="36"/>
+      <div><div class="voce-titulo">{p.you}</div><div class="voce-sub">{p.youSub}</div></div>
+      <div class="voce-hosts">{t.runtimes.list.map(n=><span>{n}</span>)}</div>
+     </div>
+    </div>
+    <div class="centro"><span class="fluxo-v" style="height:34px"></span></div>
+    <div class="camada" data-tema="noite">
+     <div>
+      <div class="camada-rotulo">{p.layer}</div>
+      <div class="camada-nome">ork</div>
+      <div class="camada-sub">{p.layerSub}</div>
+     </div>
+     <div class="camada-fns">{v.coreFns.map((f,i)=><span data-fn={i} style={`background:${cor(f.bg)};color:${cor(f.fg)};border-color:${cor(f.bd)}`}>{f.t}</span>)}</div>
+    </div>
+    <div class="ligacao">
+     <span class="fluxo-v ligacao-tronco"></span>
+     <span class="fluxo-h ligacao-trave"></span>
+     <span class="fluxo-v ligacao-ramo"></span><span class="fluxo-v ligacao-ramo"></span><span class="fluxo-v ligacao-ramo"></span>
+    </div>
+    <div class="maquinas">
+     {v.machines.map((m,mi)=><div class="maquina holofote" data-holofote>
+      <div class="maquina-topo"><span class="quadrado" style={`background:${cor(m.color)}`}></span><span class="maquina-nome">{m.name}</span><span class="estica"></span><span class="maquina-amb">{m.env}</span></div>
+      {m.runtimes.map((r,ri)=><div class="runtime">
+       <div class="runtime-topo"><span class="runtime-nome">{r.rt}</span><span class="runtime-perfil" data-rt-perfil={mi+'-'+ri}>{preencher(p.profile,{p:r.prof})}</span><span class="estica"></span><span class="runtime-estado" data-rt-estado={mi+'-'+ri} style={`background:${cor(r.sbg)};color:${cor(r.sfg)}`}>{r.state}</span></div>
+       <div class="runtime-threads">{r.threads.map(th=>{const id=fio++;return <div class="thread"><span class="thread-nome">{th.n}</span><span class="segmentos" data-fio={id} role="img" aria-label={`${th.n}: ${th.fase}, ${th.estado}`}>{th.segs.map(sg=><span style={`background:${cor(sg)}`}></span>)}</span><span class="thread-fase" data-fio-fase={id} aria-hidden="true">{th.fase}</span></div>;})}</div>
+      </div>)}
+      <div class="maquina-pe">{m.foot}</div>
+     </div>)}
+    </div>
+    <div class="ligacao ligacao-baixo">
+     <span class="fluxo-v ligacao-ramo-baixo"></span><span class="fluxo-v ligacao-ramo-baixo"></span><span class="fluxo-v ligacao-ramo-baixo"></span>
+     <span class="fluxo-h ligacao-trave-baixo"></span>
+     <span class="fluxo-v ligacao-tronco-baixo"></span>
+    </div>
+    <div class="centro">
+     <div class="fila">
+      <code class="codigo-liso fila-main">main</code>
+      <span class="fila-rotulo">{p.mergeLabel}</span>
+      {v.mergeQueue.map((q,k)=><span class="fila-item" data-fila={k} style={`background:${cor(q.bg)};color:${cor(q.fg)}`}>{q.t}</span>)}
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="roadmap" data-reveal>
+   <div class="roadmap-topo">
+    <div>
+     <div class="roadmap-titulo">{p.roadmapTitle}</div>
+     <div class="roadmap-sub">$ <code class="codigo-liso">ork roadmap pegar</code> · {p.roadmapSub}</div>
+    </div>
+    <div class="roadmap-legenda">
+     {v.machineLegend.map(l=><span><span class="quadrado" style={`background:${cor(l.c)}`}></span>{l.n}</span>)}
+     <span><span class="quadrado quadrado-livre"></span>{p.free}</span>
+    </div>
+   </div>
+   <div class="roadmap-itens">{v.roadmap.map((it,i)=><span data-rm={i} style={`background:${cor(it.bg)};color:${cor(it.fg)};border:1px ${it.bs} ${cor(it.bd)}`}>{it.id}</span>)}</div>
+  </div>
+  <div class="escala" data-reveal>
+   {p.scale.map(s=><div class="escala-cartao holofote" data-holofote>
+    <div class="escala-titulo">{s.t}</div>
+    <p class="escala-texto"><TechnicalText text={s.d}/></p>
+    <code class="escala-codigo">{s.c}</code>
+   </div>)}
+  </div>
+ </div>
+</section>
+<style>
+.diagrama{margin-top:var(--e-7);background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio-palco);box-shadow:var(--sombra-2);overflow-x:auto}
+.diagrama:focus-visible{box-shadow:var(--anel-foco)}
+.diagrama-palco{min-width:920px;padding:var(--e-6)}
+.centro{display:flex;justify-content:center}
+.voce{display:flex;align-items:center;gap:var(--e-4);padding:var(--e-3) var(--e-3) var(--e-3) var(--e-3);border-radius:var(--raio-cartao);background:var(--superficie-2)}
+.voce img{width:36px;height:36px}
+.voce-titulo{font:var(--peso-destaque) 15px/1.2 var(--f-texto)}
+.voce-sub{margin-top:var(--e-1);font:var(--peso-texto) var(--t-rotulo)/1.2 var(--f-mono);color:var(--texto-3)}
+.voce-hosts{display:flex;gap:6px;margin-left:6px}
+.voce-hosts span{padding:6px var(--e-2);border-radius:var(--raio-chip);background:var(--superficie);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);color:var(--texto-2)}
+.fluxo-v{width:2px;background-image:repeating-linear-gradient(to bottom,var(--executando) 0 4px,transparent 4px 9px);background-size:2px 9px;animation:orkFlow var(--pulso) linear infinite}
+.fluxo-h{height:2px;background-image:repeating-linear-gradient(to right,var(--executando) 0 4px,transparent 4px 9px);background-size:9px 2px;animation:orkFlowX var(--pulso) linear infinite}
+.camada{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr);gap:var(--e-5);align-items:center;padding:var(--e-5);border-radius:var(--raio-cartao);background:var(--superficie);box-shadow:0 0 0 6px color-mix(in srgb,var(--tinta) 4%,transparent)}
+.camada-rotulo{font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);text-transform:uppercase;color:var(--texto-2)}
+.camada-nome{margin-top:var(--e-3);font:var(--tipo-titulo-2);letter-spacing:var(--trk-titulo-2)}
+.camada-sub{margin-top:6px;font:var(--peso-texto) var(--t-rotulo)/1.4 var(--f-mono);color:var(--texto-2)}
+.camada-fns{display:flex;flex-wrap:wrap;gap:var(--e-2)}
+.camada-fns span{padding:var(--e-2) var(--e-3);border-radius:var(--raio-chip);font:var(--peso-destaque) var(--t-apoio)/1 var(--f-texto);border:1px solid;transition:background var(--dur-longa) var(--curva),color var(--dur-longa) var(--curva),border-color var(--dur-longa) var(--curva)}
+.ligacao{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;height:46px}
+.ligacao-tronco{position:absolute;left:calc(50% - 1px);top:0;height:14px}
+.ligacao-trave{position:absolute;top:14px;left:calc(16.666% - 5.33px);right:calc(16.666% - 5.33px)}
+.ligacao-ramo{justify-self:center;margin-top:14px;height:32px}
+.ligacao-ramo-baixo{justify-self:center;height:32px}
+.ligacao-baixo .fluxo-v,.ligacao-baixo .fluxo-h{background:var(--verificado);animation:none}
+.ligacao-trave-baixo{position:absolute;top:32px;left:calc(16.666% - 5.33px);right:calc(16.666% - 5.33px)}
+.ligacao-tronco-baixo{position:absolute;left:calc(50% - 1px);top:32px;height:14px}
+.maquinas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.maquina{border-radius:var(--raio-cartao);border:1px solid var(--linha);background-color:var(--superficie);padding:var(--e-4);display:flex;flex-direction:column;gap:var(--e-3)}
+.maquina-topo{display:flex;align-items:center;gap:var(--e-3)}
+.quadrado{width:10px;height:10px;border-radius:var(--raio-segmento)}
+.quadrado-livre{border:1px dashed color-mix(in srgb,var(--texto) 35%,transparent);box-sizing:border-box}
+.maquina-nome{font:var(--peso-titulo) 15px/1 var(--f-titulo)}
+.estica{flex:1}
+.maquina-amb{font:var(--peso-texto) var(--t-rotulo)/1 var(--f-mono);color:var(--texto-3)}
+.runtime{border-radius:var(--raio-botao);background:color-mix(in srgb,var(--superficie-2) 60%,var(--superficie));padding:var(--e-3)}
+.runtime-topo{display:flex;align-items:center;gap:var(--e-2);flex-wrap:wrap}
+.runtime-nome{font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);color:var(--texto)}
+.runtime-perfil{font:var(--peso-texto) var(--t-rotulo)/1 var(--f-mono);color:var(--texto-3)}
+.runtime-estado{padding:5px var(--e-2);border-radius:var(--raio-pilula);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-texto);transition:background var(--dur-longa) var(--curva),color var(--dur-longa) var(--curva)}
+.runtime-threads{margin-top:var(--e-3);display:flex;flex-direction:column;gap:var(--e-2)}
+.thread{display:grid;grid-template-columns:minmax(0,1fr) 72px 7ch;gap:var(--e-3);align-items:center}
+.thread-fase{font:var(--peso-texto) var(--t-rotulo)/1 var(--f-mono);color:var(--texto-3);white-space:nowrap}
+.thread-nome{font:var(--peso-destaque) var(--t-apoio)/1.2 var(--f-texto);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.segmentos{display:grid;grid-template-columns:repeat(6,1fr);gap:2px}
+.segmentos span{height:5px;border-radius:var(--raio-segmento);transition:background var(--dur-longa) var(--curva)}
+.maquina-pe{font:var(--peso-texto) var(--t-rotulo)/1.4 var(--f-mono);color:var(--texto-3)}
+.fila{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e-3) var(--e-4);padding:var(--e-4) var(--e-5);border-radius:var(--raio-cartao);background:color-mix(in srgb,var(--verificado) 6%,var(--superficie));border:1px solid color-mix(in srgb,var(--verificado) 18%,var(--superficie))}
+.fila-main.codigo-liso{font:var(--peso-destaque) 15px/1 var(--f-mono);color:var(--verificado-texto)}
+.fila-rotulo{font:var(--tipo-apoio);line-height:1;color:var(--texto-2)}
+.fila-item{padding:var(--e-2) var(--e-3);border-radius:var(--raio-chip);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono)}
+.roadmap{margin-top:var(--e-4);padding:var(--e-5);border-radius:var(--raio-cartao);background:var(--superficie);border:1px solid var(--linha)}
+.roadmap-topo{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px}
+.roadmap-titulo{font:var(--tipo-titulo-3);letter-spacing:var(--trk-titulo-3)}
+.roadmap-sub{margin-top:6px;font:var(--peso-texto) var(--t-rotulo)/1.4 var(--f-mono);color:var(--texto-3)}
+.roadmap-legenda{display:flex;flex-wrap:wrap;gap:var(--e-2) var(--e-4);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-texto);color:var(--texto-2)}
+.roadmap-legenda>span{display:flex;align-items:center;gap:7px}
+.roadmap-itens{margin-top:var(--e-4);display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px}
+.roadmap-itens span{padding:var(--e-3) 6px;border-radius:var(--raio-chip);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);text-align:center;transition:background var(--dur-longa) var(--curva),color var(--dur-longa) var(--curva),border-color var(--dur-longa) var(--curva)}
+.escala{margin-top:var(--e-4);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:var(--e-3)}
+.escala-cartao{padding:var(--e-5);border-radius:var(--raio-cartao);background-color:var(--superficie);border:1px solid var(--linha);display:flex;flex-direction:column;gap:var(--e-3)}
+.escala-titulo{font:var(--tipo-titulo-3);letter-spacing:var(--trk-titulo-3)}
+.escala-texto{margin:0;flex:1;font:var(--tipo-apoio);color:var(--texto-2);text-wrap:pretty}
+.escala-codigo{align-self:flex-start;margin-top:6px;font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);padding:var(--e-2) var(--e-3);border-radius:var(--raio-chip);background:var(--superficie-2);color:var(--texto)}
+</style>

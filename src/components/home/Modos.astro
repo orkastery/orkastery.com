@@ -1,0 +1,76 @@
+---
+// 04 · Modos: a matriz dos quatro modos (linhas clicáveis, #Maestro no início), a legenda, os dois
+// cartões do modo escolhido e o fecho. Os textos de cada modo saem prontos do build (um por modo,
+// só o escolhido aparece), com o código já formatado pelo TechnicalText.
+import SectionHead from '../ds/SectionHead.astro';
+import TechnicalText from '../TechnicalText.astro';
+import {modes,modeDetail,ESTADO_INICIAL,PH,cor} from '../../lib/home-state.mjs';
+const {t}=Astro.props;
+const m=t.modes,linhas=modes(t,ESTADO_INICIAL.mode);
+---
+<section id="modos" class="secao-padrao">
+ <div class="container">
+  <span id="modos-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-modos-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-radar-titulo" class="ancora-antiga" aria-hidden="true"></span>
+  <SectionHead sobretitulo={m.eyebrow} titulo={m.title} lead={m.lead} medidaTitulo="18ch" medidaLead="60ch"/>
+  <div class="matriz" data-reveal data-modos>
+   <div class="matriz-rolagem">
+    <div class="matriz-tabela">
+     <div class="matriz-cabeca" aria-hidden="true">
+      <span></span>
+      <div class="matriz-fases">{PH.map(f=><span>{f}</span>)}</div>
+      <span class="matriz-hitl">HITL</span>
+     </div>
+     {linhas.map((l,i)=><button type="button" class="modo" data-modo={i} aria-pressed={l.on?'true':'false'} aria-controls="modos-detalhe" style={`background:${cor(l.bg)}`}>
+      <span class="modo-tag">{l.tag}</span>
+      <span class="modo-blocos">{l.blocks.map(b=><span class="modo-bloco" style={`grid-column:${b.col}`}>
+       <span class="modo-faixa" style={`background:${cor(b.bg)};color:${cor(b.fg)}`}>{b.label}</span>
+       {b.pausa&&<span class="ponto-hitl" title={m.hitlTitle}></span>}
+      </span>)}</span>
+      <span class="modo-pausas">{l.pausas}</span>
+     </button>)}
+    </div>
+   </div>
+  </div>
+  <div class="modos-legenda"><span><span class="ponto-hitl"></span>{m.legendHitl}</span><span><span class="bloco-amostra"></span>{m.legendBlock}</span></div>
+  <div class="modos-detalhe" id="modos-detalhe" aria-live="polite">
+   <div class="modos-cartao">
+    {m.list.map((_,i)=>{const d=modeDetail(t,i);return <div data-modo-texto={i} hidden={i!==ESTADO_INICIAL.mode}>
+     <div class="modos-rotulo">{d.when}</div>
+     <div class="modos-texto"><TechnicalText text={d.use}/></div>
+    </div>;})}
+   </div>
+   <div class="modos-cartao">
+    {m.list.map((_,i)=>{const d=modeDetail(t,i);return <div data-modo-texto={i} hidden={i!==ESTADO_INICIAL.mode}>
+     <div class="modos-rotulo">{m.hitlLabel}</div>
+     <div class="modos-texto"><TechnicalText text={d.about}/></div>
+    </div>;})}
+   </div>
+  </div>
+  <p class="modos-fecho">{m.closing} <span>{m.closingPatina}</span></p>
+ </div>
+</section>
+<style>
+.matriz{margin-top:var(--e-7);background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio-cartao);padding:var(--e-3)}
+.matriz-rolagem{overflow-x:auto;padding:4px;margin:-4px}
+.matriz-tabela{min-width:680px}
+.matriz-cabeca{display:grid;grid-template-columns:150px minmax(0,1fr) 90px;gap:var(--e-4);padding:var(--e-3) var(--e-4) var(--e-2)}
+.matriz-fases{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;font:var(--tipo-rotulo);line-height:1;letter-spacing:var(--espaco-rotulo);color:var(--texto-3)}
+.matriz-hitl{font:var(--tipo-rotulo);line-height:1;letter-spacing:var(--espaco-rotulo);color:var(--texto-3);text-align:right}
+.modo{display:grid;grid-template-columns:150px minmax(0,1fr) 90px;gap:var(--e-4);align-items:center;width:100%;min-height:var(--alvo);text-align:left;padding:var(--e-3) var(--e-4);border-radius:var(--raio-cartao);border:0;cursor:pointer;transition:background var(--dur-media) var(--curva)}
+.modo:hover{background:color-mix(in srgb,var(--superficie-2) 60%,var(--superficie))!important}
+.modo-tag{font:var(--tipo-titulo-3);letter-spacing:var(--trk-titulo-3);color:var(--texto)}
+.modo-blocos{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.modo-bloco{display:flex;align-items:center;gap:6px;min-width:0}
+.modo-faixa{flex:1;min-width:0;height:34px;border-radius:var(--raio-chip);display:flex;align-items:center;padding:0 var(--e-3);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);white-space:nowrap;overflow:hidden;transition:background var(--dur-media) var(--curva)}
+.ponto-hitl{flex:none;width:10px;height:10px;border-radius:50%;background:var(--espera);box-shadow:0 0 0 4px color-mix(in srgb,var(--espera) 22%,var(--superficie))}
+.modo-pausas{font:var(--tipo-titulo-3);letter-spacing:var(--trk-titulo-3);text-align:right;color:var(--texto)}
+.modos-legenda{margin-top:var(--e-3);display:flex;flex-wrap:wrap;gap:var(--e-3) var(--e-5);font:var(--peso-destaque) var(--t-apoio)/1.4 var(--f-texto);color:var(--texto-2)}
+.modos-legenda>span{display:flex;align-items:center;gap:var(--e-2)}
+.bloco-amostra{width:18px;height:10px;border-radius:var(--raio-segmento);background:var(--texto)}
+.modos-detalhe{margin-top:var(--e-4);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:var(--e-3)}
+.modos-cartao{padding:var(--e-5);border-radius:var(--raio-cartao);background:var(--superficie);border:1px solid var(--linha)}
+.modos-rotulo{font:var(--peso-destaque) var(--t-rotulo)/1.3 var(--f-mono);color:var(--texto-3)}
+.modos-texto{margin-top:var(--e-3);font:var(--tipo-destaque);text-wrap:pretty}
+.modos-fecho{margin:var(--e-7) 0 0;font:var(--tipo-titulo-1);letter-spacing:var(--trk-titulo-1);max-width:24ch;text-wrap:balance}
+.modos-fecho span{display:block;color:var(--verificado-texto)}
+</style>

@@ -1,0 +1,14 @@
+---
+// Separador do kit: linha que se dissolve nas pontas e o ponto de latão de 7 px no centro (o
+// componente "Separador" da Partitura; no máximo um por dobra de tela).
+// fundo: a cor da faixa e do anel em volta do ponto (chao ou superficie).
+interface Props { fundo?: 'chao'|'superficie'; }
+const {fundo='chao'}=Astro.props;
+---
+<div aria-hidden="true" class:list={['divisor',fundo==='superficie'&&'divisor-superficie']}><div class="container"><div class="divisor-fio"><span></span></div></div></div>
+<style>
+.divisor{--fundo:var(--chao);background:var(--fundo)}
+.divisor-superficie{--fundo:var(--superficie)}
+.divisor-fio{position:relative;height:1px;background:linear-gradient(to right,transparent,var(--linha-forte) 10%,var(--linha-forte) 90%,transparent)}
+.divisor-fio span{position:absolute;left:50%;top:50%;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;background:var(--latao);box-shadow:0 0 0 5px var(--fundo)}
+</style>

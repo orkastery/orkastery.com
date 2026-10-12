@@ -61,33 +61,6 @@ export default [
             ]
           }
         ]
-      },
-      "es": {
-        "title": "Mapa del producto",
-        "description": "Navegue desde la plataforma a sistemas, módulos y funcionalidades.",
-        "sections": [
-          {
-            "id": "plat-01",
-            "title": "PLAT-01 · Orkastery",
-            "paragraphs": [
-              "La plataforma conduce el desarrollo de software con agentes y pruebas verificables. El catálogo local clasifica estas entidades como vigentes; esto describe comportamiento documentado, no la validación de todas las instalaciones."
-            ]
-          },
-          {
-            "id": "sys-01",
-            "title": "SYS-01 · Núcleo ork",
-            "paragraphs": [
-              "El CLI reúne conducción, pruebas, runtimes, atención humana y memoria. Los módulos MOD-01 a MOD-05 detallan estas responsabilidades. El código está en core/src, en TypeScript, con nueve dependencias de runtime de versión fija, entre ellas los analizadores del grafo de código."
-            ]
-          },
-          {
-            "id": "sys-02",
-            "title": "SYS-02 · Hosts y canales",
-            "paragraphs": [
-              "Los adaptadores conectan el núcleo a Claude Code, Codex, Hermes y OpenClaw. MOD-06 cubre MCP e ingreso autenticado. La disponibilidad del transporte y los permisos dependen del host instalado."
-            ]
-          }
-        ]
       }
     }
   },
@@ -105,7 +78,8 @@ export default [
       "docs/produto/FEAT-027-fabrica-compartilhada.md",
       "docs/produto/FEAT-029-conducao-multicanal.md",
       "docs/produto/FEAT-032-roadmap-da-rede.md",
-      "docs/produto/FEAT-031-orkastery-network.md"
+      "docs/produto/FEAT-031-orkastery-network.md",
+      "docs/referencia/fronteira-de-confianca.md"
     ],
     "translations": {
       "pt": {
@@ -124,7 +98,7 @@ export default [
             "id": "feat-002",
             "title": "FEAT-002 · Modos de condução",
             "paragraphs": [
-              "#Classic, #Maestro e #Auto mudam as pausas. #Fast executa apenas GO e não autoriza push nem alterações de contrato público."
+              "#Classic, #Maestro e #Auto mudam os pontos de HITL. #Fast executa apenas GO e não autoriza push nem alterações de contrato público."
             ]
           },
           {
@@ -158,15 +132,29 @@ export default [
           {
             "id": "feat-027",
             "title": "FEAT-027 · Fábrica compartilhada",
+            "highlight": {
+              "title": "Muda para quem já usa",
+              "paragraphs": [
+                "Na versão {versao}, o fabrica.compartilhada: true do manifesto não liga mais a publicação do retrato desta máquina nem a leitura das outras máquinas: só a adesão da máquina liga as duas (ork fabrica entrar, ou ORK_FABRICA_COMPARTILHADA=1). Com o pedido no manifesto e sem a adesão, o ork doctor e o ork fabrica avisam com fabrica.nao-confirmada.",
+                "Se o time ligava a fábrica só pelo manifesto, rode ork fabrica entrar uma vez em cada máquina."
+              ],
+              "links": [
+                {
+                  "label": "Fronteira de confiança",
+                  "href": "/docs/confianca/"
+                }
+              ]
+            },
             "paragraphs": [
-              "Cada máquina publica seu retrato numa branch própria de estado. Sem rede, a leitura usa a última cópia com aviso; não presume dados atuais. O retrato traz runtime, modelo e esforço de cada thread, vindos do último despacho; thread sem despacho aparece sem runtime, nunca com um inventado."
+              "Cada máquina que entrou na fábrica (ork fabrica entrar, ou ORK_FABRICA_COMPARTILHADA=1) publica seu retrato numa branch própria de estado; o fabrica.compartilhada: true do manifesto é só o pedido do time, que o ork doctor avisa. Sem rede, a leitura usa a última cópia com aviso; não presume dados atuais. O retrato traz runtime, modelo e esforço de cada thread, vindos do último despacho; thread sem despacho aparece sem runtime, nunca com um inventado."
             ]
           },
           {
             "id": "feat-029",
             "title": "FEAT-029 · Condução multicanal",
             "paragraphs": [
-              "Os canais compartilham a autoridade do núcleo. Uma segunda execução concorrente na mesma worktree é recusada com a identificação de quem conduz."
+              "Os canais compartilham a autoridade do núcleo. Uma segunda execução concorrente na mesma worktree é recusada com a identificação de quem conduz.",
+              "Os leases e a fila por colisão moram no estado canônico do projeto: a raiz e as worktrees disputam os mesmos arquivos."
             ]
           },
           {
@@ -174,7 +162,7 @@ export default [
             "title": "FEAT-031 · Orkastery Network",
             "paragraphs": [
               "Cada máquina publica um retrato sem segredo num repositório privado da pessoa na forja, e ork network status mostra todas, de qualquer diretório, com a fonte e as lacunas. A adesão é da máquina, explícita ou herdada de ork fabrica entrar; ork network sair vence a herança, e o manifesto do projeto não inscreve ninguém. Publicar exige a casa privada, conferida antes de cada publicação; repositório público recusa com rede.repositorio-publico.",
-              "O retrato é uma lista de permissão: campo com cara de segredo recusa a publicação, e projeto com cara de segredo fica fora com aviso. Cada máquina só escreve o próprio retrato; nome tomado por outra instalação vira rede.nome-em-uso, e --forcar o toma com registro no commit. Lacuna nunca vira lista vazia. Em desenvolvimento: está na main, sem versão publicada."
+              "O retrato é uma lista de permissão: campo com cara de segredo recusa a publicação, e projeto com cara de segredo fica fora com aviso. Cada máquina só escreve o próprio retrato; nome tomado por outra instalação vira rede.nome-em-uso, e --forcar o toma com registro no commit. Lacuna nunca vira lista vazia. Publicado na versão 0.5.3; no catálogo, a página segue em desenvolvimento."
             ],
             "code": "ork network entrar --maquina pc-casa\nork network status --json"
           },
@@ -182,7 +170,7 @@ export default [
             "id": "feat-032",
             "title": "FEAT-032 · Roadmap da rede",
             "paragraphs": [
-              "ork network roadmap junta, de qualquer diretório, o roadmap da base remota, as reservas e as threads de cada máquina, com a fonte e a hora de cada parte. Sem clone, só consulta a forja pela CLI já autenticada; o que não foi lido sai como lacuna tipada, nunca como vazio. Nos hosts, ork_network_roadmap transporta essa leitura como vem. Vigente: publicado na versão 0.5.0. Na main, a fatia 3 lê também a rede por pessoa: a seção Rede por pessoa traz a casa e cada máquina; máquina vista só na rede sai com as threads não lidas e a lacuna maquina.sem-fabrica, nunca com zero threads. ork_network_status chega ao OpenClaw, ao Hermes e ao MCP, e o gh e o glab são achados fora do PATH curto do gateway e do cron."
+              "ork network roadmap junta, de qualquer diretório, o roadmap da base remota, as reservas e as threads de cada máquina, com a fonte e a hora de cada parte. Sem clone, só consulta a forja pela CLI já autenticada; o que não foi lido sai como lacuna tipada, nunca como vazio. Nos hosts, ork_network_roadmap transporta essa leitura como vem. Vigente: publicado na versão 0.5.0. Desde a versão 0.5.3, a fatia 3 lê também a rede por pessoa: a seção Rede por pessoa traz a casa e cada máquina; máquina vista só na rede sai com as threads não lidas e a lacuna maquina.sem-fabrica, nunca com zero threads. ork_network_status chega ao OpenClaw, ao Hermes e ao MCP, e o gh e o glab são achados fora do PATH curto do gateway e do cron."
             ]
           }
         ]
@@ -203,7 +191,7 @@ export default [
             "id": "feat-002",
             "title": "FEAT-002 · Conduction modes",
             "paragraphs": [
-              " #Classic, #Maestro and #Auto change pauses. #Fast runs only GO and does not authorize push or public contract changes."
+              "#Classic, #Maestro and #Auto change the HITL points. #Fast runs only GO and does not authorize push or public contract changes."
             ]
           },
           {
@@ -237,15 +225,29 @@ export default [
           {
             "id": "feat-027",
             "title": "FEAT-027 · Shared factory",
+            "highlight": {
+              "title": "Changes for current users",
+              "paragraphs": [
+                "In version {versao}, fabrica.compartilhada: true in the manifest no longer turns on publishing this machine’s snapshot or reading the other machines’ snapshots: only the machine’s own membership turns them on (ork fabrica entrar, or ORK_FABRICA_COMPARTILHADA=1). With the request in the manifest and no membership, ork doctor and ork fabrica warn with fabrica.nao-confirmada.",
+                "If your team turned the factory on through the manifest alone, run ork fabrica entrar once on each machine."
+              ],
+              "links": [
+                {
+                  "label": "Trust boundary",
+                  "href": "/docs/confianca/"
+                }
+              ]
+            },
             "paragraphs": [
-              "Each machine publishes its snapshot to a dedicated state branch. Offline reads use the last copy with a warning; they do not assume current data. The snapshot shows each thread’s runtime, model and effort from its last dispatch; a thread without a dispatch shows no runtime rather than an invented one."
+              "Each machine that has joined the factory (ork fabrica entrar, or ORK_FABRICA_COMPARTILHADA=1) publishes its snapshot to a dedicated state branch; fabrica.compartilhada: true in the manifest is only the team’s request, which ork doctor flags. Offline reads use the last copy with a warning; they do not assume current data. The snapshot shows each thread’s runtime, model and effort from its last dispatch; a thread without a dispatch shows no runtime rather than an invented one."
             ]
           },
           {
             "id": "feat-029",
             "title": "FEAT-029 · Multichannel conduction",
             "paragraphs": [
-              "Channels share core authority. A second concurrent execution in the same worktree is rejected with the current conductor identified."
+              "Channels share core authority. A second concurrent execution in the same worktree is rejected with the current conductor identified.",
+              "Leases and the collision queue live in the project’s canonical state: the root and the worktrees contend for the same files."
             ]
           },
           {
@@ -253,7 +255,7 @@ export default [
             "title": "FEAT-031 · Orkastery Network",
             "paragraphs": [
               "Each machine publishes a secret-free snapshot to a private repository of the person on the forge, and ork network status shows all of them, from any directory, with the source and the gaps. Membership belongs to the machine, explicit or inherited from ork fabrica entrar; ork network sair overrides the inheritance, and the project manifest enrolls no one. Publishing requires a private home, checked before each publication; a public repository is refused with rede.repositorio-publico.",
-              "The snapshot is an allowlist: a field that looks like a secret refuses the publication, and a project that looks like a secret is left out with a warning. Each machine writes only its own snapshot; a name taken by another installation becomes rede.nome-em-uso, and --forcar takes it with a record in the commit. A gap never becomes an empty list. In development: on main, not yet in a published version."
+              "The snapshot is an allowlist: a field that looks like a secret refuses the publication, and a project that looks like a secret is left out with a warning. Each machine writes only its own snapshot; a name taken by another installation becomes rede.nome-em-uso, and --forcar takes it with a record in the commit. A gap never becomes an empty list. Released in version 0.5.3; the catalog still lists the page as in development."
             ],
             "code": "ork network entrar --maquina pc-casa\nork network status --json"
           },
@@ -261,86 +263,7 @@ export default [
             "id": "feat-032",
             "title": "FEAT-032 · Network roadmap",
             "paragraphs": [
-              "From any directory, ork network roadmap combines the remote base roadmap, reservations and each machine’s threads, with the source and time of every part. Without a clone, it only queries the forge through the already authenticated CLI; anything not read appears as a typed gap, never as empty. In hosts, ork_network_roadmap passes this result through unchanged. Current: released in version 0.5.0. On main, slice 3 also reads the per-person network: the Network by person section shows the home and each machine; a machine seen only in the network appears with unread threads and the maquina.sem-fabrica gap, never with zero threads. ork_network_status reaches OpenClaw, Hermes and MCP, and gh and glab are found outside the short PATH of the gateway and cron."
-            ]
-          }
-        ]
-      },
-      "es": {
-        "title": "MOD-01 · Conducción de threads",
-        "description": "Comportamientos y límites de conducción de threads, según el catálogo de producto revisado.",
-        "sections": [
-          {
-            "id": "feat-001",
-            "title": "FEAT-001 · Threads y fases",
-            "paragraphs": [
-              "Cada petición tiene su thread, estado y ledger. La lista predeterminada muestra las abiertas; el ciclo completo conserva seis fases.",
-              "Con worktree.por_thread: true, lo que graba ork init, ork thread new crea la worktree y la rama de la thread sin flag; --sem-worktree crea la thread sin ellas, y --dry-run muestra la worktree que se crearía. Con la clave en false o ausente, la worktree solo nace con --worktree auto."
-            ]
-          },
-          {
-            "id": "feat-002",
-            "title": "FEAT-002 · Modos de conducción",
-            "paragraphs": [
-              "#Classic, #Maestro y #Auto cambian las pausas. #Fast ejecuta solo GO y no autoriza push ni cambios de contrato público."
-            ]
-          },
-          {
-            "id": "feat-003",
-            "title": "FEAT-003 · Despacho de fase",
-            "paragraphs": [
-              "El núcleo prepara el prompt y registra su hash, runtime, modelo y esfuerzo efectivos. Los fallos siguen el fallback configurado; el agente no elige otra identidad por su cuenta."
-            ]
-          },
-          {
-            "id": "feat-023",
-            "title": "FEAT-023 · Configuración inicial",
-            "paragraphs": [
-              "La entrevista registra respuestas públicas y referencias de credenciales. La publicación en memoria es opcional; los valores secretos quedan fuera de la entrevista."
-            ]
-          },
-          {
-            "id": "feat-025",
-            "title": "FEAT-025 · Catálogo de portafolio",
-            "paragraphs": [
-              "Productos, proyectos e iniciativas tienen padres y alcance explícitos. Se rechazan padres inexistentes y alcances incompatibles."
-            ]
-          },
-          {
-            "id": "feat-026",
-            "title": "FEAT-026 · Reservas entre máquinas",
-            "paragraphs": [
-              "Las reservas coordinan quién asume un elemento mediante una escritura atómica en el remoto. Los conflictos identifican la máquina responsable; se requiere acceso de red autorizado. Cerrar la thread libera la reserva o la pasa a otra thread abierta del mismo elemento; la reserva huérfana se marca y se libera con --soltar-orfas. ork roadmap feat reserva el siguiente número de FEAT entre máquinas, y el número reservado no se reutiliza."
-            ]
-          },
-          {
-            "id": "feat-027",
-            "title": "FEAT-027 · Fábrica compartida",
-            "paragraphs": [
-              "Cada máquina publica su instantánea en una rama de estado dedicada. Sin red se lee la última copia con aviso; no se presumen datos actuales. La instantánea muestra el runtime, el modelo y el esfuerzo de cada thread a partir del último despacho; una thread sin despacho aparece sin runtime, nunca con uno inventado."
-            ]
-          },
-          {
-            "id": "feat-029",
-            "title": "FEAT-029 · Conducción multicanal",
-            "paragraphs": [
-              "Los canales comparten la autoridad del núcleo. Una segunda ejecución simultánea en la misma worktree se rechaza identificando a quien conduce."
-            ]
-          },
-          {
-            "id": "feat-031",
-            "title": "FEAT-031 · Orkastery Network",
-            "paragraphs": [
-              "Cada máquina publica una instantánea sin secretos en un repositorio privado de la persona en la forja, y ork network status las muestra todas, desde cualquier directorio, con la fuente y las lagunas. La adhesión es de la máquina, explícita o heredada de ork fabrica entrar; ork network sair prevalece sobre la herencia, y el manifiesto del proyecto no inscribe a nadie. Publicar exige la casa privada, comprobada antes de cada publicación; un repositorio público se rechaza con rede.repositorio-publico.",
-              "La instantánea es una lista de permitidos: un campo con aspecto de secreto rechaza la publicación, y un proyecto con aspecto de secreto queda fuera con aviso. Cada máquina solo escribe su propia instantánea; un nombre tomado por otra instalación se convierte en rede.nome-em-uso, y --forcar lo toma con registro en el commit. Una laguna nunca se convierte en lista vacía. En desarrollo: está en la main, sin versión publicada."
-            ],
-            "code": "ork network entrar --maquina pc-casa\nork network status --json"
-          },
-          {
-            "id": "feat-032",
-            "title": "FEAT-032 · Roadmap de la red",
-            "paragraphs": [
-              "Desde cualquier directorio, ork network roadmap reúne el roadmap de la base remota, las reservas y las threads de cada máquina, con la fuente y la hora de cada parte. Sin clon, solo consulta la forja mediante la CLI ya autenticada; lo que no se leyó aparece como laguna tipada, nunca como vacío. En los hosts, ork_network_roadmap transmite esa lectura tal como llega. Vigente: publicado en la versión 0.5.0. En la main, la porción 3 también lee la red por persona: la sección Red por persona muestra la casa y cada máquina; una máquina vista solo en la red sale con las threads no leídas y la laguna maquina.sem-fabrica, nunca con cero threads. ork_network_status llega a OpenClaw, Hermes y MCP, y gh y glab se encuentran fuera del PATH corto del gateway y del cron."
+              "From any directory, ork network roadmap combines the remote base roadmap, reservations and each machine’s threads, with the source and time of every part. Without a clone, it only queries the forge through the already authenticated CLI; anything not read appears as a typed gap, never as empty. In hosts, ork_network_roadmap passes this result through unchanged. Current: released in version 0.5.0. Since version 0.5.3, slice 3 also reads the per-person network: the Network by person section shows the home and each machine; a machine seen only in the network appears with unread threads and the maquina.sem-fabrica gap, never with zero threads. ork_network_status reaches OpenClaw, Hermes and MCP, and gh and glab are found outside the short PATH of the gateway and cron."
             ]
           }
         ]
@@ -367,7 +290,8 @@ export default [
             "title": "FEAT-004 · Claims e verificação",
             "paragraphs": [
               "A claim precisa de comando executado no HEAD real. Resultado pendente, timeout ou prova retirada não contam como aprovação.",
-              "Na entrega por PR, o check de documentação do CI também cobra a linha no CHANGELOG quando a mudança toca core, adapters ou marketplaces, e o estado do item do roadmap depois do merge. O verify e o commit pelo MCP não travam em lease de thread já fechada."
+              "Na entrega por PR, o check de documentação do CI também cobra a linha no CHANGELOG quando a mudança toca core, adapters ou marketplaces, e o estado do item do roadmap depois do merge. O verify e o commit pelo MCP não travam em lease de thread já fechada.",
+              "Em máquina virtual com CPU roubada pelo hipervisor, o ork verify local pode reprovar por tempo; a prova confiável é o CI. Na versão {versao}, o ork verify mede o steal do /proc/stat e grava a medida no verify_run: a reprovação só de teste com relógio sob steal acima de 40% vira verify.timeout, que o retry reexecuta, e nunca verify.regression. O registro dos testes de relógio segue o contrato ork.instabilidade/v1."
             ]
           },
           {
@@ -381,7 +305,8 @@ export default [
             "id": "feat-006",
             "title": "FEAT-006 · Entrega com push comprovado",
             "paragraphs": [
-              "SHIP serializa o merge por lease e confere o remoto. Dry-run e commit local não são recibos de publicação."
+              "SHIP serializa o merge por lease e confere o remoto. Dry-run e commit local não são recibos de publicação.",
+              "O recibo ship_done traz o commit que incorporou a branch da thread (mergeSha) separado da ponta da base provada no remoto (pontaDaBase e shaRemoto)."
             ]
           },
           {
@@ -389,7 +314,8 @@ export default [
             "title": "FEAT-007 · Worktrees e leases",
             "paragraphs": [
               "Cada thread edita sua worktree. Leases de árvore, caminhos, cards e serviços coordenam recursos; a auditoria recusa divergência entre Git e registro.",
-              "A worktree nasce com a thread quando o manifesto tem worktree.por_thread: true, o padrão do ork init, ou com --worktree auto; depois, ork worktree ensure a cria. ork worktree sync recusa com tree.blocked, causa base-reescrita, quando a base foi reescrita, e mostra o git rebase --onto que reaplica só os commits da thread."
+              "A worktree nasce com a thread quando o manifesto tem worktree.por_thread: true, o padrão do ork init, ou com --worktree auto; depois, ork worktree ensure a cria. ork worktree sync recusa com tree.blocked, causa base-reescrita, quando a base foi reescrita, e mostra o git rebase --onto que reaplica só os commits da thread.",
+              "Os leases e a fila moram no .orkastery/leases da raiz do projeto, com o ork chamado da raiz ou de qualquer worktree. Um lease legado de worktree só é considerado numa janela de 30 minutos, nunca é apagado nem prova posse; ork lease list mostra leases, famílias e filas."
             ]
           }
         ]
@@ -403,7 +329,8 @@ export default [
             "title": "FEAT-004 · Claims and verification",
             "paragraphs": [
               "A claim needs a command executed against the actual HEAD. Pending results, timeouts and withdrawn evidence do not count as a pass.",
-              "For pull request delivery, the CI documentation check also requires a CHANGELOG line when the change touches core, adapters or marketplaces, and the roadmap item state after the merge. Verify and commit through MCP no longer stall on a lease held by an already closed thread."
+              "For pull request delivery, the CI documentation check also requires a CHANGELOG line when the change touches core, adapters or marketplaces, and the roadmap item state after the merge. Verify and commit through MCP no longer stall on a lease held by an already closed thread.",
+              "On a virtual machine whose CPU is stolen by the hypervisor, a local ork verify can fail on timeouts; the reliable proof is CI. In version {versao}, ork verify measures steal from /proc/stat and records it in verify_run: when only clock-bound tests fail under steal above 40%, the failure becomes verify.timeout, which retry runs again, never verify.regression. The registry of clock-bound tests follows the ork.instabilidade/v1 contract."
             ]
           },
           {
@@ -417,7 +344,8 @@ export default [
             "id": "feat-006",
             "title": "FEAT-006 · Delivery with verified push",
             "paragraphs": [
-              "SHIP serializes the merge through a lease and checks the remote. Dry runs and local commits are not publication receipts."
+              "SHIP serializes the merge through a lease and checks the remote. Dry runs and local commits are not publication receipts.",
+              "The ship_done receipt records the commit that incorporated the thread branch (mergeSha) separately from the base tip proven on the remote (pontaDaBase and shaRemoto)."
             ]
           },
           {
@@ -425,43 +353,8 @@ export default [
             "title": "FEAT-007 · Worktrees and leases",
             "paragraphs": [
               "Each thread edits its own worktree. Tree, path, card and service leases coordinate resources; auditing rejects disagreement between Git and recorded state.",
-              "The worktree is created with the thread when the manifest has worktree.por_thread: true, the ork init default, or with --worktree auto; later, ork worktree ensure creates it. ork worktree sync refuses with tree.blocked, cause base-reescrita, when the base was rewritten, and shows the git rebase --onto that replays only the thread’s commits."
-            ]
-          }
-        ]
-      },
-      "es": {
-        "title": "MOD-02 · Pruebas y entrega",
-        "description": "Comportamientos y límites de pruebas y entrega, según el catálogo de producto revisado.",
-        "sections": [
-          {
-            "id": "feat-004",
-            "title": "FEAT-004 · Claims y verificación",
-            "paragraphs": [
-              "Una claim necesita un comando ejecutado sobre el HEAD real. Los resultados pendientes, timeouts y pruebas retiradas no cuentan como aprobación.",
-              "En la entrega por PR, el check de documentación del CI también exige la línea en el CHANGELOG cuando el cambio toca core, adapters o marketplaces, y el estado del ítem del roadmap después del merge. El verify y el commit por MCP no se bloquean por un lease de una thread ya cerrada."
-            ]
-          },
-          {
-            "id": "feat-005",
-            "title": "FEAT-005 · CHECK independiente en CI",
-            "paragraphs": [
-              "El bundle de claims se vuelve a ejecutar sobre el SHA exacto de la candidata. Una ejecución de otra thread o commit no demuestra este cambio. Cada thread tiene su propio bundle, .ork-ci/<thread>.json, que el CI encuentra por el nombre de la branch; una branch de thread sin bundle no se aprueba, y main ejecuta solo los comandos del manifiesto."
-            ]
-          },
-          {
-            "id": "feat-006",
-            "title": "FEAT-006 · Entrega con push demostrado",
-            "paragraphs": [
-              "SHIP serializa el merge mediante un lease y comprueba el remoto. Un dry-run o commit local no es un comprobante de publicación."
-            ]
-          },
-          {
-            "id": "feat-007",
-            "title": "FEAT-007 · Worktrees y leases",
-            "paragraphs": [
-              "Cada thread edita su worktree. Los leases de árbol, rutas, tarjetas y servicios coordinan recursos; la auditoría rechaza divergencias entre Git y el registro.",
-              "La worktree nace con la thread cuando el manifiesto tiene worktree.por_thread: true, el valor por defecto de ork init, o con --worktree auto; después, ork worktree ensure la crea. ork worktree sync rechaza con tree.blocked, causa base-reescrita, cuando la base fue reescrita, y muestra el git rebase --onto que reaplica solo los commits de la thread."
+              "The worktree is created with the thread when the manifest has worktree.por_thread: true, the ork init default, or with --worktree auto; later, ork worktree ensure creates it. ork worktree sync refuses with tree.blocked, cause base-reescrita, when the base was rewritten, and shows the git rebase --onto that replays only the thread’s commits.",
+              "Leases and the queue live in .orkastery/leases at the project root, whether ork is called from the root or from any worktree. A legacy worktree lease is only considered within a 30-minute window, is never deleted and never proves ownership; ork lease list shows leases, families and queues."
             ]
           }
         ]
@@ -488,7 +381,8 @@ export default [
             "id": "feat-008",
             "title": "FEAT-008 · Rodízio de contas",
             "paragraphs": [
-              "Cota esgotada pode seguir a política de rotação ou fallback. Rate limit curto aguarda na fila; a operação não copia credenciais entre perfis."
+              "Cota esgotada pode seguir a política de rotação ou fallback. Rate limit curto aguarda na fila; a operação não copia credenciais entre perfis.",
+              "O perfil esgotado fica indisponível até o prazo da cota; o próximo despacho ou retry permitido o pula, e a troca grava runtime_profile_rotated. ork accounts esgotamentos mede os esgotamentos do período (--desde 7d)."
             ]
           },
           {
@@ -510,7 +404,7 @@ export default [
             "title": "FEAT-037 · Perfil por despacho e sessões de cada conta",
             "paragraphs": [
               "ork phase run --perfil <id> despacha a fase na conta escolhida, ou recusa com motivo tipado (runtime.profile-invalid, runtime.quota-exhausted, runtime.auth-missing) sem trocar de perfil sozinho. Com runtime_profiles.distribuir: carga, o ork escolhe a conta com menos sessões vivas nesta máquina; sem a chave, vale a ordem do store.",
-              "ork sessions mostra as sessões de todas as contas, com a coluna PERFIL (o id, nunca o diretório da conta), e marca como fantasma a sessão sem processo vivo. ork sessions limpar-fantasmas solta essa sessão do ork, com registro no ledger, sem parar nada no runtime. No catálogo, a página está em desenvolvimento."
+              "ork sessions mostra as sessões de todas as contas, com a coluna PERFIL (o id, nunca o diretório da conta), e marca como fantasma a sessão sem processo vivo. ork sessions limpar-fantasmas solta essa sessão do ork, com registro no ledger, sem parar nada no runtime. Publicado na versão 0.5.2; no catálogo, a página segue em desenvolvimento."
             ],
             "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions\nork sessions limpar-fantasmas --dry-run"
           },
@@ -531,7 +425,8 @@ export default [
             "id": "feat-008",
             "title": "FEAT-008 · Account rotation",
             "paragraphs": [
-              "Exhausted quota can follow rotation or fallback policy. Short rate limits wait in the queue; the operation does not copy credentials between profiles."
+              "Exhausted quota can follow rotation or fallback policy. Short rate limits wait in the queue; the operation does not copy credentials between profiles.",
+              "An exhausted profile stays unavailable until its quota resets; the next allowed dispatch or retry skips it, and the switch records runtime_profile_rotated. ork accounts esgotamentos measures exhaustions over a period (--desde 7d)."
             ]
           },
           {
@@ -553,7 +448,7 @@ export default [
             "title": "FEAT-037 · Per-dispatch profile and sessions of each account",
             "paragraphs": [
               "ork phase run --perfil <id> dispatches the phase on the chosen account, or refuses with a typed reason (runtime.profile-invalid, runtime.quota-exhausted, runtime.auth-missing) without switching profiles on its own. With runtime_profiles.distribuir: carga, ork picks the account with the fewest live sessions on this machine; without the key, the store order applies.",
-              "ork sessions shows the sessions of every account, with a PERFIL column (the id, never the account directory), and marks a session without a live process as a ghost. ork sessions limpar-fantasmas releases that session from ork, with a ledger record, without stopping anything in the runtime. The catalog lists the page as in development."
+              "ork sessions shows the sessions of every account, with a PERFIL column (the id, never the account directory), and marks a session without a live process as a ghost. ork sessions limpar-fantasmas releases that session from ork, with a ledger record, without stopping anything in the runtime. Released in version 0.5.2; the catalog still lists the page as in development."
             ],
             "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions\nork sessions limpar-fantasmas --dry-run"
           },
@@ -562,49 +457,6 @@ export default [
             "title": "FEAT-022 · Auditing and debt",
             "paragraphs": [
               "Findings have reproducible claims and historical state. Deferral or dismissal requires a record; an auditor’s report is not itself evidence."
-            ]
-          }
-        ]
-      },
-      "es": {
-        "title": "MOD-03 · Runtimes y cuentas",
-        "description": "Comportamientos y límites de runtimes y cuentas, según el catálogo de producto revisado.",
-        "sections": [
-          {
-            "id": "feat-008",
-            "title": "FEAT-008 · Rotación de cuentas",
-            "paragraphs": [
-              "Una cuota agotada puede seguir la política de rotación o fallback. Los límites breves esperan en la cola; la operación no copia credenciales entre perfiles."
-            ]
-          },
-          {
-            "id": "feat-009",
-            "title": "FEAT-009 · Reintentos según el motivo",
-            "paragraphs": [
-              "La causa tipada determina la acción. El límite de intentos escala en cualquier modo; cost.violation no recibe reintentos automáticos."
-            ]
-          },
-          {
-            "id": "feat-010",
-            "title": "FEAT-010 · Observación de sesiones",
-            "paragraphs": [
-              "Los sensores consultan el runtime para confirmar estado y finalización. Adoptar una sesión no ejecuta su prompt; un informe de éxito no termina la fase."
-            ]
-          },
-          {
-            "id": "feat-037",
-            "title": "FEAT-037 · Perfil por despacho y sesiones de cada cuenta",
-            "paragraphs": [
-              "ork phase run --perfil <id> despacha la fase en la cuenta elegida, o rechaza con un motivo tipado (runtime.profile-invalid, runtime.quota-exhausted, runtime.auth-missing) sin cambiar de perfil por su cuenta. Con runtime_profiles.distribuir: carga, ork elige la cuenta con menos sesiones vivas en esta máquina; sin la clave, vale el orden del store.",
-              "ork sessions muestra las sesiones de todas las cuentas, con la columna PERFIL (el id, nunca el directorio de la cuenta), y marca como fantasma la sesión sin proceso vivo. ork sessions limpar-fantasmas suelta esa sesión de ork, con registro en el ledger, sin detener nada en el runtime. En el catálogo, la página figura en desarrollo."
-            ],
-            "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions\nork sessions limpar-fantasmas --dry-run"
-          },
-          {
-            "id": "feat-022",
-            "title": "FEAT-022 · Auditoría y deuda",
-            "paragraphs": [
-              "Los hallazgos tienen claims reproducibles y estado con historial. Aplazar o descartar requiere registro; el informe del auditor no es una prueba por sí mismo."
             ]
           }
         ]
@@ -654,7 +506,9 @@ export default [
             "paragraphs": [
               "O estado vem de threads, ledger e filas. ork roadmap status é leitura pura: agrupa o relatório no fuso do dono, marca #HITL no que espera decisão e mostra próximos passos. O orquestrador assume os impedimentos técnicos; sessão encerrada não vira pedido como se ainda pudesse receber resposta.",
               "O trabalho parado no condutor depois da entrega, além de 30 minutos, sai numa linha por thread no pulse, com o próximo passo e fora de “Esperando você”: branch sem push, branch sem PR, PR verde sem merge ou merge sem registro. ork roadmap status diz o estado real da entrega da thread de cada item e, com fábrica compartilhada, avisa a máquina sem batida há mais de 3 horas.",
-              "O ork pulse e o ork roadmap status trazem o tempo parado por HITL de condução (hitlDeConducao): as perguntas abertas, com há quanto tempo cada uma para a thread, no fuso do dono, e a mediana dos últimos 7 dias contra a meta de 5 minutos. O resumo ganha uma linha só acima da meta, sem virar novidade que fure a cadência."
+              "Na versão {versao}, quando uma thread que não conduz item do roadmap espera o dono (gate, sessão ou impedimento do despacho, como no ork pulse), o fecho “O que precisa de você” do ork roadmap status ganha a linha “Fora do roadmap: N thread(s) esperam você (ork pulse)”, e o --json, o campo opcional e aditivo foraDoRoadmap. Sem thread assim, a saída fica igual byte a byte.",
+              "O ork pulse e o ork roadmap status trazem o tempo parado por HITL de condução (hitlDeConducao): as perguntas abertas, com há quanto tempo cada uma para a thread, no fuso do dono, e a mediana dos últimos 7 dias contra a meta de 5 minutos. O resumo ganha uma linha só acima da meta, sem virar novidade que fure a cadência.",
+              "No #Auto, um CHECK concluído sem veredito fica com o condutor, que despacha de novo a fase CHECK; fora do #Auto, segue com o dono. A forja sem leitura de PR, como GitLab, remoto local ou host sem login do gh, gera o aviso prs.sem-leitura uma vez por remoto, e o próximo passo manda conferir o PR na forja."
             ],
             "code": "ork roadmap status"
           },
@@ -700,7 +554,9 @@ export default [
             "paragraphs": [
               "State comes from threads, the ledger and queues. ork roadmap status is read-only: it groups the report in the owner’s timezone, marks pending decisions with #HITL and shows next steps. The orchestrator handles technical blockers; ended sessions are not presented as able to receive a response.",
               "Work stalled with the conductor after delivery, for more than 30 minutes, appears as one line per thread in the pulse, with the next step and outside “Waiting for you”: an unpushed branch, a branch without a PR, a green PR not merged, or a merge not recorded. ork roadmap status states the real delivery state of each item’s thread and, with a shared factory, flags a machine with no heartbeat for more than 3 hours.",
-              "ork pulse and ork roadmap status show the time blocked by conduction HITL (hitlDeConducao): the open questions, with how long each one has been blocking the thread, in the owner’s timezone, and the median over the last 7 days against the 5-minute target. The summary gains a line only above the target, without becoming news that breaks the cadence."
+              "In version {versao}, when a thread that does not drive a roadmap item is waiting for the owner (a gate, a session or a dispatch blocker, as in ork pulse), the closing part of ork roadmap status that lists what needs you gains a line with how many threads outside the roadmap are waiting for you (ork pulse), and --json gains the optional, additive foraDoRoadmap field. Without such a thread, the output stays the same byte for byte.",
+              "ork pulse and ork roadmap status include the time blocked by conduction HITL (hitlDeConducao): the open questions, with how long each one has been blocking the thread, in the owner’s timezone, and the median over the last 7 days against the 5-minute target. The summary gains a line only above the target, without becoming news that breaks the cadence.",
+              "In #Auto, a CHECK finished without a verdict stays with the conductor, which dispatches the CHECK phase again; outside #Auto, it goes to the owner. A forge whose PRs cannot be read, such as GitLab, a local remote or a host without a gh login, raises the prs.sem-leitura warning once per remote, and the next step says to check the PR on the forge."
             ],
             "code": "ork roadmap status"
           },
@@ -710,52 +566,6 @@ export default [
             "paragraphs": [
               "MASTER records a postmortem and a ledger-derived index. ork master pedir requests a score and reason through authenticated Telegram. The record includes sender, channel, message and proof hash; the agent cannot sign for the owner. A later human score replaces acceptance by omission without erasing history. The MCP score dialog remains unavailable.",
               "ork master <thread> --aceitar-omissao accepts by default only the delivery of the given thread; without a thread, the command accepts every delivered thread in the project, including other workstreams, and an agent running it with more than one gets the master.omissao-sem-thread warning. --dry-run lists what it would close without recording anything. A human score requires --por with a person’s name."
-            ],
-            "code": "ork master pedir <thread> --formato telegram\nork master <thread> --aceitar-omissao --dry-run"
-          }
-        ]
-      },
-      "es": {
-        "title": "MOD-04 · Atención humana",
-        "description": "Comportamientos y límites de atención humana, según el catálogo de producto revisado.",
-        "sections": [
-          {
-            "id": "feat-011",
-            "title": "FEAT-011 · Atención humana por capas",
-            "paragraphs": [
-              "ork.hitl-curto/v1 presenta pregunta breve, bloqueo, alternativas, recomendación e instrucciones de respuesta. El texto inequívoco del dueño puede elegir una acción; la ambigüedad pide aclaración. Una palabra aislada exige ventana de escucha y una única solicitud pendiente, y no autoriza actos irreversibles. El código se conserva al reabrir el mismo contexto."
-            ]
-          },
-          {
-            "id": "feat-012",
-            "title": "FEAT-012 · Decisiones con rendición de cuentas",
-            "paragraphs": [
-              "Las decisiones delegadas registran motivo, reversión y coste del cambio. El dueño puede revisarlas; los actos irreversibles siguen la autorización exigida."
-            ]
-          },
-          {
-            "id": "feat-013",
-            "title": "FEAT-013 · Zona horaria del dueño",
-            "paragraphs": [
-              "La presentación usa owner.timezone. El ledger, hashes y comprobantes conservan UTC ISO; una zona inválida genera un aviso."
-            ]
-          },
-          {
-            "id": "feat-014",
-            "title": "FEAT-014 · Monitor, board y pulse",
-            "paragraphs": [
-              "El estado procede de threads, ledger y colas. ork roadmap status es de lectura: agrupa el informe en el huso del dueño, marca #HITL en lo que espera decisión y muestra próximos pasos. El orquestador se ocupa de los impedimentos técnicos; las sesiones terminadas no se presentan como capaces de recibir respuesta.",
-              "El trabajo detenido en el conductor después de la entrega, por más de 30 minutos, aparece en una línea por thread en el pulse, con el siguiente paso y fuera de “Esperándote”: rama sin push, rama sin PR, PR en verde sin merge o merge sin registro. ork roadmap status indica el estado real de la entrega de la thread de cada ítem y, con fábrica compartida, avisa de la máquina sin latido desde hace más de 3 horas.",
-              "ork pulse y ork roadmap status muestran el tiempo detenido por HITL de conducción (hitlDeConducao): las preguntas abiertas, con cuánto tiempo lleva cada una deteniendo la thread, en la zona horaria del dueño, y la mediana de los últimos 7 días frente a la meta de 5 minutos. El resumen gana una línea solo por encima de la meta, sin convertirse en novedad que rompa la cadencia."
-            ],
-            "code": "ork roadmap status"
-          },
-          {
-            "id": "feat-015",
-            "title": "FEAT-015 · MASTER e índice de conducción",
-            "paragraphs": [
-              "MASTER registra postmortem e índice derivado del ledger. ork master pedir solicita nota y justificación mediante Telegram autenticado. El registro incluye remitente, canal, mensaje y hash de la prueba; el agente no firma por el dueño. La valoración humana posterior sustituye la aceptación por omisión sin borrar el historial. El diálogo MCP de valoración sigue sin estar disponible.",
-              "ork master <thread> --aceitar-omissao acepta por omisión solo la entrega de la thread indicada; sin la thread, el comando acepta todas las entregadas del proyecto, incluidas las de otros frentes, y un agente que lo ejecute con más de una recibe el aviso master.omissao-sem-thread. --dry-run lista lo que cerraría, sin guardar. La nota humana exige --por con el nombre de una persona."
             ],
             "code": "ork master pedir <thread> --formato telegram\nork master <thread> --aceitar-omissao --dry-run"
           }
@@ -816,7 +626,7 @@ export default [
             "id": "feat-024",
             "title": "FEAT-024 · Company Brain no CLI",
             "paragraphs": [
-              "ork brain context devolve o pacote ork.brain-context/v1 com pedido, itens, lacunas e digest do JSON canônico. Inclui as entidades pedidas e seus pais; sem --ids, usa o escopo vinculado por brain bind. Cada item traz source_ref, source_hash, source_version e location, além do frescor contra o portfólio canônico.",
+              "ork brain context devolve o pacote ork.brain-context/v1 com pedido, itens, lacunas e digest do JSON canônico. Inclui as entidades pedidas e seus pais; sem --ids, usa o escopo vinculado por ork brain bind. Cada item traz source_ref, source_hash, source_version e location, além do frescor contra o portfólio canônico.",
               "Citação incompleta vira lacuna citacao.incompleta. Item retido pela ACL traz só ID e frescor retido, nunca conteúdo recuperado da fonte local. Brain indisponível ou recusando não produz pacote fabricado só da fonte. Identidade vem do transporte autenticado; leitura não grava, e escrita exige ativação aceita e concessão do banco.",
               "O pacote vem do modo context do OrkMind e o núcleo o confere: schema, tenant, pedido, digest, citação, ordem, fecho de pais e destino de cada id. Pacote que não confere encerra com brain.context.server-invalid, sem cair na consulta; só brain.selection.context-unsupported, de um OrkMind anterior ao modo, leva o núcleo a montar o mesmo pacote por query e get. O campo caminho diz qual foi, e os dois caminhos dão o mesmo digest para os mesmos dados."
             ],
@@ -881,7 +691,7 @@ export default [
             "id": "feat-024",
             "title": "FEAT-024 · Company Brain in the CLI",
             "paragraphs": [
-              "ork brain context returns ork.brain-context/v1 with pedido, itens, lacunas and a canonical JSON digest. It includes requested entities and their parents; without --ids it uses the scope linked by brain bind. Every item carries source_ref, source_hash, source_version and location, plus freshness against the canonical portfolio.",
+              "ork brain context returns ork.brain-context/v1 with pedido, itens, lacunas and a canonical JSON digest. It includes requested entities and their parents; without --ids it uses the scope bound by ork brain bind. Every item carries source_ref, source_hash, source_version and location, plus freshness against the canonical portfolio.",
               "Incomplete citations become citacao.incompleta gaps. ACL-withheld items expose only their ID and retido freshness, never content recovered from the local source. An unavailable or refusing Brain does not produce a package fabricated from local files. Identity comes from authenticated transport; reads do not write, and writes require accepted activation and a database grant.",
               "The package comes from OrkMind’s context mode and the core checks it: schema, tenant, request, digest, citation, order, parent closure and the target of each id. A package that does not check out ends with brain.context.server-invalid, without falling back to querying; only brain.selection.context-unsupported, from an OrkMind older than the mode, makes the core build the same package with query and get. The caminho field says which path was used, and both paths give the same digest for the same data."
             ],
@@ -902,71 +712,6 @@ export default [
               "ork brain dossie gathers a thread’s decisions with the goal, project and citable context, including recorded options, who decided and the evidence. Each decision carries the ledger line citation and the IDs that Company Brain assigns to the fact. Read-only, also available as ork_brain_dossie in MCP and OpenClaw.",
               "The owner’s answer appears only when the ingress receipt checks out; otherwise it becomes the resposta.sem-prova gap. A report about the owner without a receipt never becomes a decision. Informed decisions do not store options and show the alternativas.nao-registradas gap; facts withheld by ACL expose only their ID and retido freshness.",
               "The dossier is on main and was released in version 0.5.0."
-            ],
-            "code": "ork brain dossie --thread <thread>\nork brain dossie --thread <thread> --decisao <id>"
-          }
-        ]
-      },
-      "es": {
-        "title": "MOD-05 · Memoria y registro",
-        "description": "Comportamientos y límites de memoria y registro, según el catálogo de producto revisado.",
-        "sections": [
-          {
-            "id": "feat-016",
-            "title": "FEAT-016 · Handoff y recall",
-            "paragraphs": [
-              "El contexto se clasifica como crítico, importante o resumible. El recall resuelve referencias cuando hace falta; no recarga toda la conversación."
-            ]
-          },
-          {
-            "id": "feat-017",
-            "title": "FEAT-017 · Memoria OrkMind",
-            "paragraphs": [
-              "El tenant del proyecto recibe decisiones, handoffs y lecciones según los permisos. La indisponibilidad degrada a archivos con un evento explícito; no usa otra base en silencio.",
-              "La búsqueda por significado está separada de la búsqueda por etiqueta: índice vectorial local y derivado, resultados de un solo tenant marcados como no deterministas y nada que entre solo en el prompt. Nunca se comparan vectores de modelos o dimensiones distintos, y un embedding no disponible tiene el motivo embeddings.* sin hacer caer el régimen.",
-              "La búsqueda por significado se publicó en la versión 0.5.0 y se apaga con memory.embedding.provider: none."
-            ]
-          },
-          {
-            "id": "feat-018",
-            "title": "FEAT-018 · Documentación como código",
-            "paragraphs": [
-              "El frontmatter y los vínculos se comprueban contra código y Git. La sincronización no convierte automáticamente un plan en despliegue o disponibilidad.",
-              "La paridad vale en ambos sentidos: codigo: Mesclado exige el commit en la base, y el merge ship(<thread>) de la thread del ítem exige codigo: Mesclado (docs.paridade.merge); el índice generado debe coincidir con el frontmatter (docs.paridade.indice). El push a main reprueba ambas divergencias; en el PR solo avisan, y ork docs sincronizar --escrever las corrige."
-            ]
-          },
-          {
-            "id": "feat-019",
-            "title": "FEAT-019 · Telemetría del ledger",
-            "paragraphs": [
-              "Las métricas declaran período, procedencia y cobertura. Las estimaciones requieren método, premisas y autor; no se presentan como horas o gastos medidos."
-            ]
-          },
-          {
-            "id": "feat-024",
-            "title": "FEAT-024 · Company Brain en el CLI",
-            "paragraphs": [
-              "ork brain context devuelve ork.brain-context/v1 con pedido, itens, lacunas y digest del JSON canónico. Incluye las entidades solicitadas y sus padres; sin --ids usa el ámbito vinculado por brain bind. Cada elemento contiene source_ref, source_hash, source_version y location, además de la vigencia frente al portafolio canónico.",
-              "Una cita incompleta produce la laguna citacao.incompleta. Un elemento retenido por ACL solo muestra ID y vigencia retido, nunca contenido recuperado de la fuente local. Un Brain no disponible o que rechaza la consulta no produce un paquete inventado desde archivos locales. La identidad procede del transporte autenticado; leer no escribe, y escribir requiere activación aceptada y concesión de la base.",
-              "El paquete viene del modo context de OrkMind y el núcleo lo comprueba: schema, tenant, pedido, digest, cita, orden, cierre de padres y destino de cada id. Un paquete que no cuadra termina con brain.context.server-invalid, sin pasar a la consulta; solo brain.selection.context-unsupported, de un OrkMind anterior al modo, lleva al núcleo a montar el mismo paquete con query y get. El campo caminho indica cuál fue, y los dos caminos dan el mismo digest para los mismos datos."
-            ],
-            "code": "ork brain context --thread <thread> --ids <ids>"
-          },
-          {
-            "id": "feat-028",
-            "title": "FEAT-028 · Aprendizaje entre threads",
-            "paragraphs": [
-              "Las lecciones de threads cerradas alimentan GOAL y PLAN del mismo producto. Los fallos repetidos proponen políticas; una propuesta no activa un bloqueo por sí sola.",
-              "La lección claims.failed se convierte en la policy opcional claim_sem_prova_local, apagada por defecto: declarada, ork claims add ejecuta el comando de la claim una vez, dentro del plazo del verify, y solo avisa con policy_warn; la claim entra de todos modos."
-            ]
-          },
-          {
-            "id": "feat-033",
-            "title": "FEAT-033 · Dosier de decisión",
-            "paragraphs": [
-              "ork brain dossie reúne las decisiones de una thread con el objetivo, el proyecto y el contexto citable, incluidas las alternativas registradas, quién decidió y la prueba. Cada decisión incluye la cita de la línea del ledger y los IDs que el Company Brain asigna al hecho. Solo lectura, también disponible como ork_brain_dossie en MCP y OpenClaw.",
-              "La respuesta del dueño solo aparece cuando el comprobante del ingreso es válido; si no, se convierte en la laguna resposta.sem-prova. Un relato sobre el dueño sin comprobante nunca se convierte en decisión. La decisión informada no guarda alternativas y muestra la laguna alternativas.nao-registradas; un hecho retenido por ACL solo muestra su ID y la vigencia retido.",
-              "El dosier está en main y se publicó en la versión 0.5.0."
             ],
             "code": "ork brain dossie --thread <thread>\nork brain dossie --thread <thread> --decisao <id>"
           }
@@ -1007,7 +752,8 @@ export default [
             "id": "feat-030",
             "title": "FEAT-030 · Projeto-alvo explícito",
             "paragraphs": [
-              "Todo comando e toda tool ork_* leem o projeto pedido, nunca o do diretório do gateway, e a resposta diz qual projeto leu e o que não leu. OpenClaw e Hermes declaram ORK_PROJETO_EXPLICITO=1: sem projeto e com mais de um conhecido, devolvem a escolha. No host, --projeto aceita só nome; o MCP continua fixado na instalação e recusa outro projeto com projeto.fora-do-servidor. Vigente: publicado na versão 0.5.0."
+              "Todo comando e toda tool ork_* leem o projeto pedido, nunca o do diretório do gateway, e a resposta diz qual projeto leu e o que não leu. OpenClaw e Hermes declaram ORK_PROJETO_EXPLICITO=1: sem projeto e com mais de um conhecido, devolvem a escolha. No host, --projeto aceita só nome; o MCP continua fixado na instalação e recusa outro projeto com projeto.fora-do-servidor. Vigente: publicado na versão 0.5.0.",
+              "Na versão {versao}, a fatia 2 completa a resposta honesta. O comando que não monta o próprio cabeçalho termina com a linha “Projeto consultado” no stderr, uma vez por comando, quando o leitor não tem como saber qual projeto foi lido (no host, ou com o projeto fora do diretório atual); na falha, a linha sai antes do erro. A sessão despachada (fase, retry e ork audit run) e o filho ork fabrica publicar leem o projeto pelo próprio cwd: o despacho leva ORK_PROJETO vazio e ORK_PROJETO_EXPLICITO=0. ork roadmap reservas sem o remoto, ou com o remoto mudo e sem cópia local, diz que nada foi lido de ork/roadmap-reservas, nunca que nenhum item está reservado. Na resposta, o remoto sai sem credencial, query nem fragmento, e o caminho local mostra ~ no lugar da pasta da conta."
             ]
           },
           {
@@ -1041,7 +787,8 @@ export default [
             "id": "feat-030",
             "title": "FEAT-030 · Explicit target project",
             "paragraphs": [
-              "Every command and every ork_* tool reads the requested project, never the gateway directory’s project, and the answer states which project it read and what it did not read. OpenClaw and Hermes declare ORK_PROJETO_EXPLICITO=1: without a project and with more than one known, they return the choice. In a host, --projeto accepts only a name; MCP stays pinned to its installation and refuses another project with projeto.fora-do-servidor. Current: released in version 0.5.0."
+              "Every command and every ork_* tool reads the requested project, never the gateway directory’s project, and the answer states which project it read and what it did not read. OpenClaw and Hermes declare ORK_PROJETO_EXPLICITO=1: without a project and with more than one known, they return the choice. In a host, --projeto accepts only a name; MCP stays pinned to its installation and refuses another project with projeto.fora-do-servidor. Current: released in version 0.5.0.",
+              "In version {versao}, slice 2 completes the honest answer. A command that does not build its own header ends with the “Projeto consultado” line on stderr, once per command, when the reader cannot tell which project was read (in a host, or with the project outside the current directory); on failure, the line comes before the error. A dispatched session (phase, retry and ork audit run) and the ork fabrica publicar child process read the project from their own cwd: the dispatch carries an empty ORK_PROJETO and ORK_PROJETO_EXPLICITO=0. ork roadmap reservas without the remote, or with a silent remote and no local copy, says nothing was read from ork/roadmap-reservas, never that no item is reserved. In the answer, the remote carries no credential, query or fragment, and the local path shows ~ in place of the account folder."
             ]
           },
           {
@@ -1049,40 +796,6 @@ export default [
             "title": "FEAT-034 · Experience pack",
             "paragraphs": [
               "Language, timezone and depth preferences shape the orchestration conversation, with opt-out and restoration of instruction files. Claude Code and Codex receive project blocks, and Hermes receives references through its existing skill; OpenClaw still lacks this distribution. MCP reservation and factory queries neither reserve nor publish. Opting out does not disable policies or gates, and no preference changes HITL HMAC provenance. Current: released in version 0.5.0."
-            ]
-          }
-        ]
-      },
-      "es": {
-        "title": "MOD-06 · Integración con hosts",
-        "description": "Comportamientos y límites de integración con hosts, según el catálogo de producto revisado.",
-        "sections": [
-          {
-            "id": "feat-020",
-            "title": "FEAT-020 · MCP y adaptadores",
-            "paragraphs": [
-              "La instalación produce comprobantes y hashes. El host transmite operaciones; la interpretación del modo y las reglas del gate permanecen en el núcleo."
-            ]
-          },
-          {
-            "id": "feat-021",
-            "title": "FEAT-021 · Ingreso autenticado",
-            "paragraphs": [
-              "El ingreso Telegram valida el update autenticado y la prueba HMAC antes de registrar la respuesta. Acepta códigos, respuestas numeradas y texto libre inequívoco bajo las condiciones del núcleo. La ventana de escucha solo encamina palabras aisladas; no prueba identidad. La ambigüedad no aprueba solicitudes y los envelopes fabricados por agentes se rechazan."
-            ]
-          },
-          {
-            "id": "feat-030",
-            "title": "FEAT-030 · Proyecto objetivo explícito",
-            "paragraphs": [
-              "Cada comando y cada tool ork_* leen el proyecto pedido, nunca el del directorio del gateway, y la respuesta indica qué proyecto leyó y qué no leyó. OpenClaw y Hermes declaran ORK_PROJETO_EXPLICITO=1: sin proyecto y con más de uno conocido, devuelven la elección. En el host, --projeto solo acepta un nombre; MCP sigue fijado en la instalación y rechaza otro proyecto con projeto.fora-do-servidor. Vigente: publicado en la versión 0.5.0."
-            ]
-          },
-          {
-            "id": "feat-034",
-            "title": "FEAT-034 · Paquete de experiencia",
-            "paragraphs": [
-              "Las preferencias de idioma, zona horaria y profundidad orientan la conversación de orquestación, con desactivación y restauración de los archivos de instrucciones. Claude Code y Codex reciben bloques de proyecto, y Hermes, referencias mediante su skill existente; OpenClaw sigue sin esta distribución. Las consultas MCP de reservas y fábrica no reservan ni publican. La desactivación no apaga políticas ni gates, y ninguna preferencia cambia la procedencia HMAC del HITL. Vigente: publicado en la versión 0.5.0."
             ]
           }
         ]

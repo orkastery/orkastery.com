@@ -1,0 +1,5 @@
+---
+import MarcaPage from '../../../components/MarcaPage.astro';
+export function getStaticPaths(){return ['en'].map(lang=>({params:{lang}}));}
+---
+<MarcaPage/>

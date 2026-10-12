@@ -1,0 +1,16 @@
+---
+// Faixa logo abaixo do hero: de onde se conduz (os hosts que o ork atende).
+const {t}=Astro.props;
+---
+<section class="runtimes">
+ <div class="container runtimes-linha">
+  <span class="runtimes-rotulo">{t.runtimes.label}</span>
+  <div class="runtimes-lista">{t.runtimes.list.map(n=><span>{n}</span>)}</div>
+ </div>
+</section>
+<style>
+.runtimes{padding:var(--e-2) 0 var(--e-7)}
+.runtimes-linha{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e-3) var(--e-6)}
+.runtimes-rotulo{font:var(--tipo-apoio);color:var(--texto-3)}
+.runtimes-lista{display:flex;flex-wrap:wrap;gap:var(--e-2) var(--e-6);font:var(--peso-destaque) 15px/1 var(--f-mono);color:var(--texto-2)}
+</style>

@@ -1,0 +1,30 @@
+---
+// Página estática de cada URL /es/ que existia antes de o espanhol sair do site (decisão E1 a do
+// dono): leva ao mesmo caminho em /en/ por refresh, com canonical para lá e fora dos buscadores.
+// O script leva também o fragmento (#secao), que o refresh perderia. O teste está em
+// scripts/redirecionamentos.test.mjs.
+import {rotasDoLegado,alvoDoLegado,parametroDoLegado} from '../../lib/es-legado.mjs';
+import {withBase} from '../../data/i18n';
+import {releaseDaBase} from '../../lib/previa.mjs';
+export function getStaticPaths(){
+ return rotasDoLegado.map(rota=>({params:{rota:parametroDoLegado(rota)},props:{alvo:alvoDoLegado(rota)}}));
+}
+const {alvo}=Astro.props;
+const destino=withBase(alvo),canonica='https://orkastery.com'+destino;
+const robots=releaseDaBase(import.meta.env.BASE_URL)?'noindex, nofollow':'noindex';
+---
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <meta name="robots" content={robots} />
+ <title>Orkastery</title>
+ <link rel="canonical" href={canonica} />
+ <meta http-equiv="refresh" content={'0; url='+destino} />
+ <script is:inline define:vars={{destino}}>location.replace(destino+location.hash);</script>
+</head>
+<body>
+ <p><a href={destino}>Orkastery in English</a></p>
+</body>
+</html>

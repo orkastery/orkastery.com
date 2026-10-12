@@ -1,0 +1,105 @@
+---
+// Páginas de produto (/ork/ e /orkmind/), que o HTML da home não desenha: a mesma Partitura da
+// home (selo, título, cartões com brilho, botões primário e secundário do kit, terminal sempre
+// noite e chamada final). O texto vem de src/data/product-pages.ts. As âncoras antigas dessas
+// páginas continuam como alvos.
+import Base from '../layouts/Base.astro';
+import Divider from './ds/Divider.astro';
+import TechnicalText from './TechnicalText.astro';
+import DocsDiagram from './DocsDiagram.astro';
+import ChamadaFinal from './home/ChamadaFinal.astro';
+import home from '../data/home';
+import {localeFor,localize,localizedPath,ui} from '../data/i18n';
+import {versao} from '../data/release.mjs';
+import catalog from '../data/docs-catalog';
+interface Props { content: any; product: 'Ork'|'OrkMind'; docsBase?: string; repository?: string; diagram?: boolean; }
+const {content:copy,product,docsBase,repository,diagram=true}=Astro.props;
+const locale=localeFor(Astro.url.pathname),text=ui(locale),t=home[locale];
+// docsBase aponta para o outro site (OrkMind): lá vai o caminho sem o base desta prévia.
+const docsHref=(path:string)=>docsBase?docsBase+localizedPath(path,locale):localize(path,locale);
+const legacy:Record<string,string[]>={topo:['manifesto-titulo'],metodo:['ciclo-titulo','ork-ciclo-titulo','ork-threads-titulo','ork-estado-titulo'],modos:['modos-titulo','ork-modos-titulo','ork-radar-titulo'],evidencia:['numeros-titulo','ork-verify-titulo','ork-gate-titulo','ork-audit-titulo','ork-score-titulo'],memoria:['ecossistema-titulo'],arquitetura:['camadas-titulo','ork-adapt-titulo','ork-comp-titulo']};
+const ancoras=(id:string)=>legacy[id]||[];
+const selo=product==='Ork'?['AI Software Factory','@orkastery/cli',versao,'MIT']:['OrkMind','Python','MIT'];
+---
+<Base titulo={product+' · '+copy.description} descricao={copy.description}>
+ <section id="topo" class="produto-hero">
+  <div class="produto-pontos" aria-hidden="true"></div>
+  <div class="container produto-hero-conteudo">
+   {ancoras('topo').map(a=><span id={a} class="ancora-antiga" aria-hidden="true"></span>)}
+   <div class="produto-selo"><span class="produto-ponto-selo" aria-hidden="true"></span>{product==='Ork'?<><span>{selo[0]}</span><span class="produto-barra" aria-hidden="true">/</span><span><code class="codigo-liso">{selo[1]}</code> <code class="codigo-liso">{selo[2]}</code></span><span class="produto-barra" aria-hidden="true">/</span><span>{selo[3]}</span></>:<><span>{selo[0]}</span><span class="produto-barra" aria-hidden="true">/</span><span>{selo[1]}</span><span class="produto-barra" aria-hidden="true">/</span><span>{selo[2]}</span></>}</div>
+   <h1 class="produto-titulo"><TechnicalText text={copy.title}/></h1>
+   <p class="produto-lead"><TechnicalText text={copy.lead}/></p>
+   <div class="produto-acoes">
+    <a class="produto-primario" href={docsHref('/docs/comecar/')}>{text.start} <span aria-hidden="true">→</span></a>
+    <a class="produto-secundario" href={repository||catalog.repository}>GitHub <span class="produto-seta" aria-hidden="true">↗</span></a>
+   </div>
+  </div>
+ </section>
+ <Divider/>
+ <section class="secao-padrao">
+  <div class="container">
+   <div class="produto-cartoes">
+    {copy.sections.map((s:any)=><section class="produto-cartao holofote" data-holofote id={s.id}>
+     {ancoras(s.id).map(a=><span id={a} class="ancora-antiga" aria-hidden="true"></span>)}
+     <h2 class="produto-cartao-titulo"><TechnicalText text={s.title}/></h2>
+     <p class="produto-cartao-texto"><TechnicalText text={s.text}/></p>
+     <a class="produto-cartao-link" href={s.href.startsWith('https:')?s.href:docsHref(s.href)}>{text.read} <span aria-hidden="true">→</span></a>
+    </section>)}
+   </div>
+  </div>
+ </section>
+ <Divider/>
+ <section id="arquitetura" class="secao-padrao">
+  <div class="container produto-mecanismo">
+   {ancoras('arquitetura').map(a=><span id={a} class="ancora-antiga" aria-hidden="true"></span>)}
+   <div>
+    <div class="sobretitulo">{text.concepts}</div>
+    <h2 class="produto-h2"><TechnicalText text={copy.mechanism}/></h2>
+    <p class="produto-texto"><TechnicalText text={copy.mechanismText}/></p>
+    <a class="produto-cartao-link" href={docsHref('/docs/arquitetura/')}>{text.read} <span aria-hidden="true">→</span></a>
+   </div>
+   {diagram&&<div class="produto-diagrama" tabindex="0" role="region" aria-label={text.diagram}><DocsDiagram name="layers" {locale}/></div>}
+  </div>
+ </section>
+ <Divider/>
+ <section id="instalar" class="secao-padrao">
+  <div class="container produto-instalar">
+   <div>
+    <div class="sobretitulo">{text.start}</div>
+    <h2 class="produto-h2"><TechnicalText text={copy.install}/></h2>
+    <p class="produto-texto"><TechnicalText text={copy.installText}/></p>
+    <a class="produto-cartao-link" href={docsHref('/docs/comecar/')}>{text.docs} <span aria-hidden="true">→</span></a>
+   </div>
+   <pre class="produto-terminal" tabindex="0" data-tema="noite"><code>{copy.command}</code></pre>
+  </div>
+ </section>
+ {product==='Ork'&&<ChamadaFinal titulo={t.cta.title} texto={t.cta.text} falar={t.cta.talk}/>}
+</Base>
+<style>
+.produto-hero{position:relative;padding:var(--secao-ampla) 0 var(--e-8)}
+.produto-pontos{position:absolute;left:0;right:0;top:0;height:560px;background-image:radial-gradient(color-mix(in srgb,var(--texto) 10%,transparent) 1px,transparent 1.3px);background-size:24px 24px;-webkit-mask-image:radial-gradient(70% 62% at 28% 18%,var(--texto) 15%,transparent 72%);mask-image:radial-gradient(70% 62% at 28% 18%,var(--texto) 15%,transparent 72%);pointer-events:none}
+.produto-hero-conteudo{position:relative}
+.produto-selo{display:inline-flex;flex-wrap:wrap;row-gap:6px;align-items:center;gap:var(--e-3);min-height:32px;padding:var(--e-1) var(--e-3);border-radius:var(--raio-pilula);background:var(--superficie);border:1px solid var(--linha);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);color:var(--texto-2);box-sizing:border-box}
+.produto-ponto-selo{width:7px;height:7px;border-radius:50%;background:var(--verificado)}
+.produto-barra{color:var(--linha-forte)}
+.produto-titulo{margin:var(--e-6) 0 0;font:var(--tipo-display);letter-spacing:var(--trk-display);max-width:18ch;text-wrap:balance}
+.produto-lead{margin:var(--e-6) 0 0;max-width:58ch;font:var(--tipo-corpo);color:var(--texto-2);text-wrap:pretty}
+.produto-acoes{margin-top:var(--e-6);display:flex;flex-wrap:wrap;gap:var(--e-3);align-items:center}
+.produto-primario{display:inline-flex;align-items:center;gap:var(--e-2);min-height:48px;padding:0 var(--e-5);border-radius:var(--raio-botao);background:var(--acao);color:var(--sobre-acao);font:var(--tipo-botao);box-sizing:border-box;transition:background-color var(--dur-curta) var(--curva)}
+.produto-primario:hover{background:color-mix(in srgb,var(--acao) 86%,var(--chao))}
+.produto-secundario{display:inline-flex;align-items:center;gap:var(--e-2);min-height:48px;padding:0 var(--e-5);border-radius:var(--raio-botao);background:var(--superficie);border:1px solid var(--linha-forte);font:var(--tipo-botao);color:var(--texto);box-sizing:border-box;transition:border-color var(--dur-curta) var(--curva)}
+.produto-secundario:hover{border-color:var(--texto)}
+.produto-seta{color:var(--texto-3)}
+.produto-cartoes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:var(--e-3)}
+.produto-cartao{padding:var(--e-5);border-radius:var(--raio-cartao);background-color:var(--superficie);border:1px solid var(--linha);display:flex;flex-direction:column;gap:var(--e-3)}
+.produto-cartao-titulo{margin:0;font:var(--tipo-titulo-3);letter-spacing:var(--trk-titulo-3);text-wrap:balance}
+.produto-cartao-texto{margin:0;flex:1;font:var(--tipo-apoio);color:var(--texto-2);text-wrap:pretty}
+.produto-cartao-link{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;min-height:var(--alvo);font:var(--peso-destaque) var(--t-apoio)/1 var(--f-texto);color:var(--texto);text-decoration:underline;text-decoration-color:var(--linha-forte);text-underline-offset:3px;transition:text-decoration-color var(--dur-curta) var(--curva)}
+.produto-cartao-link:hover{text-decoration-color:var(--texto)}
+.produto-mecanismo,.produto-instalar{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:var(--e-7) var(--e-8);align-items:center}
+.produto-h2{margin:var(--e-4) 0 0;font:var(--tipo-titulo-1);letter-spacing:var(--trk-titulo-1);text-wrap:balance}
+.produto-texto{margin:var(--e-4) 0 var(--e-5);max-width:56ch;font:var(--tipo-corpo);color:var(--texto-2);text-wrap:pretty}
+.produto-diagrama{background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio-palco);box-shadow:var(--sombra-2);padding:var(--e-5);overflow-x:auto}
+.produto-diagrama:focus-visible{box-shadow:var(--anel-foco)}
+.produto-terminal{margin:0;background:var(--superficie);border-radius:var(--raio-cartao);padding:var(--e-5);font:var(--tipo-codigo);overflow-x:auto}
+</style>
