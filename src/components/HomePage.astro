@@ -17,7 +17,7 @@ const aliasesFor=(id:string)=>(legacy[id]||[]).filter(alias=>!restored||!restore
 const diagram=Astro.props.diagram===false?null:'layers';
 ---
 <Base titulo={(Astro.props.product||'Orkastery')+' · '+copy.description} descricao={copy.description}>
- <section class:list={['editorial-hero',{'hero-with-receipt':restored}]} id="topo"><div class:list={['home-container',{'hero-grid':restored}]}>
+ <section class:list={['editorial-hero',{'hero-with-receipt':restored}]} id="topo"><div class:list={['container',{'hero-grid':restored}]}>
  <div class="hero-copy">
  <p class="home-kicker">{text.openSource} · {text.license}</p>
  {aliasesFor('topo').map(id=><span {id} aria-hidden="true"/>)}<h1><TechnicalText text={copy.title}/></h1><p class="home-lead"><TechnicalText text={copy.lead}/></p>
@@ -25,7 +25,7 @@ const diagram=Astro.props.diagram===false?null:'layers';
  </div>
  {restored&&<VerificationReceipt {locale}/>}
  </div></section>
- <div class="home-container home-main">
+ <div class="container home-main">
  <div class="home-grid">{copy.sections.map(s=><section class="home-card" id={s.id}>{aliasesFor(s.id).map(id=><span {id} aria-hidden="true"/>)}<h2><TechnicalText text={s.title}/></h2><p><TechnicalText text={s.text}/></p><a href={s.href.startsWith('https:')?s.href:docsHref(s.href)}>{text.read} →</a></section>)}</div>
  <section class="home-mechanism" id="arquitetura"><div>{aliasesFor('arquitetura').map(id=><span {id} aria-hidden="true"/>)}<p class="home-kicker">{text.concepts}</p><h2><TechnicalText text={copy.mechanism}/></h2><p><TechnicalText text={copy.mechanismText}/></p><a href={docsHref('/docs/arquitetura/')}>{text.read} →</a></div>{diagram&&<DocsDiagram name={diagram} {locale}/>}</section>
  <section class="home-install" id="instalar"><div>{aliasesFor('instalar').map(id=><span {id} aria-hidden="true"/>)}<h2><TechnicalText text={copy.install}/></h2><p><TechnicalText text={copy.installText}/></p><a href={docsHref('/docs/comecar/')}>{text.docs} →</a></div><pre tabindex="0"><code>{copy.command}</code></pre></section>
@@ -34,7 +34,6 @@ const diagram=Astro.props.diagram===false?null:'layers';
  <Contato/>
 </Base>
 <style>
-.home-container{max-width:1160px;margin:auto;padding-inline:1.5rem;}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:3rem;align-items:center;}
 .hero-copy{min-width:0;}
 .editorial-hero.hero-with-receipt{padding-block:clamp(3rem,6vw,5rem);}

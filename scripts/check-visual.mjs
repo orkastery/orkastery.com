@@ -3,7 +3,7 @@ import {resolve,extname} from 'node:path';
 import {pathToFileURL} from 'node:url';
 const widths=[1280,700,390],routes=['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/varias-maquinas/'];
 const args=process.argv.slice(2);
-if(args.includes('--plan')){console.log(JSON.stringify({locales:['pt','en','es'],widths,themes:['dark','light'],routes,reducedMotion:['reduce','no-preference'],screenshots:3*widths.length*2*(routes.length+1),network:'blocked',requires:['PLAYWRIGHT_MODULE','CHROMIUM_EXECUTABLE','--output']},null,2));process.exit(0);}
+if(args.includes('--plan')){console.log(JSON.stringify({locales:['pt','en','es'],widths,themes:['dark','light'],routes,reducedMotion:['reduce','no-preference'],screenshots:3*widths.length*2*(routes.length+1),checks:['overflow','keyboard','themeNameAndPersistence','receiptLayout','copySuccessAndRefusal','falseReportLabel','collisionEntry','panels','reducedMotion','inlineCodeAtomic','adjacentTextWithCode','oneCodeScalePerBlock','linkUnderlineOnCode','tracksClearOfWrappedChips','oneContentEdge','motionCaptureOfViewport'],network:'blocked',requires:['PLAYWRIGHT_MODULE','CHROMIUM_EXECUTABLE','--output']},null,2));process.exit(0);}
 const output=args.includes('--output')?resolve(args[args.indexOf('--output')+1]):null;
 if(!output||!process.env.PLAYWRIGHT_MODULE||!process.env.CHROMIUM_EXECUTABLE)throw Error('Set PLAYWRIGHT_MODULE and CHROMIUM_EXECUTABLE, then pass --output PRIVATE_DIRECTORY');
 const dist=resolve('dist');
@@ -50,7 +50,9 @@ try{
    if(await page.locator('html').getAttribute('data-theme')!==scheme)throw Error('Theme preference was not restored');
    await page.keyboard.press('Tab');
    if(await page.locator(':focus').getAttribute('href')!=='#conteudo')throw Error('Skip link not first in keyboard order');
-   await page.keyboard.press('Enter');if(!page.url().endsWith('#conteudo'))throw Error('Skip target failed');
+   // A URL que o Playwright guarda chega por evento e pode atrasar depois do Enter; o destino se confere na propria pagina.
+   await page.keyboard.press('Enter');
+   if(!await page.waitForFunction(()=>location.hash==='#conteudo',null,{timeout:3000}).then(()=>true,()=>false))throw Error('Skip target failed: '+await page.evaluate(()=>location.hash)+' '+page.url());
    await page.goto('http://docs.local'+localized,{waitUntil:'networkidle'});
    let found=false;for(let i=0;i<30;i++){await page.keyboard.press('Tab');if(await page.locator('[data-language-selector] a:focus').count()){found=true;break;}}
    if(!found)throw Error('Language selector unreachable by keyboard');
@@ -92,6 +94,50 @@ try{
     const r=el.getBoundingClientRect();return r.width>0&&(r.right>innerWidth+1||r.left < -1);
    }).map(el=>el.tagName+'.'+el.className));
    if(overflow.length)throw Error('Overflow '+localized+' '+width+': '+overflow.join(', '));
+   // Codigo inline atomico, colado ao que encosta nele e numa escala por bloco; sublinhado do
+   // link no chip; trilha fora dos chips quebrados; cabecalho, conteudo, contato e rodape na mesma borda.
+   const grid=await page.evaluate(()=>{
+    const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=='hidden';
+    const codes=[...document.querySelectorAll('code')].filter(c=>!c.closest('pre')&&visible(c));
+    const inline=el=>!!el&&el.nodeType===1&&['inline','contents'].includes(getComputedStyle(el).display);
+    // A escala se compara entre os codigos do mesmo bloco, atravessando a unidade e outros inline.
+    const block=c=>{let p=c.parentElement;while(inline(p))p=p.parentElement;return p;};
+    const blocks=new Map();
+    for(const c of codes){const b=block(c);blocks.set(b,[...(blocks.get(b)||[]),getComputedStyle(c).fontSize]);}
+    const chips=[...document.querySelectorAll('[data-ciclo] .fase')].filter(visible);
+    const wrapped=new Set(chips.map(f=>Math.round(f.getBoundingClientRect().top))).size>1;
+    const cross=(a,b)=>a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;
+    // Caractere vizinho no fluxo, atravessando elementos inline e outro chip: o centro dele cai dentro da altura do chip.
+    const glyph=(node,index)=>{const r=document.createRange();r.setStart(node,index);r.setEnd(node,index+1);return r.getClientRects()[0];};
+    const sameLine=(g,box)=>!g||(g.top+g.bottom)/2>=box.top-1&&(g.top+g.bottom)/2<=box.bottom+1;
+    const edgeText=(node,last)=>{
+     if(!node)return null;if(node.nodeType===3)return node.nodeValue.length?node:null;
+     if(!inline(node)&&node.tagName!=='CODE')return null;
+     const kids=[...node.childNodes];for(const k of last?kids.reverse():kids){const t=edgeText(k,last);if(t)return t;}return null;
+    };
+    const neighbour=(c,before)=>{for(let n=c;n;n=n.parentElement){const s=before?n.previousSibling:n.nextSibling;if(s)return edgeText(s,before);if(!inline(n.parentElement))return null;}return null;};
+    const fixed=['.site-header-inner','.editorial-hero > div','.home-main','[data-home-section] > div','.docs-shell','.contact-inner','.footer-inner'];
+    return {
+     detached:codes.flatMap(c=>{
+      const box=c.getBoundingClientRect(),t=c.textContent.trim(),p=neighbour(c,true),n=neighbour(c,false),found=[];
+      if(p&&/\S$/.test(p.nodeValue)&&!sameLine(glyph(p,p.nodeValue.length-1),box))found.push(p.nodeValue.at(-1)+t);
+      if(n&&/^\S/.test(n.nodeValue)&&!sameLine(glyph(n,0),box))found.push(t+n.nodeValue[0]);
+      return found;
+     }),
+     split:codes.filter(c=>c.getClientRects().length>1).map(c=>c.textContent.trim()),
+     scales:[...blocks].filter(([,sizes])=>new Set(sizes).size>1).map(([b])=>b.tagName.toLowerCase()+'.'+[...b.classList].join('.')),
+     underline:codes.filter(c=>c.closest('a')&&getComputedStyle(c).textDecorationLine!==getComputedStyle(c.closest('a')).textDecorationLine).map(c=>c.textContent.trim()),
+     tracks:wrapped?[...document.querySelectorAll('[data-ciclo] .factory-tracks')].filter(visible).filter(t=>chips.some(f=>cross(t.getBoundingClientRect(),f.getBoundingClientRect()))).length:0,
+     // Borda do conteudo, nao da caixa: calha lateral local tambem conta.
+     edges:[...new Set(fixed.flatMap(sel=>[...document.querySelectorAll(sel)]).filter(visible).map(el=>{const cs=getComputedStyle(el);return Math.round(el.getBoundingClientRect().left+parseFloat(cs.paddingLeft)+parseFloat(cs.borderLeftWidth));}))]
+    };
+   });
+   if(grid.split.length)throw Error('Inline code split across lines '+localized+' '+width+': '+grid.split.join(', '));
+   if(grid.detached.length)throw Error('Adjacent text detached from inline code '+localized+' '+width+': '+grid.detached.join(', '));
+   if(grid.scales.length)throw Error('Inline code sizes differ within a block '+localized+' '+width+': '+grid.scales.join(', '));
+   if(grid.underline.length)throw Error('Link underline missing on inline code '+localized+' '+width+': '+grid.underline.join(', '));
+   if(grid.tracks)throw Error('Decorative tracks over wrapped cycle chips '+localized+' '+width);
+   if(grid.edges.length!==1)throw Error('Content edges differ '+localized+' '+width+': '+grid.edges.join(', '));
     return diagram;
    };
    await auditLayout();
@@ -114,10 +160,12 @@ try{
     await auditLayout();
    }
    const diagram=await auditLayout();
-   const shot=`${locale}-${path.replaceAll('/','-')||'home'}-${width}-${scheme}.png`;
+   const shot=`${locale}-${path==='/'?'home':path.slice(1,-1).replaceAll('/','-')}-${width}-${scheme}.png`;
+   // Pagina inteira a partir do topo: o link de pular e fixo e apareceria no meio da imagem.
+   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
    await page.screenshot({path:resolve(output,shot),fullPage:true});
    if(errors.length)throw Error(errors.join('; '));
-   results.push({path:localized,width,scheme,screenshot:shot,overflow:0,keyboard:true,diagramBoxes:diagram.boxes,labelsContained:true,reducedMotion:'reduce'});
+   results.push({path:localized,width,scheme,screenshot:shot,overflow:0,keyboard:true,diagramBoxes:diagram.boxes,labelsContained:true,inlineCodeAtomic:true,adjacentTextWithCode:true,oneCodeScalePerBlock:true,linkUnderlineOnCode:true,tracksClearOfWrappedChips:true,oneContentEdge:true,reducedMotion:'reduce'});
    if(path==='/'){
     await page.emulateMedia({reducedMotion:'no-preference'});
     await page.reload({waitUntil:'networkidle'});
@@ -130,13 +178,19 @@ try{
      if(offset<499)throw Error('Collision finished before entering viewport');
     }
     await page.locator('.collision-scene').evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
-    await page.waitForFunction(()=>Number(getComputedStyle(document.querySelector('.false-report')).opacity)>.99);
+    await page.waitForFunction(()=>['.false-report','.collision-node'].every(sel=>Number(getComputedStyle(document.querySelector(sel)).opacity)>.99));
     if(viewTimeline)await page.waitForFunction(()=>parseFloat(getComputedStyle(document.querySelector('.collision-scene .track path')).strokeDashoffset)<1);
     if(errors.length)throw Error(errors.join('; '));
     if(!await page.locator('.false-report strong').isVisible())throw Error('Collision final state missing');
     const movingShot=`${locale}-home-${width}-${scheme}-motion.png`;
-    await page.screenshot({path:resolve(output,movingShot),fullPage:true});
-    results.push({path:localized,width,scheme,screenshot:movingShot,reducedMotion:'no-preference',finalCollisionVisible:true,viewTimeline});
+    // So a janela visivel: a captura de pagina inteira refaz o layout e desfaz o estado da animacao ligada a rolagem.
+    await page.screenshot({path:resolve(output,movingShot)});
+    const after=await page.evaluate(()=>({
+     opaque:['.false-report','.collision-node'].every(sel=>Number(getComputedStyle(document.querySelector(sel)).opacity)>.99),
+     traced:parseFloat(getComputedStyle(document.querySelector('.collision-scene .track path')).strokeDashoffset||'0')<1
+    }));
+    if(!after.opaque||(viewTimeline&&!after.traced))throw Error('Collision state changed during capture '+localized+' '+width);
+    results.push({path:localized,width,scheme,screenshot:movingShot,capture:'viewport',reducedMotion:'no-preference',finalCollisionVisible:true,viewTimeline});
    }
    await page.close();
   }

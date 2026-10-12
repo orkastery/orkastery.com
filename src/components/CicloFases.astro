@@ -590,6 +590,11 @@ const fases = [
       display: none;
     }
 
+    /* Os chips quebram em linhas: a trilha decorativa cruzaria os chips, entao some com os lacos. */
+    .trilha-envelope :global(.factory-tracks) {
+      display: none;
+    }
+
     .trilha-envelope {
       padding-bottom: 0;
     }

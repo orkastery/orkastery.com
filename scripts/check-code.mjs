@@ -1,6 +1,6 @@
 import {fileURLToPath} from 'node:url';
 import {parse} from 'parse5';
-import {pages,distArg} from './check-links.mjs';
+import {pages,distArg,walk,attrs,content} from './check-links.mjs';
 
 // Exact two-word prose, not wildcard exclusions of pages, components or languages.
 // These describe the program/package rather than invoke a command.
@@ -37,10 +37,31 @@ export function violations(html) {
  }
  return [...new Set(found)];
 }
+// Dentro de um paragrafo, o codigo inline segue o tamanho da regra comum. A classe
+// mono fixa um tamanho absoluto, e os codigos do mesmo paragrafo ficariam diferentes.
+export function scaleViolations(html) {
+ const dom=typeof html==='string'?parse(html):html;
+ return walk(dom).filter(n=>n.tagName==='p').flatMap(p=>walk(p).filter(n=>n.tagName==='code'&&(attrs(n).class||'').split(/\s+/).includes('mono')).map(n=>`<code class="${attrs(n).class}">`));
+}
+// A unidade sem quebra nao encolhe: colada a mais de 12 caracteres, ela estouraria a coluna
+// estreita. Texto assim pede o identificador inteiro no codigo ou um espaco antes do resto.
+export function glueViolations(html) {
+ const dom=typeof html==='string'?parse(html):html;
+ return walk(dom).filter(n=>n.tagName==='span'&&(attrs(n).class||'').split(/\s+/).includes('code-unit')).flatMap(unit=>{
+  const glued=content(unit).length-walk(unit).filter(n=>n.tagName==='code').map(content).join('').length;
+  return glued>12?[content(unit)]:[];
+ });
+}
 export function checkCode(dist=distArg()) {
- const all=pages(dist),errors=[];
- for(const page of all)for(const item of violations(page.dom))errors.push(`${page.path}: ${item}`);
+ const all=pages(dist),errors=[],scaled=[],glued=[];
+ for(const page of all){
+  for(const item of violations(page.dom))errors.push(`${page.path}: ${item}`);
+  for(const item of scaleViolations(page.dom))scaled.push(`${page.path}: ${item}`);
+  for(const item of glueViolations(page.dom))glued.push(`${page.path}: ${item}`);
+ }
  if(errors.length)throw Error('Technical text outside code/pre:\n'+errors.join('\n'));
- return {pages:all.length,unformatted:0,proseExceptions:proseExceptions.length};
+ if(scaled.length)throw Error('Inline code with its own type scale:\n'+scaled.join('\n'));
+ if(glued.length)throw Error('Inline code unit glues more than 12 characters:\n'+glued.join('\n'));
+ return {pages:all.length,unformatted:0,scaledInlineCode:0,longCodeUnits:0,proseExceptions:proseExceptions.length};
 }
 if(process.argv[1]===fileURLToPath(import.meta.url)){try{console.log(JSON.stringify(checkCode()));}catch(error){console.error(error.message);process.exitCode=1;}}

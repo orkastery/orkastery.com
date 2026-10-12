@@ -199,10 +199,14 @@ h3,
   color: var(--brasa-clara);
 }
 
-/* Codigo inline, em qualquer lugar do site */
+/* Codigo inline, em qualquer lugar do site. Atomico: um comando curto nunca se
+   parte entre linhas; um longo quebra dentro do proprio chip. */
 :not(pre) > code {
+  display: inline-block;
+  max-width: 100%;
   font-family: var(--f-mono);
   font-size: 0.86em;
+  line-height: 1.3;
   color: var(--latao-claro);
   background: var(--latao-fraco);
   border: 1px solid var(--latao-linha);
@@ -210,6 +214,25 @@ h3,
   padding: 0.08em 0.38em;
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+/* Inline-block nao recebe o sublinhado do link: o codigo o aplica a si mesmo, tambem dentro
+   da unidade sem quebra. */
+a > code,
+a .code-unit,
+a .code-unit > code {
+  text-decoration: inherit;
+}
+
+/* Unidade sem quebra: o que encosta no chip viaja com ele, sem parentese orfao no fim da
+   linha. O chip continua podendo quebrar por dentro, com folga do tamanho do que foi colado
+   (--folga, gravada pelo renderizador). */
+.code-unit {
+  white-space: nowrap;
+}
+
+.code-unit > code {
+  max-width: calc(100% - var(--folga, 2ch) - 1px);
 }
 
 /* ============================================================
@@ -855,8 +878,7 @@ html.js .escalona.visivel > *:nth-child(n + 10) { transition-delay: 0.58s; }
   margin-inline-start: 0;
 }
 
-/* Code blocks keep their own scrolling; inline code wraps on small screens. */
+/* Blocos de codigo rolam por dentro; codigo inline longo quebra dentro do proprio chip. */
 pre code{background:none;border:0;padding:0;color:inherit;font-size:inherit;white-space:pre;overflow-wrap:normal;}
-code{box-decoration-break:clone;-webkit-box-decoration-break:clone;}
 ::marker{color:var(--acento);}
 button:disabled{cursor:default;}

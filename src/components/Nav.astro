@@ -6,7 +6,7 @@ const locale=localeFor(Astro.url.pathname),text=ui(locale);
 const links=[{href:'/',label:text.organization},{href:'/ork/',label:text.ork},{href:'/docs/',label:text.docs},{href:'/orkmind/',label:'OrkMind'}];
 ---
 <header class="site-header">
- <div class="site-header-inner">
+ <div class="site-header-inner container">
  <a class="site-brand" href={localize('/',locale)} aria-label={'Orkastery · '+text.home}><span aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32">
           <circle class="selo-orbita" cx="16" cy="16" r="12.4" />
           <circle class="selo-batuta" cx="16" cy="3.6" r="2.8" />
@@ -23,7 +23,8 @@ const links=[{href:'/',label:text.organization},{href:'/ork/',label:text.ork},{h
 <style>
 .site-preferences{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;}
 .site-header{position:relative;z-index:50;border-bottom:1px solid var(--linha-forte);background:var(--poco,var(--fundo));color:var(--tinta,var(--texto));}
-.site-header-inner{max-width:1280px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:1.25rem;padding:1.2rem 1.5rem;flex-wrap:wrap;}
+/* Largura e calhas laterais vem da grade comum .container. */
+.site-header-inner{display:flex;align-items:center;justify-content:space-between;gap:1.25rem;padding-block:1.2rem;flex-wrap:wrap;}
 .site-brand{display:inline-flex;align-items:center;gap:.65rem;font:500 1.3rem var(--f-marca);text-decoration:none;color:inherit;}
 .site-brand>span{display:inline-flex;}
 .site-brand svg{color:var(--marca);}
@@ -34,6 +35,6 @@ const links=[{href:'/',label:text.organization},{href:'/ork/',label:text.ork},{h
 .site-links a{padding:.5rem .2rem;color:inherit;text-decoration:none;text-underline-offset:.35em;}
 .site-links a[aria-current],.site-links a:hover{text-decoration:underline;}
 a:focus-visible{outline:2px solid currentColor;outline-offset:4px;}
-@media(max-width:760px){.site-header-inner{gap:1rem;padding:1rem 1.25rem;}.site-links{order:3;flex-basis:100%;}.site-brand{font-size:1.2rem;}}
+@media(max-width:760px){.site-header-inner{gap:1rem;padding-block:1rem;}.site-links{order:3;flex-basis:100%;}.site-brand{font-size:1.2rem;}}
 @media(max-width:480px){.site-header-inner{display:grid;grid-template-columns:1fr;gap:.5rem;}.site-links{gap:.25rem .85rem;}}
 </style>

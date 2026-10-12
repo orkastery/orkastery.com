@@ -1,6 +1,6 @@
 ---
-import {technicalParts} from '../lib/technical-text.mjs';
+import {technicalUnits,unitStyle} from '../lib/technical-text.mjs';
 interface Props {text: string;}
-const parts=technicalParts(Astro.props.text);
+const units=technicalUnits(Astro.props.text);
 ---
-{parts.map(part=>part.code?<code>{part.text}</code>:part.text)}
+{units.map(unit=>'text' in unit?unit.text:unit.open||unit.close?<span class="code-unit" style={unitStyle(unit.open,unit.close)}>{unit.open}<code>{unit.code}</code>{unit.close}</span>:<code>{unit.code}</code>)}

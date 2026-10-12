@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {violations,proseExceptions} from './check-code.mjs';
-import {technicalHtml,richTechnicalHtml} from '../src/lib/technical-text.mjs';
+import {violations,proseExceptions,scaleViolations,glueViolations} from './check-code.mjs';
+import {technicalHtml,richTechnicalHtml,technicalUnits} from '../src/lib/technical-text.mjs';
 import {checkCode} from './check-code.mjs';
 import {mkdtempSync,writeFileSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
@@ -31,12 +31,12 @@ test('every prose exception is exact and cannot hide the following command',()=>
 });
 test('technical rendering preserves prose and escapes markup',()=>{
  assert.equal(technicalHtml('A fábrica usa ork fabrica entrar para publicar.'),'A fábrica usa <code>ork fabrica entrar</code> para publicar.');
- assert.equal(technicalHtml('Run ork verify <thread>.'),'Run <code>ork verify &lt;thread&gt;</code>.');
+ assert.equal(technicalHtml('Run ork verify <thread>.'),'Run <span class="code-unit" style="--folga:0.6ch"><code>ork verify &lt;thread&gt;</code>.</span>');
  assert.equal(technicalHtml('<script>alert(1)</script>'),'&lt;script&gt;alert(1)&lt;/script&gt;');
  assert.equal(technicalHtml('Orkastery · AI Software Factory'),'Orkastery · AI Software Factory');
 });
 test('existing rich content keeps code semantic without double wrapping',()=>{
- assert.equal(richTechnicalHtml('<strong>Run ork doctor.</strong> <code>npm test</code>'),'<strong>Run <code>ork doctor</code>.</strong> <code>npm test</code>');
+ assert.equal(richTechnicalHtml('<strong>Run ork doctor.</strong> <code>npm test</code>'),'<strong>Run <span class="code-unit" style="--folga:0.6ch"><code>ork doctor</code>.</span></strong> <code>npm test</code>');
 });
 test('ordinary prose and product names are not technical syntax',()=>{
  for(const text of ['resources unavailable in CI','projeto-alvo','Node.js']){
@@ -57,7 +57,7 @@ test('paths, field names and public domains are distinguished',()=>{
 });
 test('full command placeholders, single flags and rich markup stay intact',()=>{
  assert.equal(technicalHtml('ork worktree ensure <thread>'),'<code>ork worktree ensure &lt;thread&gt;</code>');
- assert.equal(technicalHtml('pgvector/pgvector:pg16.'),'<code>pgvector/pgvector:pg16</code>.');
+ assert.equal(technicalHtml('pgvector/pgvector:pg16.'),'<span class="code-unit" style="--folga:0.6ch"><code>pgvector/pgvector:pg16</code>.</span>');
  assert.equal(technicalHtml('git remote -v'),'<code>git remote -v</code>');
  assert.equal(technicalHtml('npm --prefix core run test:ci'),'<code>npm --prefix core run test:ci</code>');
  assert.equal(technicalHtml('<dir>/plugins/orkastery'),'<code>&lt;dir&gt;/plugins/orkastery</code>');
@@ -70,6 +70,58 @@ test('rendered-directory audit rejects a regression then accepts the semantic re
   assert.throws(()=>checkCode(dir),/Technical text outside code/);
   writeFileSync(join(dir,'index.html'),'<p>A fábrica usa <code>ork fabrica entrar</code>.</p>');
   assert.equal(checkCode(dir).unformatted,0);
+ }finally{rmSync(dir,{recursive:true,force:true});}
+});
+
+test('adjacent non-space text travels with inline code in one unit',()=>{
+ assert.deepEqual(technicalUnits('Com Claude Code (claude-bg) e Codex.'),[{text:'Com Claude Code '},{open:'(',code:'claude-bg',close:')'},{text:' e Codex.'}]);
+ assert.deepEqual(technicalUnits('Use ork doctor e siga.'),[{text:'Use '},{open:'',code:'ork doctor',close:''},{text:' e siga.'}]);
+ // Pedacos de identificador que o reconhecedor deixa fora do codigo tambem ficam colados ao chip.
+ assert.equal(technicalHtml('Fica em $CODEX_HOME/sessions hoje.'),'Fica em <span class="code-unit" style="--folga:10ch">$<code>CODEX_HOME</code>/sessions</span> hoje.');
+ assert.equal(technicalHtml('Com ORK_TESTE_EXIGE_AMBIENTE=1, nada cai.'),'Com <span class="code-unit" style="--folga:2.6ch"><code>ORK_TESTE_EXIGE_AMBIENTE</code>=1,</span> nada cai.');
+ assert.equal(technicalHtml('Usa semPostgres() aqui.'),'Usa <span class="code-unit" style="--folga:1.2ch"><code>semPostgres</code>()</span> aqui.');
+ assert.equal(technicalHtml('As ork_grafo_* respondem.'),'As <span class="code-unit" style="--folga:1ch"><code>ork_grafo_</code>*</span> respondem.');
+ // Pontuacao estreita pesa menos na folga que letra ou simbolo; a folga tem teto de 12.
+ assert.match(technicalHtml('Veja (memory.query.scope-violation), depois.'),/--folga:1\.8ch/);
+ // Codigo que ja vinha no HTML revisado tambem recebe a unidade, sem embrulhar duas vezes.
+ const rich=richTechnicalHtml('<p>Com Claude Code (<code>claude-bg</code>) e Codex (<code>codex</code>).</p>');
+ assert.equal(rich,'<p>Com Claude Code <span class="code-unit" style="--folga:1.2ch">(<code>claude-bg</code>)</span> e Codex <span class="code-unit" style="--folga:1.8ch">(<code>codex</code>).</span></p>');
+ assert.equal(richTechnicalHtml(rich),rich);
+ assert.equal(richTechnicalHtml('<p><span class="code-unit x">(<code>a</code>)</span></p>'),'<p><span class="code-unit x">(<code>a</code>)</span></p>');
+ assert.equal(technicalHtml('Edite (core/package.json)?'),'Edite <span class="code-unit" style="--folga:2.2ch">(<code>core/package.json</code>)?</span>');
+ // A unidade e inline: o auditor de prosa continua lendo o comando inteiro.
+ assert.deepEqual(violations(`<p>${rich}</p>`),[]);
+ assert.deepEqual(violations('<p>Rode ork <span class="code-unit"><code>doctor</code>.</span></p>'),['ork']);
+});
+
+test('a unit that glues more than 12 characters fails the code audit',()=>{
+ // A unidade nao encolhe: colada a uma sequencia longa, estouraria a coluna estreita.
+ const longa=technicalHtml('Veja ork_x/'+'a'.repeat(30)+' depois.');
+ assert.match(longa,/--folga:12ch/);
+ assert.equal(glueViolations(`<p>${longa}</p>`).length,1);
+ assert.deepEqual(glueViolations(`<p>${technicalHtml('Fica em $CODEX_HOME/sessions hoje.')}</p>`),[]);
+ assert.deepEqual(glueViolations(`<p>${technicalHtml('Com ORK_TESTE_EXIGE_AMBIENTE=1, nada cai.')}</p>`),[]);
+ const dir=mkdtempSync(join(tmpdir(),'site-code-glue-'));
+ try{
+  writeFileSync(join(dir,'index.html'),`<p>${longa}</p>`);
+  assert.throws(()=>checkCode(dir),/glues more than 12 characters/);
+  writeFileSync(join(dir,'index.html'),'<p>Veja <code>ork_x/'+'a'.repeat(30)+'</code> depois.</p>');
+  assert.equal(checkCode(dir).longCodeUnits,0);
+ }finally{rmSync(dir,{recursive:true,force:true});}
+});
+
+test('inline code inside a paragraph keeps the shared type scale',()=>{
+ assert.deepEqual(scaleViolations('<p>Com <code>codex</code>, pelo <code class="mono">ork setup</code>.</p>'),['<code class="mono">']);
+ assert.deepEqual(scaleViolations('<p>Com <code>codex</code>, pelo <strong><code class="mono x">ork setup</code></strong>.</p>'),['<code class="mono x">']);
+ assert.deepEqual(scaleViolations('<p>Com <code>codex</code>, pelo <code>ork setup</code>.</p>'),[]);
+ // Rotulos de cartao fora do texto corrido podem manter a propria escala.
+ assert.deepEqual(scaleViolations('<ul><li><code class="mono lease-nome">main-tree</code></li></ul>'),[]);
+ const dir=mkdtempSync(join(tmpdir(),'site-code-scale-'));
+ try{
+  writeFileSync(join(dir,'index.html'),'<p>Configure com <code class="mono">ork setup</code>.</p>');
+  assert.throws(()=>checkCode(dir),/own type scale/);
+  writeFileSync(join(dir,'index.html'),'<p>Configure com <code>ork setup</code>.</p>');
+  assert.equal(checkCode(dir).scaledInlineCode,0);
  }finally{rmSync(dir,{recursive:true,force:true});}
 });
 

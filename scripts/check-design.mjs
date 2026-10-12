@@ -7,6 +7,24 @@ const rgb=hex=>hex.slice(1).match(/../g).map(n=>parseInt(n,16)/255);
 const luminance=channels=>channels.map(n=>n<=.04045?n/12.92:((n+.055)/1.055)**2.4).reduce((sum,n,i)=>sum+n*[.2126,.7152,.0722][i],0);
 export function contrast(a,b){const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
 const mix=(a,b,ratio)=>a.map((n,i)=>n*ratio+b[i]*(1-ratio));
+// Leitura estrutural do CSS minificado do build, suficiente para os canarios de layout.
+export function mediaBlocks(css){
+ const blocks=[],start=/@media\s*([^{]+)\{/g;let m;
+ while((m=start.exec(css))){let depth=1,i=start.lastIndex;for(;i<css.length&&depth;i++)depth+=css[i]==='{'?1:css[i]==='}'?-1:0;blocks.push({query:m[1].trim(),body:css.slice(start.lastIndex,i-1)});}
+ return blocks;
+}
+export const cssRules=css=>[...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(m=>({selectors:m[1].split(',').map(s=>s.trim()),declarations:m[2]}));
+export const hides=(css,className)=>cssRules(css).some(r=>/display:\s*none/.test(r.declarations)&&r.selectors.some(s=>new RegExp('\\.'+className+'(?:\\[[^\\]]*\\])?$').test(s)));
+export function layoutCanaries(css){
+ // Onde os chips do ciclo quebram em linhas, os lacos somem; a trilha decorativa vai junto.
+ const wraps=mediaBlocks(css).filter(block=>hides(block.body,'lacos'));
+ if(!wraps.length||!wraps.every(block=>hides(block.body,'factory-tracks')))throw Error('Decorative tracks over wrapped cycle chips');
+ // Codigo inline e atomico: um comando curto nunca se parte entre linhas.
+ if(!cssRules(css).some(r=>r.selectors.includes(':not(pre)>code')&&/display:\s*inline-block/.test(r.declarations)&&/max-width:\s*100%/.test(r.declarations)))throw Error('Inline code can split across lines');
+ // Atomico, o chip abriria quebra junto do que encosta nele; a unidade sem quebra mantem tudo colado.
+ if(!cssRules(css).some(r=>r.selectors.includes('.code-unit')&&/white-space:\s*nowrap/.test(r.declarations)))throw Error('Adjacent text can detach from inline code');
+ return {wrappedCycleRules:wraps.length};
+}
 
 export function checkDesign(dist=distArg()){
  const css=readFileSync(resolve(root,'src/styles/tokens.css'),'utf8');
@@ -41,12 +59,14 @@ export function checkDesign(dist=distArg()){
  }
  const assets=files(dist);
  for(const f of assets.filter(f=>f.endsWith('.css')))if(/(?:@import\s*|url\(["']?)(?:https?:)?\/\//.test(readFileSync(f,'utf8')))throw Error('External CSS/font');
+ // Canarios de presenca no CSS gerado; a prova de layout e a matriz do check:visual.
+ const {wrappedCycleRules}=layoutCanaries(assets.filter(f=>f.endsWith('.css')).map(f=>readFileSync(f,'utf8')).join('\n'));
  const total=extension=>assets.filter(f=>f.endsWith(extension)).reduce((sum,f)=>sum+statSync(f).size,0);
  const jsBytes=total('.js'),fontBytes=total('.woff2'),cssBytes=total('.css');
  const maxPageInlineJsBytes=Math.max(...all.map(page=>page.nodes.filter(n=>n.tagName==='script'&&!attrs(n).src).reduce((sum,n)=>sum+Buffer.byteLength(content(n)),0)));
  // Total across the site, not a per-page transfer estimate. Budgets protect static delivery.
  if(jsBytes+maxPageInlineJsBytes>45000||fontBytes>200000)throw Error(`Asset budget exceeded: JS=${jsBytes}, fonts=${fontBytes}`);
  for(const font of ['instrument-sans','geist-mono','fraunces'])if(!readFileSync(resolve(dist,'licenses',font+'.txt'),'utf8').includes('SIL OPEN FONT LICENSE'))throw Error('Missing font license');
- return {pages:all.length,contrastPairs:measurements.length,minTextContrast:Math.min(...measurements.filter(m=>m.minimum===4.5).map(m=>m.ratio)),minControlContrast:Math.min(...measurements.filter(m=>m.minimum===3).map(m=>m.ratio)),jsBytes,maxPageInlineJsBytes,cssBytes,fontBytes,scope:'token pairs; rendered visual review remains required'};
+ return {pages:all.length,wrappedCycleRules,contrastPairs:measurements.length,minTextContrast:Math.min(...measurements.filter(m=>m.minimum===4.5).map(m=>m.ratio)),minControlContrast:Math.min(...measurements.filter(m=>m.minimum===3).map(m=>m.ratio)),jsBytes,maxPageInlineJsBytes,cssBytes,fontBytes,scope:'token pairs; rendered visual review remains required'};
 }
 if(process.argv[1]===fileURLToPath(import.meta.url)){try{console.log(JSON.stringify(checkDesign()));}catch(error){console.error(error.message);process.exitCode=1;}}

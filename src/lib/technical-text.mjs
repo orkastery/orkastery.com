@@ -45,7 +45,49 @@ export function technicalParts(text) {
   return parts;
 }
 export const escapeText = text => String(text).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
-export const technicalHtml = text => technicalParts(String(text)).map(p=>p.code?`<code>${escapeText(p.text)}</code>`:escapeText(p.text)).join('');
+
+// O que encosta no codigo viaja com ele. O codigo inline e atomico, e o Chrome abre quebra
+// antes e depois dele mesmo colado a outro caractere (parentese, ponto, =1, /sessions, ());
+// a unidade sem quebra leva junto a sequencia nao branca vizinha.
+const opening=/\S+$/, closing=/^\S+/;
+// Folga do chip dentro da unidade na medida do que foi colado: pontuacao estreita pesa 0,6 do
+// caractere do codigo, o resto pesa 1, com teto de 12. O check:code reprova colagem maior que 12.
+const narrow=/[.,:;!()[\]'"]/;
+export const unitStyle=(open,close)=>`--folga:${Math.min(Math.round([...open+close].reduce((sum,ch)=>sum+(narrow.test(ch)?0.6:1),0)*10)/10,12)}ch`;
+export function technicalUnits(text) {
+  const parts=technicalParts(String(text)).map(part=>({...part})),units=[];
+  parts.forEach((part,i)=>{
+    if(!part.code){if(part.text)units.push({text:part.text});return;}
+    const before=units.at(-1),open=before&&'text' in before?before.text.match(opening)?.[0]||'':'';
+    if(open)before.text=before.text.slice(0,-open.length);
+    const after=parts[i+1],close=after&&!after.code?after.text.match(closing)?.[0]||'':'';
+    if(close)after.text=after.text.slice(close.length);
+    units.push({open,code:part.text,close});
+  });
+  return units.filter(unit=>!('text' in unit)||unit.text);
+}
+const codeHtml=text=>`<code>${escapeText(text)}</code>`;
+const unitOpen=(open,close)=>`<span class="code-unit" style="${unitStyle(open,close)}">`;
+export const technicalHtml = text => technicalUnits(text).map(u=>'text' in u?escapeText(u.text):u.open||u.close?`${unitOpen(u.open,u.close)}${escapeText(u.open)}${codeHtml(u.code)}${escapeText(u.close)}</span>`:codeHtml(u.code)).join('');
+const isUnit=node=>node.tagName==='span'&&(node.attrs||[]).some(a=>a.name==='class'&&a.value.split(/\s+/).includes('code-unit'));
+// Codigos que ja vinham no HTML revisado tambem levam o que encosta neles.
+function bindCodes(node){
+  const kids=node.childNodes||[];
+  for(let i=0;i<kids.length;i++){
+    const child=kids[i],prev=kids[i-1],next=kids[i+1];
+    if(child.tagName==='code'&&!isUnit(node)){
+      const open=prev?.nodeName==='#text'?prev.value.match(opening)?.[0]||'':'';
+      const close=next?.nodeName==='#text'?next.value.match(closing)?.[0]||'':'';
+      if(!open&&!close)continue;
+      const unit=parseFragment(`${unitOpen(open,close)}</span>`).childNodes[0];
+      const text=value=>({nodeName:'#text',value,parentNode:unit});
+      if(open)prev.value=prev.value.slice(0,-open.length);
+      if(close)next.value=next.value.slice(close.length);
+      unit.childNodes=[...(open?[text(open)]:[]),child,...(close?[text(close)]:[])];
+      child.parentNode=unit;unit.parentNode=node;kids[i]=unit;
+    }else if(!['code','pre','script','style'].includes(child.tagName))bindCodes(child);
+  }
+}
 
 // Only for existing, repository-owned rich translations. Never accepts remote HTML.
 export function richTechnicalHtml(html) {
@@ -60,5 +102,5 @@ export function richTechnicalHtml(html) {
       }else visit(child);
     }
   }
-  visit(fragment);return serialize(fragment);
+  visit(fragment);bindCodes(fragment);return serialize(fragment);
 }

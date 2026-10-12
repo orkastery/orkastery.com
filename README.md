@@ -1,4 +1,4 @@
-# Orkastery — site e documentação
+# Orkastery: site e documentação
 
 Site estático Astro com português em `/`, inglês em `/en/` e espanhol em `/es/`.
 Todas as páginas HTML têm idioma, canonical, alternates recíprocos e seletor para
@@ -100,6 +100,21 @@ como “ork core” e “git repository”, descrições do programa em prosa; c
 tem teste que garante que ela não libera o comando seguinte. Os domínios públicos
 de contato também têm teste explícito. Novas exceções exigem justificativa e teste.
 
+O código inline é atômico (`inline-block` limitado à largura do texto): um comando
+curto nunca se parte entre linhas, e um longo quebra dentro do próprio chip. Como o
+navegador abre quebra junto de um elemento atômico mesmo colado a outro caractere, o
+`TechnicalText` e o HTML rico põem a sequência não branca que encosta no chip
+(parênteses, pontuação, `=1`, `/sessions`, `()`) numa unidade sem quebra
+(`.code-unit`) com ele. A folga do chip dentro da unidade (`--folga`) acompanha o que
+foi colado (pontuação estreita pesa menos que letra ou símbolo), e `check:code` reprova
+unidade com mais de 12 caracteres colados, porque ela não encolhe e estouraria a coluna
+estreita. Dentro de um link, o código aplica a si
+mesmo o sublinhado, também dentro da unidade. Num bloco, todo código usa a mesma
+escala; `check:code` reprova a classe `mono` em código dentro de `<p>`, e
+`check:design` confere no CSS gerado que o código inline continua atômico e que a
+unidade não quebra. Esses canários do CSS só conferem presença de regra; a prova de
+layout é a matriz do `check:visual`.
+
 ## Identidade e acessibilidade
 
 `src/styles/tokens.css` concentra cores, fontes, espaçamento, raios, sombras e
@@ -115,7 +130,11 @@ existente: o logo aprovado não foi redesenhado. As três licenças e atribuiç�
 acompanham o bundle em `public/licenses/`. Não há fonte ou script de CDN.
 
 Nós, trilhas paralelas, terminais e uma grade técnica substituem a partitura e
-os ícones de instrumentos nos componentes ativos. A cena de colisão é uma
+os ícones de instrumentos nos componentes ativos. Onde os chips do ciclo quebram em
+linhas (680 px ou menos), a trilha decorativa some junto com os laços, e
+`check:design` reprova o CSS gerado que a deixe por cima dos chips. A grade das
+páginas vem de uma fonte só, `.container` (`--largura` e `--calha`): cabeçalho,
+home, contato, rodapé e docs começam na mesma borda. A cena de colisão é uma
 ilustração, não telemetria: mantém o texto real e mostra o relatório contraditório
 com texto riscado e “(falso)” para leitores de tela, além da cor. A animação CSS
 acompanha a entrada da cena na tela por `animation-timeline: view()`; sem suporte
@@ -154,11 +173,20 @@ npm run check:visual -- --output /diretorio/privado/screenshots
 O verificador intercepta todas as requisições, serve somente `dist` em memória e
 bloqueia destinos externos. Exercita home, páginas de produto, índice, arquitetura,
 contribuição e rede nos três idiomas e em 1280, 700 e 390 px, com os dois temas
-selecionados de verdade. São 126 capturas com movimento reduzido e mais 18 da home
-com movimento normal, após rolar até a cena: 144 capturas previstas. Confere overflow,
-teclado, nome acessível e persistência do tema, disposição do recibo, cópia (sucesso
-e recusa simulados), anúncio do relatório falso, entrada da animação, painéis
-interativos e movimento reduzido.
+selecionados de verdade. São 126 capturas de página inteira com movimento reduzido,
+feitas a partir do topo, e mais 18 da home com movimento normal: 144 capturas
+previstas. A captura com movimento é só da janela visível, com a cena no centro: a de
+página inteira, com a página rolada, pintava o link de pular (fixo) no meio da imagem
+e numa rodada saiu com a cena fora do estado final. O estilo do estado final (nó de
+colisão, trilhas e relatório) é conferido antes da captura e de novo depois dela; a
+conferência lê o estilo calculado, não os pixels. Confere overflow, teclado, nome
+acessível e persistência do tema, disposição do recibo, cópia (sucesso e recusa
+simulados), anúncio do relatório falso, entrada da animação, painéis interativos,
+movimento reduzido, código inline sem partir entre linhas, colado ao que encosta nele
+(atravessando elementos inline) e numa escala por bloco, sublinhado do link no
+código, trilha decorativa fora dos chips quebrados e a mesma borda esquerda para
+cabeçalho, conteúdo, contato e rodapé, medida nesses elementos e não pela classe.
+`--plan` lista essas verificações em `checks`.
 Os PNGs e `report.json` ficam fora do repositório público. Se o navegador não puder
 iniciar, o comando falha e registra o impedimento; não muda sandbox nem permissões.
 A inspeção humana das imagens ainda é necessária para avaliar qualidade visual.
