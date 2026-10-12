@@ -1852,19 +1852,19 @@
     "claude-code": {
       "pt": {
         "sourceHash": "57dbafb599f6ddae1c6ac879418ee37dff73885f4506081af0492a3fa0600ceb",
-        "contentHash": "8891ba6d44840567119ad8d59cfbc53269a465cec0af7b67a219e9ef0d33f2f5",
+        "contentHash": "18da411da555271021b407832b6ada55b901982c34ac701f4edb464b02053f55",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "en": {
         "sourceHash": "57dbafb599f6ddae1c6ac879418ee37dff73885f4506081af0492a3fa0600ceb",
-        "contentHash": "61dba88e7176c5938d659dadc14e01654dd02b2c05155d830f0405c4eb5e7656",
+        "contentHash": "75350cd526c0d1a55ac9de3c5dee6daed564e5b8c1a25683b54f455a7cf0ef27",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       },
       "es": {
         "sourceHash": "57dbafb599f6ddae1c6ac879418ee37dff73885f4506081af0492a3fa0600ceb",
-        "contentHash": "3c63781af7c61425df644b000f88711539de8e2387d85f58cab9052433f9eab2",
+        "contentHash": "d2b70dd0f683de073d0d7dbe21e803ba13d812ec55f20fa4a68d8c6d58e89115",
         "reviewer": "executor-editorial",
         "date": "2026-10-12"
       }

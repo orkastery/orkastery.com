@@ -40,7 +40,7 @@ const patterns = [
   /\bork_\*/g,
   // Posturas do runtime.sandbox citadas como valor.
   /\b(?:danger-full-access|workspace-write)\b/g,
-  /(?<![\w/.:-])\/(?:torre|goal|plan|go|check|ship|master|onboarding)(?![\w/-])/g,
+  /(?<![\w/.:-])\/(?:torre|clima|freio|radar|mesa|sentinela|pista|ritual|mensageiro|portao|goal|plan|go|check|ship|master|onboarding)(?![\w/-])/g,
 ];
 
 export function technicalParts(text) {
