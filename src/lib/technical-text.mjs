@@ -16,9 +16,11 @@ const patterns = [
   // A product name is not a filename. Explicit paths/commands above still
   // format a file named Node.js; the standalone product name stays prose.
   /\b(?!Node\.js\b)[\w.-]+\.(?:jsonl?|ya?ml|md|ts|mjs|cjs|js|py|toml|sh|svg|woff2|html|css)\b/g,
-  /\b(?:[A-Z][A-Z0-9]*_)+[A-Z0-9_]+\b/g,
-  /\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b/g,
-  /\b[a-z][a-z0-9]*(?:[A-Z][a-z0-9]+)+\b/g,
+  // Variavel de ambiente inteira: com o $ da expansao, a atribuicao colada (=1) e o caminho que segue.
+  /(?:\$|\b)(?:[A-Z][A-Z0-9]*_)+[A-Z0-9_]+\b(?:=[\w.:-]+)?(?:\/[\w.@*-]+)*/g,
+  // snake_case e camelCase levam a chamada vazia junto: semPostgres(), e nao semPostgres e ().
+  /\b[a-z][a-z0-9]*(?:_[a-z0-9]+)+\b(?:\(\))?/g,
+  /\b[a-z][a-z0-9]*(?:[A-Z][a-z0-9]+)+\b(?:\(\))?/g,
   /\b(?:ork|orkastery|claims|verify|artifact|tree|lease|runtime|policy|human|cost|project|projeto|conduction|worktree|memory|remoto|roadmap|board|ship|retry|prompt|capabilities|snapshot|doc|docs|onboarding|network|fabrica|gate|maestro|ci|providers|skills|security|performance|browser|git)(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b/g,
   /(?<![\w@])(?:orkmind|owner|grafo|hitl|init|rede|master|brain|alternativas|resposta|maquina|citacao|concurrency|changelog)(?:\.[a-z][\w-]*)+(?:\/v\d+)?\b/g,
   // Todo identificador minusculo com ponto e codigo, como o auditor exige (prs.sem-leitura,
@@ -28,7 +30,8 @@ const patterns = [
   /@[a-z][\w-]*\/[\w.-]+(?:@[\w.-]+)?/g,
   /(?<![\w-])-[gvCh](?![\w-])/g,
   /\b(?:true|false|null|undefined|rotate_above|Dockerfile|Makefile|Bash|ToolSearch)\b/g,
-  /\b(?:mcp__[\w]+|ork_[\w]+|sha256|claude-bg)\b/g,
+  // A familia de ferramentas leva o curinga junto (ork_grafo_*).
+  /\b(?:mcp__[\w]+|ork_[\w]+|sha256|claude-bg)\b(?:\*)?/g,
   // Identificadores hifenizados conhecidos (check do CI e packs de regras); hifen comum segue prosa.
   /\b(?:ork-verify|security-privacy|clean-code|data-model)\b/g,
 ];

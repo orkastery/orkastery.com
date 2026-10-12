@@ -84,11 +84,16 @@ test('rendered-directory audit rejects a regression then accepts the semantic re
 test('adjacent non-space text travels with inline code in one unit',()=>{
  assert.deepEqual(technicalUnits('Com Claude Code (claude-bg) e Codex.'),[{text:'Com Claude Code '},{open:'(',code:'claude-bg',close:')'},{text:' e Codex.'}]);
  assert.deepEqual(technicalUnits('Use ork doctor e siga.'),[{text:'Use '},{open:'',code:'ork doctor',close:''},{text:' e siga.'}]);
- // Pedacos de identificador que o reconhecedor deixa fora do codigo tambem ficam colados ao chip.
- assert.equal(technicalHtml('Fica em $CODEX_HOME/sessions hoje.'),'Fica em <span class="code-unit" style="--folga:10ch">$<code>CODEX_HOME</code>/sessions</span> hoje.');
- assert.equal(technicalHtml('Com ORK_TESTE_EXIGE_AMBIENTE=1, nada cai.'),'Com <span class="code-unit" style="--folga:2.6ch"><code>ORK_TESTE_EXIGE_AMBIENTE</code>=1,</span> nada cai.');
- assert.equal(technicalHtml('Usa semPostgres() aqui.'),'Usa <span class="code-unit" style="--folga:1.2ch"><code>semPostgres</code>()</span> aqui.');
- assert.equal(technicalHtml('As ork_grafo_* respondem.'),'As <span class="code-unit" style="--folga:1ch"><code>ork_grafo_</code>*</span> respondem.');
+ // O identificador inteiro vai para o codigo: o $ da variavel, a atribuicao, a chamada e o membro.
+ assert.equal(technicalHtml('Fica em $CODEX_HOME/sessions hoje.'),'Fica em <code>$CODEX_HOME/sessions</code> hoje.');
+ assert.equal(technicalHtml('Com ORK_PROJETO_EXPLICITO=1, devolve a escolha.'),'Com <span class="code-unit" style="--folga:0.6ch"><code>ORK_PROJETO_EXPLICITO=1</code>,</span> devolve a escolha.');
+ assert.equal(technicalHtml('ORK_REDE_LER=0 desliga'),'<code>ORK_REDE_LER=0</code> desliga');
+ assert.equal(technicalHtml('pula com semPostgres() e semCodexSandbox().'),'pula com <code>semPostgres()</code> e <span class="code-unit" style="--folga:0.6ch"><code>semCodexSandbox()</code>.</span>');
+ assert.equal(technicalHtml('use runtime_profiles.distribuir no manifesto'),'use <code>runtime_profiles.distribuir</code> no manifesto');
+ assert.equal(technicalHtml('o $ sozinho e o preço R$ 10 seguem prosa'),'o $ sozinho e o preço R$ 10 seguem prosa');
+ assert.equal(technicalHtml('Com ORK_TESTE_EXIGE_AMBIENTE=1, nada cai.'),'Com <span class="code-unit" style="--folga:0.6ch"><code>ORK_TESTE_EXIGE_AMBIENTE=1</code>,</span> nada cai.');
+ assert.equal(technicalHtml('Usa semPostgres() aqui.'),'Usa <code>semPostgres()</code> aqui.');
+ assert.equal(technicalHtml('As ork_grafo_* respondem.'),'As <code>ork_grafo_*</code> respondem.');
  // Pontuacao estreita pesa menos na folga que letra ou simbolo; a folga tem teto de 12.
  assert.match(technicalHtml('Veja (memory.query.scope-violation), depois.'),/--folga:1\.8ch/);
  // Codigo que ja vinha no HTML revisado tambem recebe a unidade, sem embrulhar duas vezes.
