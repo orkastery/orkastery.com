@@ -198,6 +198,9 @@ test('identifiers from the review stay whole, and prose abbreviations stay prose
  assert.equal(technicalHtml('ork verify logs each command'),'<code>ork verify</code> logs each command');
  assert.equal(technicalHtml('com o ork mcp ausente'),'com o <code>ork mcp</code> ausente');
  assert.equal(technicalHtml('use ork claims ausente'),'use <code>ork claims ausente</code>');
+ // O valor de flag em maiúsculas é só o placeholder da lista: sigla de prosa fica de fora.
+ assert.equal(technicalHtml('com --pr CI só avisa'),'com <code>--pr</code> CI só avisa');
+ assert.equal(technicalHtml('use git merge-tree --write-tree agora'),'use <code>git merge-tree --write-tree</code> agora');
  assert.equal(technicalHtml('ork phase list --worktree DIR e --teto-bytes N.'),'<code>ork phase list --worktree DIR</code> e <span class="code-unit" style="--folga:0.6ch"><code>--teto-bytes N</code>.</span>');
  // O auditor também guarda esses identificadores, não só o reconhecedor.
  assert.deepEqual(violations('<p>cwd no $HOME e no PATH, (LANG), /orkastery:goal e $ork.</p>'),['$HOME','PATH','LANG','/orkastery:goal','$ork']);

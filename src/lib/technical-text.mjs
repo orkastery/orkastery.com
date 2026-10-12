@@ -12,8 +12,8 @@ const patterns = [
   /\bnode\s+[\w./-]+\.(?:[cm]?js|ts)(?:\s+(?:ci|prepare|eval|docs|verificar|sincronizar|origin\/main|--[a-z][\w-]*|<[^<>]+>))*/g,
   /\bnode\s+--test(?:-[a-z][\w-]*(?:=[\w-]+)?)?(?:\s+--test-[a-z][\w-]*(?:=[\w-]+)?)*(?:\s+[\w./*-]+\.(?:[cm]?js|ts))?/g,
   /\.(?:git|env|gitignore|orkastery|agents|claude|codex)\b\/?/g,
-  /\b(?:git\s+(?:ls-remote|rebase|remote(?:\s+(?:-v|add|remove|rename|set-url|get-url))?|status|diff|log|clone|fetch|pull|push|commit|checkout|switch|rm(?:\s+-r)?(?:\s+--cached)?)|pip3?\s+install)(?:\s+(?:<[^<>]+>|\.[\w.\/-]+|[\w-]+\/[\w.\/-]*))?/g,
-  /(?<![\w-])--[a-z][\w-]*(?:[= ](?:<[^<>]+>|auto|block|true|false|[A-Z][A-Z0-9_]{0,7}\b(?![-.]\w)))?/g,
+  /\b(?:git\s+(?:ls-remote|rebase|remote(?:\s+(?:-v|add|remove|rename|set-url|get-url))?|status|diff|log|clone|fetch|pull|push|commit|checkout|switch|merge-tree(?:\s+--write-tree)?|rm(?:\s+-r)?(?:\s+--cached)?)|pip3?\s+install)(?:\s+(?:<[^<>]+>|\.[\w.\/-]+|[\w-]+\/[\w.\/-]*))?/g,
+  /(?<![\w-])--[a-z][\w-]*(?:[= ](?:<[^<>]+>|auto|block|true|false|(?:DIR|N|ID|R|D|M|S|F|K|T|Q|NOME|URL)\b(?![-.]\w)))?/g,
   /(?:~\/|\.{1,2}\/|\b(?:docs|core|src|scripts|maquinas|threads|skills|adapters|marketplaces|prompts)\/|\.orkastery\/|\bork\/)(?:[\w.@*{}-]+|<[^<>]+>|\/)+/g,
   // A product name is not a filename. Explicit paths/commands above still
   // format a file named Node.js; the standalone product name stays prose.

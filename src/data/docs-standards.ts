@@ -164,7 +164,7 @@ export default [
             ],
             "items": [
               "Modo #Noctum, arcos autônomos de 6 a 12 horas com muitas threads e máquinas: em refinamento, ainda sem implementação. O dono já tomou as quatro decisões de produto; a posição 5 na prioridade é uma proposta, e o primeiro piloto espera a autorização dele.",
-              "Condução dentro do Claude Code, com dez mods em quatro ondas: em desenvolvimento; a fundação, a Torre de Controle, o Clima de Cota e o Freio de Lote estão na versão {versao}, e os outros mods seguem como plano.",
+              "Condução dentro do Claude Code, com dez mods em quatro ondas: em desenvolvimento; a fundação e a onda 1 (Torre de Controle, Clima de Cota, Freio de Lote e Radar de Colisão) estão na versão {versao}, e os outros mods seguem como plano.",
               "Site como produto, os dois sites públicos com o rigor do núcleo: em desenvolvimento, e nada é publicado sem a aprovação do dono.",
               "CLI em inglês e pt-BR: em desenvolvimento. Na versão {versao}, a primeira metade do caminho da primeira experiência (de ork doctor e ork init a ork thread new e ork phase run) e a ajuda falam inglês quando owner.language ou o locale pedem en; ork verify, ork ship, ork pulse, ork master, ork retry e ork roadmap status ficam para a fatia seguinte.",
               "Busca por significado na memória: o dono escolheu os pares da prova, que passou em todas as execuções medidas; o item segue em validação.",
@@ -199,7 +199,7 @@ export default [
             ],
             "items": [
               "#Noctum mode, autonomous arcs of 6 to 12 hours across many threads and machines: in refinement, not implemented yet. The owner has made the four product decisions; position 5 in the priority list is a proposal, and the first pilot awaits the owner’s authorization.",
-              "Conduction inside Claude Code, with ten mods in four waves: in development; the foundation, the Control Tower, the Quota Weather and the Batch Brake are in version {versao}, and the other mods remain planned.",
+              "Conduction inside Claude Code, with ten mods in four waves: in development; the foundation and wave 1 (the Control Tower, the Quota Weather, the Batch Brake and the Collision Radar) are in version {versao}, and the other mods remain planned.",
               "Site as a product, the two public sites held to the core’s rigor: in development, and nothing is published without the owner’s approval.",
               "CLI in English and pt-BR: in development. In version {versao}, the first half of the first-run path (from ork doctor and ork init to ork thread new and ork phase run) and the help print English when owner.language or the locale asks for en; ork verify, ork ship, ork pulse, ork master, ork retry and ork roadmap status are left for the next slice.",
               "Search by meaning in memory: the owner chose the proof pairs, and the proof passed in every measured run; the item is still in validation.",
@@ -234,7 +234,7 @@ export default [
             ],
             "items": [
               "Modo #Noctum, arcos autónomos de 6 a 12 horas con muchas threads y máquinas: en refinamiento, aún sin implementar. El dueño ya tomó las cuatro decisiones de producto; la posición 5 en la prioridad es una propuesta, y el primer piloto espera su autorización.",
-              "Conducción dentro de Claude Code, con diez mods en cuatro oleadas: en desarrollo; la base, la Torre de Control, el Clima de Cuota y el Freno de Lote están en la versión {versao}, y los demás mods siguen como plan.",
+              "Conducción dentro de Claude Code, con diez mods en cuatro oleadas: en desarrollo; la base y la oleada 1 (la Torre de Control, el Clima de Cuota, el Freno de Lote y el Radar de Colisión) están en la versión {versao}, y los demás mods siguen como plan.",
               "Sitio como producto, los dos sitios públicos con el rigor del núcleo: en desarrollo, y nada se publica sin la aprobación del dueño.",
               "CLI en inglés y pt-BR: en desarrollo. En la versión {versao}, la primera mitad del camino del primer uso (de ork doctor y ork init a ork thread new y ork phase run) y la ayuda salen en inglés cuando owner.language o el locale piden en; ork verify, ork ship, ork pulse, ork master, ork retry y ork roadmap status quedan para la siguiente porción.",
               "Búsqueda por significado en la memoria: el dueño eligió los pares de la prueba, que pasó en todas las ejecuciones medidas; el elemento sigue en validación.",
