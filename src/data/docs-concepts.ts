@@ -173,6 +173,7 @@ export default [
             "title": "GO e CHECK: implemente e confira",
             "paragraphs": [
               "GO implementa na worktree vinculada, com baseline anterior e commits pequenos. CHECK compara a evidência com essa baseline e revisa correção, segurança, performance, manutenção e estilo. Um achado que exige código volta ao GO.",
+              "Na versão {versao}, o CHECK roda por padrão no Agile Check: o preparo acontece uma vez, as claims rodam contra o produto dele com guarda de hash e as lanes de teste e a varredura seguem em paralelo, sem passar da CPU da máquina. O Classic Check, com os mesmos comandos na mesma ordem, volta por check.mode: classic no orkastery.yaml ou por ork verify --check classic na rodada, e uma peça do Agile indisponível cai para o equivalente do Classic.",
               "A worktree do GO nasce com a thread quando o orkastery.yaml tem worktree.por_thread: true, o que o ork init grava. Com --sem-worktree, a thread roda na raiz do projeto, e na branch base o SHIP sai barrado pela policy push_direto_na_base."
             ]
           },
@@ -201,6 +202,7 @@ export default [
             "title": "GO and CHECK: implement and verify",
             "paragraphs": [
               "GO implements in the linked worktree, using an earlier baseline and small commits. CHECK compares evidence with that baseline and reviews correctness, security, performance, maintainability and style. Findings that require code return to GO.",
+              "In version {versao}, CHECK runs Agile Check by default: preparation happens once, claims run against its output under a hash guard, and the test lanes and the scan run in parallel, without exceeding the machine’s CPU. Classic Check, with the same commands in the same order, returns through check.mode: classic in orkastery.yaml or through ork verify --check classic for the run, and an unavailable Agile piece falls back to the Classic equivalent.",
               "The GO worktree is created with the thread when orkastery.yaml has worktree.por_thread: true, which ork init writes. With --sem-worktree, the thread runs at the project root, and on the base branch SHIP is blocked by the push_direto_na_base policy."
             ]
           },

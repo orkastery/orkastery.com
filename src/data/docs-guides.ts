@@ -33,6 +33,15 @@ export default [
             ]
           },
           {
+            "id": "cota",
+            "title": "A troca de perfil por cota",
+            "paragraphs": [
+              "Com a troca por cota ligada, o padrão, esgotamento de cota, crédito ou limite do plano marca o perfil e passa para o próximo perfil ativo do mesmo runtime. O prompt que segue depende do que a sessão produziu: sem produção, vai o prompt original; com produção, vai um prompt de retomada com o checkpoint. Sem perfil ativo, o núcleo segue para o runtime de fallback do bloco e depois para a fila durável. Rate limit comum de curta janela nunca troca de perfil: espera a janela na fila.",
+              "O checkpoint leva fase, HEAD, estado da worktree, claims e rodada, preserva o prompt e o SHA-256 originais e manda continuar sem repetir GOAL nem PLAN. A produção parcial não recebe o prompt original sobre a worktree alterada; sem retomada segura, a sessão vira human.pending. Em #Classic o bloco espera a resposta ao ork gate request; em #Maestro e #Auto ele troca sozinho e grava runtime_profile_rotated com quem decidiu, a evidência e a razão. Estourar retry.max_tentativas interrompe qualquer modo, inclusive o #Auto, e perfil não é eixo de independência do CHECK."
+            ],
+            "code": "ork accounts\nork setup <modo>"
+          },
+          {
             "id": "so-codex",
             "title": "Só com o Codex",
             "paragraphs": [
@@ -76,6 +85,15 @@ export default [
             "paragraphs": [
               "Without a tag, conduction.default_mode applies. The core checks the choice against conduction.allowed_modes. A tag does not authorize ignoring the owner’s explicit scope."
             ]
+          },
+          {
+            "id": "cota",
+            "title": "Profile rotation on quota",
+            "paragraphs": [
+              "With quota rotation on, the default, an exhausted quota, credit or plan limit marks the profile and moves to the next active profile of the same runtime. The prompt that follows depends on what the session produced: with no output, the original prompt goes; with output, a resume prompt with the checkpoint goes. Without an active profile, the core moves to the block’s fallback runtime and then to the durable queue. An ordinary short-window rate limit never rotates profiles: it waits for the window in the queue.",
+              "The checkpoint carries the phase, HEAD, worktree state, claims and round, preserves the original prompt and SHA-256 and says to continue without repeating GOAL or PLAN. Partial output does not receive the original prompt over the changed worktree; without a safe resume, the session becomes human.pending. In #Classic the block waits for the answer to ork gate request; in #Maestro and #Auto it rotates on its own and records runtime_profile_rotated with who decided, the evidence and the reason. Exceeding retry.max_tentativas stops any mode, including #Auto, and a profile is not an axis of CHECK independence."
+            ],
+            "code": "ork accounts\nork setup <mode>"
           },
           {
             "id": "so-codex",
@@ -319,7 +337,7 @@ export default [
             "id": "sentinela",
             "title": "Deixe a Sentinela despachar",
             "paragraphs": [
-              "Com a sua sessão aberta no Claude Code e a Sentinela ligada e não pausada, é ela que despacha a fase seguinte das threads #Auto e faz o retry delas, e o condutor externo (por exemplo, um cron no gateway do Hermes) cede. Com a Sentinela pausada, ou com a sessão fechada (a presença vence 3 min depois da última batida), o condutor externo volta a conduzir. A publicação da branch, o merge do PR verde e os avisos do Telegram ficam sempre com o condutor externo: a Sentinela não publica branch, não abre nem mergeia PR e não manda mensagem pelo Telegram.",
+              "Com a sua sessão aberta no Claude Code e a Sentinela ligada e não pausada, é ela que despacha a fase seguinte das threads #Auto e faz o retry delas, e o condutor externo (por exemplo, um cron no gateway do Hermes) cede. Com a Sentinela pausada, ou com a sessão fechada (a presença vence 3 min depois da última batida), o condutor externo volta a conduzir. Na versão {versao}, o condutor externo do próprio ork é a batida da condução (ork conducao batida): ela lê a presença e cede o despacho e o retry enquanto a Sentinela conduz, menos a retomada da fase que parou por cota, que continua com a batida porque a conta da Sentinela também pode esgotar. Ela segue com o merge do PR verde, o registro da entrega e o MASTER por omissão, dentro da autorização durável do dono; com ela no cron, o script de fora deixa de ser necessário. A publicação da branch, o merge do PR verde e os avisos do Telegram ficam sempre com o condutor externo: a Sentinela não publica branch, não abre nem mergeia PR e não manda mensagem pelo Telegram.",
               "Ela pede um ork com os comandos de presença que só a main do núcleo tem, e carrega junto com a ponte, pela pasta do adaptador ou pelo marketplace do repositório, como no bloco abaixo. O script do condutor externo fica fora do repositório, e a mudança nele é sua: uma vez por rodada, antes do laço de despacho, ele lê o status da Sentinela com --json e, enquanto presenca.ativa for true, pula o despacho da fase seguinte e o ork retry run das threads #Auto. A publicação da branch que só espera push, o merge do PR verde e os avisos ao dono ficam como estão; sem presença viva, o condutor externo conduz como antes.",
               "Não há despacho duplicado, porque os dois condutores despacham só pelo núcleo: o ork phase run toma a condução da thread sob uma trava do kernel. Com dois pedidos no mesmo instante, um despacha e o outro sai sem sessão nova; com a thread já conduzida, o pedido sai 3, com conducao.em-andamento, e grava conducao_recusada; e o mesmo pedido de quem já conduz grava despacho_idempotente e devolve a sessão em andamento. A Sentinela ainda relê a condução logo antes de despachar, nunca usa ork conducao assumir e guarda o turno que já despachou. O despacho dela leva o canal do Claude Code e a sessão dela na correlação, e o phase_dispatch mostra de onde veio.",
               "A Sentinela não escolhe a fase: segue a ação que o núcleo dá a cada thread no status. No #Auto, depois de uma fase concluída, sai a fase seguinte à prova mais adiantada que a sessão do bloco deixou: o artefato da fase (goal.md, plan.md, check.md) gravado depois do despacho, o produto na branch, que mostra que houve GO, ou o ship_done e o master_done. Se o bloco já passou do CHECK, nada sai: a entrega fica com o condutor externo e com o dono. O CHECK que terminou sem exatamente um veredito é redespachado, e o despacho que falhou antes de abrir sessão vai ao ork retry plan. Pendência do dono (thread num ponto de HITL, pergunta aberta, escalação) segura qualquer passo, e, sem pedido guardado na criação da thread (ork thread new --pedido), a Sentinela não despacha e avisa.",
@@ -388,7 +406,7 @@ export default [
             "id": "sentinela",
             "title": "Let the Sentinel dispatch",
             "paragraphs": [
-              "With your session open in Claude Code and the Sentinel on and not paused, the Sentinel dispatches the next phase of the #Auto threads and retries them, and the external conductor (for example, a cron job on the Hermes gateway) yields. With the Sentinel paused, or with the session closed (the presence expires 3 minutes after the last heartbeat), the external conductor takes over again. Publishing the branch, merging the green PR and the Telegram notices always stay with the external conductor: the Sentinel does not publish branches, does not open or merge PRs and does not send Telegram messages.",
+              "With your session open in Claude Code and the Sentinel on and not paused, the Sentinel dispatches the next phase of the #Auto threads and retries them, and the external conductor (for example, a cron job on the Hermes gateway) yields. With the Sentinel paused, or with the session closed (the presence expires 3 minutes after the last heartbeat), the external conductor takes over again. In version {versao}, ork's own external conductor is the conduction beat (ork conducao batida): it reads the presence and yields dispatch and retry while the Sentinel conducts, except the resume of a phase stopped by quota, which stays with the beat because the Sentinel's account can run out too. It goes on with merging the green PR, recording the delivery and the MASTER by omission, within the owner's durable authorization; with it in cron, the outside script is no longer needed. Publishing the branch, merging the green PR and the Telegram notices always stay with the external conductor: the Sentinel does not publish branches, does not open or merge PRs and does not send Telegram messages.",
               "It needs an ork with the presence commands that only the core’s main branch has, and it loads together with the bridge, from the adapter folder or from the repository’s marketplace, as in the block below. The external conductor’s script lives outside the repository, and the change to it is yours: once per round, before the dispatch loop, it reads the Sentinel status with --json and, while presenca.ativa is true, skips dispatching the next phase and ork retry run for the #Auto threads. Publishing a branch that only awaits a push, merging the green PR and the notices to the owner stay as they are; with no live presence, the external conductor runs as before.",
               "There is no duplicate dispatch, because both conductors dispatch only through the core: ork phase run takes the thread’s conduction under a kernel lock. With two requests at the same instant, one dispatches and the other exits without a new session; with the thread already being conducted, the request exits with code 3, conducao.em-andamento, and records conducao_recusada; and the same request from whoever is already conducting records despacho_idempotente and returns the session in progress. The Sentinel also rereads the conduction right before dispatching, never uses ork conducao assumir and remembers the turn it has already dispatched. Its dispatch carries the Claude Code channel and its session in the correlation, and phase_dispatch shows where it came from.",
               "The Sentinel does not choose the phase: it follows the action the core gives each thread in the status. In #Auto, after a completed phase, what goes out is the phase after the most advanced proof the block’s session left: the phase artifact (goal.md, plan.md, check.md) written after the dispatch, the product on the branch, which shows there was a GO, or ship_done and master_done. If the block is already past CHECK, nothing goes out: delivery stays with the external conductor and the owner. A CHECK that ended without exactly one verdict is dispatched again, and a dispatch that failed before opening a session goes to ork retry plan. Anything pending with the owner (a thread at a HITL point, an open question, an escalation) holds every step and, without a request stored when the thread was created (ork thread new --pedido), the Sentinel does not dispatch and warns.",
@@ -462,6 +480,27 @@ export default [
             "code": "ork fix open <thread>\nork fix list <thread>\nork fix reverify <thread>"
           },
           {
+            "id": "check-agile",
+            "title": "Agile Check, o CHECK padrão",
+            "paragraphs": [
+              "Na versão {versao}, o CHECK padrão é o Agile Check. Ele roda o preparo uma vez, as claims contra o produto dele com a guarda de hash, as lanes de teste e a varredura em paralelo. O Classic Check continua disponível por check.mode: classic no manifesto ou por ork verify --check classic|agile, e a opção da rodada vence o manifesto.",
+              "Os dois modos têm a mesma cobertura e o mesmo veredito: o Agile nunca reduz cobertura em silêncio, e a peça indisponível cai para o equivalente do Classic, com a peça, o motivo e o que rodou no lugar registrados em agile.pecas. O preparo roda uma vez, e a claim que começa pelos passos do verify.preparo o reaproveita enquanto a árvore e o hash do produto forem os do fim do preparo; qualquer divergência roda o comando inteiro. As lanes correm em paralelo, e a lane que sobe containers espera a varredura terminar.",
+              "Cada verify_run registra o modo da rodada e de onde ele veio (opcao, manifesto ou padrao), a linha check do texto do ork verify mostra o nome do modo, e o ork thread status mostra o do último verify. Sem o bloco check.agile, o Agile roda os mesmos comandos do Classic. Valor fora de agile e classic torna o manifesto inválido."
+            ],
+            "code": "check:\n  mode: classic\n\nork verify <thread> --check classic\nork verify <thread> --baseline --check agile"
+          },
+          {
+            "id": "security-scan",
+            "title": "O security scan no CHECK",
+            "paragraphs": [
+              "Com verify.security_scan declarado no manifesto, o ork verify roda o ork security-scan como o quarto comando, depois de build, test e typecheck. Quem julga é a ferramenta, e o agente só lê o resultado. Sem a chave, verify, CI, SHIP e skills seguem como antes; o ork init grava a chave sozinho quando reconhece uma stack JavaScript/TypeScript, Python ou Go.",
+              "O scan cobre segredo com o Gitleaks, SAST com o Semgrep, dependência com o Trivy e o auditor da stack, IaC com o Trivy config, workflow com zizmor e actionlint, qualidade com ESLint, Ruff ou golangci-lint, e licença com o Trivy license. As ferramentas rodam por imagens oficiais fixadas por digest, com o repositório montado só para leitura; sem Docker, vale o binário nativo, e sem os dois a ferramenta fica unavailable.",
+              "O scan compara o HEAD com a base e classifica cada achado como new, existing ou dismissed. Achado new de segredo entra no laço sempre; new de dependência, SAST, IaC e workflow entra com high ou critical; qualidade e licença ficam em aviso. Achado no laço faz o ork security-scan sair 1 e o verify reprovar, e o CHECK lê o report.json com o security-auditor para dar um veredito por achado.",
+              "Sem Docker nem binário, o scan local sai 0 com a ferramenta unavailable, o que não vira limpo no SHIP: com verify.security_scan declarado e sem ci.required_for_ship, o ork ship para com human.pending e só segue com ork ship <thread> --para main --allow-unscanned \"<quem autoriza>\"."
+            ],
+            "code": "verify:\n  security_scan: ork security-scan\n\nork security-scan\nork security-scan --check agile"
+          },
+          {
             "id": "verificacao-confiavel",
             "title": "Falha, prazo e comando específico",
             "paragraphs": [
@@ -494,6 +533,7 @@ export default [
             "title": "Modelo indisponível e conta da sessão",
             "paragraphs": [
               "model_not_found produz runtime.model-unavailable. O retry tenta destinos autorizados com o mesmo prompt, preserva o perfil para outros modelos e registra a troca. Sem destino, escala com a correção de setup; rate limit comum espera sua janela. ork sessions stop, logs e attach procuram a conta correta nos perfis Claude configurados. O inventário global, o ork doctor, o ork pulse e o controle nativo de HITL ainda podem ter cobertura restrita à conta do processo. Um perfil pedido com --perfil que não existe ou é de outro runtime recusa com runtime.profile-invalid e escala ao humano, sem trocar de perfil sozinho.",
+              "Quando a sessão morre por cota depois de produzir, o retry não reenvia o prompt original sobre a worktree alterada: ele despacha ou enfileira um prompt derivado com fase, último commit, status, claims e rodada, preservando o prompt e o SHA-256 originais. O checkpoint manda continuar sem repetir GOAL nem PLAN, e a sessão que não produziu nada recebe o prompt original.",
               "runtime.workspace-untrusted (o runtime recusou o diretório da worktree) e runtime.consent-pending (o CLI espera o aceite de termos novos) viram espera do dono, com o comando exato; depois do aceite, ork retry run re-despacha a mesma fase com o mesmo prompt. Na versão {versao}, o runtime.consent-pending cobre também o aviso do modo sem permissões e a ativação do modo auto do --bg, e a prova de que o dono confiou no diretório segue a regra que o Claude Code aplica no --bg: vale o próprio diretório e os de cima até a raiz git, ou o repositório principal da worktree vinculada, mas não o diretório acima da raiz git. O diretório que não existe mais e o diretório home não são do dono e ficam em runtime.unavailable, e a recusa repetida pelo mesmo impedimento não gasta tentativa nem sobe esforço."
             ],
             "code": "ork retry plan <thread>\nork retry run <thread> --dry-run"
@@ -538,6 +578,27 @@ export default [
             "code": "ork fix open <thread>\nork fix list <thread>\nork fix reverify <thread>"
           },
           {
+            "id": "check-agile",
+            "title": "Agile Check, the default CHECK",
+            "paragraphs": [
+              "In version {versao}, the default CHECK is the Agile Check. It runs the preparation once, the claims against its product with the hash guard, the test lanes and the scan in parallel. The Classic Check remains available through check.mode: classic in the manifest or through ork verify --check classic|agile, and the round's option overrides the manifest.",
+              "Both modes have the same coverage and the same verdict: Agile never reduces coverage silently, and an unavailable piece falls back to the Classic equivalent, with the piece, the reason and what ran instead recorded in agile.pecas. The preparation runs once, and a claim that starts with the verify.preparo steps reuses it while the tree and the product hash are those from the end of the preparation; any divergence runs the whole command. The lanes run in parallel, and the lane that starts containers waits for the scan to finish.",
+              "Every verify_run records the round's mode and where it came from (opcao, manifesto or padrao), the check line in ork verify's text shows the mode name, and ork thread status shows the last verify's mode. Without the check.agile block, Agile runs the same commands as Classic. A value other than agile or classic makes the manifest invalid."
+            ],
+            "code": "check:\n  mode: classic\n\nork verify <thread> --check classic\nork verify <thread> --baseline --check agile"
+          },
+          {
+            "id": "security-scan",
+            "title": "The security scan in CHECK",
+            "paragraphs": [
+              "With verify.security_scan declared in the manifest, ork verify runs ork security-scan as the fourth command, after build, test and typecheck. The tool is the judge, and the agent only reads the result. Without the key, verify, CI, SHIP and skills behave as before; ork init writes the key on its own when it recognizes a JavaScript/TypeScript, Python or Go stack.",
+              "The scan covers secrets with Gitleaks, SAST with Semgrep, dependencies with Trivy and the stack's auditor, IaC with Trivy config, workflows with zizmor and actionlint, quality with ESLint, Ruff or golangci-lint, and licenses with Trivy license. The tools run from official images pinned by digest, with the repository mounted read-only; without Docker, the native binary applies, and without either the tool stays unavailable.",
+              "The scan compares HEAD with the base and classifies each finding as new, existing or dismissed. A new secret finding always enters the loop; a new dependency, SAST, IaC or workflow finding enters with high or critical; quality and license findings stay as warnings. A finding in the loop makes ork security-scan exit 1 and verify fail, and CHECK reads report.json with the security-auditor to give one verdict per finding.",
+              "Without Docker or a native binary, the local scan exits 0 with the tool unavailable, which does not become clean at SHIP: with verify.security_scan declared and no ci.required_for_ship, ork ship stops with human.pending and only proceeds with ork ship <thread> --para main --allow-unscanned \"<who authorizes>\"."
+            ],
+            "code": "verify:\n  security_scan: ork security-scan\n\nork security-scan\nork security-scan --check agile"
+          },
+          {
             "id": "verificacao-confiavel",
             "title": "Failures, deadlines and focused commands",
             "paragraphs": [
@@ -570,6 +631,7 @@ export default [
             "title": "Unavailable models and session accounts",
             "paragraphs": [
               "model_not_found produces runtime.model-unavailable. Retry tries authorized destinations with the same prompt, retains the profile for other models and records the change. Without a destination it escalates with a setup correction; ordinary rate limits wait for their window. ork sessions stop, logs and attach find the correct account among configured Claude profiles. Global inventory, ork doctor, ork pulse and native HITL control may still be limited to the process account. A profile requested with --perfil that does not exist or belongs to another runtime is refused with runtime.profile-invalid and escalated to a human, without switching profiles automatically.",
+              "When a session dies from quota after producing output, retry does not resend the original prompt over the changed worktree: it dispatches or queues a derived prompt with the phase, last commit, status, claims and round, preserving the original prompt and SHA-256. The checkpoint says to continue without repeating GOAL or PLAN, and a session that produced nothing receives the original prompt.",
               "runtime.workspace-untrusted (the runtime refused the worktree directory) and runtime.consent-pending (the CLI is waiting for new terms to be accepted) become a wait for the owner, with the exact command; after acceptance, ork retry run dispatches the same phase again with the same prompt. In version {versao}, runtime.consent-pending also covers the no-permissions mode warning and enabling auto mode for --bg, and the proof that the owner trusted the directory follows the rule Claude Code applies with --bg: the directory itself and those above it up to the root of the git repository count, as does the main repository of a linked worktree, but not a directory above that root. A directory that no longer exists and the home directory are not the owner’s to fix and stay as runtime.unavailable, and a repeated refusal for the same blocker uses no attempt and raises no effort."
             ],
             "code": "ork retry plan <thread>\nork retry run <thread> --dry-run"
@@ -672,9 +734,19 @@ export default [
             "title": "Memória indisponível",
             "paragraphs": [
               "OrkMind é uma integração de memória, não uma autoridade de gate. Quando indisponível, o modo efetivo e a degradação devem ser explícitos. Consulte ork memory status antes de afirmar que o contexto foi persistido ou recuperado.",
-              "O ork memory status mostra o regime pedido no manifesto e o efetivo, o tenant, a variável da base, se a DSN está no ambiente (sem imprimir o valor) e o CLI do OrkMind. Em regime files, a degradação sai como modo.files, com a correção para ligar a memória semântica: memory.mode: orkmind e memory.database_url_env no manifesto. O ciclo não para por isso: o handoff continua triado em três níveis, e o ork recall continua resolvendo os ponteiros."
+              "O ork memory status mostra o regime pedido no manifesto e o efetivo, o tenant, a variável da base, se a DSN está no ambiente (sem imprimir o valor) e o CLI do OrkMind. Em regime files, a degradação sai como modo.files, com a correção para ligar a memória semântica: memory.mode: orkmind e a fonte da DSN no manifesto, em memory.database_url_env ou memory.database_url_file. O ciclo não para por isso: o handoff continua triado em três níveis, e o ork recall continua resolvendo os ponteiros."
             ],
             "code": "ork memory status"
+          },
+          {
+            "id": "dsn-arquivo",
+            "title": "A DSN fora do ambiente dos agentes",
+            "paragraphs": [
+              "Com memory.database_url_env, a DSN mora no ambiente do processo e chega ao ambiente de toda sessão de agente que a herda. A segunda fonte tira a DSN de lá: memory.database_url_file aponta o caminho de um arquivo na pasta de segredos do ork, lido no momento do uso.",
+              "As duas fontes são exclusivas: declarar database_url_file e database_url_env reprova o manifesto, e o ork nunca cai de uma para a outra. O caminho aceito é ~/.orkastery/segredos/<nome>, sem subpasta; o arquivo é comum, do usuário que roda o ork, com permissão 0600 ou 0400, até 4 KiB e uma linha só com a DSN. Nenhuma pasta do caminho pode ser link simbólico, e cada uso lê o arquivo de novo.",
+              "Arquivo ausente, inseguro ou inválido leva o regime a files, com dsn.arquivo-ausente, dsn.arquivo-inseguro ou dsn.arquivo-invalido e a correção. A resposta de um processo filho que repita a DSN ou a senha dela é recusada inteira, com memory.transport.secret. O ork memory status mostra a fonte sem o valor, e o ork doctor avisa sobre a fonte da DSN e sobre a DSN ainda exportada no ambiente de uma sessão despachada."
+            ],
+            "code": "memory:\n  mode: orkmind\n  tenant: orkastery\n  database_url_file: \"~/.orkastery/segredos/orkastery.dsn\"\n\nork memory status"
           },
           {
             "id": "significado",
@@ -714,9 +786,19 @@ export default [
             "title": "Unavailable memory",
             "paragraphs": [
               "OrkMind is a memory integration, not gate authority. When unavailable, the effective mode and degradation must be explicit. Check ork memory status before claiming context was stored or retrieved.",
-              "ork memory status shows the regime requested in the manifest and the effective one, the tenant, the database variable, whether the DSN is in the environment (never printing its value) and the OrkMind CLI. In the files regime, degradation appears as modo.files, with the fix to turn on semantic memory: memory.mode: orkmind and memory.database_url_env in the manifest. The cycle does not stop because of it: the handoff stays triaged in three levels, and ork recall keeps resolving pointers."
+              "ork memory status shows the regime requested in the manifest and the effective one, the tenant, the database variable, whether the DSN is in the environment (never printing its value) and the OrkMind CLI. In the files regime, degradation appears as modo.files, with the fix to turn on semantic memory: memory.mode: orkmind and the DSN source in the manifest, either memory.database_url_env or memory.database_url_file. The cycle does not stop because of it: the handoff stays triaged in three levels, and ork recall keeps resolving pointers."
             ],
             "code": "ork memory status"
+          },
+          {
+            "id": "dsn-arquivo",
+            "title": "The DSN outside the agents' environment",
+            "paragraphs": [
+              "With memory.database_url_env, the DSN lives in the process environment and reaches the environment of every agent session that inherits it. The second source takes the DSN out of there: memory.database_url_file points to a file in ork's secrets folder, read at the moment of use.",
+              "The two sources are exclusive: declaring both database_url_file and database_url_env fails the manifest, and ork never falls back from one to the other. The accepted path is ~/.orkastery/segredos/<name>, with no subfolder; the file is a regular file owned by the user running ork, with mode 0600 or 0400, up to 4 KiB and a single line with the DSN. No folder in the path may be a symbolic link, and every use reads the file again.",
+              "A missing, unsafe or invalid file moves the regime to files, with dsn.arquivo-ausente, dsn.arquivo-inseguro or dsn.arquivo-invalido and the fix. A child process response that repeats the DSN or its password is refused entirely, with memory.transport.secret. ork memory status shows the source without the value, and ork doctor warns about the DSN source and about a DSN still exported in a dispatched session's environment."
+            ],
+            "code": "memory:\n  mode: orkmind\n  tenant: orkastery\n  database_url_file: \"~/.orkastery/segredos/orkastery.dsn\"\n\nork memory status"
           },
           {
             "id": "significado",
@@ -905,11 +987,20 @@ export default [
             ]
           },
           {
+            "id": "recuperacao",
+            "title": "Quando o runtime cai, o dono é a última instância",
+            "paragraphs": [
+              "O ork retry run sobe uma escada com o mesmo prompt e o mesmo sha256: reerguer o daemon do claude-bg, usar o primeiro alvo do fallback do bloco e, por último, outro perfil do mesmo runtime. Cada degrau vai ao ledger da thread como runtime_recuperacao, com o destino efetivo e a prova, e o degrau pulado ou interrompido não gasta tentativa.",
+              "Esgotados os três degraus, o dono é chamado com gate_blocked human.pending e três alternativas, uma recomendada, o comando que confere o runtime e o que retoma a fase com o mesmo prompt. A escada vale por episódio e nunca abre uma segunda sessão na mesma worktree; com o daemon travado, o retry o reergue antes da prova de vida, e a terceira recusa seguida sem resposta chama o dono."
+            ],
+            "code": "ork retry plan <thread>\nork retry run <thread> --dry-run"
+          },
+          {
             "id": "status-e-nota",
             "title": "Status e nota com prova de origem",
             "paragraphs": [
               "ork roadmap status é leitura pura e reúne o relatório por grupos, #HITL no que espera o dono e o próximo passo. Impedimentos técnicos aparecem como responsabilidade do orquestrador, exceto o que só o dono resolve no terminal, como confiar no diretório da worktree ou aceitar termos novos do CLI: esse vira espera dele, com o comando exato e o ork retry run. Na versão {versao}, o resumo do pulse traz esses impedimentos num bloco próprio, e o impedimento novo sai na hora, sem esperar a cadência.",
-              "ork master pedir solicita a nota de 0 a 5 e o motivo pelo Telegram autenticado; o recibo acompanha a gravação. O diálogo MCP de nota ainda não está disponível. Um --por digitado pelo agente não substitui prova de canal."
+              "ork master pedir solicita a nota de 0 a 5 e o motivo pelo Telegram autenticado; o recibo acompanha a gravação. Na sessão do dono, o diálogo nativo do host também coleta a nota: a ferramenta MCP ork_request_master_note recebe só o threadId, pede o formulário, grava master_done com autorizadoPor dono (dialogo nativo), o canal claude-code e o recibo assinado; sem formulário no cliente, recusa com master.nota.sem-dialogo sem gravar nada. A nota pelo diálogo nativo vale como nota humana, e um --por digitado pelo agente não substitui prova de canal."
             ],
             "code": "ork roadmap status\nork master pedir <thread> --formato telegram"
           }
@@ -961,11 +1052,20 @@ export default [
             ]
           },
           {
+            "id": "recuperacao",
+            "title": "When the runtime falls, the owner is the last resort",
+            "paragraphs": [
+              "ork retry run climbs a ladder with the same prompt and the same sha256: restart the claude-bg daemon, use the block's first fallback target and, last, another profile of the same runtime. Each step goes to the thread ledger as runtime_recuperacao, with the effective destination and the evidence, and a skipped or interrupted step costs no attempt.",
+              "Once the three steps are exhausted, the owner is called with gate_blocked human.pending and three options, one recommended, the command that checks the runtime and the one that resumes the phase with the same prompt. The ladder applies per episode and never opens a second session in the same worktree; with a stuck daemon, retry restarts it before the liveness proof, and the third refusal in a row without an answer calls the owner."
+            ],
+            "code": "ork retry plan <thread>\nork retry run <thread> --dry-run"
+          },
+          {
             "id": "status-e-nota",
             "title": "Status and scores with provenance",
             "paragraphs": [
               "ork roadmap status is read-only: it groups the report, marks owner decisions with #HITL and shows the next step. Technical blockers remain the orchestrator’s responsibility, except those only the owner can clear in the terminal, such as trusting the worktree directory or accepting new CLI terms: these become a wait for the owner, with the exact command and ork retry run. In version {versao}, the pulse summary lists these blockers in their own block, and a new one goes out right away, without waiting for the cadence.",
-              "ork master pedir requests a score from 0 to 5 and a reason through authenticated Telegram; the receipt accompanies the record. The MCP score dialog is not yet available. An agent-supplied --por cannot replace channel proof."
+              "ork master pedir requests a score from 0 to 5 and a reason through authenticated Telegram; the receipt accompanies the record. In the owner's session, the host's native dialog also collects the score: the ork_request_master_note MCP tool takes only the threadId, asks for the form, and records master_done with autorizadoPor dono (dialogo nativo), the claude-code channel and the signed receipt; without a form in the client, it refuses with master.nota.sem-dialogo without recording anything. The native-dialog score counts as a human score, and an agent-supplied --por cannot replace channel proof."
             ],
             "code": "ork roadmap status\nork master pedir <thread> --formato telegram"
           }
