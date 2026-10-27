@@ -31,7 +31,7 @@ export default {
         {
           "id": "evidencia",
           "title": "Evidência antes de crença",
-          "text": "Claims carregam comandos reproduzíveis. A baseline distingue falha anterior de regressão. CHECK independente e push comprovado separam implementação de entrega.",
+          "text": "Claims carregam comandos reproduzíveis. A baseline distingue falha anterior de regressão. O CHECK roda no Agile Check por padrão, com a mesma cobertura do Classic, e o security scan procura segredo e vulnerabilidade nova. CHECK independente e push comprovado separam implementação de entrega.",
           "href": "/docs/verificacao/"
         },
         {
@@ -73,7 +73,7 @@ export default {
         {
           "id": "evidencia",
           "title": "Evidence before belief",
-          "text": "Claims carry reproducible commands. A baseline separates existing failures from regressions. Independent CHECK and verified push distinguish implementation from delivery.",
+          "text": "Claims carry reproducible commands. A baseline separates existing failures from regressions. CHECK runs the Agile Check by default, with the same coverage as Classic, and the security scan looks for new secrets and vulnerabilities. Independent CHECK and verified push distinguish implementation from delivery.",
           "href": "/docs/verificacao/"
         },
         {

@@ -7,7 +7,7 @@ if(!source) throw Error('Usage: node scripts/sync-docs.mjs --source LOCAL_REPOSI
 const catalog=read(resolve(root,'src/data/docs-catalog.ts')), product=catalog.repository.split('/').at(-1);
 const file=resolve(root,'src/data/docs-sources.json'), previous=existsSync(file)?read(file):{reviews:{}};
 const all=articles(), sources=inventory(resolve(source),product).map(s=>{
- const special=s.path.includes('/roadmap/')?'roadmap':s.path.includes('/assets/')?'brand':s.path.includes('/_modelo')?'template':s.path.endsWith('README.md')&&s.path!=='README.md'?'index':'article';
+ const special=s.path.includes('/roadmap/')?'roadmap':s.path.startsWith('docs/design/')?'template':s.path.includes('/assets/')?'brand':s.path.includes('/_modelo')?'template':['docs/guias/mensageiro-de-sessoes.md','docs/guias/pista-de-entrega.md','docs/guias/ritual-do-master.md'].includes(s.path)?'roadmap':s.path.endsWith('README.md')&&s.path!=='README.md'?'index':'article';
  const targets=all.filter(a=>a.sources.includes(s.path)).map(a=>a.slug);
  if(!targets.length && special!=='article') targets.push(special==='roadmap'?'roadmap':'padroes');
  return {...s,category:s.path.split('/')[1]||'root',treatment:special,targets};

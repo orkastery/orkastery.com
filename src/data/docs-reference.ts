@@ -3,7 +3,8 @@ export default [
     "slug": "cli",
     "group": "reference",
     "sources": [
-      "docs/referencia/cli.md"
+      "docs/referencia/cli.md",
+      "docs/referencia/cli.en.md"
     ],
     "translations": {
       "pt": {
@@ -15,7 +16,8 @@ export default [
             "title": "Consulte o estado",
             "paragraphs": [
               "Comece pelo diagnóstico e pelo panorama. Consultas de thread, fases e claims explicam o que foi registrado; não concedem permissão de escrita. Use --help no comando específico antes de uma operação mutável.",
-              "O ork doctor reprova arquivo ou pasta do .git com dono diferente do dono do repositório, com a contagem, exemplos e o chown exato na correção; ele não roda nada. O check analisadores do grafo carrega o typescript e o micromark como o ork grafo indexar e avisa com a correção quando faltam. A linha rede mostra a adesão à Orkastery Network, a casa, a última batida e a última falha, só lendo arquivos locais."
+              "O ork doctor reprova arquivo ou pasta do .git com dono diferente do dono do repositório, com a contagem, exemplos e o chown exato na correção; ele não roda nada. O check analisadores do grafo carrega o typescript e o micromark como o ork grafo indexar e avisa com a correção quando faltam. A linha rede mostra a adesão à Orkastery Network, a casa, a última batida e a última falha, só lendo arquivos locais. Com a batida no crontab, a última rodada há mais de 30 min também reprova: a batida parou. A seção forja confere a forja do remoto origin, e só aparece com remoto de forja ou com o bloco forja: no manifesto. Com verify.security_scan declarado, o check security scan fica ok com o Docker, ou com o binário nativo de toda ferramenta do laço, e avisa, nunca reprova, quando alguma ficaria indisponível.",
+              "Na versão {versao}, ork doctor --json devolve os mesmos checks no contrato ork.doctor/v1, com veredito, falhas, avisos, projeto, máquina e a batida da fábrica: threads abertas, linha no crontab, última rodada, a idade dela, atrasada e o aviso pronto para o dono. A seção forja só roda com --forja; sem a flag, o JSON traz forja: nao-medida."
             ],
             "code": "ork doctor\nork maestro --json\nork thread status <thread>\nork phase list <thread>\nork claims list <thread>"
           },
@@ -23,7 +25,7 @@ export default [
             "id": "familias",
             "title": "Comandos por responsabilidade",
             "paragraphs": [
-              "A condução reúne ork thread, ork phase, ork modos e ork gate. A evidência usa ork claims, ork verify, ork fix e ork retry. O isolamento usa ork worktree, ork lease e ork conducao, que diz quem conduz cada thread. A continuidade usa ork handoff, ork recall e ork memory. A entrega usa ork ship e ork master. A auditoria usa ork audit, com o board de dívida em ork audit divida."
+              "A condução reúne ork thread, ork phase, ork modos e ork gate. A evidência usa ork claims, ork verify, ork fix e ork retry, e a varredura usa ork security-scan e ork privado varrer. O isolamento usa ork worktree, ork lease e ork conducao, que diz quem conduz cada thread. A continuidade usa ork handoff, ork recall e ork memory, e o conhecimento escrito usa ork conhecimento. A entrega usa ork ship e ork master. A auditoria usa ork audit, com o board de dívida em ork audit divida. A versão {versao} acrescenta o Agile Check ao ork verify e o security-scan como comando próprio."
             ],
             "code": "ork --help\nork ship --help\nork master --help"
           },
@@ -31,7 +33,7 @@ export default [
             "id": "thread-e-worktree",
             "title": "Thread e worktree",
             "paragraphs": [
-              "Com worktree.por_thread: true, o que o ork init grava, ork thread new cria a worktree e a branch ork/<slug> sem flag; com a chave false ou ausente, só com --worktree auto. --worktree DIR reusa um diretório existente, --sem-worktree cria sem worktree e avisa que, na branch base, o ork ship sai barrado, e --dry-run mostra a worktree que seria criada. A mesma regra vale para --from-finding.",
+              "Com worktree.por_thread: true, o que o ork init grava, ork thread new cria a worktree e a branch ork/<slug> sem flag; com a chave false ou ausente, só com --worktree auto. --worktree DIR reusa um diretório existente, --sem-worktree cria sem worktree e avisa que, na branch base, o ork ship sai barrado, e --dry-run mostra a worktree que seria criada. A mesma regra vale para --from-finding. Na versão {versao}, com worktree.dependencias no manifesto, o comando roda dentro da worktree nova depois da criação da thread, e a falha vai ao stderr com o comando exato, sem desfazer a thread.",
               "ork worktree sync recria a branch sem commit próprio no SHA da base. Com commits próprios e a base reescrita, por exemplo depois de um force-push, recusa com tree.blocked, causa base-reescrita, e mostra o git rebase --onto que reaplica só os commits da thread.",
               "Na versão {versao}, com --pedido, ork thread new guarda o pedido em pedido.md, na pasta da thread, com o sha256 no thread.json e no thread_created; pedido vazio ou acima de 64 KiB recusa antes de gravar. Sem --pedido, ork prompt render usa o pedido guardado, conferido pelo sha256 (thread.pedido.divergente quando o arquivo foi editado fora do núcleo); thread sem pedido guardado segue com o texto de exemplo."
             ],
@@ -42,7 +44,8 @@ export default [
             "title": "Quem conduz a thread",
             "paragraphs": [
               "ork conducao status <thread> diz quem conduz a thread agora (o canal, a sessão ou o processo, a fase e desde quando) e libera, com prova, a condução que ficou sem dono. ork conducao assumir <thread> faz o handoff: encerra a condução atual pelo runtime, registra quem assumiu, de qual canal e por quê, e reserva a vez para esse canal; --por e --motivo são obrigatórios.",
-              "Na main do núcleo, ainda fora de uma versão publicada, o ork conducao também tem os três comandos da Sentinela do Condutor, no bloco abaixo. O primeiro diz se a Sentinela está ligada nesta máquina, com a sessão, a última batida e o prazo, e dá o passo do condutor em cada thread aberta, calculado pelo núcleo; com --json, no contrato ork.conducao-sentinela/v1, é o que o condutor externo lê para ceder o despacho. O segundo é a batida: renova a presença da sessão por 3 min, ou a toma quando não há outra viva; com outra sessão viva na máquina, sai 3 e não toma o lugar dela. O terceiro tira a presença da própria sessão, e o condutor externo volta a conduzir. Quem bate e desliga é o mod ork-sentinela, sozinho."
+              "Na versão {versao}, o ork conducao também tem os três comandos da Sentinela do Condutor, no bloco abaixo. O primeiro diz se a Sentinela está ligada nesta máquina, com a sessão, a última batida e o prazo, e dá o passo do condutor em cada thread aberta, calculado pelo núcleo; com --json, no contrato ork.conducao-sentinela/v1, é o que o condutor externo lê para ceder o despacho. O segundo é a batida: renova a presença da sessão por 3 min, ou a toma quando não há outra viva; com outra sessão viva na máquina, sai 3 e não toma o lugar dela. O terceiro tira a presença da própria sessão, e o condutor externo volta a conduzir. Quem bate e desliga é o mod ork-sentinela, sozinho.",
+              "A mesma versão traz a autorização durável do dono, que deixa a batida agir sozinha dentro do prazo. ork conducao autorizar --ate D --pode limpar,registrar,master,merge,despachar grava o contrato ork.autorizacao-duravel/v1 em .orkastery/monitor/autorizacao.json, fora do git, por até 31 dias; sem --por, vale o user.name do git, quando nomeia uma pessoa. ork conducao autorizacao lê a autorização vigente, ou o motivo tipado de ela não valer. ork conducao batida executa o passo determinístico do cron: o merge do PR de branch ork/* com os checks obrigatórios verdes, o registro da entrega, o MASTER por omissão, a limpeza das fantasmas e o despacho da fase seguinte, só dentro da autorização, e sai 3 com outra batida agindo. ork conducao atualizar <thread> mescla a base remota na branch da thread, e --enviar empurra sem força e prova pelo git ls-remote."
             ],
             "links": [
               {
@@ -50,14 +53,16 @@ export default [
                 "href": "/docs/claude-code/#sentinela"
               }
             ],
-            "code": "ork conducao status <thread> --json\nork conducao assumir <thread> --por <quem> --motivo \"<por que>\"\nork conducao sentinela status --json\nork conducao sentinela bater --sessao <id>\nork conducao sentinela desligar --sessao <id>"
+            "code": "ork conducao status <thread> --json\nork conducao assumir <thread> --por <quem> --motivo \"<por que>\"\nork conducao sentinela status --json\nork conducao sentinela bater --sessao <id>\nork conducao sentinela desligar --sessao <id>\nork conducao autorizar --ate 2026-11-02 --pode limpar,registrar,master --por \"<quem>\"\nork conducao autorizacao --json\nork conducao batida --json\nork conducao atualizar <thread>"
           },
           {
             "id": "integracoes",
             "title": "Integrações e operação",
             "paragraphs": [
-              "ork adapter e ork mcp conectam o host. ork accounts e ork setup descrevem runtimes, perfis e o que esta máquina confirmou. ork onboarding guarda a pauta e as respostas do projeto, e ork experiencia mostra as preferências do pacote de experiência. ork sessions, ork monitor e ork pulse observam execução e atenção humana. ork brain e ork portfolio consultam memória e catálogo, e ork ledger stats dá a telemetria do ledger. ork fabrica, ork roadmap e ork network coordenam trabalho entre máquinas, e ork projetos diz qual projeto cada comando lê. ork grafo consulta o índice local do grafo de código. A referência canônica no repositório detalha as opções de cada família, e um teste confere as invocações dela contra a ajuda do ork."
-            ]
+              "ork adapter e ork mcp conectam o host. ork accounts e ork setup descrevem runtimes, perfis e o que esta máquina confirmou. ork onboarding guarda a pauta e as respostas do projeto, e ork experiencia mostra as preferências do pacote de experiência. ork sessions, ork monitor e ork pulse observam execução e atenção humana. ork brain e ork portfolio consultam memória e catálogo, e ork ledger stats dá a telemetria do ledger. ork fabrica, ork roadmap e ork network coordenam trabalho entre máquinas, e ork projetos diz qual projeto cada comando lê. ork grafo consulta o índice local do grafo de código, e ork conhecimento consulta o conhecimento escrito do projeto. A referência canônica no repositório detalha as opções de cada família, e um teste confere as invocações dela contra a ajuda do ork.",
+              "Na versão {versao}, ork mcp install aceita --ship-transport github-ssh, forja-ssh, forja-https ou bare-local, e esse é o único push que um agente dispara. Sem a opção, vale github-ssh. forja-ssh aceita host e porta da forja, lê a chave do servidor e só a fixa confirmada pelo seu known_hosts ou por --ssh-fingerprint, e confere a chave a cada push com StrictHostKeyChecking=yes. forja-https usa o auth git-credential do gh ou do glab, com login no host exato, zera os outros helpers da config e recusa HTTP puro ou credencial na URL. A fixação fica em $XDG_CONFIG_HOME/orkastery/mcp-ship/, é por máquina e exige reinstalar em outra; trocar de modo é remover a entrada orkastery e reinstalar."
+            ],
+            "code": "ork mcp install --project \"$PWD\" --host claude-code --ship-transport forja-https\nork mcp install --project \"$PWD\" --host claude-code --ship-transport forja-ssh --ssh-fingerprint SHA256:<impressao>"
           },
           {
             "id": "confirmacoes",
@@ -132,9 +137,10 @@ export default [
               "ork ci prepare grava .ork-ci/<thread>.json na worktree da thread, com a branch dela; ork ci run --branch acha esse bundle pelo nome da branch, reprova branch ork/* sem bundle e, fora de thread, roda só os comandos do manifesto. ork ship registrar-pr --repo --pr registra PR mesclado num repositório externo declarado em ci.external_repositories, com o merge conferido pela API do GitHub e o check declarado verde no head do PR.",
               "ork phase run recusa com concurrency.limite, na saída 3, quando o projeto já tem max_parallel_threads sessões vivas em outras threads; --esperar espera a vaga. Na sessão sem acesso ao ledger, a ferramenta MCP ork_decision_record grava a decisão pelo mesmo contrato de ork decisao registrar.",
               "ork ship registrar-pr --dry-run, também com --repo --pr, faz as mesmas conferências e responde registraria, sem gravar ship_done, sem mudar a fase e sem publicar a fábrica.",
-              "O --remoto de ork ship --para, ork ship registrar-pr e ork ci status é o nome de um remoto do git, validado antes de qualquer git: fora do formato, recusa com ship.remoto-invalido ou ci.remoto-invalido, sem consultar o GitHub."
+              "O --remoto de ork ship --para, ork ship registrar-pr e ork ci status é o nome de um remoto do git, validado antes de qualquer git: fora do formato, recusa com ship.remoto-invalido ou ci.remoto-invalido, sem consultar o GitHub.",
+              "Na versão {versao}, o push da base recusado pela proteção da branch vira entrega.base-protegida, com a orientação de entregar por PR ou MR. Com verify.security_scan declarado e sem ci.required_for_ship, uma categoria do laço sem varredura no SHA da candidata para com human.pending antes de qualquer push, e --allow-unscanned \"<quem>\" entrega mesmo assim, gravando ship_unscanned_authorized no ledger. ork ship registrar-pr e ork ci status reconhecem o GitLab pela forja resolvida, e no GitLab --repo aceita grupo, subgrupo e projeto, com --pr sendo o iid do MR."
             ],
-            "code": "ork ci prepare <thread>\nork ci run --branch <branch>\nork ship registrar-pr <thread> --repo <dono/nome> --pr <n>\nork phase run <thread> GO --prompt \"<texto>\" --esperar"
+            "code": "ork ci prepare <thread>\nork ci run --branch <branch>\nork ship registrar-pr <thread> --repo <dono/nome> --pr <n>\nork ship <thread> --para main --allow-unscanned \"<quem>\"\nork phase run <thread> GO --prompt \"<texto>\" --esperar"
           },
           {
             "id": "memoria",
@@ -143,7 +149,8 @@ export default [
               "ork memory search --texto busca por significado no tenant, com vetor e FTS combinados, e não é determinística; não combina com --tags nem --thread. ork memory index mantém o índice vetorial local, idempotente, e --dry-run estima tokens e custo sem chamar o provider. ork memory status --sondar faz uma chamada real e mede a latência. Os três usam o mesmo universo da busca do tenant; ork memory status e ork memory index o mostram por coleção, contam o que fica fora da busca e avisam quando o índice cobre menos do que a busca enxerga.",
               "Sem o universo lido inteiro, ou com a memória desligada ou indisponível, ork memory search --texto sai 1 com motivo tipado e sem resultados, também em --json; universo vazio lido com sucesso sai 0. A leitura do universo tem prazo próprio, memory.universo_timeout_ms, 90.000 ms por padrão.",
               "ork memory search --tags é a busca determinística por tag; com --thread, a leitura fica restrita à thread, e --restrito e --janela exigem --thread (memory.query.thread-required).",
-              "Na versão {versao}, a prova core/scripts/prova-busca-semantica.sh mostra, por par, a posição e a similaridade de cada alvo no ranking vetorial e quantas entradas da busca têm vetor coerente no índice, sem mudar os pares nem os códigos de saída. Sem argumentos, ela usa os pares padrão que o dono decidiu; pares passados como argumentos substituem os padrão."
+              "Na versão {versao}, a DSN da memória pode vir de arquivo, fora do ambiente dos agentes: memory.database_url_file aceita só a forma ~/.orkastery/segredos/<nome>, e as duas fontes são exclusivas, então o ork nunca cai de uma para a outra. O arquivo precisa ser comum, do usuário que roda o ork, com permissão 0600 ou 0400 exata, até 4 KiB e uma linha só com a DSN. Ausente, inseguro ou inválido, a memória degrada para files com dsn.arquivo-ausente, dsn.arquivo-inseguro ou dsn.arquivo-invalido. ork memory status mostra a fonte, sem o valor, e o ork doctor ganha os checks fonte da DSN e DSN no ambiente; o segundo lista, pelo nome, as variáveis com a DSN do projeto ou com URL com senha que o agente lê com env.",
+              "Na mesma versão, a prova core/scripts/prova-busca-semantica.sh mostra, por par, a posição e a similaridade de cada alvo no ranking vetorial e quantas entradas da busca têm vetor coerente no índice, sem mudar os pares nem os códigos de saída. Sem argumentos, ela usa os pares padrão que o dono decidiu; pares passados como argumentos substituem os padrão."
             ],
             "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory search --texto \"<frase>\" --json"
           },
@@ -158,6 +165,36 @@ export default [
               "ork grafo contexto <thread> monta o pacote compacto da thread, com o diff da worktree, GOAL, PLAN e claims, as ligações mais próximas do diff primeiro e evidência em tupla; o JSON ork.thread-graph-context/v2 tem teto de 32.768 bytes por padrão, de 4.096 a 65.536. Sem worktree, o diff é ignorado e declarado; com a flag ligada, ork_grafo_contexto entrega o mesmo JSON no MCP."
             ],
             "code": "ork grafo indexar --verificar\nork grafo status\nork grafo chamadores <símbolo>\nork grafo importadores <arquivo> --json\nork grafo caminho <de> <para>\nork grafo contexto <thread> --json"
+          },
+          {
+            "id": "check",
+            "title": "Agile Check e Classic Check",
+            "paragraphs": [
+              "Na versão {versao}, o ork verify roda o Agile Check por padrão, e o Classic Check continua sendo o CHECK de sempre, com os mesmos comandos, a mesma ordem e as mesmas ferramentas. --check classic ou --check agile vence o check.mode do manifesto, e o verify_run grava o modo e de onde ele veio: opcao, manifesto ou padrao. O texto da rodada mostra a linha check.",
+              "O Agile Check roda o preparo uma vez e as claims contra o produto dele, com guarda de hash, e leva as lanes de teste e a varredura em paralelo sem passar da CPU da máquina; a lane que sobe containers espera a varredura, por check.agile.apos_a_varredura. O banco do Trivy fica em cache, a imagem de lint é pré-montada e o binário nativo vem primeiro; a peça indisponível cai para o equivalente do Classic e fica registrada no verify_run. Nos dois modos, o verify_run grava a duração de cada comando, claim e rodada, e o parecer do CHECK e o pr-body.md dizem o modo da rodada.",
+              "A rodada e a baseline esperam a vez na fila de recursos pesados: concurrency.max_parallel_heavy, 1 por padrão, e 0 desliga. No máximo essa quantidade roda ao mesmo tempo nas worktrees do projeto, e nunca duas na mesma worktree. A espera em primeiro plano vai até --esperar ou 60 min e então recusa com fila-pesada.ocupada, na saída 3, dizendo quem ocupa."
+            ],
+            "code": "ork verify <thread>\nork verify <thread> --check classic\nork verify <thread> --check agile --esperar 20"
+          },
+          {
+            "id": "security-scan",
+            "title": "Varredura de segurança e qualidade",
+            "paragraphs": [
+              "ork security-scan varre o HEAD, o conteúdo versionado numa worktree destacada, com as ferramentas do catálogo: segredos, dependências, SAST, IaC, workflows, qualidade e licença. Cada achado é comparado com a base por impressão digital e sai como new, existing ou dismissed. A base é --base, ou o merge-base com <remoto>/<worktree.base_branch>.",
+              "Segredo novo e vulnerabilidade high ou critical nova fazem o comando sair 1; qualidade e licença só reportam. O relatório report.json, no contrato ork.security-scan/v1, e o report.md ficam em .orkastery/security-scan/<sha>/ da árvore principal, e nunca levam o valor de um segredo. Sem --json, o resumo termina com o caminho do report.md.",
+              "Com verify.security_scan no manifesto, o ork verify roda o scan como quarto comando, e o ork doctor ganha o check security scan. ORK_SECURITY_SCAN_REQUIRED=1 faz ferramenta da categoria do laço indisponível ou que falhou sair 1. Os motivos unsupported-ci e no-requirements-file são declarados no relatório e não contam como categoria não varrida. O --check classic ou agile escolhe o paralelismo: no Agile as ferramentas rodam ao mesmo tempo, com o banco do Trivy em cache persistente, e no Classic uma por vez."
+            ],
+            "code": "ork security-scan --json\nork security-scan --base origin/main\nork security-scan --check classic"
+          },
+          {
+            "id": "dado-privado",
+            "title": "Barreira de dado privado",
+            "paragraphs": [
+              "Na versão {versao}, ork privado varrer procura dado privado no repositório do diretório atual: caminho de home, e-mail fora da lista permitida, hostname no formato de máquina e os termos da lista local, que fica fora do git. A lista é termos-privados.txt em ~/.orkastery/ e em .orkastery/ do projeto, ou o arquivo indicado por ORK_TERMOS_PRIVADOS, e só é lida como arquivo comum do usuário atual, sem link e com permissão 0600. As exceções ficam em orkastery.privado.json, com padrão e valor exato sem curinga e motivo obrigatório.",
+              "Sem --base, a varredura lê os nomes e todo o conteúdo dos arquivos versionados, inclusive binários. Com --base REF, lê o diff contra a merge-base com REF e os arquivos não rastreados. O relatório diz arquivo, linha, coluna e padrão, nunca o valor, e o nome de arquivo com achado sai com [omitido]. Sai 1 com achado sob a policy dado_privado em block ou sem a policy declarada, 0 em warn e off, e 2 quando a varredura não roda.",
+              "Com a policy dado_privado no manifesto, o ork verify varre o diff da thread e reprova com policy.violation em block, e o ork ci prepare recusa gerar o bundle com achado. No CI do núcleo, a varredura é um passo do job documentacao."
+            ],
+            "code": "ork privado varrer\nork privado varrer --base origin/main\nork privado varrer --json"
           }
         ]
       },
@@ -170,7 +207,8 @@ export default [
             "title": "Inspect state",
             "paragraphs": [
               "Start with diagnostics and the overview. Thread, phase and claim queries explain recorded state; they do not grant write permission. Use --help on a specific command before performing a mutation.",
-              "ork doctor fails when a file or folder in .git has a different owner from the repository owner, with the count, examples and the exact chown in the fix; it runs nothing itself. The graph analyzers check loads typescript and micromark as ork grafo indexar does and warns with the fix when they are missing. The rede line shows Orkastery Network membership, the home, the last heartbeat and the last failure, reading local files only."
+              "ork doctor fails when a file or folder in .git has a different owner from the repository owner, with the count, examples and the exact chown in the fix; it runs nothing itself. The graph analyzers check loads typescript and micromark as ork grafo indexar does and warns with the fix when they are missing. The rede line shows Orkastery Network membership, the home, the last heartbeat and the last failure, reading local files only. With the heartbeat line in crontab, a last run older than 30 min also fails: the heartbeat stopped. The forja section checks the forge of the origin remote, and only appears with a forge remote or with the forja: block in the manifest. With verify.security_scan declared, the security scan check is ok with Docker, or with the native binary of every tool in the loop, and warns, never fails, when one would be unavailable.",
+              "In version {versao}, ork doctor --json returns the same checks in the ork.doctor/v1 contract, with verdict, failures, warnings, project, machine and the factory heartbeat: open threads, crontab line, last run, its age, atrasada and the notice ready for the owner. The forja section only runs with --forja; without the flag, the JSON carries forja: nao-medida."
             ],
             "code": "ork doctor\nork maestro --json\nork thread status <thread>\nork phase list <thread>\nork claims list <thread>"
           },
@@ -178,7 +216,7 @@ export default [
             "id": "familias",
             "title": "Commands by responsibility",
             "paragraphs": [
-              "Conduction covers ork thread, ork phase, ork modos and ork gate. Evidence uses ork claims, ork verify, ork fix and ork retry. Isolation uses ork worktree, ork lease and ork conducao, which shows who is conducting each thread. Continuity uses ork handoff, ork recall and ork memory. Delivery uses ork ship and ork master. Auditing uses ork audit, with the debt board in ork audit divida."
+              "Conduction covers ork thread, ork phase, ork modos and ork gate. Evidence uses ork claims, ork verify, ork fix and ork retry, and scanning uses ork security-scan and ork privado varrer. Isolation uses ork worktree, ork lease and ork conducao, which shows who is conducting each thread. Continuity uses ork handoff, ork recall and ork memory, and written knowledge uses ork conhecimento. Delivery uses ork ship and ork master. Auditing uses ork audit, with the debt board in ork audit divida. Version {versao} adds the Agile Check to ork verify and security-scan as a command of its own."
             ],
             "code": "ork --help\nork ship --help\nork master --help"
           },
@@ -186,7 +224,7 @@ export default [
             "id": "thread-e-worktree",
             "title": "Thread and worktree",
             "paragraphs": [
-              "With worktree.por_thread: true, which ork init writes, ork thread new creates the worktree and the ork/<slug> branch without a flag; with the key false or absent, only with --worktree auto. --worktree DIR reuses an existing directory, --sem-worktree creates no worktree and warns that on the base branch ork ship will be blocked, and --dry-run shows the worktree that would be created. The same rule applies to --from-finding.",
+              "With worktree.por_thread: true, which ork init writes, ork thread new creates the worktree and the ork/<slug> branch without a flag; with the key false or absent, only with --worktree auto. --worktree DIR reuses an existing directory, --sem-worktree creates no worktree and warns that on the base branch ork ship will be blocked, and --dry-run shows the worktree that would be created. The same rule applies to --from-finding. In version {versao}, with worktree.dependencias in the manifest, the command runs inside the new worktree after the thread is created, and a failure goes to stderr with the exact command, without undoing the thread.",
               "ork worktree sync recreates a branch with no commits of its own at the base SHA. With its own commits and a rewritten base, for example after a force-push, it refuses with tree.blocked, cause base-reescrita, and shows the git rebase --onto that replays only the thread’s commits.",
               "In version {versao}, with --pedido, ork thread new stores the request in pedido.md, in the thread folder, with the sha256 in thread.json and in thread_created; an empty request or one over 64 KiB is refused before anything is written. Without --pedido, ork prompt render uses the stored request, checked against the sha256 (thread.pedido.divergente when the file was edited outside the core); a thread with no stored request keeps the sample text."
             ],
@@ -197,7 +235,8 @@ export default [
             "title": "Who conducts a thread",
             "paragraphs": [
               "ork conducao status <thread> shows who is conducting the thread right now (the channel, the session or process, the phase and since when) and releases, with proof, a conduction left without an owner. ork conducao assumir <thread> performs the handoff: it ends the current conduction through the runtime, records who took over, from which channel and why, and reserves the turn for that channel; --por and --motivo are required.",
-              "On the core’s main branch, not yet in a published version, ork conducao also has the three commands of the Conductor’s Sentinel, in the block below. The first shows whether the Sentinel is active on this machine, with the session, the last heartbeat and the deadline, and gives the conductor’s next step for each open thread, computed by the core; with --json, in the ork.conducao-sentinela/v1 contract, it is what the external conductor reads to yield dispatch. The second is the heartbeat: it renews the session’s presence for 3 minutes, or takes it over when no other one is alive; with another live session on the machine, it exits with code 3 and does not take its place. The third removes the session’s own presence, and the external conductor takes over again. The ork-sentinela mod runs the heartbeat and the switch-off by itself."
+              "In version {versao}, ork conducao also has the three commands of the Conductor’s Sentinel, in the block below. The first shows whether the Sentinel is active on this machine, with the session, the last heartbeat and the deadline, and gives the conductor’s next step for each open thread, computed by the core; with --json, in the ork.conducao-sentinela/v1 contract, it is what the external conductor reads to yield dispatch. The second is the heartbeat: it renews the session’s presence for 3 minutes, or takes it over when no other one is alive; with another live session on the machine, it exits with code 3 and does not take its place. The third removes the session’s own presence, and the external conductor takes over again. The ork-sentinela mod runs the heartbeat and the switch-off by itself.",
+              "The same version brings the owner’s durable authorization, which lets the heartbeat act on its own within the deadline. ork conducao autorizar --ate D --pode limpar,registrar,master,merge,despachar writes the ork.autorizacao-duravel/v1 contract to .orkastery/monitor/autorizacao.json, outside git, for up to 31 days; without --por, the user.name configured in git is the value that counts when it names a person. ork conducao autorizacao reads the authorization in force, or the typed reason why it does not hold. ork conducao batida runs the cron’s deterministic step: the merge of an ork/* PR with the required checks green, delivery registration, MASTER by default, ghost cleanup and dispatch of the next phase, only within the authorization, and exits 3 when another heartbeat is acting. ork conducao atualizar <thread> merges the remote base into the thread branch, and --enviar pushes without force and proves it with git ls-remote."
             ],
             "links": [
               {
@@ -205,14 +244,16 @@ export default [
                 "href": "/docs/claude-code/#sentinela"
               }
             ],
-            "code": "ork conducao status <thread> --json\nork conducao assumir <thread> --por <who> --motivo \"<why>\"\nork conducao sentinela status --json\nork conducao sentinela bater --sessao <id>\nork conducao sentinela desligar --sessao <id>"
+            "code": "ork conducao status <thread> --json\nork conducao assumir <thread> --por <who> --motivo \"<why>\"\nork conducao sentinela status --json\nork conducao sentinela bater --sessao <id>\nork conducao sentinela desligar --sessao <id>\nork conducao autorizar --ate 2026-11-02 --pode limpar,registrar,master --por \"<who>\"\nork conducao autorizacao --json\nork conducao batida --json\nork conducao atualizar <thread>"
           },
           {
             "id": "integracoes",
             "title": "Integrations and operations",
             "paragraphs": [
-              "ork adapter and ork mcp connect the host. ork accounts and ork setup describe runtimes, profiles and what this machine has confirmed. ork onboarding keeps the project’s interview and answers, and ork experiencia shows the preferences of the experience pack. ork sessions, ork monitor and ork pulse observe execution and human attention. ork brain and ork portfolio access memory and the catalog, and ork ledger stats gives the ledger telemetry. ork fabrica, ork roadmap and ork network coordinate work across machines, and ork projetos shows which project each command reads. ork grafo queries the local code graph index. The canonical repository reference details each family’s options, and a test checks its invocations against the CLI help."
-            ]
+              "ork adapter and ork mcp connect the host. ork accounts and ork setup describe runtimes, profiles and what this machine has confirmed. ork onboarding keeps the project’s interview and answers, and ork experiencia shows the preferences of the experience pack. ork sessions, ork monitor and ork pulse observe execution and human attention. ork brain and ork portfolio access memory and the catalog, and ork ledger stats gives the ledger telemetry. ork fabrica, ork roadmap and ork network coordinate work across machines, and ork projetos shows which project each command reads. ork grafo queries the local code graph index, and ork conhecimento queries the project’s written knowledge. The canonical repository reference details each family’s options, and a test checks its invocations against the CLI help.",
+              "In version {versao}, ork mcp install accepts --ship-transport github-ssh, forja-ssh, forja-https or bare-local, and that is the only push an agent fires. Without the option, github-ssh applies. forja-ssh accepts the forge host and port, reads the server key and only pins it once confirmed by your known_hosts or by --ssh-fingerprint, and checks the key on every push with StrictHostKeyChecking=yes. forja-https uses the auth git-credential of gh or glab, with a login on the exact host, clears the other helpers in the config and refuses plain HTTP or credentials in the URL. The pin lives in $XDG_CONFIG_HOME/orkastery/mcp-ship/, is per machine and requires the same install there; changing mode means removing the orkastery entry and reinstalling."
+            ],
+            "code": "ork mcp install --project \"$PWD\" --host claude-code --ship-transport forja-https\nork mcp install --project \"$PWD\" --host claude-code --ship-transport forja-ssh --ssh-fingerprint SHA256:<fingerprint>"
           },
           {
             "id": "confirmacoes",
@@ -287,9 +328,10 @@ export default [
               "ork ci prepare writes .ork-ci/<thread>.json in the thread’s worktree, with its branch; ork ci run --branch finds that bundle by branch name, fails an ork/* branch without a bundle and, outside a thread, runs only the manifest commands. ork ship registrar-pr --repo --pr records a PR merged into an external repository declared in ci.external_repositories, with the merge confirmed through the GitHub API and the declared check green on the PR head.",
               "ork phase run refuses with concurrency.limite, exit code 3, when the project already has max_parallel_threads live sessions in other threads; --esperar waits for a slot. In a session without ledger access, the ork_decision_record MCP tool records the decision through the same contract as ork decisao registrar.",
               "ork ship registrar-pr --dry-run, also with --repo --pr, runs the same checks and answers registraria, without writing ship_done, changing the phase or publishing the factory.",
-              "--remoto in ork ship --para, ork ship registrar-pr and ork ci status is the name of a remote, validated before any git call: outside the format, it refuses with ship.remoto-invalido or ci.remoto-invalido, without querying GitHub."
+              "--remoto in ork ship --para, ork ship registrar-pr and ork ci status is the name of a remote, validated before any git call: outside the format, it refuses with ship.remoto-invalido or ci.remoto-invalido, without querying GitHub.",
+              "In version {versao}, a base push refused by branch protection becomes entrega.base-protegida, with guidance to deliver through a PR or MR. With verify.security_scan declared and without ci.required_for_ship, a loop category without a scan on the candidate SHA stops with human.pending before any push, and --allow-unscanned \"<who>\" delivers anyway, recording ship_unscanned_authorized in the ledger. ork ship registrar-pr and ork ci status recognize GitLab through the resolved forge, and on GitLab --repo accepts group, subgroup and project, with --pr being the MR iid."
             ],
-            "code": "ork ci prepare <thread>\nork ci run --branch <branch>\nork ship registrar-pr <thread> --repo <owner/name> --pr <n>\nork phase run <thread> GO --prompt \"<text>\" --esperar"
+            "code": "ork ci prepare <thread>\nork ci run --branch <branch>\nork ship registrar-pr <thread> --repo <owner/name> --pr <n>\nork ship <thread> --para main --allow-unscanned \"<who>\"\nork phase run <thread> GO --prompt \"<text>\" --esperar"
           },
           {
             "id": "memoria",
@@ -298,7 +340,8 @@ export default [
               "ork memory search --texto searches the tenant by meaning, combining vector and FTS, and is not deterministic; it cannot be combined with --tags or --thread. ork memory index maintains the local, idempotent vector index, and --dry-run estimates tokens and cost without calling the provider. ork memory status --sondar makes one real call and measures its latency. All three use the same tenant search universe; ork memory status and ork memory index display it per collection, count what stays out of search and warn when the index covers less than search can see.",
               "When the universe was not read in full, or memory is off or unavailable, ork memory search --texto exits 1 with a typed reason and no results, also with --json; an empty universe read successfully exits 0. Reading the universe has its own deadline, memory.universo_timeout_ms, 90,000 ms by default.",
               "ork memory search --tags is the deterministic tag search; with --thread, reading is restricted to the thread, and --restrito and --janela require --thread (memory.query.thread-required).",
-              "In version {versao}, the core/scripts/prova-busca-semantica.sh proof shows, for each pair, the position and similarity of each target in the vector ranking and how many search entries have a coherent vector in the index, without changing the pairs or the exit codes. Without arguments, it uses the default pairs the owner decided on; pairs passed as arguments replace the defaults."
+              "In version {versao}, the memory DSN can come from a file, outside the agents’ environment: memory.database_url_file accepts only the ~/.orkastery/segredos/<nome> form, and the two sources are exclusive, so ork never falls back from one to the other. The file must be a regular file of the user running ork, with exact 0600 or 0400 permissions, up to 4 KiB and a single line with the DSN. Missing, unsafe or invalid, memory degrades to files with dsn.arquivo-ausente, dsn.arquivo-inseguro or dsn.arquivo-invalido. ork memory status shows the source, never the value, and ork doctor gains the DSN source and DSN in the environment checks; the second lists, by name, the variables carrying the project DSN or a URL with a password that the agent reads with env.",
+              "In the same version, the core/scripts/prova-busca-semantica.sh proof shows, for each pair, the position and similarity of each target in the vector ranking and how many search entries have a coherent vector in the index, without changing the pairs or the exit codes. Without arguments, it uses the default pairs the owner decided on; pairs passed as arguments replace the defaults."
             ],
             "code": "ork memory status --sondar\nork memory index --dry-run --json\nork memory search --texto \"<phrase>\" --json"
           },
@@ -313,6 +356,36 @@ export default [
               "ork grafo contexto <thread> builds the thread’s compact package from the worktree diff, GOAL, PLAN and claims, with the links closest to the diff first and evidence as tuples; the ork.thread-graph-context/v2 JSON is capped at 32,768 bytes by default, from 4,096 to 65,536. Without a worktree, the diff is ignored and the answer says so; with the flag on, ork_grafo_contexto returns the same JSON over MCP."
             ],
             "code": "ork grafo indexar --verificar\nork grafo status\nork grafo chamadores <symbol>\nork grafo importadores <file> --json\nork grafo caminho <from> <to>\nork grafo contexto <thread> --json"
+          },
+          {
+            "id": "check",
+            "title": "Agile Check and Classic Check",
+            "paragraphs": [
+              "In version {versao}, ork verify runs the Agile Check by default, and the Classic Check remains the CHECK as it always was, with the same commands, the same order and the same tools. --check classic or --check agile overrides the manifest’s check.mode, and verify_run records the mode and where it came from: opcao, manifesto or padrao. The run text shows the check line.",
+              "The Agile Check runs the preparation once and the claims against its product, with a hash guard, and runs the test lanes and the scan in parallel without exceeding the machine’s CPU; the lane that starts containers waits for the scan, through check.agile.apos_a_varredura. The Trivy database is cached, the lint image is prebuilt and the native binary comes first; an unavailable piece falls back to the Classic equivalent and is recorded in verify_run. In both modes, verify_run records the duration of each command, claim and run, and the CHECK report and pr-body.md state the run’s mode.",
+              "The run and the baseline wait their turn in the heavy resource queue: concurrency.max_parallel_heavy, 1 by default, and 0 disables it. At most that many run at once in the project’s worktrees, and never two in the same worktree. Waiting in the foreground goes up to --esperar or 60 min and then refuses with fila-pesada.ocupada, exit code 3, naming who holds it."
+            ],
+            "code": "ork verify <thread>\nork verify <thread> --check classic\nork verify <thread> --check agile --esperar 20"
+          },
+          {
+            "id": "security-scan",
+            "title": "Security and quality scan",
+            "paragraphs": [
+              "ork security-scan scans HEAD, the versioned content in a detached worktree, with the catalog tools: secrets, dependencies, SAST, IaC, workflows, quality and license. Each finding is compared with the base by fingerprint and comes out as new, existing or dismissed. The base is --base, or the merge-base with <remote>/<worktree.base_branch>.",
+              "A new secret and a new high or critical vulnerability make the command exit 1; quality and license only report. The report.json, in the ork.security-scan/v1 contract, and report.md live in .orkastery/security-scan/<sha>/ of the main tree, and never carry a secret’s value. Without --json, the summary ends with the path to report.md.",
+              "With verify.security_scan in the manifest, ork verify runs the scan as a fourth command, and ork doctor gains the security scan check. ORK_SECURITY_SCAN_REQUIRED=1 makes a loop category tool that is unavailable or failed exit 1. The unsupported-ci and no-requirements-file reasons are declared in the report and do not count as an unscanned category. --check classic or agile chooses the parallelism: in Agile the tools run at the same time, with the Trivy database in persistent cache, and in Classic one at a time."
+            ],
+            "code": "ork security-scan --json\nork security-scan --base origin/main\nork security-scan --check classic"
+          },
+          {
+            "id": "dado-privado",
+            "title": "Private data barrier",
+            "paragraphs": [
+              "In version {versao}, ork privado varrer looks for private data in the repository of the current directory: home paths, email outside the allowed list, hostnames in machine format and the terms of the local list, which stays outside git. The list is termos-privados.txt in ~/.orkastery/ and in the project’s .orkastery/, or the file named by ORK_TERMOS_PRIVADOS, and is only read as a regular file of the current user, without a link and with 0600 permissions. Exceptions live in orkastery.privado.json, with an exact pattern and value, no wildcard, and a required reason.",
+              "Without --base, the scan reads the names and all the content of versioned files, binaries included. With --base REF, it reads the diff against the merge-base with REF and the untracked files. The report states file, line, column and pattern, never the value, and a file name with a finding comes out as [omitido]. It exits 1 with a finding under the dado_privado policy in block or without the policy declared, 0 in warn and off, and 2 when the scan does not run.",
+              "With the dado_privado policy in the manifest, ork verify scans the thread diff and fails with policy.violation in block, and ork ci prepare refuses to write the bundle when there is a finding. In the core CI, the scan is a step of the documentacao job."
+            ],
+            "code": "ork privado varrer\nork privado varrer --base origin/main\nork privado varrer --json"
           }
         ]
       }
@@ -327,7 +400,9 @@ export default [
       "docs/referencia/contratos/telemetria-i07.md",
       "docs/referencia/maestro-capacidades.json",
       "docs/referencia/contratos/projetos-rm052.md",
-      "docs/referencia/contratos/rede-rm053.md"
+      "docs/referencia/contratos/rede-rm053.md",
+      "docs/referencia/contratos/forja.md",
+      "docs/referencia/contratos/autorizacao-duravel-rm063.md"
     ],
     "translations": {
       "pt": {
@@ -356,7 +431,7 @@ export default [
             "title": "Registro de projetos e cabeçalho da consulta",
             "paragraphs": [
               "ork.projetos/v1 é o registro desta máquina em ~/.orkastery/projetos.json, com modo 0600 e sem segredo: nome, abbrev, raiz, remoto sem usuário nem senha, datas e a fonte do registro. Arquivo ausente, corrompido ou de outro contrato vale registro vazio. ork.consulta/v1 é o cabeçalho de ork maestro, ork board, ork board plan, ork fabrica, ork roadmap status e, na versão {versao}, ork roadmap reservas: o projeto consultado, a origem da escolha, o que foi lido e o que não foi.",
-              "As recusas projeto.desconhecido, projeto.ambiguo, projeto.sem-manifesto, projeto.escolha, projeto.nenhum e projeto.fora-do-servidor trazem os candidatos e a correção. Quem consome o registro lê sem gravar, confere o contrato e nunca escolhe a primeira cópia de um nome ambíguo.",
+              "As recusas projeto.desconhecido, projeto.ambiguo, projeto.sem-manifesto, projeto.escolha, projeto.nenhum e projeto.fora-do-servidor trazem os candidatos e a correção. Quem consome o registro lê sem gravar, confere o contrato e nunca escolhe a primeira cópia de um nome ambíguo. Na versão {versao}, o ork privado é um dos comandos que não leem projeto: ele varre o repositório do diretório atual e não resolve alvo global.",
               "Sem o remoto, o naoLido diz que nada foi lido de ork/fabrica-estado; na versão {versao}, nas reservas, diz o mesmo de ork/roadmap-reservas, e o JSON delas traz o campo leitura (lido-agora, copia-local, sem-copia ou sem-remoto): só lido-agora ou copia-local sem reserva viram a mensagem de nenhum item reservado. Nas reservas, projeto.remoto é o remoto lido (--remoto, ou origin); em ork board e ork fabrica, é o fabrica.remoto do manifesto.",
               "Também na versão {versao}, os demais comandos que leem um projeto terminam com a mesma primeira linha, Projeto consultado, no stderr, quando o leitor não tem como saber qual projeto foi lido: no host (ORK_PROJETO_EXPLICITO=1) ou com o projeto fora do diretório atual. A linha vem uma vez por comando, também quando ele falha, antes da mensagem de erro, e o stdout, inclusive o JSON, não muda. Nela e no cabeçalho, o remoto é o de exibição: sem usuário e senha, sem query e fragmento, com ~ no lugar da pasta da conta no caminho local, e omitido quando ainda parece segredo.",
               "Na versão {versao}, a sessão despachada (ork phase run, ork retry run e ork audit run) recebe ORK_PROJETO vazio e ORK_PROJETO_EXPLICITO=0 no ambiente: o projeto dela é o do próprio cwd, a worktree da thread, e o modo host de quem despachou não a segue. No Codex, os dois valores vão por cima do ambiente herdado; no claude-bg, pelo --settings, que vence o ambiente do daemon. O filho ork fabrica publicar herda o mesmo."
@@ -387,6 +462,16 @@ export default [
               "hitlDeConducao mede o tempo parado pelas perguntas que o próprio ork abriu ao dono: pedidos, respondidos, sem resposta e abertos, o tempo parado no período, a mediana e a maior espera das respondidas, e a meta de 5 minutos, com null quando não há amostra. A decisão informada não para nada e fica fora. O ork pulse e o ork roadmap status levam o mesmo cálculo no campo opcional hitlDeConducao, com abertas, seteDias e acimaDaMeta; o campo só aparece com pergunta aberta ou com pergunta e resposta na semana, e a visão da rede não o soma."
             ],
             "code": "ork ledger stats --desde 7d --json"
+          },
+          {
+            "id": "forja",
+            "title": "Forja e autorização durável",
+            "paragraphs": [
+              "Na versão {versao}, o núcleo reconhece a forja do projeto, GitHub ou GitLab, pela CLI dela já logada, gh ou glab, e nunca lê nem passa token. O bloco opcional forja: do orkastery.yaml declara tipo, host, porta, caminho_base, ssh_host, ssh_porta e ca; sem ele, tudo vem do remoto origin e da sondagem. A forja é resolvida pelo manifesto, pelo host conhecido ou pela sondagem só da CLI com login no host, nunca pelo nome do host; sem resposta, forja.desconhecida, e com duas, forja.ambigua.",
+              "O ci.produtor diz quem aprova o check exigido, com github-actions por padrão, e no GitLab só o job da pipeline do projeto conta como produtor gitlab-ci. O ork ci status passa a ork.ci-status/v2, com provider, fonte e produtor, e a v1 continua lida. O ork ship publicar recusa remoto Enterprise sem forja: e sem login da CLI antes de qualquer escrita (forja.desconhecida), e o registrar-pr --repo não tem host de reserva: sem leitura, entrega.sem-leitura.",
+              "A autorização durável é o contrato ork.autorizacao-duravel/v1, em .orkastery/monitor/autorizacao.json, fora do git. Ela vale só nesta máquina e neste projeto, com prazo ISO de fuso explícito, por até 31 dias, e uma lista fechada de ações: limpar, registrar, master, merge e despachar. Ação fora do contrato invalida o arquivo inteiro, e sem autorização a batida não age."
+            ],
+            "code": "ork doctor --json --forja\nork ci status --json\nork conducao autorizacao --json"
           }
         ]
       },
@@ -416,7 +501,7 @@ export default [
             "title": "Project registry and query header",
             "paragraphs": [
               "ork.projetos/v1 is this machine’s registry in ~/.orkastery/projetos.json, with mode 0600 and no secrets: name, abbrev, root, remote without user or password, timestamps and the registration source. A missing, corrupted or foreign-contract file counts as an empty registry. ork.consulta/v1 is the header of ork maestro, ork board, ork board plan, ork fabrica, ork roadmap status and, in version {versao}, ork roadmap reservas: the project read, how it was chosen, what was read and what was not.",
-              "The projeto.desconhecido, projeto.ambiguo, projeto.sem-manifesto, projeto.escolha, projeto.nenhum and projeto.fora-do-servidor refusals include the candidates and the fix. Consumers read the registry without writing, check the contract and never pick the first copy of an ambiguous name.",
+              "The projeto.desconhecido, projeto.ambiguo, projeto.sem-manifesto, projeto.escolha, projeto.nenhum and projeto.fora-do-servidor refusals include the candidates and the fix. Consumers read the registry without writing, check the contract and never pick the first copy of an ambiguous name. In version {versao}, ork privado is one of the commands that do not read a project: it scans the repository of the current directory and does not resolve a global target.",
               "Without the remote, naoLido says nothing was read from ork/fabrica-estado; in version {versao}, for reservations, it says the same about ork/roadmap-reservas, and their JSON carries the leitura field (lido-agora, copia-local, sem-copia or sem-remoto): only lido-agora or copia-local without a reservation turn into the message that no item is reserved. For reservations, projeto.remoto is the remote read (--remoto, or origin); in ork board and ork fabrica, it is the manifest’s fabrica.remoto.",
               "Also in version {versao}, the other commands that read a project end with the same first line, Projeto consultado, on stderr, when the reader cannot know which project was read: in a host (ORK_PROJETO_EXPLICITO=1) or with the project outside the current directory. The line comes once per command, also when it fails, before the error message, and stdout, JSON included, does not change. In that line and in the header, the remote is the display one: without user and password, without query and fragment, with ~ in place of the account folder in a local path, and omitted when it still looks like a secret.",
               "In version {versao}, a dispatched session (ork phase run, ork retry run and ork audit run) gets an empty ORK_PROJETO and ORK_PROJETO_EXPLICITO=0 in its environment: its project is that of its own cwd, the thread’s worktree, and the host mode of whoever dispatched it does not follow it. In Codex, both values override the inherited environment; in claude-bg, they go through --settings, which wins over the daemon’s environment. The ork fabrica publicar child inherits the same."
@@ -447,6 +532,16 @@ export default [
               "hitlDeConducao measures the time stalled by questions that ork itself opened to the owner: requests, answered, unanswered and open, stalled time in the period, the median and longest wait among answered ones, and the 5-minute target, null when there is no sample. An informed decision stops nothing and is excluded. ork pulse and ork roadmap status carry the same calculation in the optional hitlDeConducao field, with abertas, seteDias and acimaDaMeta; the field appears only with an open question or with a question and answer during the week, and the network view does not add it up."
             ],
             "code": "ork ledger stats --desde 7d --json"
+          },
+          {
+            "id": "forja",
+            "title": "Forge and durable authorization",
+            "paragraphs": [
+              "In version {versao}, the core recognizes the project’s forge, GitHub or GitLab, through its logged-in CLI, gh or glab, and never reads or passes a token. The optional forja: block in orkastery.yaml declares tipo, host, porta, caminho_base, ssh_host, ssh_porta and ca; without it, everything comes from the origin remote and probing. The forge is resolved by the manifest, by the known host or by probing only the CLI with a login on the host, never by the host name; with no answer, forja.desconhecida, and with two, forja.ambigua.",
+              "ci.produtor states who approves the required check, github-actions by default, and on GitLab only the project pipeline job counts as the gitlab-ci producer. ork ci status moves to ork.ci-status/v2, with provider, fonte and produtor, and v1 is still read. ork ship publicar refuses an Enterprise remote without forja: and without a CLI login before any write (forja.desconhecida), and registrar-pr --repo has no fallback host: without a reading, entrega.sem-leitura.",
+              "Durable authorization is the ork.autorizacao-duravel/v1 contract, in .orkastery/monitor/autorizacao.json, outside git. It applies only on this machine and in this project, with an ISO deadline carrying an explicit offset, for up to 31 days, and a closed list of actions: limpar, registrar, master, merge and despachar. An action outside the contract invalidates the whole file, and without authorization the heartbeat does not act."
+            ],
+            "code": "ork doctor --json --forja\nork ci status --json\nork conducao autorizacao --json"
           }
         ]
       }
@@ -563,16 +658,27 @@ export default [
             ]
           },
           {
+            "id": "dado-privado",
+            "title": "Barreira de dado privado e DSN fora do ambiente",
+            "paragraphs": [
+              "Na versão {versao}, a barreira de dado privado é um comando do núcleo: ork privado varrer procura caminho de home, e-mail fora da lista permitida, hostname no formato de máquina e os termos da lista local, que fica fora do git. As exceções em orkastery.privado.json exigem padrão e valor exato, sem curinga, com caminho apenas como filtro e motivo obrigatório. O relatório diz arquivo, linha, coluna e padrão, nunca o valor, e mascara o nome do arquivo com achado.",
+              "Com a policy dado_privado no manifesto, o ork verify varre o diff da thread e reprova com policy.violation em block, e o ork ci prepare recusa gerar o bundle com achado. No CI do núcleo, a varredura é um passo do job documentacao. A lista local só é lida como arquivo comum do usuário atual, sem link e com permissão 0600; ausente, como no CI, só os padrões genéricos rodam, e a saída diz isso.",
+              "A DSN da memória ganha uma fonte fora do ambiente dos agentes: memory.database_url_file aponta para ~/.orkastery/segredos/<nome>, e o manifesto não escolhe arquivo fora dessa pasta. As duas fontes são exclusivas, então o ork nunca cai de uma para a outra. Antes de abrir, o núcleo confere pelo lstat cada pasta entre a casa e a pasta de segredos, abre com O_NOFOLLOW e exige arquivo comum, do usuário que roda o ork, com permissão 0600 ou 0400 exata, até 4 KiB e uma linha só com a DSN.",
+              "A resposta do processo filho que repita a DSN ou a senha dela é recusada inteira, com memory.transport.secret, brain.transport.secret ou brain.migration.secret, sem o valor. O limite é honesto e está dito: o agente roda com o mesmo usuário do dono e pode ler um arquivo 0600 dele. O ganho é a senha fora de env, da transcrição e do contexto do modelo; isolamento forte pede outro usuário ou um intermediário."
+            ],
+            "code": "ork privado varrer\nork privado varrer --base origin/main\nork memory status"
+          },
+          {
             "id": "pendentes",
             "title": "O que segue com o dono",
             "paragraphs": [
-              "A auditoria deixou cinco itens como pendentes do dono, porque fechá-los mudava comportamento aceito ou documentado. Os cinco, P1 a P5, ganharam as regras de procedência desta página, mescladas por decisão do dono.",
+              "A auditoria deixou seis itens como pendentes do dono, porque fechá-los mudava comportamento aceito ou documentado. Os cinco primeiros, P1 a P5, ganharam as regras de procedência desta página, mescladas por decisão do dono. A P6 segue pendente.",
               "Na mesma lista, ficam registrados, com risco baixo:"
             ],
             "items": [
               "ork retry run --dry-run, na ação corrigir-dirigido, reexecuta claims e verify: são comandos declarados, mas contra a semântica do --dry-run.",
               "O perfil do runtime gravado no ledger escolhe o CLAUDE_CONFIG_DIR e o CODEX_HOME de comandos de consulta.",
-              "O memory.database_url_env aceita o nome de qualquer variável de ambiente.",
+              "A P6: o memory.cli do manifesto pode ser qualquer nome do PATH ou caminho absoluto, inclusive dentro do clone, e o memory.database_url_env nomeia qualquer variável de ambiente. O valor vai ao executável do Brain em toda consulta, e a fonte de arquivo memory.database_url_file só aceita a pasta de segredos do ork, para não alargar a classe.",
               "O ci.external_repositories aceita segmento de subida de pasta no caminho de uma leitura pela API do GitHub.",
               "O ork adapter install ainda acha o catálogo a partir do projeto, como o ork eval achava, mas só copia o adaptador para dentro do próprio projeto e prefere o executável do PATH quando ele existe."
             ]
@@ -699,16 +805,27 @@ export default [
             ]
           },
           {
+            "id": "dado-privado",
+            "title": "Private data barrier and DSN outside the environment",
+            "paragraphs": [
+              "In version {versao}, the private data barrier is a core command: ork privado varrer looks for home paths, email outside the allowed list, hostnames in machine format and the terms of the local list, which stays outside git. Exceptions in orkastery.privado.json require an exact pattern and value, without wildcards, with the path only as a filter and a required reason. The report states file, line, column and pattern, never the value, and masks the name of a file with a finding.",
+              "With the dado_privado policy in the manifest, ork verify scans the thread diff and fails with policy.violation in block, and ork ci prepare refuses to write the bundle when there is a finding. In the core CI, the scan is a step of the documentacao job. The local list is only read as a regular file of the current user, without a link and with 0600 permissions; when absent, as in CI, only the generic patterns run, and the output says so.",
+              "The memory DSN gains a source outside the agents’ environment: memory.database_url_file points to ~/.orkastery/segredos/<nome>, and the manifest cannot choose a file outside that folder. The two sources are exclusive, so ork never falls back from one to the other. Before opening, it checks with lstat every folder between the home and the secrets folder, opens with O_NOFOLLOW and requires a regular file of the user running ork, with exact 0600 or 0400 permissions, up to 4 KiB and a single line with the DSN.",
+              "A child process response that repeats the DSN or its password is refused whole, with memory.transport.secret, brain.transport.secret or brain.migration.secret, without the value. The limit is stated honestly: the agent runs as the owner’s user and can read a 0600 file of theirs. The gain is the password out of env, the transcript and the model context; strong isolation needs another user or an intermediary."
+            ],
+            "code": "ork privado varrer\nork privado varrer --base origin/main\nork memory status"
+          },
+          {
             "id": "pendentes",
             "title": "What remains with the owner",
             "paragraphs": [
-              "The audit left five items pending with the owner, because closing them changed accepted or documented behavior. All five, P1 to P5, got the provenance rules on this page, merged by the owner’s decision.",
+              "The audit left six items pending with the owner, because closing them changed accepted or documented behavior. The first five, P1 to P5, got the provenance rules on this page, merged by the owner’s decision. P6 remains pending.",
               "On the same list, these remain recorded, with low risk:"
             ],
             "items": [
               "ork retry run --dry-run, in the corrigir-dirigido action, re-runs claims and verify: they are declared commands, but this goes against the meaning of --dry-run.",
               "The runtime profile recorded in the ledger chooses the CLAUDE_CONFIG_DIR and the CODEX_HOME of query commands.",
-              "memory.database_url_env accepts the name of any environment variable.",
+              "P6: the manifest’s memory.cli can be any name on PATH or an absolute path, including inside the clone, and memory.database_url_env names any environment variable. The value reaches the Brain executable on every query, and the file source memory.database_url_file only accepts ork’s secrets folder, so the class does not widen.",
               "ci.external_repositories accepts a parent-directory segment in the path of a read through the GitHub API.",
               "ork adapter install still finds the catalog from the project, as ork eval used to, but only copies the adapter into the project itself and prefers the executable on PATH when there is one."
             ]

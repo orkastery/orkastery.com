@@ -178,9 +178,9 @@ const pt = {
   title: 'Cada número tem o comando que o prova.',
   lead: 'Comandos reproduzíveis conferem o trabalho na árvore real. A baseline separa regressão de dívida anterior.',
   proofs: [
-   {n: '2.733', l: 'testes do núcleo, zero falhas no CI', c: 'npm --prefix core run test:ci'},
+   {n: '5.661', l: 'testes do núcleo, zero falhas no CI', c: 'npm --prefix core run test:ci'},
    {n: '24', l: 'canários de comportamento, todos verdes', c: 'ork eval --so-canarios'},
-   {n: '199', l: 'asserções em 20 skills e 101 casos', c: 'ork eval --so-skills'},
+   {n: '247', l: 'asserções em 21 skills e 116 casos', c: 'ork eval --so-skills'},
    {n: '0', l: 'erros de paridade entre docs e código', c: 'ork docs verificar'}
   ],
   demoMeta: '30 s · sem conta · sem modelo',
@@ -381,9 +381,9 @@ const en: Home = {
   title: 'Every number has the command that proves it.',
   lead: 'Reproducible commands check the work on the real tree. The baseline separates regression from earlier debt.',
   proofs: [
-   {n: '2,733', l: 'core tests, zero failures in CI', c: 'npm --prefix core run test:ci'},
+   {n: '5,661', l: 'core tests, zero failures in CI', c: 'npm --prefix core run test:ci'},
    {n: '24', l: 'behavior canaries, all green', c: 'ork eval --so-canarios'},
-   {n: '199', l: 'assertions across 20 skills and 101 cases', c: 'ork eval --so-skills'},
+   {n: '247', l: 'assertions across 21 skills and 116 cases', c: 'ork eval --so-skills'},
    {n: '0', l: 'parity errors between docs and code', c: 'ork docs verificar'}
   ],
   demoMeta: '30 s · no account · no model',

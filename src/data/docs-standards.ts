@@ -123,21 +123,26 @@ export default [
             "title": "Resumo de outubro de 2026",
             "paragraphs": [
               "O planejamento reúne condução, integração com hosts, memória governada e qualidade da documentação. A prioridade do topo continua sendo o HITL de condução por alternativas: todo pedido que o ork abre ao dono vira uma escolha entre 3 e 5 opções, uma delas recomendada, sem texto colado. Também seguem em desenvolvimento o impedimento que só o dono resolve no terminal, que vira um pedido a ele com o comando exato, e o perfil por despacho, com divisão pela carga entre contas. Esta página não replica tickets nem transforma uma intenção em promessa de disponibilidade.",
-              "Desde a revisão anterior, cinco itens novos entraram no roadmap, e outros avançaram sem mudar de estágio:"
+              "Desde a revisão anterior, dez itens novos entraram no roadmap, e outros avançaram sem mudar de estágio:"
             ],
             "items": [
               "Modo #Noctum, arcos autônomos de 6 a 12 horas com muitas threads e máquinas: em desenvolvimento, com o modo ainda desligado. A primeira das seis fatias, a N1, está implementada, com testes: o envelope de autorização do dono (janela, destinos, tetos e exclusões) e o estado do arco; #Noctum ainda não é aceito como modo, nenhum comando abre arco, e a próxima fatia é a N2, a fila local e a capacidade. O dono já tomou as quatro decisões de produto; a posição 5 na prioridade é uma proposta, e o primeiro piloto espera a autorização dele e os valores que só ele define: o teto, o horário e o canal do relatório da manhã.",
               "Condução dentro do Claude Code, com dez mods em quatro ondas: em desenvolvimento; a fundação, a onda 1 (Torre de Controle, Clima de Cota, Freio de Lote e Radar de Colisão) e a Mesa do Dono, da onda 2, estão na versão {versao}. A Sentinela do Condutor, que completa a onda 2, já está na main do núcleo, ainda fora de uma versão publicada, e os mods da onda 3 seguem como plano.",
               "Site como produto, os dois sites públicos com o rigor do núcleo: em desenvolvimento, e nada é publicado sem a aprovação do dono.",
               "CLI em inglês e pt-BR: em desenvolvimento. Na versão {versao}, o caminho da primeira experiência (de ork doctor e ork init a ork thread new e ork phase run), ork verify, ork ship, ork pulse, ork master, ork retry plan, ork retry run, ork roadmap status e a ajuda falam inglês quando owner.language ou o locale pedem en. A cobertura medida é de 23,0% dos textos de saída do CLI; o restante segue em português.",
-              "Repositório público sem dado privado: em desenvolvimento. O nome do arquivo de evidência da RM-040, que levava o nome de uma máquina, já foi trocado por um nome genérico, e a correção está mesclada. A barreira automática no CI, no ork verify e no ork ci prepare ainda é plano, e a próxima fatia é a barreira no CI.",
+              "Repositório público sem dado privado: em desenvolvimento. O nome do arquivo de evidência da RM-040, que levava o nome de uma máquina, já foi trocado por um nome genérico, e a correção está mesclada. A versão {versao} traz a barreira de dado privado no ork privado varrer e, com a policy dado_privado, no ork verify e no ork ci prepare; a varredura no CI ainda é plano.",
               "Busca por significado na memória: o dono escolheu os pares da prova, que passou em todas as execuções medidas; o item segue em validação.",
               "Grafo de código: o consumo pelas fases ganhou citações, segundo salto e proveniência conferida contra a árvore, com a flag grafo.mcp ainda desligada.",
-              "Verify rápido e confiável: avançou no registro de instabilidade e no ork verify que leva em conta o steal da CPU.",
+              "Verify rápido e confiável: avançou no registro de instabilidade e no ork verify que leva em conta o steal da CPU. Na versão {versao}, o CHECK padrão passou a ser o Agile Check, com a mesma cobertura do Classic e o Classic a um comando de distância.",
               "Impedimento que só o dono resolve: reconhece as frases atuais dos runtimes e chega ao dono no resumo, com o comando.",
               "Projeto-alvo explícito: a segunda fatia da resposta honesta foi entregue por PR, e o item espera o piloto do dono.",
               "Fábrica em várias máquinas: ganhou a auditoria da fronteira de confiança do repositório clonado.",
-              "Company Brain: o conhecimento escrito espera a escolha do dono entre quatro alternativas, e nenhum código entra antes dela."
+              "Company Brain: o conhecimento escrito espera a escolha do dono entre quatro alternativas, e nenhum código entra antes dela.",
+              "Agile Check e Classic Check: o CHECK padrão passou a ser o Agile Check, com a mesma cobertura do Classic, preparo uma vez e lanes em paralelo; o Classic volta por check.mode: classic ou ork verify --check classic. Em desenvolvimento, com o código mesclado e a publicação na versão {versao}.",
+              "Security scan no CHECK: o ork security-scan varre o HEAD e a base com ferramentas oficiais fixadas por digest e classifica cada achado como novo, existente ou dispensado; segredo novo e vulnerabilidade alta ou crítica nova reprovam. Em validação, com verify.security_scan no manifesto.",
+              "DSN com senha fora do ambiente dos agentes: a memória passa a ler a DSN de um arquivo da pasta de segredos do ork, com permissão estrita, em vez de uma variável de ambiente. Em desenvolvimento, com o código mesclado.",
+              "GitLab com paridade ao GitHub: a forja deixa de ser só o GitHub, com MR, CI e transporte de SHIP próprios. Em validação, com PR aberto.",
+              "Conta esgotada não para a fase: a troca de perfil por cota passa o prompt original quando nada foi produzido, ou um prompt de retomada com checkpoint quando a sessão já produziu. Em desenvolvimento, com o código mesclado."
             ]
           },
           {
@@ -159,21 +164,26 @@ export default [
             "title": "October 2026 summary",
             "paragraphs": [
               "Planning covers conduction, host integration, governed memory and documentation quality. The top priority is still conduction HITL by alternatives: every request ork opens to the owner becomes a choice among 3 to 5 options, one of them recommended, with no pasted text. Also still in development: a blocker only the owner can clear in the terminal becomes a request to them with the exact command, and a profile per dispatch, with load-based distribution across accounts. This page neither replicates tickets nor turns intent into a promise of availability.",
-              "Since the previous review, five new items entered the roadmap, and others moved forward without changing stage:"
+              "Since the previous review, ten new items entered the roadmap, and others moved forward without changing stage:"
             ],
             "items": [
               "#Noctum mode, autonomous arcs of 6 to 12 hours across many threads and machines: in development, with the mode still off. The first of six slices, N1, is implemented, with tests: the owner’s authorization envelope (window, destinations, caps and exclusions) and the arc state; #Noctum is not yet accepted as a mode, no command opens an arc, and the next slice is N2, the local queue and capacity. The owner has made the four product decisions; position 5 in the priority list is a proposal, and the first pilot awaits the owner’s authorization and the values only the owner sets: the cap, and the time and channel of the morning report.",
               "Conduction inside Claude Code, with ten mods in four waves: in development; the foundation, wave 1 (the Control Tower, the Quota Weather, the Batch Brake and the Collision Radar) and the Owner’s Desk, from wave 2, are in version {versao}. The Conductor’s Sentinel, which completes wave 2, is already on the core’s main branch, not yet in a published version, and the wave 3 mods remain planned.",
               "Site as a product, the two public sites held to the core’s rigor: in development, and nothing is published without the owner’s approval.",
               "CLI in English and pt-BR: in development. In version {versao}, the first-run path (from ork doctor and ork init to ork thread new and ork phase run), ork verify, ork ship, ork pulse, ork master, ork retry plan, ork retry run, ork roadmap status and the help print English when owner.language or the locale asks for en. The measured coverage is 23.0% of the CLI’s output texts; the rest still prints Portuguese.",
-              "Public repository without private data: in development. The RM-040 evidence file, whose name carried a machine name, has already been renamed to a generic one, and the fix is merged. The automatic barrier in CI, in ork verify and in ork ci prepare is still a plan, and the next slice is the CI barrier.",
+              "Public repository without private data: in development. The RM-040 evidence file, whose name carried a machine name, has already been renamed to a generic one, and the fix is merged. Version {versao} brings the private-data barrier in ork privado varrer and, with the dado_privado policy, in ork verify and ork ci prepare; the CI scan is still a plan.",
               "Search by meaning in memory: the owner chose the proof pairs, and the proof passed in every measured run; the item is still in validation.",
               "Code graph: phase consumption gained citations, a second hop and provenance checked against the tree, with the grafo.mcp flag still off.",
-              "Fast and reliable verify: progress on the instability registry and on making ork verify aware of CPU steal.",
+              "Fast and reliable verify: progress on the instability registry and on making ork verify aware of CPU steal. In version {versao}, the default CHECK became the Agile Check, with the same coverage as Classic and Classic one command away.",
               "Blocker only the owner can clear: it recognizes the runtimes’ current messages and reaches the owner in the summary, with the command.",
               "Explicit target project: the second slice of the honest answer was delivered by PR, and the item awaits the owner’s pilot.",
               "Factory on several machines: it gained an audit of the trust boundary of the cloned repository.",
-              "Company Brain: written knowledge awaits the owner’s choice among four alternatives, and no code goes in before it."
+              "Company Brain: written knowledge awaits the owner’s choice among four alternatives, and no code goes in before it.",
+              "Agile Check and Classic Check: the default CHECK became the Agile Check, with the same coverage as Classic, a single preparation and parallel lanes; Classic returns with check.mode: classic or ork verify --check classic. In development, with merged code and publication in version {versao}.",
+              "Security scan in CHECK: ork security-scan scans HEAD and the base with official tools pinned by digest and classifies every finding as new, existing or dismissed; a new secret and a new high or critical vulnerability fail the run. In validation, with verify.security_scan in the manifest.",
+              "DSN password outside the agents’ environment: memory reads the DSN from a file in the secrets directory of ork, with strict permissions, instead of an environment variable. In development, with merged code.",
+              "GitLab with parity to GitHub: the forge is no longer only GitHub, with its own MR, CI and SHIP transport. In validation, with an open PR.",
+              "Exhausted account does not stop the phase: the quota profile switch passes the original prompt when nothing was produced, or a resume prompt with a checkpoint when the session already produced. In development, with merged code."
             ]
           },
           {

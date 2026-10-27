@@ -277,6 +277,8 @@ export default [
       "docs/produto/MOD-02-verdade-e-entrega.md",
       "docs/produto/FEAT-004-claims-e-verify.md",
       "docs/produto/FEAT-005-ci-check-independente.md",
+      "docs/produto/FEAT-039-gitlab-com-paridade-ao-github.md",
+      "docs/produto/FEAT-041-security-scan-no-check.md",
       "docs/produto/FEAT-006-ship-com-push-provado.md",
       "docs/produto/FEAT-007-worktree-e-leases.md"
     ],
@@ -290,6 +292,8 @@ export default [
             "title": "FEAT-004 · Claims e verificação",
             "paragraphs": [
               "A claim precisa de comando executado no HEAD real. Resultado pendente, timeout ou prova retirada não contam como aprovação.",
+              "Na versão {versao}, o CHECK tem dois modos com a mesma cobertura e o mesmo veredito. O Agile Check, padrão, roda o preparo uma vez, reaproveita o produto dele com guarda de hash e executa as lanes de teste e a varredura em paralelo, sem passar da CPU da máquina; o Classic Check mantém os mesmos comandos na mesma ordem. check.mode: classic no orkastery.yaml volta o projeto inteiro ao Classic, e ork verify --check classic|agile vale só para a rodada e vence o manifesto. Peça do Agile indisponível cai para o equivalente do Classic, e o verify_run registra o modo, de onde ele veio e o que rodou no lugar.",
+              "Com verify.security_scan no manifesto, o ork verify roda ork security-scan como quarto comando, depois de build, test e typecheck. O scan compara o HEAD com a base por impressão digital e classifica cada achado como new, existing ou dismissed; segredo novo e vulnerabilidade high ou critical nova de dependência, SAST, IaC ou workflow reprovam, e qualidade e licença só reportam. O CHECK faz a triagem de cada achado novo com o security-auditor, e o GO-FIX corrige pela skill security-remediation ou registra a dispensa com ork decisao registrar. Sem a chave, nada muda.",
               "Na entrega por PR, o check de documentação do CI também cobra a linha no CHANGELOG quando a mudança toca core, adapters ou marketplaces, e o estado do item do roadmap depois do merge. O verify e o commit pelo MCP não travam em lease de thread já fechada.",
               "Em máquina virtual com CPU roubada pelo hipervisor, o ork verify local pode reprovar por tempo; a prova confiável é o CI. Na versão {versao}, o ork verify mede o steal do /proc/stat e grava a medida no verify_run: a reprovação só de teste com relógio sob steal acima de 40% vira verify.timeout, que o retry reexecuta, e nunca verify.regression. O registro dos testes de relógio segue o contrato ork.instabilidade/v1."
             ]
@@ -298,7 +302,8 @@ export default [
             "id": "feat-005",
             "title": "FEAT-005 · CHECK independente no CI",
             "paragraphs": [
-              "O bundle de claims é reexecutado no SHA exato da candidata. Uma execução de outra thread ou outro commit não prova esta mudança. Cada thread tem o próprio bundle, .ork-ci/<thread>.json, que o CI acha pelo nome da branch; branch de thread sem bundle reprova, e a main roda só os comandos do manifesto."
+              "O bundle de claims é reexecutado no SHA exato da candidata. Uma execução de outra thread ou outro commit não prova esta mudança. Cada thread tem o próprio bundle, .ork-ci/<thread>.json, que o CI acha pelo nome da branch; branch de thread sem bundle reprova, e a main roda só os comandos do manifesto.",
+              "Com a policy opt-in dado_privado declarada, o ork verify varre o diff da thread contra a base e o ork ci prepare varre o mesmo diff e o texto do bundle antes de gravar o arquivo: achado reprova com policy.violation em block e grava policy_warn em warn. Os padrões cobrem caminho de home, e-mail fora da lista permitida e hostname no formato de máquina, além dos termos da lista local fora do git; o relatório diz arquivo, linha, coluna e padrão, nunca o valor. ork privado varrer faz a mesma varredura na árvore versionada inteira."
             ]
           },
           {
@@ -306,7 +311,9 @@ export default [
             "title": "FEAT-006 · Entrega com push comprovado",
             "paragraphs": [
               "SHIP serializa o merge por lease e confere o remoto. Dry-run e commit local não são recibos de publicação.",
-              "O recibo ship_done traz o commit que incorporou a branch da thread (mergeSha) separado da ponta da base provada no remoto (pontaDaBase e shaRemoto)."
+              "O recibo ship_done traz o commit que incorporou a branch da thread (mergeSha) separado da ponta da base provada no remoto (pontaDaBase e shaRemoto).",
+              "Com verify.security_scan declarado e sem ci.required_for_ship, o SHIP para em human.pending antes de qualquer push quando uma categoria do laço (secret, dependency, sast, iac ou workflow) ficou sem varredura no SHA da candidata; só --allow-unscanned \"<quem>\" entrega, com ship_unscanned_authorized no ledger.",
+              "No MCP, o ork_ship escolhe o transporte no ork mcp install --ship-transport: github-ssh, forja-ssh, forja-https ou bare-local. forja-ssh confere a chave do servidor pelo known_hosts da pessoa ou por --ssh-fingerprint e usa StrictHostKeyChecking=yes, sem a config de SSH do usuário; forja-https usa só o auth git-credential do gh ou do glab com login no host, sem prompt e sem token no ork. A fixação fica fora do projeto, em $XDG_CONFIG_HOME/orkastery/mcp-ship/, e é reconferida a cada passo; origin ou config que muda durante o push deixa a entrega sem prova, com mcp.ship.transport.mudou-no-push."
             ]
           },
           {
@@ -329,6 +336,8 @@ export default [
             "title": "FEAT-004 · Claims and verification",
             "paragraphs": [
               "A claim needs a command executed against the actual HEAD. Pending results, timeouts and withdrawn evidence do not count as a pass.",
+              "In version {versao}, CHECK has two modes with the same coverage and the same verdict. Agile Check, the default, runs the preparation once, reuses its output under a hash guard and runs the test lanes and the scan in parallel, without exceeding the machine’s CPU; Classic Check keeps the same commands in the same order. check.mode: classic in orkastery.yaml returns the whole project to Classic, and ork verify --check classic|agile applies to that run only and overrides the manifest. An unavailable Agile piece falls back to the Classic equivalent, and verify_run records the mode, where it came from and what ran in its place.",
+              "With verify.security_scan in the manifest, ork verify runs ork security-scan as the fourth command, after build, test and typecheck. The scan compares HEAD with the base by fingerprint and classifies each finding as new, existing or dismissed; a new secret and a new high or critical vulnerability in dependency, SAST, IaC or workflow fail the run, while quality and license only report. CHECK triages each new finding with the security-auditor, and GO-FIX fixes it with the security-remediation skill or records a dismissal with ork decisao registrar. Without the key, nothing changes.",
               "For pull request delivery, the CI documentation check also requires a CHANGELOG line when the change touches core, adapters or marketplaces, and the roadmap item state after the merge. Verify and commit through MCP no longer stall on a lease held by an already closed thread.",
               "On a virtual machine whose CPU is stolen by the hypervisor, a local ork verify can fail on timeouts; the reliable proof is CI. In version {versao}, ork verify measures steal from /proc/stat and records it in verify_run: when only clock-bound tests fail under steal above 40%, the failure becomes verify.timeout, which retry runs again, never verify.regression. The registry of clock-bound tests follows the ork.instabilidade/v1 contract."
             ]
@@ -337,7 +346,8 @@ export default [
             "id": "feat-005",
             "title": "FEAT-005 · Independent CHECK in CI",
             "paragraphs": [
-              "The claim bundle is rerun against the candidate’s exact SHA. A run for another thread or commit does not prove this change. Each thread has its own bundle, .ork-ci/<thread>.json, which CI finds by branch name; a thread branch without a bundle fails, and main runs only the manifest commands."
+              "The claim bundle is rerun against the candidate’s exact SHA. A run for another thread or commit does not prove this change. Each thread has its own bundle, .ork-ci/<thread>.json, which CI finds by branch name; a thread branch without a bundle fails, and main runs only the manifest commands.",
+              "With the opt-in dado_privado policy declared, ork verify scans the thread diff against the base and ork ci prepare scans the same diff and the bundle text before writing the file: a finding fails with policy.violation in block and records policy_warn in warn. The patterns cover home paths, email addresses outside the allowed list and machine-format hostnames, plus the terms of the local list kept outside git; the report states file, line, column and pattern, never the value. ork privado varrer runs the same scan over the whole versioned tree."
             ]
           },
           {
@@ -345,7 +355,9 @@ export default [
             "title": "FEAT-006 · Delivery with verified push",
             "paragraphs": [
               "SHIP serializes the merge through a lease and checks the remote. Dry runs and local commits are not publication receipts.",
-              "The ship_done receipt records the commit that incorporated the thread branch (mergeSha) separately from the base tip proven on the remote (pontaDaBase and shaRemoto)."
+              "The ship_done receipt records the commit that incorporated the thread branch (mergeSha) separately from the base tip proven on the remote (pontaDaBase and shaRemoto).",
+              "With verify.security_scan declared and without ci.required_for_ship, SHIP stops at human.pending before any push when a loop category (secret, dependency, sast, iac or workflow) was left unscanned at the candidate SHA; only --allow-unscanned \"<who>\" delivers, with ship_unscanned_authorized in the ledger.",
+              "In MCP, ork_ship chooses its transport in ork mcp install --ship-transport: github-ssh, forja-ssh, forja-https or bare-local. forja-ssh checks the server key against the person’s known_hosts or --ssh-fingerprint and uses StrictHostKeyChecking=yes, without the user’s SSH config; forja-https uses only the gh or glab auth git-credential with a login on the host, with no prompt and no token in ork. The pinning lives outside the project, in $XDG_CONFIG_HOME/orkastery/mcp-ship/, and is rechecked at every step; an origin or config change during the push leaves the delivery unproven, with mcp.ship.transport.mudou-no-push."
             ]
           },
           {
@@ -580,6 +592,8 @@ export default [
       "docs/produto/MOD-05-memoria-e-registro.md",
       "docs/produto/FEAT-016-handoff-e-recall.md",
       "docs/produto/FEAT-017-memoria-orkmind.md",
+      "docs/produto/FEAT-038-conhecimento-escrito.md",
+      "docs/referencia/contratos/conhecimento-rm026.md",
       "docs/produto/FEAT-018-documentacao-como-codigo.md",
       "docs/produto/FEAT-019-telemetria-do-ledger.md",
       "docs/produto/FEAT-024-company-brain-no-cli.md",
@@ -603,6 +617,7 @@ export default [
             "title": "FEAT-017 · Memória OrkMind",
             "paragraphs": [
               "O tenant do projeto recebe decisões, handoffs e lições conforme as permissões. Indisponibilidade degrada para arquivos com evento explícito; não usa outra base silenciosamente.",
+              "Na versão {versao}, a DSN pode vir de um arquivo da pasta de segredos do ork, em ~/.orkastery/segredos/, declarado por memory.database_url_file (0600 ou 0400, uma linha), em vez de uma variável de ambiente visível aos agentes; memory.database_url_env continua aceito, e as duas fontes são exclusivas. Arquivo ausente, inseguro ou inválido degrada para files com dsn.arquivo-ausente, dsn.arquivo-inseguro ou dsn.arquivo-invalido, sem cair para outra base, e a resposta do processo filho que repete a DSN ou a senha dela é recusada inteira, com memory.transport.secret, brain.transport.secret ou brain.migration.secret.",
               "A busca por significado é separada da busca por tag: índice vetorial local e derivado, resultados de um único tenant marcados como não determinísticos e nada no prompt sozinho. Vetores de modelos ou dimensões diferentes nunca se comparam, e embedding indisponível tem motivo embeddings.* sem derrubar o regime.",
               "A busca por significado foi publicada na versão 0.5.0 e desliga com memory.embedding.provider: none."
             ]
@@ -668,6 +683,7 @@ export default [
             "title": "FEAT-017 · OrkMind memory",
             "paragraphs": [
               "The project tenant receives decisions, handoffs and lessons according to permissions. Unavailability degrades to files with an explicit event; it does not silently use another database.",
+              "In version {versao}, the DSN can come from a file in ork’s secrets folder, at ~/.orkastery/segredos/, declared by memory.database_url_file (0600 or 0400, a single line), instead of an environment variable visible to agents; memory.database_url_env is still accepted, and the two sources are exclusive. A missing, insecure or invalid file degrades to files with dsn.arquivo-ausente, dsn.arquivo-inseguro or dsn.arquivo-invalido, without falling back to another database, and a child process answer that repeats the DSN or its password is rejected whole, with memory.transport.secret, brain.transport.secret or brain.migration.secret.",
               "Search by meaning is separate from tag search: a local derived vector index, results from a single tenant marked as non-deterministic, and nothing entering the prompt on its own. Vectors from different models or dimensions are never compared, and unavailable embeddings have an embeddings.* reason without bringing down the regime.",
               "Search by meaning was released in version 0.5.0 and turns off with memory.embedding.provider: none."
             ]

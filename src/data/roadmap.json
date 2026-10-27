@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-10-12",
-  "nextReview": "2026-11-12",
+  "updatedAt": "2026-10-26",
+  "nextReview": "2026-11-26",
   "source": "https://github.com/orkastery/orkastery/tree/main/docs/roadmap",
   "summary": {
-    "pt": "Em outubro, entraram no roadmap a condução dentro do Claude Code, o site como produto, o CLI em inglês e pt-BR, o repositório público sem dado privado e o modo #Noctum, que já está em desenvolvimento, com a primeira fatia implementada e o modo ainda desligado. Itens planejados são intenções; a documentação de uso descreve o comportamento disponível nas fontes revisadas.",
-    "en": "In October, conduction inside Claude Code, the site as a product, the CLI in English and pt-BR, the public repository without private data and #Noctum mode entered the roadmap; #Noctum is already in development, with its first slice implemented and the mode still off. Planned items express intent; the usage documentation describes behavior available in the reviewed sources."
+    "pt": "Em outubro, o roadmap ganhou o Agile Check como CHECK padrão, o security scan no CHECK, a DSN da memória fora do ambiente dos agentes, a barreira de dado privado, o GitLab com paridade ao GitHub e a retomada por checkpoint quando a conta esgota. Também entraram o Grok Build, o Google Antigravity, o relatório da esteira do SDLC e os modelos de decisão como itens em discovery. Itens planejados são intenções; a documentação de uso descreve o comportamento disponível nas fontes revisadas.",
+    "en": "In October, the roadmap gained the Agile Check as the default CHECK, the security scan in CHECK, the memory DSN outside the agents’ environment, the private-data barrier, GitLab with parity to GitHub and checkpoint resume when an account runs out. Grok Build, Google Antigravity, the SDLC pipeline report and decision models also entered as discovery items. Planned items express intent; the usage documentation describes behavior available in the reviewed sources."
   }
 }
