@@ -173,5 +173,11 @@ let fio=0;
  .voce-hosts{flex:1 1 100%;flex-wrap:wrap;margin-left:0}
  .camada{grid-template-columns:minmax(0,1fr);gap:var(--e-4)}
 }
-@media (max-width:479.98px){.diagrama-palco{padding:var(--e-4)}.maquina{padding:var(--e-3)}}
+@media (max-width:479.98px){
+ .diagrama-palco{padding:var(--e-4)}
+ .maquina{padding:var(--e-3)}
+ /* O nome da máquina nunca parte no hífen: o ambiente desce de linha quando não cabe. */
+ .maquina-topo{flex-wrap:wrap;row-gap:var(--e-1)}
+ .maquina-nome{white-space:nowrap}
+}
 </style>
