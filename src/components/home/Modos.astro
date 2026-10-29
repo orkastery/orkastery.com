@@ -73,4 +73,22 @@ const m=t.modes,linhas=modes(t,ESTADO_INICIAL.mode);
 .modos-texto{margin-top:var(--e-3);font:var(--tipo-destaque);text-wrap:pretty}
 .modos-fecho{margin:var(--e-7) 0 0;font:var(--tipo-titulo-1);letter-spacing:var(--trk-titulo-1);max-width:24ch;text-wrap:balance}
 .modos-fecho span{display:block;color:var(--verificado-texto)}
+/* Abaixo de 768 px a matriz vira lista de cartões, como o board (D19): em cima a #TAG e as pausas
+   de HITL, embaixo os blocos do ciclo em sequência, cada um com o nome inteiro e o ponto de HITL;
+   sem rolagem lateral e sem rótulo cortado na borda. O cabeçalho das colunas sai (já era só visual)
+   e o número de pausas ganha o rótulo HITL que ele tinha no topo. No tablet a matriz cabe inteira,
+   mas o bloco de uma fase só fica estreito: o respiro interno diminui para o nome não encostar. */
+@media (max-width:1023.98px){.modo-faixa{padding:0 var(--e-2)}}
+@media (max-width:767.98px){
+ .matriz-rolagem{overflow-x:visible}
+ .matriz-tabela{min-width:0}
+ .matriz-cabeca{display:none}
+ .modo{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:'tag pausas' 'blocos blocos';gap:var(--e-3) var(--e-4)}
+ .modo-tag{grid-area:tag}
+ .modo-pausas{grid-area:pausas;display:flex;align-items:baseline;gap:var(--e-2)}
+ .modo-pausas::before{content:'HITL';font:var(--tipo-rotulo);letter-spacing:var(--espaco-rotulo);color:var(--texto-3)}
+ .modo-blocos{grid-area:blocos;display:flex;flex-wrap:wrap;gap:6px var(--e-2)}
+ .modo-bloco{max-width:100%}
+ .modo-faixa{flex:0 1 auto;height:auto;min-height:34px;box-sizing:border-box;padding:var(--e-2) var(--e-3);white-space:normal;line-height:1.35}
+}
 </style>

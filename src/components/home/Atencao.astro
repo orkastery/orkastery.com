@@ -123,6 +123,14 @@ const a=t.attention,linhas=board(t,ESTADO_INICIAL.tick),kpis=pulse(t),opcoes=opt
    largura do próprio cartão (a 768 e a 1280 ele é estreito mesmo com a tela larga). */
 .pulso{container-type:inline-size}
 @container (max-width:360px){.pulso-numeros{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* No celular a pílula "recomendada" desce para a linha de baixo, alinhada ao texto da alternativa,
+   em vez de espremer o texto numa coluna estreita; "a–d" nunca parte no meio. */
+@media (max-width:479.98px){
+ .pergunta-meta>span:last-child{flex:none}
+ .opcao{flex-wrap:wrap;row-gap:var(--e-1)}
+ .opcao-texto{flex:1 1 0;min-width:0}
+ .opcao-rec{order:3;flex-basis:100%;padding-left:calc(26px + var(--e-3))}
+}
 /* Abaixo de 768 px o board vira lista de cartões (kit, Responsividade): nome e estado em cima,
    onde roda e a barra de fases embaixo; sem cabeçalho de tabela e sem rolagem lateral. */
 @media (max-width:767.98px){
