@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-10-26",
-  "nextReview": "2026-11-26",
+  "updatedAt": "2026-10-29",
+  "nextReview": "2026-11-29",
   "source": "https://github.com/orkastery/orkastery/tree/main/docs/roadmap",
   "summary": {
-    "pt": "Em outubro, o roadmap ganhou o Agile Check como CHECK padrão, o security scan no CHECK, a DSN da memória fora do ambiente dos agentes, a barreira de dado privado, o GitLab com paridade ao GitHub e a retomada por checkpoint quando a conta esgota. Também entraram o Grok Build, o Google Antigravity, o relatório da esteira do SDLC e os modelos de decisão como itens em discovery. Itens planejados são intenções; a documentação de uso descreve o comportamento disponível nas fontes revisadas.",
-    "en": "In October, the roadmap gained the Agile Check as the default CHECK, the security scan in CHECK, the memory DSN outside the agents’ environment, the private-data barrier, GitLab with parity to GitHub and checkpoint resume when an account runs out. Grok Build, Google Antigravity, the SDLC pipeline report and decision models also entered as discovery items. Planned items express intent; the usage documentation describes behavior available in the reviewed sources."
+    "pt": "Em outubro, o Agile Check virou o CHECK padrão, e chegaram o security scan no CHECK, a DSN da memória fora do ambiente dos agentes, a barreira de dado privado, o GitLab com paridade ao GitHub e a retomada por checkpoint quando a conta esgota. A versão 0.6.1 traz o Grok Build por despacho explícito, ainda sem homologação real, e o Agile Check agendado pela CPU da máquina. O Google Antigravity, o relatório da esteira do SDLC e os modelos de decisão seguem em discovery. Itens planejados são intenções; a documentação de uso descreve o comportamento disponível nas fontes revisadas.",
+    "en": "In October, the Agile Check became the default CHECK, and the security scan in CHECK, the memory DSN outside the agents’ environment, the private-data barrier, GitLab with parity to GitHub and checkpoint resume when an account runs out arrived. Version 0.6.1 brings Grok Build by explicit dispatch, without live validation yet, and the Agile Check scheduled by the machine’s CPU. Google Antigravity, the SDLC pipeline report and decision models remain in discovery. Planned items express intent; the usage documentation describes behavior available in the reviewed sources."
   }
 }

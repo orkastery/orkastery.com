@@ -303,7 +303,8 @@ export default [
             "title": "FEAT-005 · CHECK independente no CI",
             "paragraphs": [
               "O bundle de claims é reexecutado no SHA exato da candidata. Uma execução de outra thread ou outro commit não prova esta mudança. Cada thread tem o próprio bundle, .ork-ci/<thread>.json, que o CI acha pelo nome da branch; branch de thread sem bundle reprova, e a main roda só os comandos do manifesto.",
-              "Com a policy opt-in dado_privado declarada, o ork verify varre o diff da thread contra a base e o ork ci prepare varre o mesmo diff e o texto do bundle antes de gravar o arquivo: achado reprova com policy.violation em block e grava policy_warn em warn. Os padrões cobrem caminho de home, e-mail fora da lista permitida e hostname no formato de máquina, além dos termos da lista local fora do git; o relatório diz arquivo, linha, coluna e padrão, nunca o valor. ork privado varrer faz a mesma varredura na árvore versionada inteira."
+              "Com a policy opt-in dado_privado declarada, o ork verify varre o diff da thread contra a base e o ork ci prepare varre o mesmo diff e o texto do bundle antes de gravar o arquivo: achado reprova com policy.violation em block e grava policy_warn em warn. Os padrões cobrem caminho de home, e-mail fora da lista permitida e hostname no formato de máquina, além dos termos da lista local fora do git; o relatório diz arquivo, linha, coluna e padrão, nunca o valor. ork privado varrer faz a mesma varredura na árvore versionada inteira.",
+              "Desde a versão 0.6.0, o GitLab tem paridade com o GitHub: a CI do GitLab como CHECK independente, o pulse, a rede, a entrega por MR e o SHIP pelo MCP, por uma porta de forja em que cada plataforma é um adaptador com capacidades."
             ]
           },
           {
@@ -347,7 +348,8 @@ export default [
             "title": "FEAT-005 · Independent CHECK in CI",
             "paragraphs": [
               "The claim bundle is rerun against the candidate’s exact SHA. A run for another thread or commit does not prove this change. Each thread has its own bundle, .ork-ci/<thread>.json, which CI finds by branch name; a thread branch without a bundle fails, and main runs only the manifest commands.",
-              "With the opt-in dado_privado policy declared, ork verify scans the thread diff against the base and ork ci prepare scans the same diff and the bundle text before writing the file: a finding fails with policy.violation in block and records policy_warn in warn. The patterns cover home paths, email addresses outside the allowed list and machine-format hostnames, plus the terms of the local list kept outside git; the report states file, line, column and pattern, never the value. ork privado varrer runs the same scan over the whole versioned tree."
+              "With the opt-in dado_privado policy declared, ork verify scans the thread diff against the base and ork ci prepare scans the same diff and the bundle text before writing the file: a finding fails with policy.violation in block and records policy_warn in warn. The patterns cover home paths, email addresses outside the allowed list and machine-format hostnames, plus the terms of the local list kept outside git; the report states file, line, column and pattern, never the value. ork privado varrer runs the same scan over the whole versioned tree.",
+              "Since version 0.6.0, GitLab has parity with GitHub: GitLab CI as the independent CHECK, pulse, the network, delivery by MR and SHIP through MCP, through a forge port in which each platform is an adapter with capabilities."
             ]
           },
           {
@@ -664,6 +666,15 @@ export default [
               "O dossiê está na main e foi publicado na versão 0.5.0."
             ],
             "code": "ork brain dossie --thread <thread>\nork brain dossie --thread <thread> --decisao <id>"
+          },
+          {
+            "id": "feat-038",
+            "title": "FEAT-038 · Conhecimento escrito",
+            "paragraphs": [
+              "ork conhecimento lista, mostra e confere os documentos escritos da empresa (política, especificação, guia) da pasta declarada no orkastery.yaml, com a versão (sha256) e a fonte (arquivo) de cada um; o que não confere chega como lacuna tipada. As quatro consultas têm o mesmo nome no MCP, no plugin do OpenClaw e no Hermes, e a resposta segue o contrato ork.conhecimento/v1.",
+              "Cada documento é Markdown com frontmatter: id, titulo, colecoes e, opcional, referencias. A decisão citada confere no ledger, e o id do Company Brain confere por get, o que pede memory.mode: orkmind; sem o bloco conhecimento no manifesto, a consulta responde com a lacuna conhecimento.nao-declarado. As três fatias foram publicadas na versão 0.6.0."
+            ],
+            "code": "ork conhecimento listar --colecao <colecao>\nork conhecimento mostrar <doc-id>\nork conhecimento colecoes\nork conhecimento verificar"
           }
         ]
       },
@@ -730,6 +741,15 @@ export default [
               "The dossier is on main and was released in version 0.5.0."
             ],
             "code": "ork brain dossie --thread <thread>\nork brain dossie --thread <thread> --decisao <id>"
+          },
+          {
+            "id": "feat-038",
+            "title": "FEAT-038 · Written knowledge",
+            "paragraphs": [
+              "ork conhecimento lists, shows and checks the company’s written documents (policy, specification, guide) in the folder declared in orkastery.yaml, with each one’s version (sha256) and source (file); whatever does not check out arrives as a typed gap. The four queries have the same names in MCP, in the OpenClaw plugin and in Hermes, and the answer follows the ork.conhecimento/v1 contract.",
+              "Each document is Markdown with frontmatter: id, titulo, colecoes and, optionally, referencias. A cited decision is checked in the ledger, and a Company Brain ID is checked with get, which requires memory.mode: orkmind; without the conhecimento block in the manifest, a query answers with the conhecimento.nao-declarado gap. All three slices were released in version 0.6.0."
+            ],
+            "code": "ork conhecimento listar --colecao <colecao>\nork conhecimento mostrar <doc-id>\nork conhecimento colecoes\nork conhecimento verificar"
           }
         ]
       }
