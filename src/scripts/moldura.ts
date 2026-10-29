@@ -58,3 +58,16 @@ function marcarChips() {
 marcarChips();
 document.fonts?.ready.then(marcarChips);
 if ('ResizeObserver' in window) new ResizeObserver(() => marcarChips()).observe(document.documentElement);
+
+// Regiões que rolam na horizontal (topologia da home, diagrama de /ork/): no desktop são parada de
+// Tab, como no design. Abaixo de 1054 px a responsividade as faz caber, e elas só seguem no Tab se
+// ainda rolarem: um bloco que não rola e é mais alto que a tela levava o foco para baixo do cabeçalho.
+const estreito = matchMedia('(max-width:1053.98px)');
+function marcarRegioes() {
+ for (const r of document.querySelectorAll<HTMLElement>('[data-regiao-rolavel]')) {
+  if (!estreito.matches || r.scrollWidth > r.clientWidth + 1) r.tabIndex = 0;
+  else r.removeAttribute('tabindex');
+ }
+}
+marcarRegioes();
+if ('ResizeObserver' in window) new ResizeObserver(() => marcarRegioes()).observe(document.documentElement);
