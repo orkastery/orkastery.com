@@ -62,6 +62,9 @@ button{font:inherit;color:inherit}
 
 /* Raiz da página: altura mínima de uma tela e nenhuma sobra horizontal. */
 .pagina{min-height:100vh;overflow-x:clip}
+/* No celular, uma palavra de texto mais larga que a coluna (lista sem espaço, URL) desce partida em
+   vez de ser cortada pelo recorte da página. O código não entra: o chip e o bloco seguem inteiros. */
+@media (max-width:767.98px){main :is(p,li,dd,blockquote,figcaption,td,th){overflow-wrap:break-word}}
 
 .container{max-width:var(--largura);margin:0 auto;padding:0 var(--calha)}
 

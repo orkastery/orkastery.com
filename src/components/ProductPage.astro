@@ -58,7 +58,7 @@ const selo=product==='Ork'?['AI Software Factory','@orkastery/cli',versao,'MIT']
     <p class="produto-texto"><TechnicalText text={copy.mechanismText}/></p>
     <a class="produto-cartao-link" href={docsHref('/docs/arquitetura/')}>{text.read} <span aria-hidden="true">→</span></a>
    </div>
-   {diagram&&<div class="produto-diagrama" tabindex="0" role="region" aria-label={text.diagram}><DocsDiagram name="layers" {locale}/></div>}
+   {diagram&&<div class="produto-diagrama" tabindex="0" role="region" aria-label={text.diagram} data-regiao-rolavel><DocsDiagram name="layers" {locale}/></div>}
   </div>
  </section>
  <Divider/>

@@ -16,7 +16,7 @@ let fio=0;
  <div class="container">
   <span id="arquitetura" class="ancora-antiga" aria-hidden="true"></span><span id="camadas-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-adapt-titulo" class="ancora-antiga" aria-hidden="true"></span><span id="ork-comp-titulo" class="ancora-antiga" aria-hidden="true"></span>
   <SectionHead sobretitulo={p.eyebrow} titulo={p.title} lead={p.lead} medidaTitulo="20ch" medidaLead="62ch"/>
-  <div class="diagrama" data-reveal tabindex="0" role="region" aria-label={p.title}>
+  <div class="diagrama" data-reveal tabindex="0" role="region" aria-label={p.title} data-regiao-rolavel>
    <div class="diagrama-palco">
     <div class="centro">
      <div class="voce">
@@ -149,4 +149,35 @@ let fio=0;
 .escala-titulo{font:var(--tipo-titulo-3);letter-spacing:var(--trk-titulo-3)}
 .escala-texto{margin:0;flex:1;font:var(--tipo-apoio);color:var(--texto-2);text-wrap:pretty}
 .escala-codigo{align-self:flex-start;margin-top:6px;font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);padding:var(--e-2) var(--e-3);border-radius:var(--raio-chip);background:var(--superficie-2);color:var(--texto)}
+/* Responsividade (D19). Abaixo de 1054 px o palco de 920 px já não cabe na coluna: ele passa a
+   acompanhar a largura, com as três máquinas lado a lado enquanto cada uma tem largura para os
+   nomes das threads. Abaixo de 1000 px a topologia empilha, como o board em cartões: você, a camada,
+   as máquinas uma embaixo da outra e a fila de merge, ligadas por um tronco só (instrução em
+   tracejado, evidência em pátina), sem rolagem lateral e sem nada cortado na borda. No tablet cada
+   máquina mostra os dois runtimes lado a lado; no celular, um embaixo do outro, e o "você" e a
+   camada quebram em linhas. */
+@media (max-width:1053.98px){.diagrama-palco{min-width:0}}
+@media (max-width:999.98px){
+ .diagrama-palco{padding:var(--e-5)}
+ .ligacao{grid-template-columns:minmax(0,1fr)}
+ .ligacao-trave,.ligacao-ramo:nth-child(3),.ligacao-ramo:nth-child(5),
+ .ligacao-trave-baixo,.ligacao-ramo-baixo:nth-child(1),.ligacao-ramo-baixo:nth-child(3){display:none}
+ .maquinas{grid-template-columns:minmax(0,1fr);gap:var(--e-3)}
+}
+@media (min-width:640px) and (max-width:999.98px){
+ .maquina{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+ .maquina-topo,.maquina-pe{grid-column:1/-1}
+}
+@media (max-width:639.98px){
+ .voce{flex-wrap:wrap;row-gap:var(--e-3)}
+ .voce-hosts{flex:1 1 100%;flex-wrap:wrap;margin-left:0}
+ .camada{grid-template-columns:minmax(0,1fr);gap:var(--e-4)}
+}
+@media (max-width:479.98px){
+ .diagrama-palco{padding:var(--e-4)}
+ .maquina{padding:var(--e-3)}
+ /* O nome da máquina nunca parte no hífen: o ambiente desce de linha quando não cabe. */
+ .maquina-topo{flex-wrap:wrap;row-gap:var(--e-1)}
+ .maquina-nome{white-space:nowrap}
+}
 </style>

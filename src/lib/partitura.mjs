@@ -42,12 +42,16 @@ export function iniciarPartitura(canvas, {nomes, etiqueta, reduzir, densidade = 
   ctx.clearRect(0, 0, w, h);
   const gut = w > 620 ? 132 : 0, top = 34, bot = 8, sw = w - gut, colW = sw / 6;
   ctx.font = "500 10.5px 'IBM Plex Mono', ui-monospace, monospace"; ctx.textBaseline = 'middle';
+  // Coluna estreita (celular): o rótulo da fase encolhe e encosta na divisória para caber inteiro.
+  const estreita = ctx.measureText('MASTER').width + 14 > colW;
+  if (estreita) ctx.font = "500 9px 'IBM Plex Mono', ui-monospace, monospace";
   for (let k = 0; k < 6; k++) {
    const x0 = gut + k * colW;
    if (k % 2 === 1) { ctx.fillStyle = cores.faixa; ctx.fillRect(x0, 0, colW, h); }
-   ctx.fillStyle = cores.rotulo; ctx.fillText(PH[k], x0 + 10, 12);
+   ctx.fillStyle = cores.rotulo; ctx.fillText(PH[k], x0 + (estreita ? 4 : 10), 12);
    if (k > 0) { ctx.strokeStyle = cores.linha; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(Math.round(x0) + .5, 24); ctx.lineTo(Math.round(x0) + .5, h); ctx.stroke(); }
   }
+  if (estreita) ctx.font = "500 10.5px 'IBM Plex Mono', ui-monospace, monospace";
   const gap = (h - top - bot) / Math.max(1, N - 1);
   let run = 0, wait = 0, ok = 0;
   for (let i = 0; i < N; i++) {

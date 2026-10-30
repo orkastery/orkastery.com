@@ -49,4 +49,12 @@ const p=t.proof;
 .lacunas-titulo{font:var(--peso-titulo) var(--t-corpo)/1.35 var(--f-titulo)}
 .lacuna{font:var(--tipo-apoio);color:var(--texto-2)}
 .lacuna-s{font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono)}
+/* No celular estreito o comando do terminal (inteiro, regra de 03/10) não cabia na coluna e
+   rolava: o terminal ganha a borda e a coluna do rótulo mais justas e, abaixo de 340 px, a letra
+   um pouco menor, como no comando de instalação. */
+@media (max-width:389.98px){
+ .terminal{padding:var(--e-4) var(--e-3)}
+ .terminal-linha{grid-template-columns:72px minmax(0,1fr);gap:var(--e-2)}
+}
+@media (max-width:339.98px){.terminal{font-size:12px}}
 </style>

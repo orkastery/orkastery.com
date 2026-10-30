@@ -11,6 +11,11 @@ const height=d.nodes.length*112-28;
  <defs><marker id={prefix+'-arrow'} markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="currentColor"/></marker></defs>
  {d.nodes.map((node,i)=><g><rect x="12" y={i*112+4} width="516" height="66" rx="10"/><text x="34" y={i*112+44}>{i+1}.</text><text x="75" y={i*112+(node.includes(' · ')?30:44)}><tspan>{node.split(' · ')[0]}</tspan>{node.includes(' · ')&&<tspan x="75" dy="27" class="node-detail">{node.split(' · ')[1]}</tspan>}</text>{i < d.nodes.length - 1 && <g><path class="connector" d={`M48 ${i*112+72} v32`} marker-end={`url(#${prefix}-arrow)`}/><text class="edge-label" x="75" y={i*112+98}>{d.edges[i]}</text></g>}</g>)}
  </svg>
+ <svg class="diagrama-compacto" viewBox={`0 0 340 ${height}`} role="img" aria-labelledby={`${prefix}-c-title ${prefix}-c-desc`}>
+ <title id={prefix+'-c-title'}>{d.title}</title><desc id={prefix+'-c-desc'}>{d.description}</desc>
+ <defs><marker id={prefix+'-c-arrow'} markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="currentColor"/></marker></defs>
+ {d.nodes.map((node,i)=><g><rect x="6" y={i*112+4} width="328" height="66" rx="10"/><text x="20" y={i*112+44}>{i+1}.</text><text x="52" y={i*112+(node.includes(' · ')?30:44)}><tspan>{node.split(' · ')[0]}</tspan>{node.includes(' · ')&&<tspan x="52" dy="27" class="node-detail">{node.split(' · ')[1]}</tspan>}</text>{i < d.nodes.length - 1 && <g><path class="connector" d={`M30 ${i*112+72} v32`} marker-end={`url(#${prefix}-c-arrow)`}/><text class="edge-label" x="52" y={i*112+98}>{d.edges[i]}</text></g>}</g>)}
+ </svg>
  <figcaption><strong>{d.title}.</strong> {d.description}</figcaption>
 </figure>
 <style>
@@ -25,4 +30,8 @@ text{fill:currentColor;font:500 23px var(--f-texto)}
 figcaption{margin-top:var(--e-3);font:var(--tipo-apoio);color:var(--texto-3)}
 figcaption strong{color:var(--texto);font-weight:var(--peso-destaque)}
 @media(max-width:550px){.docs-diagram{padding:var(--e-3)}}
+/* No celular o desenho de 540 encolhia até a letra ficar ilegível: abaixo de 560 px entra a versão
+   compacta, com os mesmos nós e a mesma letra em 340 de largura (nunca maior que no desktop). */
+.diagrama-compacto{display:none;max-width:340px}
+@media(max-width:559.98px){svg:not(.diagrama-compacto){display:none}.diagrama-compacto{display:block}}
 </style>
