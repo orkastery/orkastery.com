@@ -68,7 +68,7 @@ export default [
             "id": "confirmacoes",
             "title": "Confirmações desta máquina",
             "paragraphs": [
-              "Na versão {versao}, três escolhas do manifesto só valem depois de a máquina confirmar, fora do git. O runtime.sandbox que dá ao agente acesso total (danger-full-access) só despacha pelo Codex depois de ork setup sandbox confirmar <postura>; sem isso, ork phase run e ork retry run recusam com runtime.sandbox-nao-confirmado. O worktree.dir que leva para fora da raiz, pelo caminho real, só cria worktree depois de ork setup worktree confirmar; sem isso, a criação recusa com worktree.dir-fora-da-raiz. E o fabrica.compartilhada: true só liga a fábrica com a adesão da máquina, por ork fabrica entrar.",
+              "Na versão {versao}, três escolhas do manifesto só valem depois de a máquina confirmar, fora do git. O runtime.sandbox que dá ao agente acesso total (danger-full-access) só despacha pelo Codex e pelo Grok Build depois de ork setup sandbox confirmar <postura>; sem isso, ork phase run e ork retry run recusam com runtime.sandbox-nao-confirmado. O worktree.dir que leva para fora da raiz, pelo caminho real, só cria worktree depois de ork setup worktree confirmar; sem isso, a criação recusa com worktree.dir-fora-da-raiz. E o fabrica.compartilhada: true só liga a fábrica com a adesão da máquina, por ork fabrica entrar.",
               "As duas confirmações do ork setup ficam em .orkastery/private (postura-local.json e worktree-local.json, modo 0600, fora do git) e valem só para este checkout; a da worktree, só para aquela pasta. A adesão da fábrica fica em ~/.orkastery/maquina.json e vale para a máquina. O ork doctor acusa a falta de cada uma.",
               "Também na versão {versao}, o ork eval só executa o catálogo do pacote que está rodando: um catálogo achado a partir do cwd que não é o do pacote recusa com eval.catalogo-alheio. Num checkout do Orkastery, use o do checkout, node core/dist/index.js eval, como o CI já faz."
             ],
@@ -90,6 +90,15 @@ export default [
               "ork accounts esgotamentos mede, sem gravar nada, os despachos que caíram numa conta marcada como esgotada por outro projeto dentro do prazo da marca; a conta sai como id opaco, e o total é um piso."
             ],
             "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions --all\nork sessions --global --json\nork sessions limpar-fantasmas --dry-run --json\nork accounts esgotamentos --desde 7d --json"
+          },
+          {
+            "id": "grok",
+            "title": "Grok Build por despacho explícito",
+            "paragraphs": [
+              "Na versão {versao}, ork phase run <thread> GO --runtime grok --model <modelo> despacha a fase pelo Grok Build sem interface, pedido explicitamente ou pelo setup do bloco, e nunca pelo runtime.adapter do projeto. Não há modelo padrão: o modelo é sempre o do dono, e o esforço vai ao Grok Build com o mesmo nome. O processo filho roda sem XAI_API_KEY, pela assinatura que o login do perfil guardou, no sandbox workspace por padrão: read-only com runtime.sandbox: read-only e no PLAN que fecha o bloco, e sem sandbox só com danger-full-access confirmado nesta máquina por ork setup sandbox confirmar <postura>.",
+              "O comando ork setup <modo> --bloco N --runtime grok --model <modelo> faz do Grok Build o runtime de um bloco, e o fallback do bloco aceita o Grok Build com o modelo. ork mcp install --project <raiz> --host grok grava a entrada do MCP no .grok/config.toml do projeto, que não se versiona; no despacho, o servidor MCP do núcleo sobe fora do sandbox do Grok Build, só em 127.0.0.1, com um token por despacho e só com as ferramentas daquela sessão, e morre com ela.",
+              "O Grok Build não documenta um comando que confira o login, então ork accounts check mantém o estado do perfil dele, e o erro de login no despacho o tira do rodízio com runtime.auth-missing. ork sessions também lista as sessões do Grok Build de cada perfil. O ensaio real que homologa o runtime ainda falta."
+            ]
           },
           {
             "id": "contexto-e-atencao",
@@ -259,7 +268,7 @@ export default [
             "id": "confirmacoes",
             "title": "Confirmations on this machine",
             "paragraphs": [
-              "In version {versao}, three manifest choices only take effect after the machine confirms them, outside git. A runtime.sandbox that gives the agent full access (danger-full-access) only dispatches through Codex after ork setup sandbox confirmar <postura>; without it, ork phase run and ork retry run refuse with runtime.sandbox-nao-confirmado. A worktree.dir that leads outside the root, by its real path, only creates a worktree after ork setup worktree confirmar; without it, creation refuses with worktree.dir-fora-da-raiz. And fabrica.compartilhada: true only turns the factory on with the machine’s membership, through ork fabrica entrar.",
+              "In version {versao}, three manifest choices only take effect after the machine confirms them, outside git. A runtime.sandbox that gives the agent full access (danger-full-access) only dispatches through Codex and Grok Build after ork setup sandbox confirmar <postura>; without it, ork phase run and ork retry run refuse with runtime.sandbox-nao-confirmado. A worktree.dir that leads outside the root, by its real path, only creates a worktree after ork setup worktree confirmar; without it, creation refuses with worktree.dir-fora-da-raiz. And fabrica.compartilhada: true only turns the factory on with the machine’s membership, through ork fabrica entrar.",
               "The two ork setup confirmations live in .orkastery/private (postura-local.json and worktree-local.json, mode 0600, outside git) and apply only to this checkout; the worktree one, only to that folder. The factory membership lives in ~/.orkastery/maquina.json and applies to the machine. ork doctor reports each one that is missing.",
               "Also in version {versao}, ork eval only runs the catalog of the package that is running: a catalog found from the cwd that is not the package’s own refuses with eval.catalogo-alheio. In an Orkastery checkout, use that checkout’s own, node core/dist/index.js eval, as CI already does."
             ],
@@ -281,6 +290,15 @@ export default [
               "ork accounts esgotamentos measures, without writing anything, the dispatches that landed on an account another project had marked as exhausted while the mark was still valid; the account appears as an opaque id, and the total is a floor."
             ],
             "code": "ork phase run <thread> GO --prompt \"<texto>\" --perfil <id>\nork sessions --all\nork sessions --global --json\nork sessions limpar-fantasmas --dry-run --json\nork accounts esgotamentos --desde 7d --json"
+          },
+          {
+            "id": "grok",
+            "title": "Grok Build by explicit dispatch",
+            "paragraphs": [
+              "In version {versao}, ork phase run <thread> GO --runtime grok --model <model> dispatches the phase through Grok Build without an interface, requested explicitly or through the block setup, and never through the project’s runtime.adapter. There is no default model: the model is always the owner’s, and the effort goes to Grok Build under the same name. The child process runs without XAI_API_KEY, using the subscription the profile’s login stored, in the workspace sandbox by default: read-only with runtime.sandbox: read-only and in the PLAN that closes the block, and with no sandbox only when danger-full-access is confirmed on this machine through ork setup sandbox confirmar <postura>.",
+              "The command ork setup <mode> --bloco N --runtime grok --model <model> makes Grok Build a block’s runtime, and the block fallback accepts Grok Build with its model. ork mcp install --project <root> --host grok writes the MCP entry to the project’s .grok/config.toml, which is not versioned; at dispatch, the core’s MCP server starts outside the Grok Build sandbox, on 127.0.0.1 only, with a per-dispatch token and only that session’s tools, and dies with the session.",
+              "Grok Build documents no command that checks its login, so ork accounts check keeps its profile’s state, and a login error at dispatch takes the profile out of rotation with runtime.auth-missing. ork sessions also lists the Grok Build sessions of each profile. The live trial that validates the runtime is still missing."
+            ]
           },
           {
             "id": "contexto-e-atencao",
@@ -451,7 +469,8 @@ export default [
             "id": "runtime",
             "title": "Capacidade e permissão são distintas",
             "paragraphs": [
-              "O playbook descreve transporte, ferramentas nativas e limites por fase. PLAN não edita produto; GO recebe a worktree; CHECK requer revisão independente. Um schema de saída de claims contém candidatos: a resposta do modelo não registra nem verifica a alegação. Configuração instalada não comprova homologação live."
+              "O playbook descreve transporte, ferramentas nativas e limites por fase. PLAN não edita produto; GO recebe a worktree; CHECK requer revisão independente. Um schema de saída de claims contém candidatos: a resposta do modelo não registra nem verifica a alegação. Configuração instalada não comprova homologação live.",
+              "O Grok Build ainda não entra na matriz de capacidades do playbook: um runtime só entra nela com o ensaio real da homologação, que é a F5 da RM-067. Na versão {versao}, o despacho, o setup e o fallback, o sandbox com piso workspace, as instruções do projeto, a conta por perfil, o MCP do núcleo fora do sandbox e o inventário de sessões já valem para ele; o formato da cota esgotada e a conferência do login seguem como lacunas."
             ]
           },
           {
@@ -521,7 +540,8 @@ export default [
             "id": "runtime",
             "title": "Capability and permission are distinct",
             "paragraphs": [
-              "The playbook describes transport, native tools and phase limits. PLAN does not edit the product; GO receives the worktree; CHECK requires independent review. A claim output schema contains candidates: a model response neither registers nor verifies the assertion. Installed configuration does not prove live validation."
+              "The playbook describes transport, native tools and phase limits. PLAN does not edit the product; GO receives the worktree; CHECK requires independent review. A claim output schema contains candidates: a model response neither registers nor verifies the assertion. Installed configuration does not prove live validation.",
+              "Grok Build is not in the playbook’s capability matrix yet: a runtime only enters it with the live validation trial, which is RM-067’s F5. In version {versao}, dispatch, setup and fallback, the sandbox with a workspace floor, project instructions, per-profile accounts, the core’s MCP server outside the sandbox and the session inventory already apply to it; the exhausted-quota format and the login check remain gaps."
             ]
           },
           {

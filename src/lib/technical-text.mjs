@@ -5,7 +5,7 @@ import {parseFragment, serialize} from 'parse5';
 const verbs = 'thread entrega|sessions logs|claims ausente|roadmap pegar|accounts|activation|adapter|audit|board|fix|brain|ci|ciclos|claims|collections|conducao|conhecimento|creation|decisao|demo|docs|doctor|eval|experiencia|fabrica|gate|grafo|handoff|init|lease|ledger|licoes|maestro|master|mcp|memory|modos|monitor|network|objective|onboarding|orquestracao|phase|portfolio|privado|projetos|prompt|pulse|recall|security-scan|receipt-verifiers|retry|roadmap|sessions|setup|ship|thread|verify|worktree';
 // Os de tres palavras sao so os que a referencia do CLI tem; um segundo nivel generico engoliria a prosa (show, run, list).
 const subcommands = 'sandbox confirmar|sandbox revogar|worktree confirmar|worktree revogar|digest enviar|digest responder|digest preview|finding add|finding estado|context|contexto|dossie|sincronizar|verificar|show|indexar|roadmap|lint|policy|feat|hitl|limpar-fantasmas|limpar|registrar-pr|registrar|esquecer|esgotamentos|acquire|add|adopt|amostra|answer|apply|approve|bind|rollback|assumir|attach|audit|batch|build|cadencia|caminho|cancel|chamadores|check|classic|close|conferir|config|confirmar|create|deny|varrer|digest|divida|enable|entrar|ensure|estimate|export|gc|get|import|importadores|index|ingest|init|inspect|install|inventory|join|leave|list|migrar|migrate|new|next|open|packs|pedir|placar|plan|prepare|process|propor|publicar|query|ratificar|recall|reconcile|reindex|release|remove|render|report|request|reservas|reset|responder|resume|retirar|reverify|review|revogar|run|sair|sandbox|search|serve|set|soltar|start|stats|status|stop|supersede|sync|uninstall|validate|verify|versionar|view|vizinhos|warmup|watch|worktree';
-const argument = String.raw`(?:<[^<>\n]+>|--[a-z][\w-]*(?:=[\w./:-]+)?|@orkastery/[\w.-]+(?:@[\w.-]+)?|\d+(?:[dhm])?|auto|classic|codex|claude-bg|claude-code|hermes|openclaw|maestro|GOAL|PLAN|GO|CHECK|SHIP|MASTER|N|danger-full-access|workspace-write|read-only|C\d+(?:,C\d+)*|T\d+(?:\.\d+)*|RM-(?:\d+|N+)|ork-[a-z0-9]+(?:-[a-z0-9]+)*)`;
+const argument = String.raw`(?:<[^<>\n]+>|--[a-z][\w-]*(?:=[\w./:-]+)?|@orkastery/[\w.-]+(?:@[\w.-]+)?|\d+(?:[dhm])?|auto|classic|codex|grok|claude-bg|claude-code|hermes|openclaw|maestro|GOAL|PLAN|GO|CHECK|SHIP|MASTER|N|danger-full-access|workspace-write|read-only|C\d+(?:,C\d+)*|T\d+(?:\.\d+)*|RM-(?:\d+|N+)|ork-[a-z0-9]+(?:-[a-z0-9]+)*)`;
 const patterns = [
   new RegExp(String.raw`\bork\s+(?:${verbs})(?:\s+(?:${subcommands}))?(?:\s+${argument})*(?![\w-])`, 'g'),
   /\b(?:npm|npx)\s+(?:(?:--prefix\s+\w+\s+)?(?:run\s+[\w:-]+|install(?:\s+-g)?(?:\s+@[\w/-]+)?|view\s+@[\w/-]+(?:\s+version)?|test|ci)|@[\w/-]+)(?:\s+--[\w-]+)*/g,
@@ -47,7 +47,7 @@ const patterns = [
   /\bork_\*/g,
   // Posturas do runtime.sandbox citadas como valor.
   /\b(?:danger-full-access|workspace-write)\b/g,
-  /(?<![\w/.:-])\/(?:torre|clima|freio|radar|mesa|sentinela|pista|ritual|mensageiro|portao|goal|plan|go|check|ship|master|onboarding)(?![\w/-])/g,
+  /(?<![\w/.:-])\/(?:torre|clima|freio|radar|mesa|sentinela|pista|ritual|nota|mensageiro|portao|goal|plan|go|check|ship|master|onboarding)(?![\w/-])/g,
   /(?<![\w/.:-])\/orkastery:[a-z][\w-]*|(?<![\w$])\$ork\b/g,
 ];
 
