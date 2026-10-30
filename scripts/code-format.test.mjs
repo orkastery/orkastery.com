@@ -218,3 +218,15 @@ test('identifiers from the review stay whole, and prose abbreviations stay prose
  assert.deepEqual(violations('<p>cwd no $HOME e no PATH, (LANG), /orkastery:goal e $ork.</p>'),['$HOME','PATH','LANG','/orkastery:goal','$ork']);
  for(const text of ['Use a short name, e.g. demo','that is, i.e. now']){assert.equal(technicalHtml(text),text);assert.ok(violations(`<p>${text}</p>`).length,text);}
 });
+test('lista de valores de uma opção fica no mesmo código do comando',()=>{
+ const frase='ork conducao autorizar --ate D --pode limpar,registrar,master,merge,despachar grava o contrato.';
+ const codigos=technicalUnits(frase).filter(u=>'code' in u).map(u=>u.code);
+ assert.deepEqual(codigos,['ork conducao autorizar --ate D --pode limpar,registrar,master,merge,despachar']);
+ // A opção solta também leva a lista junto, e a vírgula de pontuação seguida de espaço continua prosa.
+ assert.deepEqual(technicalUnits('Use --pode limpar,registrar para agir.').filter(u=>'code' in u).map(u=>u.code),['--pode limpar,registrar']);
+ assert.deepEqual(technicalUnits('Rode ork verify, depois ork ship.').filter(u=>'code' in u).map(u=>u.code),['ork verify','ork ship']);
+ // O auditor reprova o comando partido na lista e no subcomando que ficou na prosa.
+ assert.ok(violations('<p><code>ork conducao</code> autorizar <code>--ate D</code> <code>--pode</code> limpar,registrar,master grava.</p>').length>0);
+ assert.ok(violations('<p><code>--pode</code> limpar,registrar grava.</p>').length>0);
+ assert.deepEqual(violations('<p><code>ork verify</code>, depois <code>ork ship</code>.</p>'),[]);
+});

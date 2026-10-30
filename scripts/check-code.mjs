@@ -20,8 +20,9 @@ export const bareCommand=new RegExp(`(?<![\\p{L}\\d_./@-])(?<!ork\\s)(?:${bareCo
 // Comando partido: o código termina antes do comando acabar e o resto ficou na prosa
 // (<code>ork claims</code> add, <code>ork docs sincronizar --so</code> RM-NNN, node <code>--test</code>).
 // Só subcomandos que não são verbo comum de prosa: "ork pulse e ork roadmap status show" é inglês.
-const restOfCommand=/^\s+(?:conferir|retirar|prepare|registrar-pr|registrar|placar|sincronizar|verificar|entrar|sair|publicar|indexar|pedir|dossie|esquecer|limpar-fantasmas|esgotamentos|reservas|ensure|acquire|revogar|confirmar)(?![\p{L}\d_-])/u;
-const valueAfterFlag=/^\s+(?:RM-[\dN]+|C\d+|T\d|<[^<>]+>|ork-[a-z])/;
+const restOfCommand=/^\s+(?:conferir|retirar|prepare|registrar-pr|registrar|placar|sincronizar|verificar|entrar|sair|publicar|indexar|pedir|dossie|esquecer|limpar-fantasmas|esgotamentos|reservas|ensure|acquire|revogar|confirmar|autorizar|atualizar|autorizacao)(?![\p{L}\d_-])/u;
+// Lista de valores de uma opção (--pode limpar,registrar): vírgula sem espaço é valor, não pontuação.
+const valueAfterFlag=/^\s+(?:RM-[\dN]+|C\d+|T\d|<[^<>]+>|ork-[a-z]|[a-z][a-z0-9-]*,[a-z])/;
 const isUnitNode=n=>n?.tagName==='span'&&(attrs(n).class||'').split(/\s+/).includes('code-unit');
 const textOf=n=>!n?'':n.nodeName==='#text'?n.value:content(n);
 export function splitCommands(html) {
@@ -35,7 +36,7 @@ export function splitCommands(html) {
     if(i===kids.length-1&&isUnitNode(node)){const up=node.parentNode?.childNodes||[];after=textOf(up[up.indexOf(node)+1]);}
     if(i===0&&isUnitNode(node)){const up=node.parentNode?.childNodes||[];before=textOf(up[up.indexOf(node)-1]);}
     if(/^ork\s+[a-z][\w-]*$/.test(code)&&restOfCommand.test(after))found.push(`partido: ${code} + ${after.trim().split(/\s+/)[0].replace(/[.,;:)]+$/,'')}`);
-    else if(/^ork\s.*\s--[a-z][\w-]*$/.test(code)&&valueAfterFlag.test(after))found.push(`partido: ${code} + ${after.trim().split(/\s+/)[0].replace(/[.,;:)]+$/,'')}`);
+    else if(/^(?:ork\s.*\s)?--[a-z][\w-]*$/.test(code)&&valueAfterFlag.test(after))found.push(`partido: ${code} + ${after.trim().split(/\s+/)[0].replace(/[.,;:)]+$/,'')}`);
     if(/^--/.test(code)&&/\bnode\s+$/.test(before))found.push(`partido: node + ${code}`);
     // Identificador partido: o código termina e o caminho continua colado no texto (claude-bg + /pessoal).
     const resto=/^\/[\p{L}\d][\p{L}\d_-]*/u.exec(kids[i+1]?.nodeName==='#text'?kids[i+1].value:'');
