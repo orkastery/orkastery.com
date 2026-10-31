@@ -5,7 +5,9 @@
 // página, inclusive estilo inline) e, abaixo de 768 px, o menu do cabeçalho e o board em cartões.
 // Na home, as interações (copiar com "✓ copiado" por 1,6 s e a recusa, modos, fases com setas,
 // alternativas, noite pela rolagem, entrada ao rolar, só as animações do kit e movimento reduzido
-// sem animação rodando). Grava uma captura de página inteira por combinação.
+// sem animação rodando). O selo do herói não parte por dentro: cada grupo cabe numa linha, o
+// separador nunca fica pendurado no fim de uma linha e, de 375 px para cima, o selo é uma linha só.
+// Grava uma captura de página inteira por combinação.
 //   PLAYWRIGHT_MODULE=... CHROMIUM_EXECUTABLE=... npm run check:visual -- --output DIRETORIO_PRIVADO
 //   node scripts/check-visual.mjs --plan    mostra a matriz sem abrir o navegador
 import {readFileSync,writeFileSync,mkdirSync,existsSync,statSync} from 'node:fs';
@@ -15,7 +17,7 @@ import {pathToFileURL} from 'node:url';
 const opcao=(k,padrao)=>process.argv.includes(k)?process.argv[process.argv.indexOf(k)+1].split(','):padrao;
 // --linguas, --larguras e --rotas recortam a matriz (para canário e depuração); --dist troca a build.
 const locales=opcao('--linguas',['pt','en']),widths=opcao('--larguras',['1440','768','390','320']).map(Number),routes=opcao('--rotas',['/','/ork/','/orkmind/','/docs/','/docs/arquitetura/','/docs/contribuir/','/docs/claude-code/','/marca/']);
-const checks=['skipLink','languageKeyboard','focusRing','focusRingNotClipped','focusNotUnderHeader','focusBackwards','inlineCodeCutCue','noCutCodeOnHome','textContrast','textInsideBox','overflow','inlineCodeWhole','inlineCodeScrollsOnlyIfWider','adjacentTextWithCode','codeInsideBlock','touchTarget','brassOnlyWhereAllowed','mobileMenu','boardCards','copySuccessAndRefusal','modes','phaseTabsKeyboard','options','nightScroll','reveal','kitMotionOnly','pauseMotion','reducedMotion','reducedMotionCanvasAndClock','scorePainted'];
+const checks=['skipLink','languageKeyboard','focusRing','focusRingNotClipped','focusNotUnderHeader','focusBackwards','inlineCodeCutCue','noCutCodeOnHome','textContrast','textInsideBox','overflow','inlineCodeWhole','inlineCodeScrollsOnlyIfWider','adjacentTextWithCode','codeInsideBlock','touchTarget','brassOnlyWhereAllowed','mobileMenu','boardCards','copySuccessAndRefusal','modes','phaseTabsKeyboard','options','nightScroll','reveal','kitMotionOnly','pauseMotion','reducedMotion','reducedMotionCanvasAndClock','scorePainted','badgeLines'];
 const args=process.argv.slice(2);
 if(args.includes('--plan')){console.log(JSON.stringify({locales,widths,routes,checks,screenshots:locales.length*widths.length*routes.length,network:'blocked',requires:['PLAYWRIGHT_MODULE','CHROMIUM_EXECUTABLE','--output']},null,2));process.exit(0);}
 const output=args.includes('--output')?resolve(args[args.indexOf('--output')+1]):null;
@@ -116,6 +118,38 @@ const auditoria=()=>{
  return {sobra,partido,solto,vaza,pequeno,latao,rolaAToa,rolando,semSinal,contraste,vazaCaixa};
 };
 
+// O selo do herói é feito de grupos que não partem por dentro (marca e resto). O que se reprova
+// é o que o dono viu no iPhone: o selo partido em três pedaços e um separador sozinho no fim da
+// linha. Aqui a quebra é medida de verdade, não deduzida do CSS.
+const seloDoHeroi=()=>{
+ const el=document.querySelector('.hero-selo,.produto-selo');
+ if(!el)return null;
+ const visivel=x=>x.getClientRects().length>0&&getComputedStyle(x).display!=='none'&&Number(getComputedStyle(x).opacity)>0;
+ const grupos=[...el.querySelectorAll('.selo-marca,.selo-resto')].filter(visivel);
+ // Cada grupo tem de estar numa linha só: altura próxima da altura de uma linha do selo.
+ const linha=parseFloat(getComputedStyle(el).fontSize)*1.15+1;
+ const partidos=grupos.filter(g=>g.getBoundingClientRect().height>linha*2).map(g=>g.className);
+ const tops=[...new Set(grupos.map(g=>Math.round(g.getBoundingClientRect().top+scrollY)))];
+ const pedacos=[...el.querySelectorAll('span,code')].filter(visivel);
+ // Separador visível pendurado: sem um pedaço de texto do mesmo lado na mesma linha.
+ const pendurados=[...el.querySelectorAll('.selo-barra')].filter(visivel).filter(b=>{
+  const r=b.getBoundingClientRect(),t=r.top+scrollY;
+  const mesmaLinha=x=>Math.abs(x.getBoundingClientRect().top+scrollY-t)<2;
+  return !pedacos.some(x=>x!==b&&mesmaLinha(x)&&x.getBoundingClientRect().right<=r.left+1)
+   || !pedacos.some(x=>x!==b&&mesmaLinha(x)&&x.getBoundingClientRect().left>=r.right-1);
+ }).length;
+ // Linha órfã: menos de 4 caracteres que não sejam separador.
+ const porLinha=new Map();
+ for(const x of pedacos){
+  if(!x.textContent.trim()||/^[\/·|•]$/.test(x.textContent.trim()))continue;
+  const t=Math.round(x.getBoundingClientRect().top+scrollY);
+  const chave=[...porLinha.keys()].find(k=>Math.abs(k-t)<2)??t;
+  porLinha.set(chave,(porLinha.get(chave)||0)+x.textContent.trim().length);
+ }
+ const orfas=[...porLinha.values()].filter(n=>n<4).length;
+ return {linhas:tops.length,partidos,pendurados,orfas,largura:Math.round(el.getBoundingClientRect().width),caixa:Math.round(el.parentElement.getBoundingClientRect().width)};
+};
+
 const results=[];let browser;
 try{
  const {chromium}=await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE));
@@ -165,6 +199,16 @@ try{
    if(path==='/'&&a.rolando)throw Error('Inline code cut on the home '+onde+' ('+a.rolando+' chips)');
    if(a.contraste.length)throw Error('Text contrast below AA '+onde+': '+a.contraste.slice(0,6).join(' | '));
    if(a.vazaCaixa.length)throw Error('Text overflows its box '+onde+': '+a.vazaCaixa.slice(0,6).join(' | '));
+   // Selo do herói: sem partir por dentro, sem separador pendurado, sem linha órfã, e uma linha
+   // só de 375 px para cima (o iPhone do dono é 430 px).
+   const s=await page.evaluate(seloDoHeroi);
+   if(s){
+    if(s.partidos.length)throw Error('Badge group split across lines '+onde+': '+s.partidos.join(', '));
+    if(s.pendurados)throw Error('Badge separator stranded on a line edge '+onde+' ('+s.pendurados+')');
+    if(s.orfas)throw Error('Badge with an orphan line '+onde);
+    if(s.largura>s.caixa)throw Error('Badge wider than its column '+onde);
+    if(width>=375&&s.linhas>1)throw Error('Badge wraps at '+width+' px '+onde+' ('+s.linhas+' lines)');
+   }
    if(a.pequeno.length)throw Error('Touch target under 44 px '+onde+': '+a.pequeno.slice(0,6).join(' | '));
    if(a.latao.length)throw Error('Brass outside the places the kit allows '+onde+': '+a.latao.slice(0,6).join(', '));
    // Abaixo de 768 px o cabeçalho vira menu (D19): abre pelo botão, fecha com Esc e devolve o foco.
@@ -260,7 +304,7 @@ try{
     await page.waitForTimeout(300);
     const pintado=await page.evaluate(()=>{const c=document.querySelector('[data-partitura]');const d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let n=0;for(let i=3;i<d.length;i+=4)if(d[i])n++;return n;});
     if(pintado<1000)throw Error('Score canvas blank '+onde);
-    Object.assign(r,{reducedMotion:true,reducedMotionCanvasAndClock:true,copySuccessAndRefusal:true,modes:true,phaseTabsKeyboard:true,options:true,nightScroll:true,reveal:true,kitMotionOnly:true,pauseMotion:true,scorePainted:true,boardCards:estreito});
+    Object.assign(r,{reducedMotion:true,reducedMotionCanvasAndClock:true,copySuccessAndRefusal:true,modes:true,phaseTabsKeyboard:true,options:true,nightScroll:true,reveal:true,kitMotionOnly:true,pauseMotion:true,scorePainted:true,badgeLines:true,boardCards:estreito});
    }
    const shot=`${locale}-${path==='/'?'home':path.slice(1,-1).replaceAll('/','-')}-${width}.png`;
    // Página inteira a partir do topo: o link de pular é fixo e apareceria no meio da imagem.

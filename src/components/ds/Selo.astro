@@ -1,0 +1,27 @@
+---
+// Selo de procedência do herói (home e páginas de produto). Dois grupos que nunca partem por
+// dentro: a marca (com o ponto de verificado) e o resto (versão e licença). Assim, quando o
+// espaço acaba, a quebra acontece entre grupos, com linha inteira, e não no meio de um token
+// nem deixando o separador pendurado no fim da linha. A partir de 560 px cabem os dois
+// separadores do desenho; abaixo disso só o separador entre versão e licença fica, e a
+// distância entre os grupos faz o papel do outro, com a fonte fluida para o selo continuar
+// numa linha só no iPhone.
+interface Props { classe: string; marca: string; licenca: string; }
+const {classe,marca,licenca}=Astro.props;
+---
+<div class={'selo '+classe}>
+ <span class="selo-marca"><span class="selo-ponto" aria-hidden="true"></span><span>{marca}</span></span>
+ <span class="selo-resto"><span class="selo-barra selo-barra-grupo" aria-hidden="true">/</span><span class="selo-detalhe"><slot/></span><span class="selo-barra" aria-hidden="true">/</span><span>{licenca}</span></span>
+</div>
+<style>
+.selo{display:inline-flex;flex-wrap:wrap;align-items:center;column-gap:var(--e-3);row-gap:var(--e-1);max-width:100%;min-height:32px;padding:6px var(--e-3);border-radius:var(--raio-pilula);background:var(--superficie);border:1px solid var(--linha);font-family:var(--f-mono);font-weight:var(--peso-destaque);font-size:var(--t-rotulo);line-height:1.15;color:var(--texto-2);box-sizing:border-box}
+.selo-marca,.selo-resto{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.selo-ponto{width:7px;height:7px;border-radius:50%;background:var(--verificado);flex:none}
+.selo-barra{color:var(--linha-forte)}
+/* Abaixo de 560 px o selo encolhe com a tela em vez de quebrar: a 430 px (iPhone 15 Pro Max)
+   fica em 12 px numa linha, a 375 px em 10,7 px, e o piso de 10,5 px preserva a leitura. */
+@media(max-width:560px){
+ .selo{font-size:clamp(10.5px,2.85vw,12px);column-gap:12px;padding:7px 10px}
+ .selo-barra-grupo{display:none}
+}
+</style>

@@ -5,18 +5,20 @@
 // no que espera você (D18). O botão de pausar o movimento não está no HTML da home: é o controle
 // que a WCAG 2.2.2 pede para o que se move sozinho por mais de 5 s.
 import InstallButton from '../ds/InstallButton.astro';
+import Selo from '../ds/Selo.astro';
 import TechnicalText from '../TechnicalText.astro';
 import {versao} from '../../data/release.mjs';
 import {preencher} from '../../lib/home-state.mjs';
 import {DENSIDADE} from '../../lib/partitura.mjs';
 const {t}=Astro.props;
 const [fabrica,,licenca]=t.hero.badge;
+// O detalhe do selo (o pacote e a versão) continua sendo texto do núcleo; o componente só o agrupa.
 ---
 <section id="topo" class="hero">
  <div class="hero-pontos" aria-hidden="true"></div>
  <div class="container hero-conteudo">
   <span id="manifesto-titulo" class="ancora-antiga" aria-hidden="true"></span>
-  <div class="hero-selo"><span class="hero-ponto-selo" aria-hidden="true"></span><span>{fabrica}</span><span class="hero-barra" aria-hidden="true">/</span><span><code class="codigo-liso">@orkastery/cli</code> <code class="codigo-liso">{versao}</code></span><span class="hero-barra" aria-hidden="true">/</span><span>{licenca}</span></div>
+  <Selo classe="hero-selo" marca={fabrica} licenca={licenca}><code class="codigo-liso">@orkastery/cli</code> <code class="codigo-liso">{versao}</code></Selo>
   <h1 class="hero-titulo">{t.hero.title} <span class="hero-continuacao">{t.hero.titleMuted}</span></h1>
   <p class="hero-lead"><TechnicalText text={t.hero.lead}/></p>
   <div id="instalar" class="hero-acoes">
@@ -42,10 +44,6 @@ const [fabrica,,licenca]=t.hero.badge;
 .hero{position:relative;padding:var(--secao-ampla) 0 var(--e-8)}
 .hero-pontos{position:absolute;left:0;right:0;top:0;height:760px;background-image:radial-gradient(color-mix(in srgb,var(--texto) 10%,transparent) 1px,transparent 1.3px);background-size:24px 24px;-webkit-mask-image:radial-gradient(70% 62% at 28% 18%,var(--texto) 15%,transparent 72%);mask-image:radial-gradient(70% 62% at 28% 18%,var(--texto) 15%,transparent 72%);pointer-events:none}
 .hero-conteudo{position:relative}
-.hero-selo{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px var(--e-3);min-height:32px;padding:6px var(--e-3);border-radius:var(--raio-pilula);background:var(--superficie);border:1px solid var(--linha);font:var(--peso-destaque) var(--t-rotulo)/1 var(--f-mono);color:var(--texto-2);box-sizing:border-box}
-.hero-selo>span{white-space:nowrap}
-.hero-ponto-selo{width:7px;height:7px;border-radius:50%;background:var(--verificado)}
-.hero-barra{color:var(--linha-forte)}
 .hero-titulo{margin:var(--e-6) 0 0;font:var(--tipo-display);letter-spacing:var(--trk-display);max-width:16ch;text-wrap:balance}
 .hero-continuacao{color:var(--texto-3)}
 .hero-lead{margin:var(--e-6) 0 0;max-width:58ch;font:var(--tipo-corpo);color:var(--texto-2);text-wrap:pretty}
